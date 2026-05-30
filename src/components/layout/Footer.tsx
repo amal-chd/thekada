@@ -141,10 +141,18 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <span>© {new Date().getFullYear()} The Kada Digital Ventures Pvt Ltd. All rights reserved.</span>
             <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
-              <Link to="/legal/privacy" style={{ color: '#94A3B8', textDecoration: 'none' }}>Privacy</Link>
-              <Link to="/legal/terms" style={{ color: '#94A3B8', textDecoration: 'none' }}>Terms</Link>
-              <Link to="/legal/cookies" style={{ color: '#94A3B8', textDecoration: 'none' }}>Cookies</Link>
-              <Link to="/legal/refunds" style={{ color: '#94A3B8', textDecoration: 'none' }}>Refunds</Link>
+              {[
+                { label: 'Privacy', path: '/legal/privacy' },
+                { label: 'Terms', path: '/legal/terms' },
+                { label: 'Cookies', path: '/legal/cookies' },
+                { label: 'Refunds', path: '/legal/refunds' },
+              ].map((lk) => (
+                <Link key={lk.label} to={lk.path} style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s ease' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#2563EB' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#94A3B8' }}>
+                  {lk.label}
+                </Link>
+              ))}
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>

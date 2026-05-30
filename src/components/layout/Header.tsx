@@ -64,9 +64,12 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    setMobileOpen(false)
-    setActiveMenu(null)
-    setMobileSection(null)
+    const timer = setTimeout(() => {
+      setMobileOpen(false)
+      setActiveMenu(null)
+      setMobileSection(null)
+    }, 0)
+    return () => clearTimeout(timer)
   }, [location])
 
   useEffect(() => {

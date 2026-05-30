@@ -29,7 +29,7 @@ export default function AnimatedCounter({
   const isNumeric = match != null && !Number.isNaN(target)
 
   useEffect(() => {
-    if (!isNumeric) { setDisplay(value); return }
+    if (!isNumeric) return
     const el = ref.current
     if (!el) return
     const io = new IntersectionObserver((entries) => {

@@ -100,7 +100,7 @@ export default function EcosystemMap() {
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
       }}>
         <div style={{ width: 34, height: 34, marginBottom: 6 }}>
-          <img src="/logo.svg" alt="" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
+          <img src="/logo.svg" alt="The Kada Logo" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
         </div>
         <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>Kada OS</div>
         <div style={{ fontSize: '0.6rem', color: 'rgba(147,184,255,0.9)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>Business Core</div>

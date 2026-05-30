@@ -19,11 +19,15 @@ const steps = [
 export default function ScrollStory() {
   const ref = useRef<HTMLDivElement>(null)
   const [progress, setProgress] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(max-width: 900px)').matches
+    }
+    return false
+  })
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)')
-    setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
