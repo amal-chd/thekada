@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, TrendingUp } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 
 const metrics = [
   { label: 'SaaS products live', value: '6', sub: 'and growing', color: '#2563EB' },
@@ -51,11 +51,13 @@ export default function InvestorRelations() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
           {metrics.map((m, i) => (
             <Reveal key={m.label} delay={i * 0.06}>
-              <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.75rem', height: '100%' }}>
-                <div style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>{m.value}</div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#E2E8F0', marginTop: '0.6rem' }}>{m.label}</div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', color: '#5EEAA8', fontWeight: 700, marginTop: '0.35rem' }}><TrendingUp size={12} /> {m.sub}</div>
-              </div>
+              <SpotlightCard style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.75rem', height: '100%', cursor: 'default' }}>
+                <div style={{ position: 'relative', zIndex: 2 }}>
+                  <div style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>{m.value}</div>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#E2E8F0', marginTop: '0.6rem' }}>{m.label}</div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', color: '#5EEAA8', fontWeight: 700, marginTop: '0.35rem' }}><TrendingUp size={12} /> {m.sub}</div>
+                </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

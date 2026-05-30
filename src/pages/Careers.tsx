@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, MapPin, Clock, Globe, TrendingUp, BookText, Heart, Target } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 
 const openings = [
   { title: 'Senior Full-Stack Engineer', team: 'Engineering', type: 'Full-time', location: 'Kannur / Remote', color: '#2563EB', desc: 'Build across our SaaS products and client projects — React, Node, and PostgreSQL at scale.' },
@@ -70,11 +70,13 @@ export default function Careers() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
           {perks.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.05}>
-              <div className="card" style={{ padding: '1.85rem', height: '100%' }}>
-                <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><p.Icon size={21} color="#2563EB" /></span>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>{p.title}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{p.desc}</p>
-              </div>
+              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}><p.Icon size={21} color="#2563EB" /></span>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>{p.title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{p.desc}</p>
+                </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

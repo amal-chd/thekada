@@ -3,7 +3,7 @@ import {
   ArrowUpRight, ArrowRight, Check,
   Cpu, ShieldCheck, Layers, FileCode2, Lock, RefreshCw, Gauge, Database, Server,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 import { techStack } from '../data/content'
 
 const principles = [
@@ -95,11 +95,13 @@ export default function Technology() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
           {security.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
-              <div className="card" style={{ padding: '1.85rem', height: '100%' }}>
-                <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><s.Icon size={22} color="#2563EB" /></span>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>{s.title}</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{s.desc}</p>
-              </div>
+              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}><s.Icon size={22} color="#2563EB" /></span>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>{s.title}</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{s.desc}</p>
+                </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

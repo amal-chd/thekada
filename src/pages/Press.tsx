@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Download } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 
 const features = [
   { outlet: 'Kerala Startup Mission', headline: 'The Kada secures grant to scale its SaaS suite for small businesses', date: 'May 2026', tier: 'Tier 1', color: '#2563EB' },
@@ -49,17 +49,19 @@ export default function Press() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
           {features.map((item, i) => (
             <Reveal key={item.outlet} delay={i * 0.05}>
-              <div className="card" style={{ padding: '1.85rem', height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                  <span style={{ fontSize: '0.74rem', fontWeight: 750, color: item.color, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{item.outlet}</span>
-                  <span style={{ fontSize: '0.66rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: 100, background: 'var(--bg-softer)', color: 'var(--text-secondary)' }}>{item.tier}</span>
+              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '0.74rem', fontWeight: 750, color: item.color, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{item.outlet}</span>
+                    <span style={{ fontSize: '0.66rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: 100, background: 'var(--bg-softer)', color: 'var(--text-secondary)' }}>{item.tier}</span>
+                  </div>
+                  <p style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.45, letterSpacing: '-0.01em', flex: 1 }}>“{item.headline}”</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                    <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{item.date}</span>
+                    <ArrowUpRight size={15} color={item.color} />
+                  </div>
                 </div>
-                <p style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--ink)', lineHeight: 1.45, letterSpacing: '-0.01em', flex: 1 }}>“{item.headline}”</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{item.date}</span>
-                  <ArrowUpRight size={15} color={item.color} />
-                </div>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -71,14 +73,16 @@ export default function Press() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
           {brandAssets.map((asset, i) => (
             <Reveal key={asset.name} delay={i * 0.04}>
-              <div className="card" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', cursor: 'pointer' }}>
-                <div>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.2rem' }}>{asset.name}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.35rem', lineHeight: 1.4 }}>{asset.desc}</div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>{asset.size}</div>
+              <SpotlightCard className="card-premium" style={{ padding: '1.5rem', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', position: 'relative', zIndex: 2 }}>
+                  <div>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.2rem' }}>{asset.name}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.35rem', lineHeight: 1.4 }}>{asset.desc}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>{asset.size}</div>
+                  </div>
+                  <span style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563EB', flexShrink: 0 }}><Download size={16} /></span>
                 </div>
-                <span style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563EB', flexShrink: 0 }}><Download size={16} /></span>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

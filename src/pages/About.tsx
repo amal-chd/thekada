@@ -3,7 +3,7 @@ import {
   ArrowUpRight, ArrowRight,
   Target, Layers, Users, Zap, Eye, Compass,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 import { company, stats } from '../data/content'
 
 const timeline = [
@@ -68,25 +68,27 @@ export default function About() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="card" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
-              <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Our mission</div>
-              <p style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.35rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.5, color: 'var(--ink)', marginBottom: '1.75rem' }}>
-                “{company.mission}”
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-                {[
-                  { label: 'Founded', value: `${company.founded} · Kannur, Kerala` },
-                  { label: 'Legal name', value: company.legalName },
-                  { label: 'Model', value: 'SaaS products + custom software' },
-                  { label: 'Products', value: '6 live · and growing' },
-                ].map((item) => (
-                  <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border)' }}>
-                    <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.label}</span>
-                    <span style={{ fontSize: '0.82rem', color: 'var(--ink)', fontWeight: 700, textAlign: 'right' }}>{item.value}</span>
-                  </div>
-                ))}
+            <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                <div className="eyebrow" style={{ marginBottom: '1.25rem' }}>Our mission</div>
+                <p style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.35rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.5, color: 'var(--ink)', marginBottom: '1.75rem' }}>
+                  “{company.mission}”
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                  {[
+                    { label: 'Founded', value: `${company.founded} · Kannur, Kerala` },
+                    { label: 'Legal name', value: company.legalName },
+                    { label: 'Model', value: 'SaaS products + custom software' },
+                    { label: 'Products', value: '6 live · and growing' },
+                  ].map((item) => (
+                    <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.label}</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--ink)', fontWeight: 700, textAlign: 'right' }}>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </SpotlightCard>
           </Reveal>
         </div>
       </Section>
@@ -146,11 +148,13 @@ export default function About() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
           {team.map((person, i) => (
             <Reveal key={person.role} delay={i * 0.05}>
-              <div className="card" style={{ padding: '1.85rem', textAlign: 'center', height: '100%' }}>
-                <div style={{ width: 70, height: 70, borderRadius: '50%', background: `linear-gradient(135deg, ${person.color}, ${person.color}bb)`, margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: '#fff', boxShadow: `0 10px 24px -8px ${person.color}88` }}>{person.initial}</div>
-                <div style={{ fontSize: '0.92rem', fontWeight: 800, color: person.color, marginBottom: '0.5rem' }}>{person.role}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{person.expertise}</div>
-              </div>
+              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+                  <div style={{ width: 70, height: 70, borderRadius: '50%', background: `linear-gradient(135deg, ${person.color}, ${person.color}bb)`, margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: '#fff', boxShadow: `0 10px 24px -8px ${person.color}88` }}>{person.initial}</div>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 800, color: person.color, marginBottom: '0.5rem' }}>{person.role}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{person.expertise}</div>
+                </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

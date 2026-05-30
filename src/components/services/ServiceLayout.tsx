@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, ArrowRight, Check, Search, PenTool, Code2, ServerCog } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../ui'
 import FAQ, { type FAQItem } from '../shared/FAQ'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
@@ -64,23 +64,25 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
 
             {/* Hero highlight card */}
             <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }} className="hero-illustration">
-              <div style={{ background: '#fff', borderRadius: 22, border: '1px solid var(--border)', boxShadow: 'var(--shadow-xl)', padding: '1.75rem', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: -50, right: -50, width: 160, height: 160, borderRadius: '50%', background: `${a}14` }} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.4rem', position: 'relative' }}>
-                  <span style={{ width: 46, height: 46, borderRadius: 13, background: `${a}16`, border: `1px solid ${a}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <config.EyebrowIcon size={22} color={a} />
-                  </span>
-                  <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--ink)' }}>What's included</span>
+              <SpotlightCard className="card-premium" style={{ padding: '1.75rem' }}>
+                <div style={{ position: 'relative', zIndex: 2 }}>
+                  <div style={{ position: 'absolute', top: -50, right: -50, width: 160, height: 160, borderRadius: '50%', background: `${a}14`, zIndex: -1 }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.4rem' }}>
+                    <span style={{ width: 46, height: 46, borderRadius: 13, background: `${a}16`, border: `1px solid ${a}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <config.EyebrowIcon size={22} color={a} />
+                    </span>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--ink)' }}>What's included</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                    {config.highlights.map((h) => (
+                      <div key={h} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.7rem' }}>
+                        <span style={{ width: 22, height: 22, borderRadius: '50%', background: a, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}><Check size={13} /></span>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', fontWeight: 550, lineHeight: 1.45 }}>{h}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', position: 'relative' }}>
-                  {config.highlights.map((h) => (
-                    <div key={h} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.7rem' }}>
-                      <span style={{ width: 22, height: 22, borderRadius: '50%', background: a, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}><Check size={13} /></span>
-                      <span style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', fontWeight: 550, lineHeight: 1.45 }}>{h}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              </SpotlightCard>
             </motion.div>
           </div>
         </Container>
@@ -133,7 +135,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.1rem' }}>
           {steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
-              <div style={{ position: 'relative', background: '#fff', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
+              <div className="process-card" style={{ position: 'relative', background: '#fff', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
                 <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: `${a}1f`, lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{i + 1}</div>
                 <span style={{ width: 44, height: 44, borderRadius: 12, background: `${a}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><s.Icon size={21} color={a} /></span>
                 <h3 style={{ fontSize: '1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem', letterSpacing: '-0.015em' }}>{s.title}</h3>

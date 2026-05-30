@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link, useParams } from 'react-router-dom'
 import Container from '../components/ui/Container'
+import { SpotlightCard } from '../components/ui'
 
 const legalContent: Record<string, { title: string; updated: string; sections: { heading: string; body: string }[] }> = {
   privacy: {
@@ -115,12 +116,14 @@ export default function Legal() {
                   <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.75 }}>{section.body}</p>
                 </motion.div>
               ))}
-              <div className="card" style={{ marginTop: '3rem', padding: '1.85rem', fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                <strong style={{ color: 'var(--ink)', fontSize: '0.95rem' }}>The Kada Digital Ventures Pvt Ltd</strong><br />
-                Kannur, Kerala 670001, India<br />
-                CIN: U72900KL2023PTC000000 · GST: 32XXXXX0000X1ZX<br />
-                Email: legal@thekada.in
-              </div>
+              <SpotlightCard className="card-premium" style={{ marginTop: '3rem', padding: '1.85rem', fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                <div style={{ position: 'relative', zIndex: 2 }}>
+                  <strong style={{ color: 'var(--ink)', fontSize: '0.95rem' }}>The Kada Digital Ventures Pvt Ltd</strong><br />
+                  Kannur, Kerala 670001, India<br />
+                  CIN: U72900KL2023PTC000000 · GST: 32XXXXX0000X1ZX<br />
+                  Email: legal@thekada.in
+                </div>
+              </SpotlightCard>
             </div>
           </div>
         </Container>

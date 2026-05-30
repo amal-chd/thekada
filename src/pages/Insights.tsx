@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { Section, Reveal, Container } from '../components/ui'
+import { Section, Reveal, Container, SpotlightCard } from '../components/ui'
 
 const posts = [
   { id: 1, title: 'How we build high-converting SaaS products from the ground up', category: 'Product', date: 'May 2026', readTime: '6 min', color: '#2563EB', excerpt: 'Our playbook for product architecture, billing, and onboarding flows that turn trials into paying, long-retained customers.' },
@@ -52,38 +52,40 @@ export default function Insights() {
       <Section bg="white">
         {featured && (
           <Reveal>
-            <article style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 'clamp(1.5rem, 4vw, 3rem)', alignItems: 'center', background: '#fff', border: '1px solid var(--border)', borderRadius: 24, padding: 'clamp(1.75rem, 3vw, 2.75rem)', marginBottom: '2rem', boxShadow: 'var(--shadow-md)', cursor: 'pointer' }} className="grid-2">
-              <div>
+            <SpotlightCard className="card-premium grid-2" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 'clamp(1.5rem, 4vw, 3rem)', alignItems: 'center', padding: 'clamp(1.75rem, 3vw, 2.75rem)', marginBottom: '2rem', cursor: 'pointer' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}>
                 <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.1rem', flexWrap: 'wrap', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.72rem', fontWeight: 750, color: featured.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{featured.category}</span>
                   <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{featured.date} · {featured.readTime} read</span>
                 </div>
                 <h2 style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 800, letterSpacing: '-0.025em', color: 'var(--ink)', lineHeight: 1.2, marginBottom: '0.9rem' }}>{featured.title}</h2>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>{featured.excerpt}</p>
-                <span className="btn-ghost">Read article <ArrowUpRight size={16} /></span>
+                <span className="btn-ghost" style={{ width: 'fit-content' }}>Read article <ArrowUpRight size={16} /></span>
               </div>
-              <div style={{ aspectRatio: '4/3', borderRadius: 18, background: `linear-gradient(150deg, ${featured.color}1a, ${featured.color}08)`, border: `1px solid ${featured.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ aspectRatio: '4/3', borderRadius: 18, background: `linear-gradient(150deg, ${featured.color}1a, ${featured.color}08)`, border: `1px solid ${featured.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 2 }}>
                 <span style={{ width: 64, height: 64, borderRadius: '50%', background: `${featured.color}1f`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: featured.color }}><ArrowUpRight size={26} /></span>
               </div>
-            </article>
+            </SpotlightCard>
           </Reveal>
         )}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
           {rest.map((post, i) => (
             <Reveal key={post.id} delay={i * 0.05}>
-              <article className="card" style={{ padding: '1.85rem', height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
-                <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 750, color: post.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{post.category}</span>
-                  <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{post.readTime}</span>
+              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 750, color: post.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{post.category}</span>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{post.readTime}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', lineHeight: 1.4, letterSpacing: '-0.015em', marginBottom: '0.7rem' }}>{post.title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, flex: 1 }}>{post.excerpt}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{post.date}</span>
+                    <ArrowUpRight size={15} color={post.color} />
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', lineHeight: 1.4, letterSpacing: '-0.015em', marginBottom: '0.7rem' }}>{post.title}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, flex: 1 }}>{post.excerpt}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{post.date}</span>
-                  <ArrowUpRight size={15} color={post.color} />
-                </div>
-              </article>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
