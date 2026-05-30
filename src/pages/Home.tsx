@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ArrowRight, ArrowUpRight, ChevronRight, ChevronDown, Check, Send, CheckCircle2,
+  ArrowRight, ChevronDown, Send, CheckCircle2,
   Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2,
   Globe, Smartphone, Rocket, Building2, Palette, Plug, Cloud,
   Utensils, BedDouble, ShoppingBag, Truck, Wallet, Briefcase, Quote,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
-import HeroDashboard from '../components/home/HeroDashboard'
-import AppDownload from '../components/shared/AppDownload'
-import { products, services, caseStudies, industries, devProcess, stats, techStack, appLinks } from '../data/content'
+import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter } from '../components/ui'
+import PremiumHero from '../components/home/PremiumHero'
+import EcosystemMap from '../components/home/EcosystemMap'
+import BentoProducts from '../components/home/BentoProducts'
+import ScrollStory from '../components/home/ScrollStory'
+import AISection from '../components/home/AISection'
+import ClosingCTA from '../components/home/ClosingCTA'
+import { products, services, caseStudies, industries, devProcess, techStack } from '../data/content'
 
 const serviceIcons: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
   'web-dev': Globe, 'mobile-dev': Smartphone, 'saas-dev': Rocket, automation: Workflow,
@@ -41,53 +45,15 @@ const homeFaqs = [
 ]
 
 export default function Home() {
-  const [activeProductTab, setActiveProductTab] = useState(products[0].id)
-  const activeProduct = products.find((p) => p.id === activeProductTab) || products[0]
   const [activeTechCategory, setActiveTechCategory] = useState(techStack[0].category)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', interest: 'custom-dev', budget: 'mid', message: '' })
   const [formSubmitted, setFormSubmitted] = useState(false)
 
   return (
-    <main style={{ overflow: 'hidden' }}>
+    <main style={{ overflowX: 'clip' }}>
       {/* ───────────────── HERO ───────────────── */}
-      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 10rem) 0 clamp(3rem, 6vw, 5rem)' }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0 }} />
-        <div className="glow-orb" style={{ top: '-10%', right: '2%', width: 520, height: 520, background: 'rgba(37,99,235,0.14)' }} />
-        <div className="glow-orb" style={{ bottom: '-20%', left: '-6%', width: 420, height: 420, background: 'rgba(124,106,247,0.12)' }} />
-
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.06fr 0.94fr', gap: '3.5rem', alignItems: 'center' }} className="grid-2">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
-              <div className="eyebrow" style={{ marginBottom: '1.5rem' }}>
-                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 0 3px rgba(16,185,129,0.18)' }} />
-                SaaS products &amp; custom software studio
-              </div>
-              <h1 style={{ fontSize: 'clamp(2.6rem, 5.4vw, 4.35rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.04, color: 'var(--ink)', marginBottom: '1.4rem' }}>
-                Software that runs<br />your business <span className="gradient-text-blue">on autopilot.</span>
-              </h1>
-              <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem' }}>
-                The Kada Digital Ventures builds intuitive digital products and bespoke software that automate operations,
-                eliminate manual busywork, and help restaurants, hotels, retailers, and agencies scale with confidence.
-              </p>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                <Button href="#inquiry" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
-                <Button href="#products" variant="secondary" size="lg">Explore products <ChevronRight size={17} /></Button>
-              </div>
-              <div style={{ display: 'flex', gap: 'clamp(1.5rem, 4vw, 2.75rem)', flexWrap: 'wrap' }}>
-                {stats.map((s) => (
-                  <div key={s.label}>
-                    <div style={{ fontSize: 'clamp(1.4rem, 2.4vw, 1.9rem)', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.value}</div>
-                    <div style={{ fontSize: '0.76rem', color: '#64748B', fontWeight: 600, marginTop: '0.35rem' }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <div className="hero-illustration"><HeroDashboard /></div>
-          </div>
-        </Container>
-      </section>
+      <PremiumHero />
 
       {/* ───────────────── TRUST STRIP ───────────────── */}
       <section style={{ background: '#FFFFFF', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2rem 0' }}>
@@ -95,9 +61,71 @@ export default function Home() {
           <div style={{ textAlign: 'center', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94A3B8', marginBottom: '1.25rem' }}>
             Powering operations for businesses across India
           </div>
-          <div style={{ display: 'flex', gap: 'clamp(1.5rem, 5vw, 3.5rem)', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
-            {['Paragon Cafe', 'Heritage Resorts', 'Maryam Group', 'Deccan Spices', 'Lakshmi Textiles', 'Sai Electronics'].map((n) => (
-              <span key={n} className="logo-strip-item">{n}</span>
+          <div className="marquee-mask" style={{ overflow: 'hidden' }}>
+            <div className="marquee-track" style={{ gap: '3.5rem' }}>
+              {[...Array(2)].flatMap((_, dup) =>
+                ['Paragon Cafe', 'Heritage Resorts', 'Maryam Group', 'Deccan Spices', 'Lakshmi Textiles', 'Sai Electronics', 'Hotel Firdaus', 'Kerala Mart'].map((n) => (
+                  <span key={`${dup}-${n}`} className="logo-strip-item" style={{ whiteSpace: 'nowrap' }}>{n}</span>
+                ))
+              )}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ───────────────── ECOSYSTEM MAP ───────────────── */}
+      <section id="ecosystem" className="section-pad" style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)' }}>
+        <Container style={{ position: 'relative', zIndex: 2 }}>
+          <SectionHeading
+            eyebrow="The Kada OS"
+            title="One core. Six products. Zero silos."
+            subtitle="Every product plugs into the same intelligent core — sharing data, automation, and business intelligence. This is the operating system for your business."
+          />
+          <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center', marginTop: '1rem' }} className="grid-2">
+            <div>
+              {[
+                { t: 'Shared data layer', d: 'Sales, inventory, customers and payments live in one place — no double entry.' },
+                { t: 'Automation flow', d: 'An action in one product ripples through the rest, instantly and automatically.' },
+                { t: 'Business intelligence', d: 'One analytics brain reads every product to surface what actually matters.' },
+              ].map((row, idx) => (
+                <Reveal key={row.t} delay={idx * 0.08}>
+                  <div style={{ display: 'flex', gap: '1rem', padding: '1.1rem 0', borderBottom: idx < 2 ? '1px solid var(--border)' : 'none' }}>
+                    <span style={{ width: 30, height: 30, borderRadius: 9, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 800, color: '#2563EB', fontSize: '0.8rem' }}>{idx + 1}</span>
+                    <div>
+                      <h3 style={{ fontSize: '1.02rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.25rem' }}>{row.t}</h3>
+                      <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{row.d}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+              <div style={{ marginTop: '1.5rem' }}><Button to="/ecosystem">Explore the ecosystem <ArrowRight size={16} /></Button></div>
+            </div>
+            <Reveal delay={0.1}><EcosystemMap /></Reveal>
+          </div>
+        </Container>
+      </section>
+
+      {/* ───────────────── IMPACT METRICS ───────────────── */}
+      <section className="section-pad" style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 120% at 50% 0%, #16294B 0%, #0B1B33 60%)' }}>
+        <div className="aurora aurora-soft" aria-hidden />
+        <Container style={{ position: 'relative', zIndex: 2 }}>
+          <Reveal style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <div className="eyebrow" style={{ marginBottom: '1.1rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Business impact</div>
+            <h2 style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff', lineHeight: 1.1 }}>
+              Numbers that move businesses.
+            </h2>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
+            {[
+              { value: '₹50Cr+', label: 'Revenue enabled' },
+              { value: '500K+', label: 'Transactions processed' },
+              { value: '10,000+', label: 'Hours automated' },
+              { value: '45+', label: 'Business partners' },
+            ].map((m, i) => (
+              <Reveal key={m.label} delay={i * 0.08} style={{ textAlign: 'center' }}>
+                <AnimatedCounter value={m.value} className="metric-xl metric-xl-light" style={{ display: 'block' }} />
+                <div style={{ fontSize: '0.92rem', color: 'rgba(203,213,225,0.75)', fontWeight: 600, marginTop: '0.6rem' }}>{m.label}</div>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -172,65 +200,20 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ───────────────── PRODUCT SHOWCASE ───────────────── */}
+      {/* ───────────────── PRODUCT SHOWCASE (BENTO) ───────────────── */}
       <Section bg="white" id="products">
         <SectionHeading
           eyebrow="Product ecosystem"
-          title="One ecosystem. Every part of the business."
-          subtitle="Explore the platforms we've built in-house — each one solving a specific, real operational headache."
+          title="Six products. Each one a category leader."
+          subtitle="Explore the platforms we've built in-house — each one solving a specific, real operational headache, with the polish of a standalone SaaS product."
         />
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.75rem' }}>
-          {products.map((p) => (
-            <button key={p.id} onClick={() => setActiveProductTab(p.id)}
-              className={`tab-btn-pill ${activeProductTab === p.id ? 'active' : 'inactive'}`}
-              style={activeProductTab === p.id ? { background: p.color, boxShadow: `0 6px 16px -4px ${p.color}66` } : undefined}>
-              {p.shortName}
-            </button>
-          ))}
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div key={activeProduct.id} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.3 }}
-            className="card-flat" style={{ padding: 'clamp(1.75rem, 3.5vw, 3rem)', boxShadow: 'var(--shadow-md)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 'clamp(2rem, 4vw, 3.5rem)', alignItems: 'center' }} className="grid-2">
-              <div>
-                <div style={{ display: 'inline-block', padding: '0.3rem 0.8rem', borderRadius: 100, background: `${activeProduct.color}14`, color: activeProduct.color, fontSize: '0.72rem', fontWeight: 750, marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em', border: `1px solid ${activeProduct.color}28` }}>
-                  {activeProduct.badge}
-                </div>
-                <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: '0.4rem' }}>{activeProduct.name}</h3>
-                <p style={{ fontSize: '1rem', fontWeight: 650, color: 'var(--dark-muted)', marginBottom: '1rem' }}>{activeProduct.tagline}</p>
-                <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.75rem' }}>{activeProduct.description}</p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.7rem 1.5rem', marginBottom: '2rem' }}>
-                  {activeProduct.features.slice(0, 6).map((f) => (
-                    <div key={f} style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
-                      <Check size={15} color={activeProduct.color} style={{ marginTop: 2, flexShrink: 0 }} />
-                      <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 500, lineHeight: 1.4 }}>{f}</span>
-                    </div>
-                  ))}
-                </div>
-                <Button to={activeProduct.path} accent={activeProduct.color}>Explore {activeProduct.shortName} <ArrowUpRight size={16} /></Button>
-              </div>
-
-              <div style={{ background: `linear-gradient(160deg, ${activeProduct.color}10, ${activeProduct.color}04)`, borderRadius: 20, padding: '1.75rem', border: `1px solid ${activeProduct.color}22` }}>
-                <div style={{ fontSize: '0.7rem', color: activeProduct.color, fontWeight: 750, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.1rem' }}>
-                  {activeProduct.name} · highlights
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                  {Object.entries(activeProduct.stats).map(([k, v]) => (
-                    <div key={k} style={{ background: '#FFFFFF', padding: '1.1rem', borderRadius: 14, border: '1px solid var(--border)', boxShadow: 'var(--shadow-xs)' }}>
-                      <div style={{ fontSize: '1.3rem', fontWeight: 800, color: activeProduct.color, letterSpacing: '-0.02em' }}>{String(v)}</div>
-                      <div style={{ fontSize: '0.66rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', marginTop: '0.2rem', letterSpacing: '0.03em' }}>{k}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginTop: '1rem', padding: '0.85rem 1rem', background: '#FFFFFF', borderRadius: 12, border: '1px solid var(--border)' }}>
-                  <ShieldCheck size={18} color={activeProduct.color} style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.76rem', color: 'var(--dark-muted)', fontWeight: 600 }}>Secure cloud platform · encrypted &amp; automatically backed up</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <BentoProducts />
       </Section>
+
+      {/* ───────────────── SCROLL STORY ───────────────── */}
+      <section style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)' }}>
+        <ScrollStory />
+      </section>
 
       {/* ───────────────── SERVICES ───────────────── */}
       <Section bg="soft" bordered id="services">
@@ -370,6 +353,9 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* ───────────────── AI SECTION ───────────────── */}
+      <AISection />
+
       {/* ───────────────── LEAD FORM ───────────────── */}
       <Section bg="soft" id="inquiry" bordered containerSize="narrow">
         <SectionHeading eyebrow="Request a proposal" title="Tell us what you're trying to fix." subtitle="Describe the manual process you want to replace or the product you need built. We'll reply within 24 hours with a tailored plan." />
@@ -446,42 +432,8 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ───────────────── APP DOWNLOAD BAND ───────────────── */}
-      <Section bg="soft" bordered>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 'clamp(1.5rem, 4vw, 3rem)', alignItems: 'center' }} className="grid-2">
-          <Reveal>
-            <div className="eyebrow" style={{ marginBottom: '1.1rem' }}>📱 Take it with you</div>
-            <h2 style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.14, color: 'var(--ink)', marginBottom: '0.85rem' }}>
-              Your business, in your pocket.
-            </h2>
-            <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 460, marginBottom: '1.75rem' }}>
-              Run billing, track orders, manage credit, and stay on top of operations from anywhere. Download our apps on iOS and Android.
-            </p>
-            <AppDownload appStore={appLinks.default.appStore} playStore={appLinks.default.playStore} />
-          </Reveal>
-          <Reveal delay={0.1} style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', gap: '0.6rem' }}>
-              {['#FF6B2B', '#7C6AF7', '#10B981'].map((c, i) => (
-                <div key={c} style={{ width: 64, height: 132, borderRadius: 16, background: '#fff', border: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', padding: 6, transform: `translateY(${i === 1 ? '-12px' : '0'}) rotate(${(i - 1) * 4}deg)` }}>
-                  <div style={{ width: '100%', height: '100%', borderRadius: 11, background: `linear-gradient(160deg, ${c}22, ${c}08)`, border: `1px solid ${c}30`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 10 }}>
-                    <span style={{ width: 22, height: 22, borderRadius: 7, background: c }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
       {/* ───────────────── CLOSING CTA ───────────────── */}
-      <CTASection
-        title="Ready to put your operations on autopilot?"
-        subtitle="Start with a product trial or tell us about a custom build. Either way, the first conversation is free."
-        actions={<>
-          <Button href="#inquiry" variant="white" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
-          <Button to="/contact" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Talk to our team</Button>
-        </>}
-      />
+      <ClosingCTA />
     </main>
   )
 }

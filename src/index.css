@@ -638,3 +638,8 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   .aurora, .text-shimmer, .flow-line, .pulse-node { animation: none !important; }
 }
+
+/* Hide floating preview cards on mobile (avoid edge clipping) */
+@media (max-width: 768px) {
+  .hero-float-card { display: none !important; }
+}
