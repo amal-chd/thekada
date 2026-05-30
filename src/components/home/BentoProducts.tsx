@@ -104,7 +104,7 @@ export default function BentoProducts() {
             transition={{ duration: 0.55, delay: (idx % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
           >
             <SpotlightCard className="card-premium" style={{ height: '100%' }}>
-              <Link to={c.path} style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.5rem', textDecoration: 'none' }}>
+              <Link to={c.path} style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.5rem', textDecoration: 'none', position: 'relative', zIndex: 2 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                     <span style={{ width: 38, height: 38, borderRadius: 11, background: `${c.color}14`, border: `1px solid ${c.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -129,7 +129,7 @@ export default function BentoProducts() {
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       >
         <SpotlightCard className="card-premium" style={{ height: '100%' }}>
-          <Link to={lunoo.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', height: '100%', padding: '1.5rem 1.75rem', textDecoration: 'none', flexWrap: 'wrap' }}>
+          <Link to={lunoo.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', height: '100%', padding: '1.5rem 1.75rem', textDecoration: 'none', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ width: 48, height: 48, borderRadius: 13, background: `${lunoo.color}14`, border: `1px solid ${lunoo.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Sparkles size={22} color={lunoo.color} />
@@ -152,10 +152,14 @@ export default function BentoProducts() {
         initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Link to="/ecosystem" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', minHeight: 100, padding: '1.5rem 1.75rem', textDecoration: 'none', borderRadius: 'var(--radius-lg)', background: 'linear-gradient(150deg, #16294B, #0B1B33)', position: 'relative', overflow: 'hidden' }}>
-          <div className="glow-orb" style={{ top: '-40%', right: '-20%', width: 160, height: 160, background: 'rgba(94,144,250,0.4)' }} />
-          <div style={{ position: 'relative', fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.25 }}>Explore the full ecosystem</div>
-          <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem', fontWeight: 700, color: '#93B8FF', marginTop: '0.6rem' }}>6 connected products <ArrowUpRight size={14} /></div>
+        <Link to="/ecosystem" style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+          <SpotlightCard style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', minHeight: 100, padding: '1.5rem 1.75rem', borderRadius: 'var(--radius-lg)', background: 'linear-gradient(150deg, #16294B, #0B1B33)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div className="glow-orb" style={{ top: '-40%', right: '-20%', width: 160, height: 160, background: 'rgba(94,144,250,0.4)', zIndex: -1 }} />
+              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.25 }}>Explore the full ecosystem</div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem', fontWeight: 700, color: '#93B8FF', marginTop: '0.6rem' }}>6 connected products <ArrowUpRight size={14} /></div>
+            </div>
+          </SpotlightCard>
         </Link>
       </motion.div>
     </div>
