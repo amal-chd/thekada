@@ -18,12 +18,12 @@ const productItems = [
 ]
 
 const serviceItems = [
-  { label: 'Custom Web Apps', sub: 'React · Next.js · Node', path: '/services#web', Icon: Globe },
-  { label: 'Mobile Development', sub: 'iOS · Android · cross-platform', path: '/services#mobile', Icon: Smartphone },
-  { label: 'SaaS Engineering', sub: 'Multi-tenant platforms', path: '/services#saas', Icon: Rocket },
-  { label: 'Business Automation', sub: 'Replace manual workflows', path: '/services#automation', Icon: Workflow },
-  { label: 'UI/UX Design', sub: 'Research-backed product design', path: '/services#design', Icon: PenTool },
-  { label: 'Cloud & DevOps', sub: 'AWS · GCP · CI/CD', path: '/services#cloud', Icon: Cloud },
+  { label: 'Custom Web Apps', sub: 'React · Next.js · Node', path: '/services/web-development', Icon: Globe },
+  { label: 'Mobile Development', sub: 'iOS · Android · cross-platform', path: '/services/mobile-development', Icon: Smartphone },
+  { label: 'SaaS Engineering', sub: 'Multi-tenant platforms', path: '/services/saas-development', Icon: Rocket },
+  { label: 'Business Automation', sub: 'Replace manual workflows', path: '/services/business-automation', Icon: Workflow },
+  { label: 'UI/UX Design', sub: 'Research-backed product design', path: '/services/ui-ux-design', Icon: PenTool },
+  { label: 'Cloud & DevOps', sub: 'AWS · GCP · CI/CD', path: '/services/cloud-devops', Icon: Cloud },
 ]
 
 const companyCols = [
@@ -102,11 +102,6 @@ export default function Header() {
 
         {/* Right actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }} className="hidden-mobile">
-          <Link to="/contact" style={{ fontSize: '0.9rem', fontWeight: 550, color: '#334155', textDecoration: 'none' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#0B1B33')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#334155')}>
-            Contact
-          </Link>
           <Link to="/contact" style={{ textDecoration: 'none' }}>
             <button className="btn-primary btn-sm">Get Started <ArrowUpRight size={15} /></button>
           </Link>
@@ -169,7 +164,6 @@ export default function Header() {
             </MobileAccordion>
 
             <div style={{ height: 1, background: 'var(--border)', margin: '0.9rem 0' }} />
-            <Link to="/contact" style={{ padding: '0.6rem 0', fontSize: '1rem', fontWeight: 600, color: '#0B1B33', textDecoration: 'none' }}>Contact</Link>
             <Link to="/contact" style={{ textDecoration: 'none', marginTop: '0.5rem' }}>
               <button className="btn-primary" style={{ width: '100%' }}>Get Started <ArrowUpRight size={16} /></button>
             </Link>

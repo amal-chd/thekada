@@ -310,3 +310,17 @@ export const pressItems = [
   { outlet: 'Tech Chronicle India', headline: 'Dual-model tech companies are building the backbone of Indian regional commerce', date: 'April 2026' },
   { outlet: 'Inc42 Media', headline: 'Meet the team building SaaS products that are digitizing South Indian business operations', date: 'March 2026' },
 ]
+
+// App Store / Play Store links. Replace placeholder IDs with real listing URLs.
+// `default` is used on general pages (footer, home); per-product keys override on product pages.
+export type StoreLinks = { appStore: string; playStore: string }
+
+export const appLinks: Record<string, StoreLinks> = {
+  default: { appStore: 'https://apps.apple.com/app/the-kada/id000000000', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.app' },
+  'kada-dine': { appStore: 'https://apps.apple.com/app/kada-dine/id000000001', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.dine' },
+  'kada-stay': { appStore: 'https://apps.apple.com/app/kada-dine-hotel/id000000002', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.hotel' },
+  sellrapp: { appStore: 'https://apps.apple.com/app/sellrapp/id000000003', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.sellrapp' },
+  'kada-ledger': { appStore: 'https://apps.apple.com/app/kada-ledger/id000000004', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.ledger' },
+  devflow: { appStore: 'https://apps.apple.com/app/devflow/id000000005', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.devflow' },
+  lunoo: { appStore: 'https://apps.apple.com/app/lunoo/id000000006', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.lunoo' },
+}

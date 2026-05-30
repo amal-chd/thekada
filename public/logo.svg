@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="The Kada">
+  <defs>
+    <linearGradient id="kadaGrad" x1="256" y1="84" x2="256" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5C97D1"/>
+      <stop offset="1" stop-color="#2A6CAB"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#kadaGrad)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- hood / dome -->
+    <path d="M172 190 A86 86 0 0 1 340 190"/>
+    <!-- head (bump nesting under the dome's notch) -->
+    <path d="M216 252 A40 40 0 0 1 296 252"/>
+    <!-- left shoulder + arm sweeping out wide -->
+    <path d="M216 254 C168 264 120 270 116 322"/>
+    <!-- left hand: closed ring -->
+    <path d="M116 322 a26 26 0 1 0 42 10"/>
+    <!-- right shoulder + arm sweeping out wide -->
+    <path d="M296 254 C344 264 392 270 396 322"/>
+    <!-- right hand: scroll curl -->
+    <path d="M396 322 q42 4 32 48 q-11 30 -48 14"/>
+    <!-- wide shallow base / cradle -->
+    <path d="M120 380 C134 424 198 430 256 430 C314 430 378 424 392 380"/>
+  </g>
+</svg>

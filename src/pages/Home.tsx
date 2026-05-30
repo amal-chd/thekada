@@ -8,7 +8,8 @@ import {
 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
 import HeroDashboard from '../components/home/HeroDashboard'
-import { products, services, caseStudies, industries, devProcess, stats, techStack } from '../data/content'
+import AppDownload from '../components/shared/AppDownload'
+import { products, services, caseStudies, industries, devProcess, stats, techStack, appLinks } from '../data/content'
 
 const serviceIcons: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
   'web-dev': Globe, 'mobile-dev': Smartphone, 'saas-dev': Rocket, automation: Workflow,
@@ -134,7 +135,7 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }} className="grid-2">
           <Reveal>
             <div className="card" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div className="tag tag-blue" style={{ marginBottom: '1.25rem' }}><Boxes size={14} /> SaaS Products</div>
+              <div className="tag tag-blue" style={{ marginBottom: '1.25rem', alignSelf: 'flex-start' }}><Boxes size={14} /> SaaS Products</div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Ready-to-deploy platforms</h3>
               <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                 Six purpose-built products covering restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
@@ -152,7 +153,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.08}>
             <div className="card" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%', display: 'flex', flexDirection: 'column', background: 'linear-gradient(160deg, #0B1B33, #16294B)', border: 'none', color: '#CBD5E1' }}>
-              <div className="tag" style={{ marginBottom: '1.25rem', background: 'rgba(255,255,255,0.08)', color: '#93B8FF', border: '1px solid rgba(255,255,255,0.12)' }}><Code2 size={14} /> Custom Software</div>
+              <div className="tag" style={{ marginBottom: '1.25rem', background: 'rgba(255,255,255,0.08)', color: '#93B8FF', border: '1px solid rgba(255,255,255,0.12)', alignSelf: 'flex-start' }}><Code2 size={14} /> Custom Software</div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Built around your operations</h3>
               <p style={{ fontSize: '0.95rem', color: 'rgba(203,213,225,0.82)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                 When off-the-shelf won't cut it, we design, build, and maintain tailored web apps, mobile apps, SaaS platforms, and automation systems — end to end.
@@ -442,6 +443,33 @@ export default function Home() {
               </AnimatePresence>
             </div>
           ))}
+        </div>
+      </Section>
+
+      {/* ───────────────── APP DOWNLOAD BAND ───────────────── */}
+      <Section bg="soft" bordered>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 'clamp(1.5rem, 4vw, 3rem)', alignItems: 'center' }} className="grid-2">
+          <Reveal>
+            <div className="eyebrow" style={{ marginBottom: '1.1rem' }}>📱 Take it with you</div>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.14, color: 'var(--ink)', marginBottom: '0.85rem' }}>
+              Your business, in your pocket.
+            </h2>
+            <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 460, marginBottom: '1.75rem' }}>
+              Run billing, track orders, manage credit, and stay on top of operations from anywhere. Download our apps on iOS and Android.
+            </p>
+            <AppDownload appStore={appLinks.default.appStore} playStore={appLinks.default.playStore} />
+          </Reveal>
+          <Reveal delay={0.1} style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              {['#FF6B2B', '#7C6AF7', '#10B981'].map((c, i) => (
+                <div key={c} style={{ width: 64, height: 132, borderRadius: 16, background: '#fff', border: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', padding: 6, transform: `translateY(${i === 1 ? '-12px' : '0'}) rotate(${(i - 1) * 4}deg)` }}>
+                  <div style={{ width: '100%', height: '100%', borderRadius: 11, background: `linear-gradient(160deg, ${c}22, ${c}08)`, border: `1px solid ${c}30`, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 10 }}>
+                    <span style={{ width: 22, height: 22, borderRadius: 7, background: c }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </Section>
 

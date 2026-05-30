@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Mail, MapPin, Check } from 'lucide-react'
 import Logo from './Logo'
+import AppDownload from '../shared/AppDownload'
+import { appLinks } from '../../data/content'
 
 function SocialIcon({ name }: { name: 'linkedin' | 'x' | 'instagram' }) {
   const common = { width: 17, height: 17, viewBox: '0 0 24 24', 'aria-hidden': true as const }
@@ -22,12 +24,12 @@ const footerLinks: Record<string, { label: string; path: string }[]> = {
     { label: 'Lunoo', path: '/products/lunoo' },
   ],
   Services: [
-    { label: 'Web App Development', path: '/services#web' },
-    { label: 'Mobile App Development', path: '/services#mobile' },
-    { label: 'SaaS Engineering', path: '/services#saas' },
-    { label: 'Business Automation', path: '/services#automation' },
-    { label: 'UI/UX Design', path: '/services#design' },
-    { label: 'Cloud & DevOps', path: '/services#cloud' },
+    { label: 'Web App Development', path: '/services/web-development' },
+    { label: 'Mobile App Development', path: '/services/mobile-development' },
+    { label: 'SaaS Engineering', path: '/services/saas-development' },
+    { label: 'Business Automation', path: '/services/business-automation' },
+    { label: 'UI/UX Design', path: '/services/ui-ux-design' },
+    { label: 'All services', path: '/services' },
   ],
   Company: [
     { label: 'About Us', path: '/about' },
@@ -76,7 +78,7 @@ export default function Footer() {
               placeholder="you@company.com"
               style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: 260, boxShadow: 'var(--shadow-xs)' }}
             />
-            <button type="submit" className="btn-primary" style={{ padding: '0.8rem 1.5rem' }}>
+            <button type="submit" className="btn-blue-primary" style={{ padding: '0.8rem 1.5rem' }}>
               {subscribed ? <>Subscribed <Check size={15} /></> : <>Subscribe <ArrowRight size={15} /></>}
             </button>
           </form>
@@ -98,6 +100,11 @@ export default function Footer() {
                   <SocialIcon name={name} />
                 </a>
               ))}
+            </div>
+
+            <div style={{ marginTop: '1.75rem' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#475569', marginBottom: '0.75rem' }}>Get our apps</div>
+              <AppDownload appStore={appLinks.default.appStore} playStore={appLinks.default.playStore} size="sm" />
             </div>
           </div>
 

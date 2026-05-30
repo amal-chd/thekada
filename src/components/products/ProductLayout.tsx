@@ -4,6 +4,7 @@ import { ArrowUpRight, Check, ArrowRight } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../ui'
 import FAQ, { type FAQItem } from '../shared/FAQ'
 import AppPreview, { type PreviewConfig } from './AppPreview'
+import AppDownload from '../shared/AppDownload'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -30,6 +31,8 @@ export type ProductConfig = {
   faqSubtitle: string
   ctaTitle: string
   ctaSub: string
+  appStore?: string
+  playStore?: string
 }
 
 export default function ProductLayout({ config }: { config: ProductConfig }) {
@@ -56,6 +59,12 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
                 <Button to={config.primaryCta.to} href={config.primaryCta.href} accent={a} size="lg">{config.primaryCta.label} <ArrowUpRight size={17} /></Button>
                 <Button to={config.secondaryCta.to} variant="secondary" size="lg">{config.secondaryCta.label}</Button>
               </div>
+              {(config.appStore || config.playStore) && (
+                <div style={{ marginBottom: '2.5rem' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-secondary)', marginBottom: '0.7rem' }}>Available on iOS &amp; Android</div>
+                  <AppDownload appStore={config.appStore} playStore={config.playStore} size="sm" />
+                </div>
+              )}
               <div style={{ display: 'flex', gap: 'clamp(1.5rem, 4vw, 2.75rem)', flexWrap: 'wrap' }}>
                 {config.stats.map((s) => (
                   <div key={s.label}>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import {
   ArrowUpRight, ArrowRight, Check,
   Globe, Smartphone, Rocket, Workflow, Building2, Palette, Plug, Cloud, LineChart,
@@ -7,16 +8,16 @@ import {
 import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
 import { services, devProcess, techStack } from '../data/content'
 
-const serviceMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; anchor?: string }> = {
-  'web-dev': { Icon: Globe, anchor: 'web' },
-  'mobile-dev': { Icon: Smartphone, anchor: 'mobile' },
-  'saas-dev': { Icon: Rocket, anchor: 'saas' },
-  automation: { Icon: Workflow, anchor: 'automation' },
-  enterprise: { Icon: Building2 },
-  'ui-ux': { Icon: Palette, anchor: 'design' },
-  integrations: { Icon: Plug },
-  cloud: { Icon: Cloud, anchor: 'cloud' },
-  transformation: { Icon: LineChart },
+const serviceMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; slug: string }> = {
+  'web-dev': { Icon: Globe, slug: 'web-development' },
+  'mobile-dev': { Icon: Smartphone, slug: 'mobile-development' },
+  'saas-dev': { Icon: Rocket, slug: 'saas-development' },
+  automation: { Icon: Workflow, slug: 'business-automation' },
+  enterprise: { Icon: Building2, slug: 'enterprise-software' },
+  'ui-ux': { Icon: Palette, slug: 'ui-ux-design' },
+  integrations: { Icon: Plug, slug: 'api-integrations' },
+  cloud: { Icon: Cloud, slug: 'cloud-devops' },
+  transformation: { Icon: LineChart, slug: 'digital-transformation' },
 }
 
 const processIcons = [Search, PenTool, Code2, ShieldCheck, ServerCog]
@@ -63,16 +64,21 @@ export default function Services() {
         <SectionHeading eyebrow="Capabilities" title="End-to-end product engineering." subtitle="Whatever stage you're at — idea, prototype, or scaling product — we have the team to take it forward." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
           {services.map((s, i) => {
-            const meta = serviceMeta[s.id] || { Icon: Code2 }
+            const meta = serviceMeta[s.id] || { Icon: Code2, slug: '' }
             return (
               <Reveal key={s.id} delay={i * 0.04}>
-                <div id={meta.anchor} className="service-card" style={{ height: '100%', scrollMarginTop: '90px' }}>
-                  <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem' }}>
-                    <meta.Icon size={22} color="#2563EB" />
-                  </span>
-                  <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.description}</p>
-                </div>
+                <Link to={`/services/${meta.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                  <div className="service-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem' }}>
+                      <meta.Icon size={22} color="#2563EB" />
+                    </span>
+                    <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.1rem', flex: 1 }}>{s.description}</p>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.84rem', fontWeight: 700, color: '#2563EB', marginTop: 'auto' }}>
+                      Explore <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </Link>
               </Reveal>
             )
           })}

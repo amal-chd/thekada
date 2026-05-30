@@ -9,6 +9,7 @@ import Home from './pages/Home'
 const About = lazy(() => import('./pages/About'))
 const Ecosystem = lazy(() => import('./pages/Ecosystem'))
 const Services = lazy(() => import('./pages/Services'))
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Technology = lazy(() => import('./pages/Technology'))
 const Insights = lazy(() => import('./pages/Insights'))
 const Careers = lazy(() => import('./pages/Careers'))
@@ -37,8 +38,8 @@ function PageLoader() {
       <div style={{
         width: '40px', height: '40px',
         borderRadius: '50%',
-        border: '2px solid rgba(255,107,43,0.15)',
-        borderTopColor: '#FF6B2B',
+        border: '2px solid rgba(37,99,235,0.15)',
+        borderTopColor: '#2563EB',
         animation: 'spin 0.8s linear infinite',
       }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
@@ -93,6 +94,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/ecosystem" element={<Ecosystem />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/services/:slug" element={<ServiceDetail />} />
             <Route path="/technology" element={<Technology />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/careers" element={<Careers />} />

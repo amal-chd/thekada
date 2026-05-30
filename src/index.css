@@ -485,3 +485,156 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   PREMIUM ELEVATION LAYER
+   Aurora, animated gradients, depth, motion utilities
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --shadow-glow-blue: 0 0 0 1px rgba(37,99,235,0.06), 0 20px 50px -16px rgba(37,99,235,0.28);
+  --shadow-float: 0 24px 60px -20px rgba(11,27,51,0.22), 0 8px 20px -12px rgba(11,27,51,0.12);
+  --shadow-float-lg: 0 40px 90px -28px rgba(11,27,51,0.30), 0 12px 30px -16px rgba(11,27,51,0.14);
+  --grad-aurora: radial-gradient(60% 50% at 20% 20%, rgba(37,99,235,0.28), transparent 60%),
+                 radial-gradient(50% 45% at 80% 10%, rgba(124,106,247,0.26), transparent 60%),
+                 radial-gradient(55% 50% at 65% 80%, rgba(6,182,212,0.20), transparent 65%),
+                 radial-gradient(45% 45% at 15% 75%, rgba(16,185,129,0.16), transparent 65%);
+}
+
+/* ── Aurora animated background ── */
+.aurora {
+  position: absolute; inset: -20% -10% -10% -10%;
+  pointer-events: none; z-index: 0;
+  background: var(--grad-aurora);
+  filter: blur(60px) saturate(130%);
+  opacity: 0.9;
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+}
+.aurora-soft { opacity: 0.55; filter: blur(80px) saturate(120%); }
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(2%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-2%, 1%, 0) scale(1.04); }
+}
+
+/* mesh dots over aurora for tech texture */
+.mesh-dots {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(rgba(15,35,75,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* ── Animated gradient text (shimmering) ── */
+.text-shimmer {
+  background: linear-gradient(110deg, #2563EB 0%, #7C6AF7 25%, #06B6D4 50%, #2563EB 75%, #7C6AF7 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-pan 6s linear infinite;
+}
+@keyframes shimmer-pan { to { background-position: 220% center; } }
+
+/* ── Gradient border / spotlight cards ── */
+.card-premium {
+  position: relative; background: #FFFFFF; border-radius: var(--radius-lg);
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease);
+  overflow: hidden;
+}
+.card-premium::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: linear-gradient(140deg, rgba(37,99,235,0.5), rgba(124,106,247,0.35) 40%, transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.card-premium:hover { transform: translateY(-6px); box-shadow: var(--shadow-float-lg); }
+.card-premium:hover::before { opacity: 1; }
+
+/* spotlight that follows cursor (driven by --mx/--my vars) */
+.spotlight { position: relative; overflow: hidden; }
+.spotlight::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(37,99,235,0.10), transparent 60%);
+  opacity: 0; transition: opacity 0.35s var(--ease);
+}
+.spotlight:hover::after { opacity: 1; }
+
+/* ── Bento grid ── */
+.bento {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+}
+.bento > .b-2col { grid-column: span 2; }
+.bento > .b-3col { grid-column: span 3; }
+.bento > .b-4col { grid-column: span 4; }
+.bento > .b-2row { grid-row: span 2; }
+@media (max-width: 1000px) { .bento { grid-template-columns: repeat(2, 1fr); }
+  .bento > .b-2col, .bento > .b-3col, .bento > .b-4col { grid-column: span 1; } }
+@media (max-width: 600px) { .bento { grid-template-columns: 1fr; } .bento > * { grid-column: span 1 !important; } }
+
+/* ── Marquee logos (premium) ── */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* ── Animated connecting lines (ecosystem) ── */
+.flow-line { stroke-dasharray: 6 8; animation: flow-dash 1.4s linear infinite; }
+@keyframes flow-dash { to { stroke-dashoffset: -28; } }
+.pulse-node { animation: node-pulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes node-pulse { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+
+/* ── Magnetic / premium buttons ── */
+.btn-magnetic { transition: transform 0.25s var(--ease-out); will-change: transform; }
+
+.btn-glow {
+  position: relative;
+}
+.btn-glow::after {
+  content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1;
+  background: linear-gradient(120deg, #2563EB, #7C6AF7, #06B6D4);
+  filter: blur(14px); opacity: 0.45; transition: opacity 0.3s var(--ease);
+}
+.btn-glow:hover::after { opacity: 0.75; }
+
+/* ── Reveal-on-scroll (CSS fallback, JS toggles .in) ── */
+.reveal-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.reveal-up.in { opacity: 1; transform: none; }
+
+/* ── Sticky scroll story ── */
+.story-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+
+/* ── Big impact numbers ── */
+.metric-xl {
+  font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -0.04em;
+  line-height: 0.95; font-size: clamp(2.8rem, 8vw, 6rem);
+  background: linear-gradient(180deg, #0B1B33 0%, #2563EB 130%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.metric-xl-light {
+  background: linear-gradient(180deg, #FFFFFF 0%, #93B8FF 140%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ── Grain / noise overlay for depth ── */
+.grain::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ── Pill badge with dot ── */
+.live-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.85rem; border-radius: 100px;
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); box-shadow: var(--shadow-xs);
+  font-size: 0.78rem; font-weight: 600; color: var(--dark-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora, .text-shimmer, .flow-line, .pulse-node { animation: none !important; }
+}
