@@ -358,6 +358,15 @@ button { font-family: inherit; }
 }
 .process-step:hover { border-color: rgba(37, 99, 235, 0.3); box-shadow: var(--shadow-md); transform: translateY(-3px); }
 
+.process-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+}
+.process-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -12px rgba(11,27,51,0.1);
+  border-color: rgba(37,99,235,0.18);
+}
+
 /* ═══════════════════════════════════════
    FORMS
    ═══════════════════════════════════════ */
@@ -411,11 +420,16 @@ button { font-family: inherit; }
 .hr-soft { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); border: none; width: 100%; }
 
 .logo-strip-item {
+  display: flex; align-items: center; gap: 0.55rem;
   font-weight: 700; color: var(--text-muted); font-size: 0.95rem;
-  letter-spacing: -0.01em; opacity: 0.65; transition: opacity 0.2s var(--ease), color 0.2s var(--ease);
-  filter: grayscale(1);
+  letter-spacing: -0.015em; opacity: 0.6; transition: all 0.3s var(--ease);
+  filter: grayscale(1) opacity(0.65);
 }
-.logo-strip-item:hover { opacity: 1; color: var(--dark-muted); }
+.logo-strip-item:hover {
+  opacity: 1; color: var(--ink);
+  filter: grayscale(0) opacity(1);
+  transform: translateY(-1px) scale(1.05);
+}
 
 /* ═══════════════════════════════════════
    FAQ

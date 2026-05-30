@@ -5,8 +5,9 @@ import {
   Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2,
   Globe, Smartphone, Rocket, Building2, Palette, Plug, Cloud,
   Utensils, BedDouble, ShoppingBag, Truck, Wallet, Briefcase, Quote,
+  Flame, Search, PenTool, ServerCog,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter, SpotlightCard } from '../components/ui'
 import PremiumHero from '../components/home/PremiumHero'
 import EcosystemMap from '../components/home/EcosystemMap'
 import BentoProducts from '../components/home/BentoProducts'
@@ -44,6 +45,17 @@ const homeFaqs = [
   { q: 'Do you support businesses outside Kerala or India?', a: 'Absolutely. We are based in Kannur and serve clients across India and internationally — remote-first delivery, with support for GST, UPI, multi-currency, and region-specific workflows.' },
 ]
 
+const trustLogos = [
+  { name: 'Paragon Cafe', Icon: Utensils, color: '#FF6B2B' },
+  { name: 'Heritage Resorts', Icon: BedDouble, color: '#7C6AF7' },
+  { name: 'Maryam Group', Icon: Briefcase, color: '#F59E0B' },
+  { name: 'Deccan Spices', Icon: Flame, color: '#EF4444' },
+  { name: 'Lakshmi Textiles', Icon: Layers, color: '#10B981' },
+  { name: 'Sai Electronics', Icon: Plug, color: '#06B6D4' },
+  { name: 'Hotel Firdaus', Icon: BedDouble, color: '#6366F1' },
+  { name: 'Kerala Mart', Icon: ShoppingBag, color: '#EC4899' },
+]
+
 export default function Home() {
   const [activeTechCategory, setActiveTechCategory] = useState(techStack[0].category)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)
@@ -56,16 +68,19 @@ export default function Home() {
       <PremiumHero />
 
       {/* ───────────────── TRUST STRIP ───────────────── */}
-      <section style={{ background: '#FFFFFF', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2rem 0' }}>
+      <section style={{ background: '#FFFFFF', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2.2rem 0' }}>
         <Container>
-          <div style={{ textAlign: 'center', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94A3B8', marginBottom: '1.25rem' }}>
+          <div style={{ textAlign: 'center', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94A3B8', marginBottom: '1.5rem' }}>
             Powering operations for businesses across India
           </div>
           <div className="marquee-mask" style={{ overflow: 'hidden' }}>
-            <div className="marquee-track" style={{ gap: '3.5rem' }}>
+            <div className="marquee-track" style={{ gap: '4rem' }}>
               {[...Array(2)].flatMap((_, dup) =>
-                ['Paragon Cafe', 'Heritage Resorts', 'Maryam Group', 'Deccan Spices', 'Lakshmi Textiles', 'Sai Electronics', 'Hotel Firdaus', 'Kerala Mart'].map((n) => (
-                  <span key={`${dup}-${n}`} className="logo-strip-item" style={{ whiteSpace: 'nowrap' }}>{n}</span>
+                trustLogos.map((logo) => (
+                  <span key={`${dup}-${logo.name}`} className="logo-strip-item" style={{ whiteSpace: 'nowrap' }}>
+                    <logo.Icon size={16} color={logo.color} style={{ flexShrink: 0 }} />
+                    <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 750, letterSpacing: '-0.015em' }}>{logo.name}</span>
+                  </span>
                 ))
               )}
             </div>
@@ -268,16 +283,21 @@ export default function Home() {
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="How we work" title="A clear path from idea to impact." subtitle="A proven, transparent process for custom builds — with weekly demos so you're never in the dark." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '1.1rem' }}>
-          {devProcess.map((proc, i) => (
-            <Reveal key={proc.step} delay={i * 0.06}>
-              <div style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
-                <div style={{ position: 'absolute', top: 18, right: 18, fontSize: '2.4rem', fontWeight: 800, color: 'rgba(37,99,235,0.1)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
-                <div style={{ width: 38, height: 38, borderRadius: 11, background: 'var(--blue)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', marginBottom: '1.1rem', boxShadow: 'var(--shadow-brand)' }}>{proc.step}</div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem', letterSpacing: '-0.015em' }}>{proc.title}</h3>
-                <p style={{ fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{proc.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+          {devProcess.map((proc, i) => {
+            const StepIcon = [Search, PenTool, Code2, ShieldCheck, ServerCog][i] || Code2
+            return (
+              <Reveal key={proc.step} delay={i * 0.06}>
+                <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
+                  <div style={{ position: 'absolute', top: 18, right: 18, fontSize: '2.4rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+                    <StepIcon size={20} color="var(--blue)" />
+                  </div>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem', letterSpacing: '-0.015em' }}>{proc.title}</h3>
+                  <p style={{ fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{proc.desc}</p>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </Section>
 
@@ -360,7 +380,7 @@ export default function Home() {
       <Section bg="soft" id="inquiry" bordered containerSize="narrow">
         <SectionHeading eyebrow="Request a proposal" title="Tell us what you're trying to fix." subtitle="Describe the manual process you want to replace or the product you need built. We'll reply within 24 hours with a tailored plan." />
         <Reveal>
-          <div className="card-flat" style={{ padding: 'clamp(1.75rem, 4vw, 3rem)', boxShadow: 'var(--shadow-md)' }}>
+          <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.75rem, 4vw, 3rem)' }}>
             {formSubmitted ? (
               <div style={{ textAlign: 'center', padding: '2rem 0' }}>
                 <div style={{ width: 60, height: 60, borderRadius: '50%', background: '#E9FBF4', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
@@ -406,7 +426,7 @@ export default function Home() {
                 <Button type="submit" fullWidth size="lg">Send request <Send size={16} /></Button>
               </form>
             )}
-          </div>
+          </SpotlightCard>
         </Reveal>
       </Section>
 
