@@ -5,7 +5,7 @@ import {
   Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles,
   KeyRound, Database, RefreshCw, ShieldCheck, Code2,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 import { products } from '../data/content'
 
 const productIcons: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
@@ -56,9 +56,9 @@ export default function Ecosystem() {
             return (
               <Reveal key={p.id} delay={i * 0.05}>
                 <Link to={p.path} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-                  <div className="card" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+                  <SpotlightCard className="card-premium spotlight" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: p.color }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.1rem', position: 'relative', zIndex: 2 }}>
                       <span style={{ width: 50, height: 50, borderRadius: 14, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <Icon size={24} color={p.color} />
                       </span>
@@ -67,8 +67,8 @@ export default function Ecosystem() {
                         <div style={{ fontSize: '0.72rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{p.badge}</div>
                       </div>
                     </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{p.description}</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem', position: 'relative', zIndex: 2 }}>{p.description}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem', position: 'relative', zIndex: 2 }}>
                       {p.features.slice(0, 3).map((f) => (
                         <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                           <Check size={14} color={p.color} style={{ marginTop: 3, flexShrink: 0 }} />
@@ -76,10 +76,10 @@ export default function Ecosystem() {
                         </div>
                       ))}
                     </div>
-                    <span style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', fontWeight: 750, color: p.color }}>
+                    <span style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', fontWeight: 750, color: p.color, position: 'relative', zIndex: 2 }}>
                       Explore {p.shortName} <ArrowRight size={15} />
                     </span>
-                  </div>
+                  </SpotlightCard>
                 </Link>
               </Reveal>
             )

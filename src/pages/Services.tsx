@@ -5,7 +5,7 @@ import {
   Globe, Smartphone, Rocket, Workflow, Building2, Palette, Plug, Cloud, LineChart,
   Search, PenTool, Code2, ShieldCheck, ServerCog, Handshake, Users, Boxes,
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 import { services, devProcess, techStack } from '../data/content'
 
 const serviceMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; slug: string }> = {
@@ -93,8 +93,8 @@ export default function Services() {
             const Icon = processIcons[i] || Code2
             return (
               <Reveal key={proc.step} delay={i * 0.06}>
-                <div style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
-                  <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: 'rgba(37,99,235,0.1)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
+                <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
+                  <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
                   <span style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--blue-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><Icon size={21} color="#2563EB" /></span>
                   <h3 style={{ fontSize: '1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem', letterSpacing: '-0.015em' }}>{proc.title}</h3>
                   <p style={{ fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{proc.desc}</p>
@@ -111,19 +111,21 @@ export default function Services() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
           {engagements.map((e, i) => (
             <Reveal key={e.title} delay={i * 0.07}>
-              <div className="card" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem' }}><e.Icon size={22} color="#2563EB" /></span>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{e.title}</h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.4rem' }}>{e.desc}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: 'auto' }}>
-                  {e.points.map((p) => (
-                    <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-                      <Check size={15} color="#2563EB" style={{ flexShrink: 0 }} />
-                      <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 550 }}>{p}</span>
-                    </div>
-                  ))}
+              <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem', flexShrink: 0 }}><e.Icon size={22} color="#2563EB" /></span>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{e.title}</h3>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.4rem' }}>{e.desc}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: 'auto' }}>
+                    {e.points.map((p) => (
+                      <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                        <Check size={15} color="#2563EB" style={{ flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 550 }}>{p}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
