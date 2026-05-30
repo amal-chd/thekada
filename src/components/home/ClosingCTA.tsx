@@ -2,12 +2,10 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, Calendar } from 'lucide-react'
 import { Container, Aurora } from '../ui'
 import MagneticButton from '../ui/MagneticButton'
-import AppDownload from '../shared/AppDownload'
-import { appLinks } from '../../data/content'
 
 /**
  * Conversion-focused closing experience — a "final chapter" before the footer.
- * Big CTA, app downloads, and an oversized brand wordmark for visual closure.
+ * Big CTA and an oversized brand wordmark for visual closure.
  */
 export default function ClosingCTA() {
   return (
@@ -31,9 +29,6 @@ export default function ClosingCTA() {
             <MagneticButton href="#inquiry" className="btn-secondary btn-lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
               Request a proposal <ArrowUpRight size={17} />
             </MagneticButton>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <AppDownload appStore={appLinks.default.appStore} playStore={appLinks.default.playStore} theme="light" align="center" />
           </div>
         </motion.div>
       </Container>
