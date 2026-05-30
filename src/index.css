@@ -288,9 +288,13 @@ button { font-family: inherit; }
 .card {
   background: #FFFFFF; border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm); border: 1px solid var(--border);
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--border-hover); }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px rgba(11,27,51,0.12);
+  border-color: rgba(37,99,235,0.18);
+}
 
 .card-flat {
   background: #FFFFFF; border-radius: var(--radius-lg);
@@ -323,7 +327,11 @@ button { font-family: inherit; }
   transition: all 0.3s var(--ease); position: relative; overflow: hidden;
   box-shadow: var(--shadow-xs);
 }
-.service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(37, 99, 235, 0.25); }
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -10px rgba(11,27,51,0.14);
+  border-color: rgba(37,99,235,0.2);
+}
 .service-card::after {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--blue), #5E90FA);
@@ -334,9 +342,14 @@ button { font-family: inherit; }
 .review-card {
   padding: 2rem; background: #FFFFFF; border-radius: var(--radius-lg);
   border: 1px solid var(--border); box-shadow: var(--shadow-xs);
-  transition: all 0.3s var(--ease);
+  border-left: 3px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.review-card:hover { transform: translateY(-3px); border-color: rgba(37, 99, 235, 0.18); box-shadow: var(--shadow-md); }
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -6px rgba(11,27,51,0.1);
+  border-left-color: #2563EB;
+}
 
 .process-step {
   display: flex; gap: 1.25rem; padding: 1.75rem;
@@ -417,6 +430,10 @@ button { font-family: inherit; }
   gap: 1rem; padding: 1.25rem 1.5rem; background: none; border: none; cursor: pointer;
   text-align: left; font-size: 1rem; font-weight: 650; color: var(--ink);
   font-family: 'Outfit', 'Inter', sans-serif;
+  transition: background 0.2s ease;
+}
+.faq-trigger:hover {
+  background: var(--bg-soft);
 }
 .faq-content { padding: 0 1.5rem 1.25rem; color: var(--text-secondary); line-height: 1.7; font-size: 0.925rem; }
 
@@ -629,10 +646,16 @@ html.lenis, html.lenis body { height: auto; }
 /* ── Pill badge with dot ── */
 .live-pill {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.4rem 0.85rem; border-radius: 100px;
-  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); box-shadow: var(--shadow-xs);
-  font-size: 0.78rem; font-weight: 600; color: var(--dark-muted);
+  padding: 0.45rem 1rem 0.45rem 0.85rem; border-radius: 100px;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em;
+  background: rgba(37,99,235,0.06); color: #2563EB;
+  border: 1px solid rgba(37,99,235,0.14);
+  box-shadow: 0 0 0 0 rgba(37,99,235,0.08);
+  animation: live-pulse 3s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.08); }
+  50% { box-shadow: 0 0 0 6px rgba(37,99,235,0.04); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -642,4 +665,26 @@ html.lenis, html.lenis body { height: auto; }
 /* Hide floating preview cards on mobile (avoid edge clipping) */
 @media (max-width: 768px) {
   .hero-float-card { display: none !important; }
+}
+
+/* ═══════════════════════════════════════
+   FOCUS-VISIBLE ACCESSIBILITY
+   ═══════════════════════════════════════ */
+:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════
+   GRADIENT DIVIDER UTILITY
+   ═══════════════════════════════════════ */
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(37,99,235,0.15) 20%, rgba(37,99,235,0.15) 80%, transparent);
+  border: none;
 }

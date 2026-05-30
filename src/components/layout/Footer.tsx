@@ -56,7 +56,8 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false)
 
   return (
-    <footer style={{ background: '#F8FAFC', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+    <footer style={{ background: '#F8FAFC', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ height: 2, background: 'linear-gradient(90deg, transparent, #2563EB 30%, #7C6AF7 50%, #06B6D4 70%, transparent)' }} />
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4.5rem clamp(1.25rem, 4vw, 2.5rem) 2.5rem', position: 'relative', zIndex: 1 }}>
 
         {/* Newsletter band */}
@@ -76,7 +77,9 @@ export default function Footer() {
             <input
               type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: 260, boxShadow: 'var(--shadow-xs)' }}
+              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: 260, boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.2s ease' }}
+              onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = '#2563EB' }}
+              onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)' }}
             />
             <button type="submit" className="btn-blue-primary" style={{ padding: '0.8rem 1.5rem' }}>
               {subscribed ? <>Subscribed <Check size={15} /></> : <>Subscribe <ArrowRight size={15} /></>}
@@ -94,8 +97,8 @@ export default function Footer() {
             <div style={{ display: 'flex', gap: '0.6rem' }}>
               {socials.map(({ name, label, path }) => (
                 <a key={label} href={path} target="_blank" rel="noopener noreferrer" aria-label={label}
-                  style={{ width: 38, height: 38, borderRadius: '50%', background: '#FFFFFF', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B', boxShadow: 'var(--shadow-xs)', transition: 'all 0.22s ease' }}
-                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = '#2563EB'; el.style.color = '#fff'; el.style.borderColor = '#2563EB'; el.style.transform = 'translateY(-2px)' }}
+                  style={{ width: 38, height: 38, borderRadius: '50%', background: '#FFFFFF', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B', boxShadow: 'var(--shadow-xs)', transition: 'all 0.2s ease' }}
+                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = '#2563EB'; el.style.color = '#fff'; el.style.borderColor = '#2563EB'; el.style.transform = 'translateY(-2px) scale(1.1)' }}
                   onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = '#fff'; el.style.color = '#64748B'; el.style.borderColor = 'var(--border)'; el.style.transform = 'none' }}>
                   <SocialIcon name={name} />
                 </a>
@@ -134,7 +137,7 @@ export default function Footer() {
         <div style={{ height: 1, background: 'var(--border)', margin: '1.5rem 0' }} />
 
         {/* Bottom meta */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.8rem', color: '#94A3B8' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.25rem', fontSize: '0.78rem', color: '#94A3B8', letterSpacing: '0.01em' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <span>© {new Date().getFullYear()} The Kada Digital Ventures Pvt Ltd. All rights reserved.</span>
             <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
