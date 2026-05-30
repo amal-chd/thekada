@@ -177,40 +177,44 @@ export default function Home() {
         />
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }} className="grid-2">
           <Reveal>
-            <div className="card" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div className="tag tag-blue" style={{ marginBottom: '1.25rem', alignSelf: 'flex-start' }}><Boxes size={14} /> SaaS Products</div>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Ready-to-deploy platforms</h3>
-              <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
-                Six purpose-built products covering restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.75rem' }}>
-                {products.map((p) => (
-                  <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 600 }}>{p.shortName}</span>
-                  </div>
-                ))}
+            <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                <div className="tag tag-blue" style={{ marginBottom: '1.25rem', alignSelf: 'flex-start' }}><Boxes size={14} /> SaaS Products</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Ready-to-deploy platforms</h3>
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
+                  Six purpose-built products covering restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.75rem' }}>
+                  {products.map((p) => (
+                    <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, flexShrink: 0 }} />
+                      <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 600 }}>{p.shortName}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 'auto' }}><Button to="/ecosystem" variant="secondary">Browse the product range <ArrowRight size={16} /></Button></div>
               </div>
-              <div style={{ marginTop: 'auto' }}><Button to="/ecosystem" variant="secondary">Browse the product range <ArrowRight size={16} /></Button></div>
-            </div>
+            </SpotlightCard>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="card" style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%', display: 'flex', flexDirection: 'column', background: 'linear-gradient(160deg, #0B1B33, #16294B)', border: 'none', color: '#CBD5E1' }}>
-              <div className="tag" style={{ marginBottom: '1.25rem', background: 'rgba(255,255,255,0.08)', color: '#93B8FF', border: '1px solid rgba(255,255,255,0.12)', alignSelf: 'flex-start' }}><Code2 size={14} /> Custom Software</div>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Built around your operations</h3>
-              <p style={{ fontSize: '0.95rem', color: 'rgba(203,213,225,0.82)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
-                When off-the-shelf won't cut it, we design, build, and maintain tailored web apps, mobile apps, SaaS platforms, and automation systems — end to end.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.75rem' }}>
-                {['Discovery & solution architecture', 'Design, build & weekly demos', 'Launch, support & ongoing scaling'].map((t) => (
-                  <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <CheckCircle2 size={17} color="#5E90FA" style={{ flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.88rem', color: 'rgba(226,232,240,0.92)', fontWeight: 500 }}>{t}</span>
-                  </div>
-                ))}
+            <SpotlightCard style={{ padding: 'clamp(1.75rem, 3vw, 2.5rem)', height: '100%', background: 'linear-gradient(160deg, #0B1B33, #16294B)', border: 'none', borderRadius: 24, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', color: '#CBD5E1', position: 'relative', zIndex: 2 }}>
+                <div className="tag" style={{ marginBottom: '1.25rem', background: 'rgba(255,255,255,0.08)', color: '#93B8FF', border: '1px solid rgba(255,255,255,0.12)', alignSelf: 'flex-start' }}><Code2 size={14} /> Custom Software</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Built around your operations</h3>
+                <p style={{ fontSize: '0.95rem', color: 'rgba(203,213,225,0.82)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
+                  When off-the-shelf won't cut it, we design, build, and maintain tailored web apps, mobile apps, SaaS platforms, and automation systems — end to end.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.75rem' }}>
+                  {['Discovery & solution architecture', 'Design, build & weekly demos', 'Launch, support & ongoing scaling'].map((t) => (
+                    <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                      <CheckCircle2 size={17} color="#5E90FA" style={{ flexShrink: 0 }} />
+                      <span style={{ fontSize: '0.88rem', color: 'rgba(226,232,240,0.92)', fontWeight: 500 }}>{t}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 'auto' }}><Button href="#inquiry" variant="white">Request a proposal <ArrowRight size={16} /></Button></div>
               </div>
-              <div style={{ marginTop: 'auto' }}><Button href="#inquiry" variant="white">Request a proposal <ArrowRight size={16} /></Button></div>
-            </div>
+            </SpotlightCard>
           </Reveal>
         </div>
       </Section>
@@ -242,13 +246,15 @@ export default function Home() {
             const Icon = serviceIcons[s.id] || Code2
             return (
               <Reveal key={s.id} delay={i * 0.04}>
-                <div className="service-card" style={{ height: '100%' }}>
-                  <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}>
-                    <Icon size={21} color="#2563EB" />
-                  </span>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.description}</p>
-                </div>
+                <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}>
+                      <Icon size={21} color="#2563EB" />
+                    </span>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.description}</p>
+                  </div>
+                </SpotlightCard>
               </Reveal>
             )
           })}
@@ -266,13 +272,15 @@ export default function Home() {
             const meta = industryMeta[ind.name] || { Icon: Building2, color: '#2563EB' }
             return (
               <Reveal key={ind.name} delay={i * 0.05}>
-                <div className="card" style={{ padding: '1.85rem', height: '100%' }}>
-                  <span style={{ width: 52, height: 52, borderRadius: 14, background: `${meta.color}12`, border: `1px solid ${meta.color}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}>
-                    <meta.Icon size={24} color={meta.color} />
-                  </span>
-                  <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem' }}>{ind.name}</h3>
-                  <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{ind.desc}</p>
-                </div>
+                <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <span style={{ width: 52, height: 52, borderRadius: 14, background: `${meta.color}12`, border: `1px solid ${meta.color}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}>
+                      <meta.Icon size={24} color={meta.color} />
+                    </span>
+                    <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem' }}>{ind.name}</h3>
+                    <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{ind.desc}</p>
+                  </div>
+                </SpotlightCard>
               </Reveal>
             )
           })}
@@ -307,14 +315,16 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
           {caseStudies.map((cs, i) => (
             <Reveal key={cs.client} delay={i * 0.06}>
-              <div className="card" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <span style={{ alignSelf: 'flex-start', fontSize: '1.4rem', fontWeight: 800, color: '#10B981', background: '#E9FBF4', padding: '0.3rem 0.85rem', borderRadius: 100, letterSpacing: '-0.02em', marginBottom: '1.25rem' }}>{cs.metric}</span>
-                <p style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{cs.description}</p>
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 750, color: 'var(--ink)' }}>{cs.client}</div>
-                  <div style={{ fontSize: '0.76rem', color: '#64748B', fontWeight: 600, marginTop: '0.1rem' }}>{cs.product}</div>
+              <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                  <span style={{ alignSelf: 'flex-start', fontSize: '1.4rem', fontWeight: 800, color: '#10B981', background: '#E9FBF4', padding: '0.3rem 0.85rem', borderRadius: 100, letterSpacing: '-0.02em', marginBottom: '1.25rem' }}>{cs.metric}</span>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{cs.description}</p>
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                    <div style={{ fontSize: '0.9rem', fontWeight: 750, color: 'var(--ink)' }}>{cs.client}</div>
+                    <div style={{ fontSize: '0.76rem', color: '#64748B', fontWeight: 600, marginTop: '0.1rem' }}>{cs.product}</div>
+                  </div>
                 </div>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -360,8 +370,8 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 20, padding: '1.75rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <SpotlightCard style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 20, padding: '1.75rem', border: '1px solid rgba(255,255,255,0.1)', height: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', position: 'relative', zIndex: 2 }}>
               {(techStack.find((s) => s.category === activeTechCategory)?.items || []).map((item) => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.05)', padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)' }}>
                   <CheckCircle2 size={16} color="#5E90FA" style={{ flexShrink: 0 }} />
@@ -369,7 +379,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
+          </SpotlightCard>
         </div>
       </Section>
 
