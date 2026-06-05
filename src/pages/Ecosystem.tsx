@@ -41,7 +41,7 @@ export default function Ecosystem() {
               A purpose-built tool for every part of the business — restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity. Built in-house, designed to work together.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Button to="/contact" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
+              <Button to="/request-proposal" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
               <Button href="#products" variant="secondary" size="lg">Browse products</Button>
             </div>
           </motion.div>
@@ -119,7 +119,7 @@ export default function Ecosystem() {
             </div>
             <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               <Button to="/services" variant="white" style={{ background: '#fff', color: '#2563EB' }}>Explore services <ArrowRight size={16} /></Button>
-              <Button to="/contact" variant="secondary" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Request a proposal</Button>
+              <Button to="/request-proposal" variant="secondary" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Request a proposal</Button>
             </div>
           </div>
         </Reveal>

@@ -63,7 +63,7 @@ export default function PremiumHero() {
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-              <MagneticButton href="#inquiry" glow className="btn-primary btn-lg">
+              <MagneticButton to="/request-proposal" glow className="btn-primary btn-lg">
                 Request a proposal <ArrowUpRight size={17} />
               </MagneticButton>
               <MagneticButton href="#ecosystem" className="btn-secondary btn-lg">

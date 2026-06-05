@@ -26,7 +26,7 @@ export default function ClosingCTA() {
             <MagneticButton to="/contact" glow className="btn-primary btn-lg btn-white" style={{ background: '#fff', color: '#2563EB' }}>
               Book a demo <Calendar size={17} />
             </MagneticButton>
-            <MagneticButton href="#inquiry" className="btn-secondary btn-lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
+            <MagneticButton to="/request-proposal" className="btn-secondary btn-lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
               Request a proposal <ArrowUpRight size={17} />
             </MagneticButton>
           </div>

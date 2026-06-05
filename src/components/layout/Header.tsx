@@ -235,7 +235,7 @@ function ServicesPanel() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.1rem' }}>
         {serviceItems.map((s) => <MenuItem key={s.path} to={s.path} label={s.label} sub={s.sub} Icon={s.Icon} />)}
       </div>
-      <Link to="/contact" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1.25rem', borderRadius: '14px', textDecoration: 'none', background: 'linear-gradient(155deg, #16294B, #0B1B33)', color: '#fff', overflow: 'hidden', position: 'relative' }}>
+      <Link to="/request-proposal" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1.25rem', borderRadius: '14px', textDecoration: 'none', background: 'linear-gradient(155deg, #16294B, #0B1B33)', color: '#fff', overflow: 'hidden', position: 'relative' }}>
         <div className="glow-orb" style={{ top: '-30%', right: '-20%', width: 160, height: 160, background: 'rgba(94,144,250,0.4)' }} />
         <div style={{ position: 'relative' }}>
           <Rocket size={20} color="#93B8FF" />

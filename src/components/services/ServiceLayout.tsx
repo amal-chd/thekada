@@ -57,7 +57,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
               </h1>
               <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem' }}>{config.subtitle}</p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Button to="/contact" accent={a} size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
+                <Button to="/request-proposal" accent={a} size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
                 <Button to="/services" variant="secondary" size="lg">All services</Button>
               </div>
             </motion.div>
@@ -188,7 +188,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
         subtitle={config.ctaSub}
         accent={a}
         actions={<>
-          <Button to="/contact" variant="white" size="lg" style={{ background: '#fff', color: a }}>Request a proposal <ArrowUpRight size={17} /></Button>
+          <Button to="/request-proposal" variant="white" size="lg" style={{ background: '#fff', color: a }}>Request a proposal <ArrowUpRight size={17} /></Button>
           <Button to="/services" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Explore all services</Button>
         </>}
       />

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ArrowRight, ChevronDown, Send, CheckCircle2,
+  ArrowRight, ChevronDown, CheckCircle2,
   Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2, Building2,
   Plug,
   Utensils, BedDouble, ShoppingBag, Truck, Wallet, Briefcase, Quote,
@@ -56,8 +56,6 @@ const trustLogos = [
 export default function Home() {
   const [activeTechCategory, setActiveTechCategory] = useState(techStack[0].category)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)
-  const [formState, setFormState] = useState({ name: '', email: '', phone: '', interest: 'custom-dev', budget: 'mid', message: '' })
-  const [formSubmitted, setFormSubmitted] = useState(false)
 
   return (
     <main style={{ overflowX: 'clip' }}>
@@ -209,7 +207,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <div style={{ marginTop: 'auto' }}><Button href="#inquiry" variant="white">Request a proposal <ArrowRight size={16} /></Button></div>
+                <div style={{ marginTop: 'auto' }}><Button to="/request-proposal" variant="white">Request a proposal <ArrowRight size={16} /></Button></div>
               </div>
             </SpotlightCard>
           </Reveal>
@@ -359,60 +357,6 @@ export default function Home() {
       {/* ───────────────── AI SECTION ───────────────── */}
       <AISection />
 
-      {/* ───────────────── LEAD FORM ───────────────── */}
-      <Section bg="soft" id="inquiry" bordered containerSize="narrow">
-        <SectionHeading eyebrow="Request a proposal" title="Tell us what you're trying to fix." subtitle="Describe the manual process you want to replace or the product you need built. We'll reply within 24 hours with a tailored plan." />
-        <Reveal>
-          <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.75rem, 4vw, 3rem)' }}>
-            {formSubmitted ? (
-              <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-                <div style={{ width: 60, height: 60, borderRadius: '50%', background: '#E9FBF4', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                  <CheckCircle2 size={32} color="#10B981" />
-                </div>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem' }}>Thank you — we've got it.</h3>
-                <p style={{ color: 'var(--text-secondary)', maxWidth: 400, margin: '0 auto 1.75rem' }}>A technical lead at The Kada will review your scope and reach out within 24 hours.</p>
-                <Button variant="secondary" onClick={() => setFormSubmitted(false)}>Submit another</Button>
-              </div>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setFormSubmitted(true) }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="grid-2">
-                  <Field label="Full name"><input className="form-input" required placeholder="Jane Doe" value={formState.name} onChange={(e) => setFormState({ ...formState, name: e.target.value })} /></Field>
-                  <Field label="Work email"><input className="form-input" type="email" required placeholder="jane@company.com" value={formState.email} onChange={(e) => setFormState({ ...formState, email: e.target.value })} /></Field>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }} className="grid-2">
-                  <Field label="Phone (optional)"><input className="form-input" type="tel" placeholder="+91 98765 43210" value={formState.phone} onChange={(e) => setFormState({ ...formState, phone: e.target.value })} /></Field>
-                  <Field label="I'm interested in">
-                    <select className="form-select" value={formState.interest} onChange={(e) => setFormState({ ...formState, interest: e.target.value })}>
-                      <option value="custom-dev">Custom software development</option>
-                      <option value="kada-dine">Kada Dine (restaurants)</option>
-                      <option value="kada-stay">Kada Stay (hotels)</option>
-                      <option value="sellrapp">SellrApp (storefronts)</option>
-                      <option value="kada-ledger">Kada Ledger (khata/invoicing)</option>
-                      <option value="devflow">DevFlow (agencies)</option>
-                      <option value="other">Something else</option>
-                    </select>
-                  </Field>
-                </div>
-                <Field label="Project budget">
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem' }}>
-                    {[{ id: 'low', label: 'Under ₹2L' }, { id: 'mid', label: '₹2L – ₹10L' }, { id: 'high', label: '₹10L+' }].map((b) => (
-                      <button key={b.id} type="button" onClick={() => setFormState({ ...formState, budget: b.id })}
-                        style={{ padding: '0.75rem', borderRadius: 12, fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', border: '1px solid', borderColor: formState.budget === b.id ? '#2563EB' : 'var(--border)', background: formState.budget === b.id ? 'var(--blue-light)' : '#fff', color: formState.budget === b.id ? '#2563EB' : 'var(--dark-muted)', transition: 'all 0.15s ease' }}>
-                        {b.label}
-                      </button>
-                    ))}
-                  </div>
-                </Field>
-                <Field label="Tell us about your project">
-                  <textarea className="form-textarea" rows={4} required placeholder="What manual process do you want to replace, or what would you like built?" value={formState.message} onChange={(e) => setFormState({ ...formState, message: e.target.value })} />
-                </Field>
-                <Button type="submit" fullWidth size="lg">Send request <Send size={16} /></Button>
-              </form>
-            )}
-          </SpotlightCard>
-        </Reveal>
-      </Section>
-
       {/* ───────────────── FAQ ───────────────── */}
       <Section bg="white" containerSize="narrow">
         <SectionHeading eyebrow="FAQ" title="Questions, answered." />
@@ -438,14 +382,5 @@ export default function Home() {
       {/* ───────────────── CLOSING CTA ───────────────── */}
       <ClosingCTA />
     </main>
-  )
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label style={{ fontSize: '0.74rem', fontWeight: 750, color: 'var(--dark-muted)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</label>
-      {children}
-    </div>
   )
 }

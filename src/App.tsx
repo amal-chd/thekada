@@ -23,6 +23,7 @@ const SellrApp = lazy(() => import('./pages/products/SellrApp'))
 const DevFlow = lazy(() => import('./pages/products/DevFlow'))
 const Lunoo = lazy(() => import('./pages/products/Lunoo'))
 const Press = lazy(() => import('./pages/Press'))
+const Proposal = lazy(() => import('./pages/Proposal'))
 const Legal = lazy(() => import('./pages/Legal'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -93,6 +94,7 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/request-proposal" element={<Proposal />} />
             <Route path="/about" element={<About />} />
             <Route path="/ecosystem" element={<Ecosystem />} />
             <Route path="/services" element={<Services />} />

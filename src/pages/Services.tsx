@@ -52,7 +52,7 @@ export default function Services() {
               From custom web and mobile apps to SaaS platforms and business automation — a senior studio that designs, builds, and maintains technology tailored to how you operate.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Button to="/contact" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
+              <Button to="/request-proposal" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
               <Button href="#process" variant="secondary" size="lg">How we work</Button>
             </div>
           </motion.div>
@@ -171,7 +171,7 @@ export default function Services() {
         title="Have a project in mind?"
         subtitle="Tell us what you're trying to build or fix. We'll come back within 24 hours with a tailored plan and estimate."
         actions={<>
-          <Button to="/contact" variant="white" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
+          <Button to="/request-proposal" variant="white" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>
           <Button to="/ecosystem" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Explore our products <ArrowRight size={16} /></Button>
         </>}
       />
