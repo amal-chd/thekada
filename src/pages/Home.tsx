@@ -124,7 +124,7 @@ export default function Home() {
               Numbers that move businesses.
             </h2>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
             {[
               { value: '₹50Cr+', label: 'Revenue enabled' },
               { value: '500K+', label: 'Transactions processed' },
@@ -147,7 +147,7 @@ export default function Home() {
           title="Practical technology that earns its keep."
           subtitle="We don't build software for its own sake. Every product and every line of custom code exists to remove friction, save time, and move a real business metric."
         />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.07}>
               <div className="card-feature" style={{ height: '100%' }}>

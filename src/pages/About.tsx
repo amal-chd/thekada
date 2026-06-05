@@ -111,7 +111,7 @@ export default function About() {
         <div style={{ position: 'relative' }}>
           {timeline.map((event, i) => (
             <Reveal key={`${event.year}-${event.title}`} delay={i * 0.05}>
-              <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '1.5rem', paddingBottom: '1.75rem', paddingTop: '1.25rem', borderBottom: i === timeline.length - 1 ? 'none' : '1px solid var(--border)' }}>
+              <div className="timeline-row" style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '1.5rem', paddingBottom: '1.75rem', paddingTop: '1.25rem', borderBottom: i === timeline.length - 1 ? 'none' : '1px solid var(--border)' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', paddingTop: '0.15rem' }}>
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--blue)', flexShrink: 0, marginTop: 6 }} />
                   <span style={{ fontSize: '0.82rem', fontWeight: 750, color: 'var(--blue)', whiteSpace: 'nowrap' }}>{event.year}</span>

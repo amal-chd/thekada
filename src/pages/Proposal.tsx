@@ -71,7 +71,7 @@ export default function Proposal() {
                         </Field>
                       </div>
                       <Field label="Project budget">
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.6rem' }} className="budget-grid">
                           {[{ id: 'low', label: 'Under ₹2L' }, { id: 'mid', label: '₹2L – ₹10L' }, { id: 'high', label: '₹10L+' }].map((b) => (
                             <button key={b.id} type="button" onClick={() => setFormState({ ...formState, budget: b.id })}
                               style={{ padding: '0.75rem', borderRadius: 12, fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', border: '1px solid', borderColor: formState.budget === b.id ? '#2563EB' : 'var(--border)', background: formState.budget === b.id ? 'var(--blue-light)' : '#fff', color: formState.budget === b.id ? '#2563EB' : 'var(--dark-muted)', transition: 'all 0.15s ease' }}>

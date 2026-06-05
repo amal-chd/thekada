@@ -599,6 +599,16 @@ button { font-family: inherit; }
     width: 17px !important;
     height: 17px !important;
   }
+  .budget-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  .timeline-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.4rem !important;
+    padding-bottom: 1.25rem !important;
+    padding-top: 1rem !important;
+  }
 }
 
 @media (min-width: 641px) {

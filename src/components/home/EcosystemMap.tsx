@@ -37,7 +37,7 @@ export default function EcosystemMap() {
   const [active, setActive] = useState<string | null>(null)
 
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: SIZE, margin: '0 auto', aspectRatio: '1' }}>
+    <div style={{ position: 'relative', width: '100%', maxWidth: SIZE, margin: '0 auto', aspectRatio: '1', marginBottom: 'clamp(2.5rem, 8vw, 4rem)' }}>
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`} style={{ width: '100%', height: '100%', overflow: 'visible' }}>
         <defs>
           <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">

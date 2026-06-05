@@ -89,7 +89,7 @@ export default function Services() {
       {/* PROCESS */}
       <Section bg="soft" bordered id="process">
         <SectionHeading eyebrow="How we work" title="A transparent path from idea to impact." subtitle="Agile delivery with a working demo every week — you always know exactly where your project stands." />
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 grid-responsive-2col">
           {devProcess.map((proc, i) => {
             const Icon = processIcons[i] || Code2
             const isLast = i === devProcess.length - 1
