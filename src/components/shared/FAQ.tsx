@@ -49,13 +49,6 @@ export default function FAQ({ items, accentColor = '#2563EB', title = 'Frequentl
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .faq-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .faq-grid > div:first-child { position: static !important; }
-        }
-      `}</style>
     </section>
   )
 }

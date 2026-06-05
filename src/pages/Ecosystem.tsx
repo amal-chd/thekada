@@ -27,7 +27,7 @@ const connections = [
 
 export default function Ecosystem() {
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       {/* HERO */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
@@ -55,7 +55,7 @@ export default function Ecosystem() {
           {products.map((p, i) => {
             const Icon = productIcons[p.id] || Sparkles
             return (
-              <Reveal key={p.id} delay={i * 0.05} className={p.id === 'the-kada' || p.id === 'kada-dine-restaurant' || p.id === 'lunoo' ? 'col-span-2-mobile' : ''}>
+              <Reveal key={p.id} delay={i * 0.05} className={(products.length % 2 !== 0 && i === products.length - 1) ? 'col-span-2-mobile' : ''}>
                 <Link to={p.path} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                   <SpotlightCard className="card-premium spotlight" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: p.color }} />

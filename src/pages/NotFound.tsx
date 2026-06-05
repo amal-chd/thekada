@@ -19,7 +19,7 @@ export default function NotFound() {
 
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '6rem clamp(1.25rem, 4vw, 3rem)', position: 'relative', textAlign: 'center', zIndex: 1 }}>
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
-          <div style={{ fontSize: 'clamp(7rem, 20vw, 15rem)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.85, marginBottom: '1.25rem', fontFamily: "'Outfit', sans-serif", background: 'linear-gradient(135deg, #2563EB 0%, #5E90FA 60%, rgba(94,144,250,0.15) 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <div style={{ fontSize: 'clamp(4rem, 20vw, 15rem)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.85, marginBottom: '1.25rem', fontFamily: "'Outfit', sans-serif", background: 'linear-gradient(135deg, #2563EB 0%, #5E90FA 60%, rgba(94,144,250,0.15) 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             404
           </div>
         </motion.div>

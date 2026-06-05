@@ -22,7 +22,7 @@ const perks = [
 
 export default function Careers() {
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
         <div className="glow-orb" style={{ top: '-12%', right: '6%', width: 460, height: 440, background: 'rgba(37,99,235,0.14)' }} />
@@ -87,8 +87,6 @@ export default function Careers() {
         subtitle="We’re always glad to meet sharp people. Tell us what you’d love to build and why The Kada Digital Ventures."
         actions={<Button to="/contact" variant="white" size="lg">Introduce yourself <ArrowUpRight size={17} /></Button>}
       />
-
-      <style>{`@media (max-width: 640px){ .career-card{ grid-template-columns:1fr !important; gap:1rem !important; } }`}</style>
     </main>
   )
 }

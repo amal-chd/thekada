@@ -15,7 +15,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
 
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       {/* HERO */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9rem) 0 clamp(2.5rem, 5vw, 3.5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />

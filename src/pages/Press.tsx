@@ -22,7 +22,7 @@ const brandAssets = [
 
 export default function Press() {
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
         <div className="glow-orb" style={{ top: '-12%', right: '6%', width: 460, height: 440, background: 'rgba(37,99,235,0.14)' }} />

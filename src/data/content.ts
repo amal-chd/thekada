@@ -98,7 +98,7 @@ export const products = [
     shortName: 'Kada Ledger',
     tagline: 'Digital khata, invoicing & credit management',
     description: 'A highly secure, cloud-based ledger book designed for merchants to track credit (udhaar), send automated WhatsApp reminders, manage staff access levels, and generate invoices.',
-    color: '#22C997',
+    color: '#10B981',
     badge: 'Merchant Finance',
     gradient: 'from-emerald-500/20 to-teal-500/10',
     features: [

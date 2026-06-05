@@ -75,7 +75,7 @@ export default function Legal() {
   const content = legalContent[key]
 
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       {/* Header */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7rem, 11vw, 8.5rem) 0 clamp(2.5rem, 4vw, 3rem)', borderBottom: '1px solid var(--border)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
@@ -129,26 +129,6 @@ export default function Legal() {
         </Container>
       </section>
 
-      <style>{`
-        @media (max-width: 900px) {
-          .legal-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .legal-grid > nav { position: static !important; }
-          .legal-nav-links {
-            flex-direction: row !important;
-            overflow-x: auto !important;
-            white-space: nowrap !important;
-            padding-bottom: 0.5rem !important;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-          }
-          .legal-nav-links::-webkit-scrollbar {
-            display: none;
-          }
-          .legal-nav-links > a {
-            flex-shrink: 0 !important;
-          }
-        }
-      `}</style>
     </main>
   )
 }

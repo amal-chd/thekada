@@ -9,7 +9,7 @@ import MagneticButton from '../ui/MagneticButton'
  */
 export default function ClosingCTA() {
   return (
-    <section style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 110% at 50% 0%, #16294B 0%, #0B1B33 55%, #081223 100%)', paddingTop: 'clamp(5rem, 10vw, 8rem)' }}>
+    <section style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 110% at 50% 0%, #16294B 0%, #0B1B33 55%, #081223 100%)', padding: 'clamp(5rem, 10vw, 8rem) 0' }}>
       <Aurora soft />
       <Container style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>

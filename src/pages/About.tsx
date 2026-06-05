@@ -34,7 +34,7 @@ const team = [
 
 export default function About() {
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       {/* HERO */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />

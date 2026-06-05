@@ -21,7 +21,7 @@ export default function Insights() {
   const rest = filtered.slice(1)
 
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9rem) 0 clamp(2.5rem, 5vw, 3.5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
         <div className="glow-orb" style={{ top: '-12%', right: '8%', width: 460, height: 420, background: 'rgba(124,106,247,0.14)' }} />
@@ -50,6 +50,11 @@ export default function Insights() {
       </div>
 
       <Section bg="white">
+        {filtered.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-secondary)' }}>
+            No articles found in this category.
+          </div>
+        )}
         {featured && (
           <Reveal>
             <SpotlightCard className="card-premium grid-2" style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 'clamp(1.5rem, 4vw, 3rem)', alignItems: 'center', padding: 'clamp(1.75rem, 3vw, 2.75rem)', marginBottom: '2rem', cursor: 'pointer' }}>

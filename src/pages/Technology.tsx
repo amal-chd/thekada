@@ -26,14 +26,14 @@ const stackIcons: Record<string, React.ComponentType<{ size?: number; color?: st
 
 export default function Technology() {
   return (
-    <main>
+    <main style={{ overflowX: 'clip' }}>
       {/* HERO */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
         <div className="glow-orb" style={{ top: '-12%', left: '38%', width: 520, height: 460, background: 'rgba(37,99,235,0.14)' }} />
         <Container style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ maxWidth: 780, margin: '0 auto' }}>
-            <div className="eyebrow" style={{ marginBottom: '1.5rem' }}><Cpu size={14} /> Engineering &amp; technology</div>
+            <div className="eyebrow" style={{ marginBottom: '1.5rem' }}><Cpu size={14} /> Engineering & technology</div>
             <h1 style={{ fontSize: 'clamp(2.5rem, 5.6vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.4rem' }}>
               Fast, secure, and <span className="gradient-text-blue">built to last.</span>
             </h1>

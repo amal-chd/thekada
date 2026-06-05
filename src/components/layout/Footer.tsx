@@ -78,7 +78,7 @@ export default function Footer() {
             <input
               type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: 260, boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.2s ease' }}
+              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: '100%', maxWidth: 260, minWidth: 180, boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.2s ease' }}
               onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = '#2563EB' }}
               onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)' }}
             />
@@ -159,14 +159,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2rem 1.5rem !important; }
-          .footer-grid > div:first-child { grid-column: 1 / -1; }
-        }
-        @media (max-width: 520px) { .footer-grid { grid-template-columns: 1fr 1fr !important; } }
-      `}</style>
     </footer>
   )
 }

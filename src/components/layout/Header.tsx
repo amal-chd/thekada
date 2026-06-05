@@ -176,21 +176,6 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      <style>{`
-        @media (max-width: 540px) {
-          .logo-text-container {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 1px !important;
-            line-height: 1 !important;
-          }
-          .logo-vc {
-            font-size: 9px !important;
-            margin-top: -1px;
-            opacity: 0.85;
-          }
-        }
-      `}</style>
     </header>
   )
 }

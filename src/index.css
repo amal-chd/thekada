@@ -29,6 +29,10 @@ body {
   letter-spacing: -0.006em;
 }
 
+main {
+  overflow-x: clip;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', 'Inter', system-ui, sans-serif;
   color: #0B1B33;
@@ -505,6 +509,25 @@ button { font-family: inherit; }
   .hidden-mobile { display: none !important; }
   .mobile-menu-btn { display: flex !important; }
   .grid-2, .grid-2-narrow { grid-template-columns: 1fr !important; }
+  
+  .legal-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  .legal-grid > nav, .legal-grid > div:first-child { position: static !important; }
+  .legal-nav-links {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 0.5rem !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .legal-nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  .legal-nav-links > a {
+    flex-shrink: 0 !important;
+  }
+
+  .faq-grid > div:first-child { position: static !important; }
 }
 @media (min-width: 901px) { .show-mobile-only { display: none !important; } }
 
@@ -913,4 +936,12 @@ button:focus-visible, a:focus-visible {
 /* keep custom-cursor circles crisp */
 @media (prefers-reduced-motion: reduce) {
   .border-animated::before, .ripple > .ripple-dot { animation: none !important; }
+}
+
+@media (max-width: 480px) {
+  .bento { grid-template-columns: 1fr !important; }
+  .bento > .b-3col, .bento > .b-4col, .bento > .b-6col, .bento > .b-2col { grid-column: span 1 !important; }
+  .grid-responsive-2col { grid-template-columns: 1fr !important; }
+  .col-span-2-mobile { grid-column: span 1 !important; }
+  .footer-grid { grid-template-columns: 1fr !important; }
 }
