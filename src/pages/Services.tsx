@@ -158,7 +158,7 @@ export default function Services() {
               ))}
             </div>
           </div>
-          <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 20, padding: '1.75rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="card" style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 20, padding: '1.75rem', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#93B8FF', marginBottom: '1.1rem' }}>Tools we build with</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {techStack.map((s) => (

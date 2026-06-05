@@ -72,7 +72,7 @@ export default function Technology() {
             const Icon = stackIcons[s.category] || Server
             return (
               <Reveal key={s.category} delay={i * 0.05}>
-                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.6rem', height: '100%' }}>
+                <div className="tech-card" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.6rem', height: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
                     <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(94,144,250,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon size={18} color="#93B8FF" /></span>
                     <h3 style={{ fontSize: '0.95rem', fontWeight: 750, color: '#fff' }}>{s.category}</h3>

@@ -99,9 +99,9 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
             <p style={{ fontSize: '1.02rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>{config.intro}</p>
           </Reveal>
           <Reveal delay={0.08}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="grid-responsive-2col">
               {config.outcomes.map((o) => (
-                <div key={o.label} style={{ background: 'var(--bg-soft)', border: '1px solid var(--border)', borderRadius: 16, padding: '1.5rem' }}>
+                <div key={o.label} style={{ background: 'var(--bg-soft)', border: '1px solid var(--border)', borderRadius: 16, padding: '1.5rem' }} className="product-stat-card">
                   <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: a, letterSpacing: '-0.03em', lineHeight: 1 }}>{o.value}</div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600, marginTop: '0.5rem' }}>{o.label}</div>
                 </div>

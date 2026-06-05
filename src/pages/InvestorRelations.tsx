@@ -51,7 +51,7 @@ export default function InvestorRelations() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {metrics.map((m, i) => (
             <Reveal key={m.label} delay={i * 0.06}>
-              <SpotlightCard style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.75rem', height: '100%', cursor: 'default' }}>
+              <SpotlightCard className="card" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: '1.75rem', height: '100%', cursor: 'default' }}>
                 <div style={{ position: 'relative', zIndex: 2 }}>
                   <div style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>{m.value}</div>
                   <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#E2E8F0', marginTop: '0.6rem' }}>{m.label}</div>

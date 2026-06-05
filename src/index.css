@@ -532,7 +532,11 @@ button { font-family: inherit; }
   .grid-responsive-2col .card,
   .grid-responsive-2col .card-feature,
   .grid-responsive-2col .service-card,
-  .grid-responsive-2col .review-card {
+  .grid-responsive-2col .review-card,
+  .grid-responsive-2col .process-card,
+  .grid-responsive-2col .career-card,
+  .grid-responsive-2col .product-stat-card,
+  .grid-responsive-2col .tech-card {
     padding: 0.95rem !important;
     border-radius: var(--radius-md) !important;
   }
@@ -546,33 +550,52 @@ button { font-family: inherit; }
     font-size: 0.78rem !important;
     line-height: 1.5 !important;
   }
-  .grid-responsive-2col span,
-  .grid-responsive-2col div {
-    font-size: 0.78rem !important;
+  
+  /* Open roles list card responsive adjustments */
+  .career-card {
+    padding: 1.1rem 1.25rem !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
   }
-  /* Scale down icon containers and inner icons */
-  .grid-responsive-2col .card-premium span:first-child,
-  .grid-responsive-2col .card span:first-child,
-  .grid-responsive-2col .card-feature span:first-child,
-  .grid-responsive-2col .service-card span:first-child,
-  .grid-responsive-2col .card-premium div > span:first-child,
-  .grid-responsive-2col .card div > span:first-child,
-  .grid-responsive-2col .card-feature div > span:first-child,
-  .grid-responsive-2col .service-card div > span:first-child {
+  
+  /* Scale down icon containers and inner icons safely using :has(svg) */
+  .grid-responsive-2col .card-premium span:has(svg),
+  .grid-responsive-2col .card-premium div:has(svg),
+  .grid-responsive-2col .card span:has(svg),
+  .grid-responsive-2col .card div:has(svg),
+  .grid-responsive-2col .card-feature span:has(svg),
+  .grid-responsive-2col .card-feature div:has(svg),
+  .grid-responsive-2col .service-card span:has(svg),
+  .grid-responsive-2col .service-card div:has(svg),
+  .grid-responsive-2col .process-card span:has(svg),
+  .grid-responsive-2col .process-card div:has(svg),
+  .grid-responsive-2col .career-card span:has(svg),
+  .grid-responsive-2col .career-card div:has(svg),
+  .grid-responsive-2col .tech-card span:has(svg),
+  .grid-responsive-2col .tech-card div:has(svg) {
     width: 38px !important;
     height: 38px !important;
     min-width: 38px !important;
     border-radius: 9px !important;
     margin-bottom: 0.7rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
-  .grid-responsive-2col .card-premium span:first-child svg,
-  .grid-responsive-2col .card span:first-child svg,
-  .grid-responsive-2col .card-feature span:first-child svg,
-  .grid-responsive-2col .service-card span:first-child svg,
-  .grid-responsive-2col .card-premium div > span:first-child svg,
-  .grid-responsive-2col .card div > span:first-child svg,
-  .grid-responsive-2col .card-feature div > span:first-child svg,
-  .grid-responsive-2col .service-card div > span:first-child svg {
+  .grid-responsive-2col .card-premium span:has(svg) svg,
+  .grid-responsive-2col .card-premium div:has(svg) svg,
+  .grid-responsive-2col .card span:has(svg) svg,
+  .grid-responsive-2col .card div:has(svg) svg,
+  .grid-responsive-2col .card-feature span:has(svg) svg,
+  .grid-responsive-2col .card-feature div:has(svg) svg,
+  .grid-responsive-2col .service-card span:has(svg) svg,
+  .grid-responsive-2col .service-card div:has(svg) svg,
+  .grid-responsive-2col .process-card span:has(svg) svg,
+  .grid-responsive-2col .process-card div:has(svg) svg,
+  .grid-responsive-2col .career-card span:has(svg) svg,
+  .grid-responsive-2col .career-card div:has(svg) svg,
+  .grid-responsive-2col .tech-card span:has(svg) svg,
+  .grid-responsive-2col .tech-card div:has(svg) svg {
     width: 17px !important;
     height: 17px !important;
   }
@@ -716,9 +739,6 @@ html.lenis, html.lenis body { height: auto; }
     font-size: 0.78rem !important;
     line-height: 1.5 !important;
     margin-bottom: 0.65rem !important;
-  }
-  .bento span, .bento div {
-    font-size: 0.76rem !important;
   }
   /* Bento stat rows inside 1-column mobile bento cards stack vertically */
   .bento-stat-row {

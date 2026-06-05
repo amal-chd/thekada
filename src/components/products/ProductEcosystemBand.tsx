@@ -37,7 +37,7 @@ export default function ProductEcosystemBand({ accent }: { accent: string }) {
           return (
             <Reveal key={p.id} delay={i * 0.04} className={isLast ? 'col-span-2-mobile' : ''}>
               {isCurrent ? (
-                <div style={{ position: 'relative', height: '100%', borderRadius: 18, padding: '1.5rem', background: `linear-gradient(160deg, ${p.color}14, ${p.color}06)`, border: `1.5px solid ${p.color}44`, overflow: 'hidden' }}>
+                <div className="card" style={{ position: 'relative', height: '100%', borderRadius: 18, padding: '1.5rem', background: `linear-gradient(160deg, ${p.color}14, ${p.color}06)`, border: `1.5px solid ${p.color}44`, overflow: 'hidden' }}>
                   <div aria-hidden style={{ position: 'absolute', top: -40, right: -40, width: 120, height: 120, borderRadius: '50%', background: `${p.color}22`, filter: 'blur(14px)' }} />
                   <span style={{ position: 'relative', width: 44, height: 44, borderRadius: 12, background: '#fff', border: `1px solid ${p.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 8px 20px -8px ${p.color}66` }}>
                     <p.Icon size={21} color={p.color} />
@@ -47,7 +47,7 @@ export default function ProductEcosystemBand({ accent }: { accent: string }) {
                 </div>
               ) : (
                 <Link to={p.path} style={{ display: 'block', height: '100%', textDecoration: 'none' }}>
-                  <motion.div whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  <motion.div className="card" whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     style={{ height: '100%', borderRadius: 18, padding: '1.5rem', background: '#fff', border: '1px solid var(--border)', boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.25s ease, box-shadow 0.25s ease' }}
                     onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${p.color}44`; el.style.boxShadow = 'var(--shadow-md)' }}
                     onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'var(--border)'; el.style.boxShadow = 'var(--shadow-xs)' }}>

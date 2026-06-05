@@ -257,7 +257,7 @@ export default function Home() {
       {/* ───────────────── PROCESS ───────────────── */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="How we work" title="A clear path from idea to impact." subtitle="A proven, transparent process for custom builds — with weekly demos so you're never in the dark." />
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 grid-responsive-2col">
           {devProcess.map((proc, i) => {
             const StepIcon = [Search, PenTool, Code2, ShieldCheck, ServerCog][i] || Code2
             const isLast = i === devProcess.length - 1
