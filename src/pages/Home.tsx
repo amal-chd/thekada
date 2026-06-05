@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, ChevronDown, Send, CheckCircle2,
-  Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2,
-  Globe, Smartphone, Rocket, Building2, Palette, Plug, Cloud,
+  Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2, Building2,
+  Plug,
   Utensils, BedDouble, ShoppingBag, Truck, Wallet, Briefcase, Quote,
   Flame, Search, PenTool, ServerCog,
 } from 'lucide-react'
@@ -11,18 +11,12 @@ import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter, Sp
 import PremiumHero from '../components/home/PremiumHero'
 import EcosystemMap from '../components/home/EcosystemMap'
 import BentoProducts from '../components/home/BentoProducts'
-import ProductShowcase from '../components/home/ProductShowcase'
 import WhyChooseUs from '../components/home/WhyChooseUs'
 import FounderSection from '../components/home/FounderSection'
 import ScrollStory from '../components/home/ScrollStory'
 import AISection from '../components/home/AISection'
 import ClosingCTA from '../components/home/ClosingCTA'
-import { products, services, caseStudies, industries, devProcess, techStack } from '../data/content'
-
-const serviceIcons: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
-  'web-dev': Globe, 'mobile-dev': Smartphone, 'saas-dev': Rocket, automation: Workflow,
-  enterprise: Building2, 'ui-ux': Palette, integrations: Plug, cloud: Cloud, transformation: LineChart,
-}
+import { products, caseStudies, industries, devProcess, techStack } from '../data/content'
 
 const industryMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; color: string }> = {
   'Restaurants & Cafes': { Icon: Utensils, color: '#FF6B2B' },
@@ -232,43 +226,10 @@ export default function Home() {
         <BentoProducts />
       </Section>
 
-      {/* ───────────────── APPLE-STYLE PRODUCT SHOWCASE ───────────────── */}
-      <ProductShowcase />
-
       {/* ───────────────── SCROLL STORY ───────────────── */}
       <section style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)' }}>
         <ScrollStory />
       </section>
-
-      {/* ───────────────── SERVICES ───────────────── */}
-      <Section bg="soft" bordered id="services">
-        <SectionHeading
-          eyebrow="Software development services"
-          title="Custom digital solutions, engineered end-to-end."
-          subtitle="From product roadmap to launch and beyond — a senior team that designs, builds, and maintains software tailored to how your business actually works."
-        />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
-          {services.map((s, i) => {
-            const Icon = serviceIcons[s.id] || Code2
-            return (
-              <Reveal key={s.id} delay={i * 0.04}>
-                <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
-                    <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}>
-                      <Icon size={21} color="#2563EB" />
-                    </span>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.description}</p>
-                  </div>
-                </SpotlightCard>
-              </Reveal>
-            )
-          })}
-        </div>
-        <Reveal style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <Button to="/services">See how we work <ArrowRight size={16} /></Button>
-        </Reveal>
-      </Section>
 
       {/* ───────────────── WHY CHOOSE US ───────────────── */}
       <WhyChooseUs />
