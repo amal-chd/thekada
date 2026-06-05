@@ -3,7 +3,7 @@ import {
   Receipt, QrCode, MonitorSmartphone, Boxes, MessageSquare, Repeat,
   Workflow, Zap, Wallet, Truck, BarChart3, ShieldCheck, Building2,
   Users, Calendar, PenTool, Clock, Target, CheckCircle2, Droplets, Moon, Lock,
-  ShoppingBag, Rocket, Palette, Code2, Hotel, Briefcase,
+  ShoppingBag, Rocket, Palette, Code2, Hotel, Briefcase, Bike, MapPin, Star, Gift,
 } from 'lucide-react'
 import type { ProductConfig } from '../components/products/ProductLayout'
 
@@ -349,5 +349,63 @@ export const productPages: Record<string, ProductConfig> = {
     faqSubtitle: 'Everything you need to know about the Lunoo app.',
     ctaTitle: 'Take control of your day.',
     ctaSub: 'Download Lunoo on iOS or Android and bring balance back to your routine — privately.',
+  },
+
+  // ─────────────────────────── THE KADA ───────────────────────────
+  'the-kada': {
+    accent: '#2563EB', accentSoft: '#EFF5FF', gradientClass: 'gradient-text-blue',
+    EyebrowIcon: Bike, eyebrowLabel: 'The Kada · Food Delivery',
+    title: { pre: 'Your favourite food,', accent: 'delivered fast.' },
+    subtitle: 'A hyperlocal food delivery and commerce platform connecting customers with nearby restaurants, cafes, and local food vendors — with real-time tracking, smart recommendations, and seamless payments.',
+    primaryCta: { label: 'Download the app', to: '/contact' },
+    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    stats: [
+      { value: '<30 min', label: 'Average delivery time' },
+      { value: '500+', label: 'Restaurant partners' },
+      { value: '4.8★', label: 'Customer rating' },
+      { value: '24/7', label: 'Live support' },
+    ],
+    preview: {
+      appLabel: 'The Kada · Delivery',
+      kpis: [{ label: 'Orders today', value: '1,240', delta: '+22%' }, { label: 'Avg time', value: '24m' }],
+      rows: [
+        { label: 'Biryani House', sub: '2× Chicken Biryani, 1× Raita', value: '₹480', tag: 'Delivered' },
+        { label: 'Cafe Mocha', sub: 'Cold brew + pastry', value: '₹320', tag: 'On the way' },
+        { label: 'Fresh Juice Bar', sub: 'Scheduled · 6:00 PM', value: '₹180' },
+      ],
+    },
+    featuresHeading: 'Everything you need from a food delivery app.',
+    featuresSub: 'Discover local restaurants, order with ease, and track every delivery in real time.',
+    features: [
+      { Icon: MapPin, title: 'Hyperlocal discovery', desc: 'Find the best restaurants, cafes, and food vendors near you — curated by cuisine, rating, and delivery time.' },
+      { Icon: Truck, title: 'Real-time order tracking', desc: 'Track your order from kitchen to doorstep with live GPS updates and estimated arrival time.' },
+      { Icon: Star, title: 'Smart recommendations', desc: 'Personalised food suggestions based on your order history, preferences, and trending dishes nearby.' },
+      { Icon: Wallet, title: 'Seamless payments', desc: 'Pay instantly via UPI, credit/debit cards, wallets, or cash on delivery — whichever suits you.' },
+      { Icon: Clock, title: 'Schedule for later', desc: 'Plan meals ahead by scheduling orders for a specific time — perfect for parties, office lunches, or lazy weekends.' },
+      { Icon: Gift, title: 'Rewards & deals', desc: 'Earn loyalty points on every order, unlock exclusive offers, and save with daily deals from your favourite spots.' },
+    ],
+    audiencesHeading: 'For everyone who loves great food.',
+    audiences: [
+      { Icon: Users, label: 'Families', desc: 'Order dinner for the whole family in minutes.' },
+      { Icon: Briefcase, label: 'Professionals', desc: 'Quick office lunches and late-night work fuel.' },
+      { Icon: Utensils, label: 'Foodies', desc: 'Explore new cuisines and hidden local gems.' },
+      { Icon: Building2, label: 'Corporates', desc: 'Bulk orders and catering for team events.' },
+    ],
+    highlight: {
+      heading: 'Fast delivery. Fair to restaurants. Loved by customers.',
+      text: 'The Kada connects customers directly with local food businesses — ensuring faster deliveries, better prices, and fair terms for restaurant partners. No hidden charges, no inflated menus.',
+      points: ['Average delivery under 30 minutes', 'Fair commission model for restaurant partners', 'No menu price inflation — pay what the restaurant charges', 'Live order tracking from kitchen to your door'],
+    },
+    faqs: [
+      { q: 'What is The Kada?', a: 'The Kada is a hyperlocal food delivery platform that connects you with nearby restaurants, cafes, and food vendors. Order your favourite food with real-time tracking, multiple payment options, and fast delivery.' },
+      { q: 'How fast is delivery?', a: 'Most orders are delivered in under 30 minutes, depending on distance and restaurant preparation time. You can track your order live from the moment it leaves the kitchen.' },
+      { q: 'Are there hidden charges?', a: 'No. The Kada shows transparent pricing — the menu price you see is what you pay, plus a small delivery fee based on distance. No surprise charges at checkout.' },
+      { q: 'Can I schedule orders in advance?', a: 'Yes. You can schedule orders for a specific date and time — ideal for meal planning, parties, or office events.' },
+      { q: 'Is The Kada available in my area?', a: 'The Kada is currently live in select cities across Kerala and expanding rapidly. Download the app to check availability in your area.' },
+    ],
+    faqTitle: 'Questions about The Kada delivery.',
+    faqSubtitle: 'Everything you need to know about ordering food on The Kada.',
+    ctaTitle: 'Order your favourite food now.',
+    ctaSub: 'Download The Kada app and get your first delivery in minutes — with exclusive deals for new users.',
   },
 }

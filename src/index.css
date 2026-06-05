@@ -602,9 +602,10 @@ html.lenis, html.lenis body { height: auto; }
 .bento > .b-2col { grid-column: span 2; }
 .bento > .b-3col { grid-column: span 3; }
 .bento > .b-4col { grid-column: span 4; }
+.bento > .b-6col { grid-column: span 6; }
 .bento > .b-2row { grid-row: span 2; }
 @media (max-width: 1000px) { .bento { grid-template-columns: repeat(2, 1fr); }
-  .bento > .b-2col, .bento > .b-3col, .bento > .b-4col { grid-column: span 1; } }
+  .bento > .b-2col, .bento > .b-3col, .bento > .b-4col, .bento > .b-6col { grid-column: span 1; } }
 @media (max-width: 600px) { .bento { grid-template-columns: 1fr; } .bento > * { grid-column: span 1 !important; } }
 
 /* ── Marquee logos (premium) ── */
@@ -642,7 +643,7 @@ html.lenis, html.lenis body { height: auto; }
 /* ── Big impact numbers ── */
 .metric-xl {
   font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -0.04em;
-  line-height: 0.95; font-size: clamp(2.8rem, 8vw, 6rem);
+  line-height: 0.95; font-size: clamp(1.8rem, 4vw, 2.8rem);
   background: linear-gradient(180deg, #0B1B33 0%, #2563EB 130%);
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }

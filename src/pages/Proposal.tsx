@@ -42,7 +42,7 @@ export default function Proposal() {
                       </div>
                       <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem' }}>Proposal Request Received</h3>
                       <p style={{ color: 'var(--text-secondary)', maxWidth: 380, margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
-                        Thank you! A senior technical lead at The Kada will review your scope and follow up within 24 hours.
+                        Thank you! A senior technical lead at The Kada Digital Ventures will review your scope and follow up within 24 hours.
                       </p>
                       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                         <Button to="/" variant="secondary">Go back home</Button>
@@ -65,6 +65,7 @@ export default function Proposal() {
                             <option value="sellrapp">SellrApp (storefronts)</option>
                             <option value="kada-ledger">Kada Ledger (khata/invoicing)</option>
                             <option value="devflow">DevFlow (agencies)</option>
+                            <option value="the-kada">The Kada (food delivery)</option>
                             <option value="other">Something else</option>
                           </select>
                         </Field>

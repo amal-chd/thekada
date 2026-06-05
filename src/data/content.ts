@@ -1,6 +1,6 @@
 export const company = {
   name: 'The Kada Digital Ventures',
-  shortName: 'The Kada',
+  shortName: 'The Kada Digital Ventures',
   legalName: 'The Kada Digital Ventures Pvt Ltd',
   tagline: 'SaaS Product Innovators & Custom Software Development Partners',
   mission: 'We solve real business problems through technology, replacing manual processes, improving productivity, streamlining operations, and accelerating growth.',
@@ -12,6 +12,26 @@ export const company = {
 }
 
 export const products = [
+  {
+    id: 'the-kada',
+    name: 'The Kada',
+    shortName: 'The Kada',
+    tagline: 'Food delivery & local commerce platform',
+    description: 'A hyperlocal food delivery and commerce platform connecting customers with nearby restaurants, cafes, and local food vendors. Order food from your favorite spots with real-time tracking, smart recommendations, and seamless payment options.',
+    color: '#2563EB',
+    badge: 'Food Delivery',
+    gradient: 'from-blue-500/20 to-indigo-500/10',
+    features: [
+      'Hyperlocal restaurant and food vendor discovery',
+      'Real-time order tracking with live delivery updates',
+      'Smart restaurant recommendations based on preferences',
+      'Seamless UPI, card, and wallet payment options',
+      'Schedule orders for later delivery or pickup',
+      'Loyalty rewards and exclusive deals from local eateries',
+    ],
+    stats: { delivery: 'Under 30 min', partners: '500+', rating: '4.8★', support: '24/7' },
+    path: '/products/the-kada',
+  },
   {
     id: 'kada-dine-restaurant',
     name: 'Kada Dine',
@@ -230,7 +250,7 @@ export const devProcess = [
 ]
 
 export const stats = [
-  { label: 'SaaS Products Launched', value: '6', suffix: '' },
+  { label: 'SaaS Products Launched', value: '7', suffix: '' },
   { label: 'Custom Enterprise Partners', value: '45+', suffix: '' },
   { label: 'Active Monthly Transactions', value: '500K+', suffix: '' },
   { label: 'Total Digital Revenue Enabled', value: '₹50Cr+', suffix: '' },
@@ -323,4 +343,5 @@ export const appLinks: Record<string, StoreLinks> = {
   'kada-ledger': { appStore: 'https://apps.apple.com/app/kada-ledger/id000000004', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.ledger' },
   devflow: { appStore: 'https://apps.apple.com/app/devflow/id000000005', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.devflow' },
   lunoo: { appStore: 'https://apps.apple.com/app/lunoo/id000000006', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.lunoo' },
+  'the-kada': { appStore: 'https://apps.apple.com/app/the-kada/id000000007', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.delivery' },
 }

@@ -41,7 +41,7 @@ export default function About() {
         <div className="glow-orb" style={{ top: '-12%', right: '6%', width: 480, height: 460, background: 'rgba(37,99,235,0.14)' }} />
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ maxWidth: 760 }}>
-            <div className="eyebrow" style={{ marginBottom: '1.5rem' }}>About The Kada</div>
+            <div className="eyebrow" style={{ marginBottom: '1.5rem' }}>About The Kada Digital Ventures</div>
             <h1 style={{ fontSize: 'clamp(2.5rem, 5.4vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.5rem' }}>
               We build software that<br /><span className="gradient-text-blue">moves businesses forward.</span>
             </h1>
@@ -79,7 +79,7 @@ export default function About() {
                     { label: 'Founded', value: `${company.founded} · Kannur, Kerala` },
                     { label: 'Legal name', value: company.legalName },
                     { label: 'Model', value: 'SaaS products + custom software' },
-                    { label: 'Products', value: '6 live · and growing' },
+                    { label: 'Products', value: '7 live · and growing' },
                   ].map((item) => (
                     <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border)' }}>
                       <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.label}</span>

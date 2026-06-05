@@ -22,6 +22,7 @@ const KadaLedger = lazy(() => import('./pages/products/KadaLedger'))
 const SellrApp = lazy(() => import('./pages/products/SellrApp'))
 const DevFlow = lazy(() => import('./pages/products/DevFlow'))
 const Lunoo = lazy(() => import('./pages/products/Lunoo'))
+const TheKada = lazy(() => import('./pages/products/TheKada'))
 const Press = lazy(() => import('./pages/Press'))
 const Proposal = lazy(() => import('./pages/Proposal'))
 const Legal = lazy(() => import('./pages/Legal'))
@@ -110,6 +111,7 @@ export default function App() {
             <Route path="/products/sellrapp" element={<SellrApp />} />
             <Route path="/products/devflow" element={<DevFlow />} />
             <Route path="/products/lunoo" element={<Lunoo />} />
+            <Route path="/products/the-kada" element={<TheKada />} />
 
             <Route path="/press" element={<Press />} />
             <Route path="/legal" element={<Legal />} />

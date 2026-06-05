@@ -45,7 +45,7 @@ export default function PremiumHero() {
             />
 
             <p className="lead" style={{ maxWidth: 530, marginBottom: '1.25rem' }}>
-              The Kada builds intuitive products and bespoke software that automate operations, eliminate manual
+              The Kada Digital Ventures builds intuitive products and bespoke software that automate operations, eliminate manual
               busywork, and connect every part of a business into one intelligent system —{' '}
               <span style={{ position: 'relative', display: 'inline-block', minWidth: '5.5ch', fontWeight: 700 }}>
                 <AnimatePresence mode="wait">
@@ -74,7 +74,7 @@ export default function PremiumHero() {
             {/* trust row */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-                <Activity size={15} color="#10B981" /> Live across 6 products
+                <Activity size={15} color="#10B981" /> Live across 7 products
               </div>
               <div style={{ width: 1, height: 16, background: 'var(--border)' }} className="hidden-mobile" />
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
@@ -85,7 +85,7 @@ export default function PremiumHero() {
 
           {/* Right — dashboard + floating panels */}
           <div className="hero-illustration" style={{ position: 'relative' }}>
-            <HeroDashboard />
+            <HeroDashboard showFloatingCards={false} />
             {floatPanels.map((p) => (
               <motion.div
                 key={p.title}

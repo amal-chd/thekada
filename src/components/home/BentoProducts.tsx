@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, ArrowUpRight, TrendingUp, Check } from 'lucide-react'
+import { Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, ArrowUpRight, TrendingUp, Bike } from 'lucide-react'
 import SpotlightCard from '../ui/SpotlightCard'
 
 const Icon = {
-  dine: Utensils, hotel: BedDouble, sellr: Store, ledger: BookText, devflow: KanbanSquare, lunoo: Sparkles,
+  dine: Utensils, hotel: BedDouble, sellr: Store, ledger: BookText, devflow: KanbanSquare, lunoo: Sparkles, thekada: Bike,
 }
 
 type Card = {
@@ -41,6 +41,37 @@ function MiniStat({ color, value, label, delta }: { color: string; value: string
 
 const cards: Card[] = [
   {
+    id: 'thekada', name: 'The Kada', benefit: 'Hyperlocal food delivery — order from nearby restaurants in minutes.', color: '#2563EB', path: '/products/the-kada', span: 'b-3col b-2row',
+    mini: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Delivery Status</span>
+          <span style={{ fontSize: '0.62rem', fontWeight: 700, color: '#2563EB', background: '#EEF2FF', padding: '0.12rem 0.5rem', borderRadius: 99 }}>ACTIVE</span>
+        </div>
+        <div style={{ fontSize: '1.7rem', fontWeight: 800, color: '#0B1B33', letterSpacing: '-0.02em' }}>Order #4829</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', padding: '0.5rem 0' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '5%', right: '5%', height: 2, background: 'var(--border)', zIndex: 1 }} />
+          <div style={{ position: 'absolute', top: '50%', left: '5%', width: '70%', height: 2, background: '#2563EB', zIndex: 1 }} />
+          {[
+            { label: 'Placed', active: true },
+            { label: 'Prep', active: true },
+            { label: 'Out', active: true },
+            { label: 'Delivered', active: false },
+          ].map((step) => (
+            <div key={step.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 2 }}>
+              <span style={{ width: 14, height: 14, borderRadius: '50%', background: step.active ? '#2563EB' : '#fff', border: `2px solid ${step.active ? '#2563EB' : 'var(--border)'}`, display: 'block' }} />
+              <span style={{ fontSize: '0.58rem', fontWeight: 700, color: step.active ? '#0B1B33' : '#64748B', marginTop: 4 }}>{step.label}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }}>
+          <MiniStat color="#2563EB" value="1,240" label="Daily Orders" delta="+22%" />
+          <MiniStat color="#2563EB" value="24 min" label="Avg Delivery" />
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'dine', name: 'Kada Dine', benefit: 'Restaurant POS, QR ordering & live inventory — billing that runs itself.', color: '#FF6B2B', path: '/products/kada-dine', span: 'b-3col b-2row',
     mini: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
@@ -59,29 +90,16 @@ const cards: Card[] = [
     ),
   },
   {
-    id: 'ledger', name: 'Kada Ledger', benefit: 'Digital khata that collects dues for you — automated WhatsApp reminders.', color: '#10B981', path: '/products/kada-ledger', span: 'b-3col b-2row',
-    mini: (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
-          <MiniStat color="#10B981" value="₹1.8L" label="To collect" />
-          <MiniStat color="#10B981" value="126" label="Customers" />
-        </div>
-        {['Ramesh Traders · reminded', 'UPI received · ₹8,000'].map((t, idx) => (
-          <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-soft)', border: '1px solid var(--border)', borderRadius: 9, padding: '0.5rem 0.7rem' }}>
-            <span style={{ width: 20, height: 20, borderRadius: '50%', background: idx ? '#E9FBF4' : '#FFF8EA', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Check size={12} color={idx ? '#10B981' : '#F59E0B'} /></span>
-            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#475569' }}>{t}</span>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
     id: 'hotel', name: 'Kada Stay', benefit: 'App-less guest services & PMS.', color: '#7C6AF7', path: '/products/kada-stay', span: 'b-2col',
     mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#7C6AF7" value="84%" label="Occupancy" delta="+6%" /><MiniStat color="#7C6AF7" value="47" label="Requests" /></div>,
   },
   {
     id: 'sellr', name: 'SellrApp', benefit: 'Online store in minutes. 0% commission.', color: '#F59E0B', path: '/products/sellrapp', span: 'b-2col',
     mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#F59E0B" value="₹12.7K" label="Sales" delta="+24%" /><MiniStat color="#F59E0B" value="38" label="Orders" /></div>,
+  },
+  {
+    id: 'ledger', name: 'Kada Ledger', benefit: 'Digital khata that collects dues for you — automated WhatsApp reminders.', color: '#10B981', path: '/products/kada-ledger', span: 'b-2col',
+    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#10B981" value="₹1.8L" label="To collect" /><MiniStat color="#10B981" value="126" label="Customers" /></div>,
   },
   {
     id: 'devflow', name: 'DevFlow', benefit: 'Run your agency from one workspace.', color: '#06B6D4', path: '/products/devflow', span: 'b-2col',
@@ -144,23 +162,6 @@ export default function BentoProducts() {
             </span>
           </Link>
         </SpotlightCard>
-      </motion.div>
-
-      {/* "All products" tile */}
-      <motion.div
-        className="b-2col"
-        initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Link to="/ecosystem" style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-          <SpotlightCard style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', minHeight: 100, padding: '1.5rem 1.75rem', borderRadius: 'var(--radius-lg)', background: 'linear-gradient(150deg, #16294B, #0B1B33)', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <div className="glow-orb" style={{ top: '-40%', right: '-20%', width: 160, height: 160, background: 'rgba(94,144,250,0.4)', zIndex: -1 }} />
-              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.25 }}>Explore the full ecosystem</div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem', fontWeight: 700, color: '#93B8FF', marginTop: '0.6rem' }}>6 connected products <ArrowUpRight size={14} /></div>
-            </div>
-          </SpotlightCard>
-        </Link>
       </motion.div>
     </div>
   )

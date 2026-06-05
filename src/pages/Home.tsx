@@ -16,7 +16,7 @@ import FounderSection from '../components/home/FounderSection'
 import ScrollStory from '../components/home/ScrollStory'
 import AISection from '../components/home/AISection'
 import ClosingCTA from '../components/home/ClosingCTA'
-import { products, caseStudies, industries, devProcess, techStack } from '../data/content'
+import { products, caseStudies, industries, devProcess } from '../data/content'
 
 const industryMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; color: string }> = {
   'Restaurants & Cafes': { Icon: Utensils, color: '#FF6B2B' },
@@ -54,7 +54,6 @@ const trustLogos = [
 ]
 
 export default function Home() {
-  const [activeTechCategory, setActiveTechCategory] = useState(techStack[0].category)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)
 
   return (
@@ -88,7 +87,7 @@ export default function Home() {
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <SectionHeading
             eyebrow="Our Products"
-            title="One core. Six products. Zero silos."
+            title="One core. Seven products. Zero silos."
             subtitle="Every product plugs into the same intelligent core — sharing data, automation, and business intelligence. This is the operating system for your business."
           />
           <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center', marginTop: '1rem' }} className="grid-2">
@@ -116,16 +115,16 @@ export default function Home() {
       </section>
 
       {/* ───────────────── IMPACT METRICS ───────────────── */}
-      <section className="section-pad" style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 120% at 50% 0%, #16294B 0%, #0B1B33 60%)' }}>
+      <section style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 120% at 50% 0%, #16294B 0%, #0B1B33 60%)', padding: 'clamp(2rem, 4.5vw, 3rem) 0' }}>
         <div className="aurora aurora-soft" aria-hidden />
         <Container style={{ position: 'relative', zIndex: 2 }}>
-          <Reveal style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <div className="eyebrow" style={{ marginBottom: '1.1rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Business impact</div>
-            <h2 style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff', lineHeight: 1.1 }}>
+          <Reveal style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div className="eyebrow" style={{ marginBottom: '0.7rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Business impact</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.15 }}>
               Numbers that move businesses.
             </h2>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }}>
             {[
               { value: '₹50Cr+', label: 'Revenue enabled' },
               { value: '500K+', label: 'Transactions processed' },
@@ -134,7 +133,7 @@ export default function Home() {
             ].map((m, i) => (
               <Reveal key={m.label} delay={i * 0.08} style={{ textAlign: 'center' }}>
                 <AnimatedCounter value={m.value} className="metric-xl metric-xl-light" style={{ display: 'block' }} />
-                <div style={{ fontSize: '0.92rem', color: 'rgba(203,213,225,0.75)', fontWeight: 600, marginTop: '0.6rem' }}>{m.label}</div>
+                <div style={{ fontSize: '0.86rem', color: 'rgba(203,213,225,0.75)', fontWeight: 600, marginTop: '0.4rem' }}>{m.label}</div>
               </Reveal>
             ))}
           </div>
@@ -144,7 +143,7 @@ export default function Home() {
       {/* ───────────────── PILLARS / WHY ───────────────── */}
       <Section bg="white">
         <SectionHeading
-          eyebrow="Why The Kada"
+          eyebrow="Why The Kada Digital Ventures"
           title="Practical technology that earns its keep."
           subtitle="We don't build software for its own sake. Every product and every line of custom code exists to remove friction, save time, and move a real business metric."
         />
@@ -177,7 +176,7 @@ export default function Home() {
                 <div className="tag tag-blue" style={{ marginBottom: '1.25rem', alignSelf: 'flex-start' }}><Boxes size={14} /> SaaS Products</div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '0.6rem' }}>Ready-to-deploy platforms</h3>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
-                  Six purpose-built products covering restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
+                  Seven purpose-built products covering restaurants, hotels, retail, food delivery, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.75rem' }}>
                   {products.map((p) => (
@@ -218,7 +217,7 @@ export default function Home() {
       <Section bg="white" id="products">
         <SectionHeading
           eyebrow="Product ecosystem"
-          title="Six products. Each one a category leader."
+          title="Seven products. Each one a category leader."
           subtitle="Explore the platforms we've built in-house — each one solving a specific, real operational headache, with the polish of a standalone SaaS product."
         />
         <BentoProducts />
@@ -258,11 +257,16 @@ export default function Home() {
       {/* ───────────────── PROCESS ───────────────── */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="How we work" title="A clear path from idea to impact." subtitle="A proven, transparent process for custom builds — with weekly demos so you're never in the dark." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '1.1rem' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {devProcess.map((proc, i) => {
             const StepIcon = [Search, PenTool, Code2, ShieldCheck, ServerCog][i] || Code2
+            const isLast = i === devProcess.length - 1
             return (
-              <Reveal key={proc.step} delay={i * 0.06}>
+              <Reveal
+                key={proc.step}
+                delay={i * 0.06}
+                className={isLast ? 'sm:col-span-2 lg:col-span-1' : ''}
+              >
                 <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
                   <div style={{ position: 'absolute', top: 18, right: 18, fontSize: '2.4rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
                   <div style={{ width: 42, height: 42, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
@@ -318,38 +322,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ───────────────── TECH STACK ───────────────── */}
-      <Section bg="ink">
-        <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center' }} className="grid-2">
-          <div>
-            <div className="eyebrow" style={{ marginBottom: '1.25rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Engineering</div>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff', lineHeight: 1.12, marginBottom: '1rem' }}>
-              A modern, battle-tested stack.
-            </h2>
-            <p style={{ fontSize: '1rem', color: 'rgba(203,213,225,0.78)', lineHeight: 1.65, marginBottom: '1.75rem' }}>
-              We build on proven, scalable foundations — so your software is fast, secure, and ready to grow from day one.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {techStack.map((s) => (
-                <button key={s.category} onClick={() => setActiveTechCategory(s.category)}
-                  style={{ padding: '0.5rem 1rem', borderRadius: 100, fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer', border: '1px solid', transition: 'all 0.2s ease', background: activeTechCategory === s.category ? '#2563EB' : 'rgba(255,255,255,0.05)', color: activeTechCategory === s.category ? '#fff' : 'rgba(203,213,225,0.8)', borderColor: activeTechCategory === s.category ? '#2563EB' : 'rgba(255,255,255,0.12)' }}>
-                  {s.category}
-                </button>
-              ))}
-            </div>
-          </div>
-          <SpotlightCard style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 20, padding: '1.75rem', border: '1px solid rgba(255,255,255,0.1)', height: '100%' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', position: 'relative', zIndex: 2 }}>
-              {(techStack.find((s) => s.category === activeTechCategory)?.items || []).map((item) => (
-                <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.05)', padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <CheckCircle2 size={16} color="#5E90FA" style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.85rem', color: '#E2E8F0', fontWeight: 650 }}>{item}</span>
-                </div>
-              ))}
-            </div>
-          </SpotlightCard>
-        </div>
-      </Section>
+
 
       {/* ───────────────── FOUNDER / JOURNEY ───────────────── */}
       <FounderSection />

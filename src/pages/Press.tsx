@@ -3,18 +3,18 @@ import { ArrowUpRight, Download } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 
 const features = [
-  { outlet: 'Kerala Startup Mission', headline: 'The Kada secures grant to scale its SaaS suite for small businesses', date: 'May 2026', tier: 'Tier 1', color: '#2563EB' },
-  { outlet: 'YourStory', headline: 'Kannur’s The Kada is building products and custom software for India’s SMBs', date: 'April 2026', tier: 'Tier 1', color: '#7C6AF7' },
+  { outlet: 'Kerala Startup Mission', headline: 'The Kada Digital Ventures secures grant to scale its SaaS suite for small businesses', date: 'May 2026', tier: 'Tier 1', color: '#2563EB' },
+  { outlet: 'YourStory', headline: 'Kannur’s The Kada Digital Ventures is building products and custom software for India’s SMBs', date: 'April 2026', tier: 'Tier 1', color: '#7C6AF7' },
   { outlet: 'Inc42', headline: 'Dual-model tech studios are quietly powering India’s SMB digitisation', date: 'March 2026', tier: 'Tier 1', color: '#10B981' },
   { outlet: 'The Hindu BusinessLine', headline: 'Why product-plus-services studios are winning the SMB software race', date: 'February 2026', tier: 'Tier 1', color: '#F59E0B' },
   { outlet: 'Tech Chronicle India', headline: 'Meet the team building business software that replaces the spreadsheet', date: 'January 2026', tier: 'Regional', color: '#EC4899' },
-  { outlet: 'TechCircle', headline: 'The Kada raises seed round to expand its product ecosystem', date: 'December 2025', tier: 'Tier 1', color: '#06B6D4' },
+  { outlet: 'TechCircle', headline: 'The Kada Digital Ventures raises seed round to expand its product ecosystem', date: 'December 2025', tier: 'Tier 1', color: '#06B6D4' },
 ]
 
 const brandAssets = [
   { name: 'Logo pack', desc: 'Primary, secondary, and product logos in SVG and PNG', size: '2.4 MB' },
   { name: 'Brand guidelines', desc: 'Complete brand identity and usage document', size: '8.1 MB' },
-  { name: 'Product screenshots', desc: 'High-res UI for all six products', size: '24 MB' },
+  { name: 'Product screenshots', desc: 'High-res UI for all seven products', size: '24 MB' },
   { name: 'Founder & team photos', desc: 'Professional headshots and team imagery', size: '12 MB' },
   { name: 'Company fact sheet', desc: 'Key metrics, milestones, and quick reference', size: '0.8 MB' },
   { name: 'Customer stories', desc: 'Case studies and quotes from real clients', size: '6 MB' },

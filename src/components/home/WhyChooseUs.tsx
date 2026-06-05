@@ -7,7 +7,7 @@ type Cap = { Icon: React.ComponentType<{ size?: number; color?: string }>; title
 
 const caps: Cap[] = [
   { Icon: Code2, title: 'Custom Software Development', desc: 'Bespoke web platforms engineered around your exact operations — clean, tested, built to last.', color: '#2563EB', path: '/services/web-development', span: 'b-3col' },
-  { Icon: Boxes, title: 'SaaS Products', desc: 'Six battle-tested products you can deploy today, plus end-to-end SaaS engineering for your own.', color: '#06B6D4', path: '/services/saas-development', span: 'b-3col' },
+  { Icon: Boxes, title: 'SaaS Products', desc: 'Seven battle-tested products you can deploy today, plus end-to-end SaaS engineering for your own.', color: '#06B6D4', path: '/services/saas-development', span: 'b-3col' },
   { Icon: Workflow, title: 'Business Automation', desc: 'Replace manual spreadsheets and busywork with workflows that run themselves.', color: '#F59E0B', path: '/services/business-automation', span: 'b-2col' },
   { Icon: Cloud, title: 'Cloud Solutions', desc: 'Scalable, secure cloud architecture with automated CI/CD and monitoring.', color: '#0EA5E9', path: '/services/cloud-devops', span: 'b-2col' },
   { Icon: Sparkles, title: 'AI Integration', desc: 'Operational intelligence and automation woven into your products.', color: '#7C6AF7', path: '/services/saas-development', span: 'b-2col' },

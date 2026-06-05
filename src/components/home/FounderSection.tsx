@@ -12,9 +12,9 @@ function LinkedinIcon({ size = 18 }: { size?: number }) {
 }
 
 const journey = [
-  { year: '2023', title: 'The Kada is founded', desc: 'Started in Kannur with one belief: SMBs deserve software as good as the enterprise gets.' },
+  { year: '2023', title: 'The Kada Digital Ventures is founded', desc: 'Started in Kannur with one belief: SMBs deserve software as good as the enterprise gets.' },
   { year: '2024', title: 'First products ship', desc: 'Kada Dine and Kada Ledger go live; the custom software studio opens alongside.' },
-  { year: '2025', title: 'The ecosystem grows', desc: 'SellrApp, DevFlow, Kada Stay and Lunoo join — six connected products under one core.' },
+  { year: '2025', title: 'The ecosystem grows', desc: 'SellrApp, DevFlow, Kada Stay and Lunoo join — seven connected products under one core.' },
   { year: '2026', title: 'Scaling nationally', desc: 'Serving 45+ custom partners and processing 500K+ monthly transactions across India.' },
 ]
 

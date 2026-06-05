@@ -19,7 +19,7 @@ export default function Logo({
 
   return (
     <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem', textDecoration: 'none' }} aria-label="The Kada Digital Ventures — home">
-      <img src="/favicon.png" alt="The Kada" width={size} height={size} style={{ display: 'block', flexShrink: 0 }} />
+      <img src="/favicon.png" alt="The Kada Digital Ventures Logo" width={size} height={size} style={{ display: 'block', flexShrink: 0 }} />
       {showText && (
         <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.32rem', lineHeight: 1 }}>
           <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: size * 0.46, fontWeight: 800, color: primaryText, letterSpacing: '-0.02em' }}>

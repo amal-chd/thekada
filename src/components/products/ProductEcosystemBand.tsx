@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, ArrowRight } from 'lucide-react'
+import { Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, ArrowRight, Bike } from 'lucide-react'
 import { Section, SectionHeading, Reveal } from '../ui'
 
 type Sib = { id: string; name: string; sub: string; color: string; path: string; Icon: React.ComponentType<{ size?: number; color?: string }> }
 
 const ALL: Sib[] = [
+  { id: 'the-kada', name: 'The Kada', sub: 'Food delivery platform', color: '#2563EB', path: '/products/the-kada', Icon: Bike },
   { id: 'kada-dine', name: 'Kada Dine', sub: 'Restaurant POS', color: '#FF6B2B', path: '/products/kada-dine', Icon: Utensils },
   { id: 'kada-stay', name: 'Kada Stay', sub: 'Hotel & guest PMS', color: '#7C6AF7', path: '/products/kada-stay', Icon: BedDouble },
   { id: 'sellrapp', name: 'SellrApp', sub: 'Online storefronts', color: '#F59E0B', path: '/products/sellrapp', Icon: Store },
@@ -23,9 +24,9 @@ export default function ProductEcosystemBand({ accent }: { accent: string }) {
   return (
     <Section bg="soft" bordered>
       <SectionHeading
-        eyebrow="Part of the Kada ecosystem"
+        eyebrow="Part of the Kada Digital Ventures ecosystem"
         title="Better on its own. Unstoppable together."
-        subtitle="Every Kada product shares one account, one data layer, and one intelligence core — so adding another is instant, not another integration project."
+        subtitle="Every Kada Digital Ventures product shares one account, one data layer, and one intelligence core — so adding another is instant, not another integration project."
         accent={accent}
         accentBg={`${accent}14`}
       />

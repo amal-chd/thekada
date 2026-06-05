@@ -88,11 +88,16 @@ export default function Services() {
       {/* PROCESS */}
       <Section bg="soft" bordered id="process">
         <SectionHeading eyebrow="How we work" title="A transparent path from idea to impact." subtitle="Agile delivery with a working demo every week — you always know exactly where your project stands." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.1rem' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {devProcess.map((proc, i) => {
             const Icon = processIcons[i] || Code2
+            const isLast = i === devProcess.length - 1
             return (
-              <Reveal key={proc.step} delay={i * 0.06}>
+              <Reveal
+                key={proc.step}
+                delay={i * 0.06}
+                className={isLast ? 'sm:col-span-2 lg:col-span-1' : ''}
+              >
                 <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
                   <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
                   <span style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--blue-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><Icon size={21} color="#2563EB" /></span>
@@ -135,7 +140,7 @@ export default function Services() {
       <Section bg="ink">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center' }} className="grid-2">
           <div>
-            <div className="eyebrow" style={{ marginBottom: '1.25rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Why The Kada</div>
+            <div className="eyebrow" style={{ marginBottom: '1.25rem', background: 'rgba(94,144,250,0.14)', color: '#93B8FF', borderColor: 'rgba(94,144,250,0.25)' }}>Why The Kada Digital Ventures</div>
             <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff', lineHeight: 1.12, marginBottom: '2rem' }}>
               A partner that ships, and sticks around.
             </h2>

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import {
   ArrowUpRight, ArrowRight, Check,
-  Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles,
+  Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, Bike,
   KeyRound, Database, RefreshCw, ShieldCheck, Code2,
 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
@@ -15,6 +15,7 @@ const productIcons: Record<string, React.ComponentType<{ size?: number; color?: 
   'kada-ledger': BookText,
   devflow: KanbanSquare,
   lunoo: Sparkles,
+  'the-kada': Bike,
 }
 
 const connections = [
@@ -35,10 +36,10 @@ export default function Ecosystem() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ maxWidth: 780, margin: '0 auto' }}>
             <div className="eyebrow" style={{ marginBottom: '1.5rem' }}><Sparkles size={14} /> Product ecosystem</div>
             <h1 style={{ fontSize: 'clamp(2.5rem, 5.6vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.4rem' }}>
-              Six products. <span className="gradient-text-blue">One platform.</span>
+              Seven products. <span className="gradient-text-blue">One platform.</span>
             </h1>
             <p className="lead" style={{ maxWidth: 600, margin: '0 auto 2.25rem' }}>
-              A purpose-built tool for every part of the business — restaurants, hotels, retail, merchant finance, agency workflows, and personal productivity. Built in-house, designed to work together.
+              A purpose-built tool for every part of the business — restaurants, hotels, retail, food delivery, merchant finance, agency workflows, and personal productivity. Built in-house, designed to work together.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Button to="/request-proposal" size="lg">Request a proposal <ArrowUpRight size={17} /></Button>

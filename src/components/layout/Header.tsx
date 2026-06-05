@@ -3,12 +3,14 @@ import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ChevronDown, Menu, X, ArrowUpRight, ArrowRight,
-  Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles,
+  Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, Bike,
   Globe, Smartphone, Rocket, Workflow, PenTool, Cloud,
+  Building2, Cpu, Briefcase, BookOpen, Megaphone, TrendingUp,
 } from 'lucide-react'
 import Logo from './Logo'
 
 const productItems = [
+  { label: 'The Kada', sub: 'Hyperlocal food delivery', path: '/products/the-kada', color: '#2563EB', Icon: Bike },
   { label: 'Kada Dine', sub: 'Restaurant POS & billing', path: '/products/kada-dine', color: '#FF6B2B', Icon: Utensils },
   { label: 'Kada Stay', sub: 'Hotel & guest management', path: '/products/kada-stay', color: '#7C6AF7', Icon: BedDouble },
   { label: 'SellrApp', sub: 'Online storefront builder', path: '/products/sellrapp', color: '#F59E0B', Icon: Store },
@@ -28,14 +30,14 @@ const serviceItems = [
 
 const companyCols = [
   { heading: 'Company', links: [
-    { label: 'About Us', sub: 'Our mission & team', path: '/about' },
-    { label: 'Technology', sub: 'Engineering & stack', path: '/technology' },
-    { label: 'Careers', sub: 'Join the team', path: '/careers' },
+    { label: 'About Us', sub: 'Our mission & team', path: '/about', Icon: Building2 },
+    { label: 'Technology', sub: 'Engineering & stack', path: '/technology', Icon: Cpu },
+    { label: 'Careers', sub: 'Join the team', path: '/careers', Icon: Briefcase },
   ] },
   { heading: 'Resources', links: [
-    { label: 'Insights & Blog', sub: 'Engineering notes', path: '/insights' },
-    { label: 'Press & Media', sub: 'News & coverage', path: '/press' },
-    { label: 'Investor Relations', sub: 'Traction & thesis', path: '/investor-relations' },
+    { label: 'Insights & Blog', sub: 'Engineering notes', path: '/insights', Icon: BookOpen },
+    { label: 'Press & Media', sub: 'News & coverage', path: '/press', Icon: Megaphone },
+    { label: 'Investor Relations', sub: 'Traction & thesis', path: '/investor-relations', Icon: TrendingUp },
   ] },
 ]
 
@@ -256,7 +258,7 @@ function CompanyPanel() {
       {companyCols.map((col) => (
         <div key={col.heading}>
           <div style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94A3B8', padding: '0 0.8rem', marginBottom: '0.35rem' }}>{col.heading}</div>
-          {col.links.map((l) => <MenuItem key={l.path} to={l.path} label={l.label} sub={l.sub} />)}
+          {col.links.map((l) => <MenuItem key={l.path} to={l.path} label={l.label} sub={l.sub} Icon={l.Icon} />)}
         </div>
       ))}
     </div>

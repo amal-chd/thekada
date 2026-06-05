@@ -66,7 +66,7 @@ export default function Careers() {
 
       {/* PERKS */}
       <Section bg="soft" bordered>
-        <SectionHeading eyebrow="Why The Kada" title="Built for the people who build it." />
+        <SectionHeading eyebrow="Why The Kada Digital Ventures" title="Built for the people who build it." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
           {perks.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.05}>
@@ -84,7 +84,7 @@ export default function Careers() {
 
       <CTASection
         title="Don’t see your role?"
-        subtitle="We’re always glad to meet sharp people. Tell us what you’d love to build and why The Kada."
+        subtitle="We’re always glad to meet sharp people. Tell us what you’d love to build and why The Kada Digital Ventures."
         actions={<Button to="/contact" variant="white" size="lg">Introduce yourself <ArrowUpRight size={17} /></Button>}
       />
 

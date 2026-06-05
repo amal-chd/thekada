@@ -33,19 +33,7 @@ export default function ClosingCTA() {
         </motion.div>
       </Container>
 
-      {/* Oversized brand wordmark for closure */}
-      <div aria-hidden style={{ position: 'relative', zIndex: 1, marginTop: 'clamp(3rem, 6vw, 5rem)', textAlign: 'center', lineHeight: 0.78, overflow: 'hidden' }}>
-        <span style={{
-          fontFamily: "'Outfit', sans-serif", fontWeight: 800,
-          fontSize: 'clamp(4rem, 17vw, 15rem)', letterSpacing: '-0.05em',
-          color: 'transparent', WebkitTextStroke: '1px rgba(147,184,255,0.18)',
-          background: 'linear-gradient(180deg, rgba(147,184,255,0.12), transparent 80%)',
-          WebkitBackgroundClip: 'text', backgroundClip: 'text',
-          userSelect: 'none', display: 'inline-block', transform: 'translateY(22%)',
-        }}>
-          The Kada
-        </span>
-      </div>
+
     </section>
   )
 }

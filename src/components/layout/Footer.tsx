@@ -16,6 +16,7 @@ function SocialIcon({ name }: { name: 'linkedin' | 'x' | 'instagram' }) {
 
 const footerLinks: Record<string, { label: string; path: string }[]> = {
   Products: [
+    { label: 'The Kada', path: '/products/the-kada' },
     { label: 'Kada Dine', path: '/products/kada-dine' },
     { label: 'Kada Stay', path: '/products/kada-stay' },
     { label: 'SellrApp', path: '/products/sellrapp' },
@@ -129,10 +130,7 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Wordmark */}
-        <div aria-hidden style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(3.5rem, 13vw, 9.5rem)', fontWeight: 800, color: 'transparent', WebkitTextStroke: '1px rgba(15,35,75,0.07)', textAlign: 'center', lineHeight: 0.9, letterSpacing: '-0.04em', userSelect: 'none', margin: '1rem 0' }}>
-          The Kada
-        </div>
+
 
         <div style={{ height: 1, background: 'var(--border)', margin: '1.5rem 0' }} />
 

@@ -79,7 +79,7 @@ export default function ScrollStory() {
               Watch the busywork<br /><span className="gradient-text-blue">disappear.</span>
             </h2>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 420, margin: '0 auto' }}>
-              One action ripples across the whole stack — automatically. This is what running on The Kada feels like.
+              One action ripples across the whole stack — automatically. This is what running on The Kada Digital Ventures feels like.
             </p>
           </div>
 
@@ -133,7 +133,7 @@ export default function ScrollStory() {
                 Watch the busywork<br /><span className="gradient-text-blue">disappear.</span>
               </h2>
               <p style={{ fontSize: '1.02rem', color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 380, marginBottom: '2.5rem' }}>
-                One action ripples across the whole stack — automatically. This is what running on The Kada feels like.
+                One action ripples across the whole stack — automatically. This is what running on The Kada Digital Ventures feels like.
               </p>
 
               {/* Progress rail with step dots */}

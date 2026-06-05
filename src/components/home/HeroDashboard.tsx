@@ -6,7 +6,7 @@ const bars = [38, 52, 44, 67, 58, 79, 71, 92]
 /**
  * Premium layered product dashboard mockup for the home hero.
  */
-export default function HeroDashboard() {
+export default function HeroDashboard({ showFloatingCards = true }: { showFloatingCards?: boolean }) {
   return (
     <div style={{ position: 'relative' }}>
       <motion.div
@@ -41,7 +41,7 @@ export default function HeroDashboard() {
         {/* chart */}
         <div style={{ background: 'var(--bg-soft)', borderRadius: 14, padding: '1rem 1.1rem 0.85rem', border: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
-            <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#0B1B33' }}>Weekly throughput</span>
+            <span style={{ fontSize: '0.74rem', fontWeight: 750, color: '#0B1B33' }}>Weekly throughput</span>
             <span style={{ fontSize: '0.66rem', fontWeight: 700, color: '#2563EB', background: 'var(--blue-light)', padding: '0.15rem 0.5rem', borderRadius: 99 }}>Live</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.5rem', height: 72 }}>
@@ -59,33 +59,37 @@ export default function HeroDashboard() {
       </motion.div>
 
       {/* Floating cards */}
-      <motion.div
-        initial={{ opacity: 0, x: -20, y: 10 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="hero-float-card"
-        style={{ position: 'absolute', top: '12%', left: -28, background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)', borderRadius: 14, padding: '0.7rem 1rem', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
-      >
-        <span style={{ width: 32, height: 32, borderRadius: 9, background: '#E9FBF4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CheckCircle2 size={17} color="#10B981" /></span>
-        <span>
-          <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 750, color: '#0B1B33' }}>Deploy successful</span>
-          <span style={{ display: 'block', fontSize: '0.65rem', color: '#64748B' }}>Custom build · v2.4</span>
-        </span>
-      </motion.div>
+      {showFloatingCards && (
+        <>
+          <motion.div
+            initial={{ opacity: 0, x: -20, y: 10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="hero-float-card"
+            style={{ position: 'absolute', top: '12%', left: -28, background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)', borderRadius: 14, padding: '0.7rem 1rem', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
+          >
+            <span style={{ width: 32, height: 32, borderRadius: 9, background: '#E9FBF4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CheckCircle2 size={17} color="#10B981" /></span>
+            <span>
+              <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 750, color: '#0B1B33' }}>Deploy successful</span>
+              <span style={{ display: 'block', fontSize: '0.65rem', color: '#64748B' }}>Custom build · v2.4</span>
+            </span>
+          </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, x: 20, y: -10 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.65 }}
-        className="hero-float-card"
-        style={{ position: 'absolute', bottom: '14%', right: -26, background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)', borderRadius: 14, padding: '0.7rem 1rem', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
-      >
-        <span style={{ width: 32, height: 32, borderRadius: 9, background: 'var(--blue-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ArrowUpRight size={17} color="#2563EB" /></span>
-        <span>
-          <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 750, color: '#0B1B33' }}>Hours saved / wk</span>
-          <span style={{ display: 'block', fontSize: '0.65rem', color: '#64748B' }}>23h of manual work</span>
-        </span>
-      </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20, y: -10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.65 }}
+            className="hero-float-card"
+            style={{ position: 'absolute', bottom: '14%', right: -26, background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(16px)', borderRadius: 14, padding: '0.7rem 1rem', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
+          >
+            <span style={{ width: 32, height: 32, borderRadius: 9, background: 'var(--blue-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ArrowUpRight size={17} color="#2563EB" /></span>
+            <span>
+              <span style={{ display: 'block', fontSize: '0.74rem', fontWeight: 750, color: '#0B1B33' }}>Hours saved / wk</span>
+              <span style={{ display: 'block', fontSize: '0.65rem', color: '#64748B' }}>23h of manual work</span>
+            </span>
+          </motion.div>
+        </>
+      )}
     </div>
   )
 }
