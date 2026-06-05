@@ -94,7 +94,7 @@ export default function Legal() {
           <div style={{ display: 'grid', gridTemplateColumns: '230px 1fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'start' }} className="legal-grid">
             <nav style={{ position: 'sticky', top: 100 }}>
               <div style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '1.1rem' }}>Legal documents</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              <div className="legal-nav-links" style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
                 {allLegalPages.map((page) => {
                   const isActive = key === page.key
                   return (
@@ -133,6 +133,20 @@ export default function Legal() {
         @media (max-width: 900px) {
           .legal-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .legal-grid > nav { position: static !important; }
+          .legal-nav-links {
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            padding-bottom: 0.5rem !important;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .legal-nav-links::-webkit-scrollbar {
+            display: none;
+          }
+          .legal-nav-links > a {
+            flex-shrink: 0 !important;
+          }
         }
       `}</style>
     </main>
