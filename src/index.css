@@ -535,7 +535,7 @@ button { font-family: inherit; }
   /* Prevent lists from going vertical on mobile, keeping them as a 2-column grid */
   .grid-responsive-2col {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: 1fr !important;
     gap: 0.65rem !important;
   }
   .col-span-2-mobile {
@@ -811,7 +811,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 .btn-glow::after {
   content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1;
-  background: linear-gradient(120deg, #2563EB, #7C6AF7, #06B6D4);
+  background: var(--glow-bg, linear-gradient(120deg, #2563EB, #7C6AF7, #06B6D4));
   filter: blur(14px); opacity: 0.45; transition: opacity 0.3s var(--ease);
 }
 .btn-glow:hover::after { opacity: 0.75; }

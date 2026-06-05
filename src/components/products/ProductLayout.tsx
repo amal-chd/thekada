@@ -61,7 +61,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
               </h1>
               <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem' }}>{config.subtitle}</p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                <MagneticButton to={config.primaryCta.to} href={config.primaryCta.href} glow className="btn-primary btn-lg" style={{ background: a, boxShadow: `0 10px 28px -8px ${a}80` }}>
+                <MagneticButton to={config.primaryCta.to} href={config.primaryCta.href} glow className="btn-primary btn-lg" style={{ background: a, boxShadow: `0 10px 28px -8px ${a}80`, '--glow-bg': a } as React.CSSProperties}>
                   {config.primaryCta.label} <ArrowUpRight size={17} />
                 </MagneticButton>
                 <MagneticButton to={config.secondaryCta.to} className="btn-secondary btn-lg">{config.secondaryCta.label}</MagneticButton>
@@ -184,7 +184,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
             <h2 style={{ fontSize: 'clamp(2rem, 4.5vw, 3.1rem)', fontWeight: 800, letterSpacing: '-0.035em', lineHeight: 1.08, color: '#fff', marginBottom: '1.1rem' }}>{config.ctaTitle}</h2>
             <p style={{ fontSize: '1.1rem', color: 'rgba(203,213,225,0.85)', lineHeight: 1.6, maxWidth: 540, margin: '0 auto 2.25rem' }}>{config.ctaSub}</p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <MagneticButton to={config.primaryCta.to} href={config.primaryCta.href} glow className="btn-primary btn-lg" style={{ background: '#fff', color: a }}>{config.primaryCta.label} <ArrowUpRight size={17} /></MagneticButton>
+              <MagneticButton to={config.primaryCta.to} href={config.primaryCta.href} glow className="btn-primary btn-lg" style={{ background: '#fff', color: a, '--glow-bg': '#fff' } as React.CSSProperties}>{config.primaryCta.label} <ArrowUpRight size={17} /></MagneticButton>
               <MagneticButton to="/contact" className="btn-secondary btn-lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Talk to our team</MagneticButton>
             </div>
           </Reveal>

@@ -118,7 +118,7 @@ export default function AppPreview({ accent, preview }: { accent: string; previe
           </div>
 
           {/* KPIs */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '1rem', position: 'relative' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '1rem', position: 'relative' }} className="grid-2">
             {state.kpis.map((k) => (
               <div key={k.label} style={{ background: 'var(--bg-soft)', borderRadius: 14, padding: '0.9rem', border: '1px solid var(--border)' }}>
                 <div style={{ fontSize: '0.63rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{k.label}</div>

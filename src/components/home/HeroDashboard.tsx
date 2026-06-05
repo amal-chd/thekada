@@ -25,7 +25,7 @@ export default function HeroDashboard({ showFloatingCards = true }: { showFloati
         </div>
 
         {/* KPI row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginBottom: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginBottom: '1rem' }} className="grid-2">
           <div style={{ background: 'var(--bg-soft)', borderRadius: 14, padding: '0.95rem', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '0.66rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today's revenue</div>
             <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#0B1B33', marginTop: '0.15rem', letterSpacing: '-0.02em' }}>₹1,24,500</div>
