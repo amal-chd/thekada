@@ -64,7 +64,7 @@ const cards: Card[] = [
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }} className="bento-stat-row">
           <MiniStat color="#2563EB" value="1,240" label="Daily Orders" delta="+22%" />
           <MiniStat color="#2563EB" value="24 min" label="Avg Delivery" />
         </div>
@@ -91,19 +91,19 @@ const cards: Card[] = [
   },
   {
     id: 'hotel', name: 'Kada Stay', benefit: 'App-less guest services & PMS.', color: '#7C6AF7', path: '/products/kada-stay', span: 'b-2col',
-    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#7C6AF7" value="84%" label="Occupancy" delta="+6%" /><MiniStat color="#7C6AF7" value="47" label="Requests" /></div>,
+    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }} className="bento-stat-row"><MiniStat color="#7C6AF7" value="84%" label="Occupancy" delta="+6%" /><MiniStat color="#7C6AF7" value="47" label="Requests" /></div>,
   },
   {
     id: 'sellr', name: 'SellrApp', benefit: 'Online store in minutes. 0% commission.', color: '#F59E0B', path: '/products/sellrapp', span: 'b-2col',
-    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#F59E0B" value="₹12.7K" label="Sales" delta="+24%" /><MiniStat color="#F59E0B" value="38" label="Orders" /></div>,
+    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }} className="bento-stat-row"><MiniStat color="#F59E0B" value="₹12.7K" label="Sales" delta="+24%" /><MiniStat color="#F59E0B" value="38" label="Orders" /></div>,
   },
   {
     id: 'ledger', name: 'Kada Ledger', benefit: 'Digital khata that collects dues for you — automated WhatsApp reminders.', color: '#10B981', path: '/products/kada-ledger', span: 'b-2col',
-    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#10B981" value="₹1.8L" label="To collect" /><MiniStat color="#10B981" value="126" label="Customers" /></div>,
+    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }} className="bento-stat-row"><MiniStat color="#10B981" value="₹1.8L" label="To collect" /><MiniStat color="#10B981" value="126" label="Customers" /></div>,
   },
   {
     id: 'devflow', name: 'DevFlow', benefit: 'Run your agency from one workspace.', color: '#06B6D4', path: '/products/devflow', span: 'b-2col',
-    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#06B6D4" value="14" label="Projects" /><MiniStat color="#06B6D4" value="38h" label="Billable" delta="+5h" /></div>,
+    mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }} className="bento-stat-row"><MiniStat color="#06B6D4" value="14" label="Projects" /><MiniStat color="#06B6D4" value="38h" label="Billable" delta="+5h" /></div>,
   },
 ]
 

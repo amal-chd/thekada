@@ -513,7 +513,7 @@ button { font-family: inherit; }
   .grid-responsive-2col {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+    gap: 0.65rem !important;
   }
   .col-span-2-mobile {
     grid-column: span 2 !important;
@@ -525,6 +525,56 @@ button { font-family: inherit; }
   .product-stat-card:nth-child(even) {
     border-left: 1px solid var(--border) !important;
     padding-left: 1rem !important;
+  }
+  
+  /* Card padding, text sizing, and layout optimization in mobile responsive grids */
+  .grid-responsive-2col .card-premium,
+  .grid-responsive-2col .card,
+  .grid-responsive-2col .card-feature,
+  .grid-responsive-2col .service-card,
+  .grid-responsive-2col .review-card {
+    padding: 0.95rem !important;
+    border-radius: var(--radius-md) !important;
+  }
+  /* Adjust titles and texts for readability */
+  .grid-responsive-2col h3 {
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.35rem !important;
+  }
+  .grid-responsive-2col p {
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+  }
+  .grid-responsive-2col span,
+  .grid-responsive-2col div {
+    font-size: 0.78rem !important;
+  }
+  /* Scale down icon containers and inner icons */
+  .grid-responsive-2col .card-premium span:first-child,
+  .grid-responsive-2col .card span:first-child,
+  .grid-responsive-2col .card-feature span:first-child,
+  .grid-responsive-2col .service-card span:first-child,
+  .grid-responsive-2col .card-premium div > span:first-child,
+  .grid-responsive-2col .card div > span:first-child,
+  .grid-responsive-2col .card-feature div > span:first-child,
+  .grid-responsive-2col .service-card div > span:first-child {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 9px !important;
+    margin-bottom: 0.7rem !important;
+  }
+  .grid-responsive-2col .card-premium span:first-child svg,
+  .grid-responsive-2col .card span:first-child svg,
+  .grid-responsive-2col .card-feature span:first-child svg,
+  .grid-responsive-2col .service-card span:first-child svg,
+  .grid-responsive-2col .card-premium div > span:first-child svg,
+  .grid-responsive-2col .card div > span:first-child svg,
+  .grid-responsive-2col .card-feature div > span:first-child svg,
+  .grid-responsive-2col .service-card div > span:first-child svg {
+    width: 17px !important;
+    height: 17px !important;
   }
 }
 
@@ -640,7 +690,7 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 600px) {
   .bento {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+    gap: 0.65rem !important;
   }
   .bento > * {
     grid-column: span 1 !important;
@@ -652,6 +702,39 @@ html.lenis, html.lenis body { height: auto; }
   }
   .capabilities-bento > div:nth-child(5) {
     grid-column: span 2 !important;
+  }
+  /* Card padding, text sizing, and layout optimization in mobile bento */
+  .bento > * > a,
+  .bento > * > div {
+    padding: 0.95rem !important;
+  }
+  .bento h3 {
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+  }
+  .bento p {
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.65rem !important;
+  }
+  .bento span, .bento div {
+    font-size: 0.76rem !important;
+  }
+  /* Bento stat rows inside 1-column mobile bento cards stack vertically */
+  .bento-stat-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.4rem !important;
+  }
+  .bento-stat-row > div {
+    padding: 0.45rem 0.65rem !important;
+    border-radius: 8px !important;
+  }
+  .bento-stat-row > div > div:first-child {
+    font-size: 1.15rem !important;
+  }
+  .bento-stat-row > div > div:nth-child(2) {
+    font-size: 0.62rem !important;
   }
 }
 
