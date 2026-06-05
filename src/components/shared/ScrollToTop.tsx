@@ -6,11 +6,26 @@ import { useLocation } from 'react-router-dom'
 export function ScrollRestorer() {
   const { pathname } = useLocation()
   useEffect(() => {
-    const win = window as unknown as { lenis?: { scrollTo: (target: number, options?: { immediate: boolean }) => void } }
-    if (win.lenis) {
-      win.lenis.scrollTo(0, { immediate: true })
-    } else {
+    const reset = () => {
       window.scrollTo(0, 0)
+      const win = window as unknown as { lenis?: { scrollTo: (target: number, options?: { immediate: boolean }) => void } }
+      if (win.lenis) {
+        win.lenis.scrollTo(0, { immediate: true })
+      }
+    }
+    
+    // Reset immediately
+    reset()
+    
+    // Handle dynamic lazy-loaded page mounts and reflows
+    const t1 = setTimeout(reset, 20)
+    const t2 = setTimeout(reset, 100)
+    const t3 = setTimeout(reset, 250)
+    
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
     }
   }, [pathname])
   return null
