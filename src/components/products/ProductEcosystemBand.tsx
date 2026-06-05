@@ -7,7 +7,7 @@ type Sib = { id: string; name: string; sub: string; color: string; path: string;
 
 const ALL: Sib[] = [
   { id: 'kada-dine', name: 'Kada Dine', sub: 'Restaurant POS', color: '#FF6B2B', path: '/products/kada-dine', Icon: Utensils },
-  { id: 'kada-stay', name: 'Kada Dine Hotel', sub: 'Hotel & guest PMS', color: '#7C6AF7', path: '/products/kada-stay', Icon: BedDouble },
+  { id: 'kada-stay', name: 'Kada Stay', sub: 'Hotel & guest PMS', color: '#7C6AF7', path: '/products/kada-stay', Icon: BedDouble },
   { id: 'sellrapp', name: 'SellrApp', sub: 'Online storefronts', color: '#F59E0B', path: '/products/sellrapp', Icon: Store },
   { id: 'kada-ledger', name: 'Kada Ledger', sub: 'Digital khata', color: '#10B981', path: '/products/kada-ledger', Icon: BookText },
   { id: 'devflow', name: 'DevFlow', sub: 'Agency workspace', color: '#06B6D4', path: '/products/devflow', Icon: KanbanSquare },

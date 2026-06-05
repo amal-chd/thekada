@@ -15,7 +15,7 @@ type Node = {
 
 const NODES: Node[] = [
   { id: 'dine', name: 'Kada Dine', desc: 'Restaurant POS & billing', color: '#FF6B2B', Icon: Utensils, path: '/products/kada-dine', angle: -90 },
-  { id: 'hotel', name: 'Kada Dine Hotel', desc: 'Hotel & guest management', color: '#7C6AF7', Icon: BedDouble, path: '/products/kada-stay', angle: -30 },
+  { id: 'hotel', name: 'Kada Stay', desc: 'Hotel & guest management', color: '#7C6AF7', Icon: BedDouble, path: '/products/kada-stay', angle: -30 },
   { id: 'sellr', name: 'SellrApp', desc: 'Online storefronts', color: '#F59E0B', Icon: Store, path: '/products/sellrapp', angle: 30 },
   { id: 'ledger', name: 'Kada Ledger', desc: 'Digital khata & invoicing', color: '#10B981', Icon: BookText, path: '/products/kada-ledger', angle: 90 },
   { id: 'devflow', name: 'DevFlow', desc: 'Client & project workflows', color: '#06B6D4', Icon: KanbanSquare, path: '/products/devflow', angle: 150 },
@@ -100,9 +100,9 @@ export default function EcosystemMap() {
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
       }}>
         <div style={{ width: 34, height: 34, marginBottom: 6 }}>
-          <img src="/logo.svg" alt="The Kada Logo" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
+          <img src="/favicon.png" alt="The Kada Logo" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
         </div>
-        <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>Kada OS</div>
+        <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>Our Products</div>
         <div style={{ fontSize: '0.6rem', color: 'rgba(147,184,255,0.9)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>Business Core</div>
       </div>
 

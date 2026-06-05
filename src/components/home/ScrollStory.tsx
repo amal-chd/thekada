@@ -35,25 +35,32 @@ export default function ScrollStory() {
 
   useEffect(() => {
     if (isMobile) return
-    let raf = 0
-    const onScroll = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        const el = ref.current
-        if (!el) return
-        const rect = el.getBoundingClientRect()
-        const total = rect.height - window.innerHeight
-        const scrolled = Math.min(Math.max(-rect.top, 0), total)
-        setProgress(total > 0 ? scrolled / total : 0)
-      })
+    let last = -1
+    const compute = () => {
+      const el = ref.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const total = rect.height - window.innerHeight
+      const scrolled = Math.min(Math.max(-rect.top, 0), total)
+      const p = total > 0 ? scrolled / total : 0
+      if (Math.abs(p - last) > 0.001) {
+        last = p
+        setProgress(p)
+      }
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+
+    compute()
+
+    // Lenis (smooth-scroll engine set up in App.tsx) emits its own scroll event
+    // on every frame it moves. Prefer it; fall back to native scroll otherwise.
+    const lenis = (window as unknown as { lenis?: { on: (e: string, cb: () => void) => void; off: (e: string, cb: () => void) => void } }).lenis
+    if (lenis?.on) lenis.on('scroll', compute)
+    window.addEventListener('scroll', compute, { passive: true })
+    window.addEventListener('resize', compute)
     return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      if (lenis?.off) lenis.off('scroll', compute)
+      window.removeEventListener('scroll', compute)
+      window.removeEventListener('resize', compute)
     }
   }, [isMobile])
 

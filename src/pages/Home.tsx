@@ -11,6 +11,9 @@ import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter, Sp
 import PremiumHero from '../components/home/PremiumHero'
 import EcosystemMap from '../components/home/EcosystemMap'
 import BentoProducts from '../components/home/BentoProducts'
+import ProductShowcase from '../components/home/ProductShowcase'
+import WhyChooseUs from '../components/home/WhyChooseUs'
+import FounderSection from '../components/home/FounderSection'
 import ScrollStory from '../components/home/ScrollStory'
 import AISection from '../components/home/AISection'
 import ClosingCTA from '../components/home/ClosingCTA'
@@ -92,7 +95,7 @@ export default function Home() {
       <section id="ecosystem" className="section-pad" style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)' }}>
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <SectionHeading
-            eyebrow="The Kada OS"
+            eyebrow="Our Products"
             title="One core. Six products. Zero silos."
             subtitle="Every product plugs into the same intelligent core — sharing data, automation, and business intelligence. This is the operating system for your business."
           />
@@ -229,6 +232,9 @@ export default function Home() {
         <BentoProducts />
       </Section>
 
+      {/* ───────────────── APPLE-STYLE PRODUCT SHOWCASE ───────────────── */}
+      <ProductShowcase />
+
       {/* ───────────────── SCROLL STORY ───────────────── */}
       <section style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)' }}>
         <ScrollStory />
@@ -263,6 +269,9 @@ export default function Home() {
           <Button to="/services">See how we work <ArrowRight size={16} /></Button>
         </Reveal>
       </Section>
+
+      {/* ───────────────── WHY CHOOSE US ───────────────── */}
+      <WhyChooseUs />
 
       {/* ───────────────── INDUSTRIES ───────────────── */}
       <Section bg="white">
@@ -382,6 +391,9 @@ export default function Home() {
           </SpotlightCard>
         </div>
       </Section>
+
+      {/* ───────────────── FOUNDER / JOURNEY ───────────────── */}
+      <FounderSection />
 
       {/* ───────────────── AI SECTION ───────────────── */}
       <AISection />

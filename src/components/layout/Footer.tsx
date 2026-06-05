@@ -17,7 +17,7 @@ function SocialIcon({ name }: { name: 'linkedin' | 'x' | 'instagram' }) {
 const footerLinks: Record<string, { label: string; path: string }[]> = {
   Products: [
     { label: 'Kada Dine', path: '/products/kada-dine' },
-    { label: 'Kada Dine Hotel', path: '/products/kada-stay' },
+    { label: 'Kada Stay', path: '/products/kada-stay' },
     { label: 'SellrApp', path: '/products/sellrapp' },
     { label: 'Kada Ledger', path: '/products/kada-ledger' },
     { label: 'DevFlow', path: '/products/devflow' },

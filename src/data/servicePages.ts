@@ -122,7 +122,7 @@ export const servicePages: Record<string, ServiceConfig> = {
     ],
     tools: ['React', 'Node.js', 'FastAPI', 'PostgreSQL', 'Redis', 'AWS', 'Docker', 'CI/CD'],
     outcomes: [{ value: '99.9%', label: 'Uptime target' }, { value: 'High-volume', label: 'Transaction ready' }],
-    related: [{ name: 'Kada Dine Hotel', path: '/products/kada-stay', color: '#7C6AF7' }],
+    related: [{ name: 'Kada Stay', path: '/products/kada-stay', color: '#7C6AF7' }],
     faqs: [
       { q: 'Can you integrate with our existing systems?', a: 'Yes. We specialise in connecting new systems to existing ERPs, CRMs, and databases via APIs and secure data exchange.' },
       { q: 'How do you handle security?', a: 'Security is foundational: encryption everywhere, role-based access, audit logging, and least-privilege design from the first commit.' },

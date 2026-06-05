@@ -702,3 +702,54 @@ button:focus-visible, a:focus-visible {
   background: linear-gradient(90deg, transparent, rgba(37,99,235,0.15) 20%, rgba(37,99,235,0.15) 80%, transparent);
   border: none;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   POLISH PASS — ripple, animated borders, dynamic shadows, cursor
+   ═══════════════════════════════════════════════════════════ */
+
+/* hide native cursor when custom cursor is active (fine pointer only) */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button { cursor: none; }
+}
+
+/* ── Ripple on click ── */
+.ripple { position: relative; overflow: hidden; }
+.ripple > .ripple-dot {
+  position: absolute; border-radius: 50%; transform: translate(-50%, -50%) scale(0);
+  background: currentColor; opacity: 0.28; pointer-events: none;
+  animation: ripple-anim 0.6s ease-out forwards;
+}
+@keyframes ripple-anim { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+/* ── Animated gradient border (for feature/product cards) ── */
+.border-animated { position: relative; }
+.border-animated::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+  background: conic-gradient(from var(--angle, 0deg), transparent 0%, var(--bc, #2563EB) 12%, transparent 28%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.4s ease;
+  animation: border-spin 4s linear infinite;
+}
+.border-animated:hover::before { opacity: 1; }
+@property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes border-spin { to { --angle: 360deg; } }
+
+/* ── Dynamic shadow on hover-lift ── */
+.lift { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1); }
+.lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-float-lg); }
+
+/* ── Hover glow halo ── */
+.glow-hover { position: relative; transition: box-shadow 0.4s ease; }
+.glow-hover:hover { box-shadow: 0 0 0 1px var(--gc, rgba(37,99,235,0.2)), 0 18px 50px -18px var(--gc, rgba(37,99,235,0.45)); }
+
+/* ── Device mockup tilt frame ── */
+.device-frame {
+  border-radius: 20px; background: #fff; border: 1px solid var(--border);
+  box-shadow: var(--shadow-float-lg); overflow: hidden;
+}
+
+/* keep custom-cursor circles crisp */
+@media (prefers-reduced-motion: reduce) {
+  .border-animated::before, .ripple > .ripple-dot { animation: none !important; }
+}

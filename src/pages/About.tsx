@@ -10,7 +10,7 @@ const timeline = [
   { year: '2023', title: 'Founded in Kannur', desc: 'We started with one belief: small and mid-sized businesses deserve the same quality of software that big companies take for granted.' },
   { year: '2024', title: 'First products ship', desc: 'Kada Dine and Kada Ledger launch — restaurants and merchants replace paper and spreadsheets with software that runs itself.' },
   { year: '2024', title: 'The studio opens', desc: 'Alongside our products, we begin partnering with businesses on bespoke builds — custom web, mobile, and automation software.' },
-  { year: '2025', title: 'The ecosystem grows', desc: 'SellrApp, DevFlow, Kada Dine Hotel, and Lunoo join the lineup — a tool for nearly every part of a business.' },
+  { year: '2025', title: 'The ecosystem grows', desc: 'SellrApp, DevFlow, Kada Stay, and Lunoo join the lineup — a tool for nearly every part of a business.' },
   { year: '2025–26', title: 'Scaling up', desc: '45+ custom partners, 500K+ monthly transactions processed, and a growing client base across India and beyond.' },
 ]
 

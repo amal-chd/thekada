@@ -10,7 +10,7 @@ import Logo from './Logo'
 
 const productItems = [
   { label: 'Kada Dine', sub: 'Restaurant POS & billing', path: '/products/kada-dine', color: '#FF6B2B', Icon: Utensils },
-  { label: 'Kada Dine Hotel', sub: 'Hotel & guest management', path: '/products/kada-stay', color: '#7C6AF7', Icon: BedDouble },
+  { label: 'Kada Stay', sub: 'Hotel & guest management', path: '/products/kada-stay', color: '#7C6AF7', Icon: BedDouble },
   { label: 'SellrApp', sub: 'Online storefront builder', path: '/products/sellrapp', color: '#F59E0B', Icon: Store },
   { label: 'Kada Ledger', sub: 'Digital khata & invoicing', path: '/products/kada-ledger', color: '#10B981', Icon: BookText },
   { label: 'DevFlow', sub: 'Client & project workflows', path: '/products/devflow', color: '#06B6D4', Icon: KanbanSquare },

@@ -34,8 +34,8 @@ export const products = [
   },
   {
     id: 'kada-dine-hotel',
-    name: 'Kada Dine Hotel',
-    shortName: 'Kada Dine Hotel',
+    name: 'Kada Stay',
+    shortName: 'Kada Stay',
     tagline: 'Hotel PMS, bookings, guest services & operations',
     description: 'A comprehensive digital room service and guest ordering platform for hotels, guesthouses, and homestays. Replace physical directories with an app-less QR guest web app and manage requests instantly.',
     color: '#7C6AF7',
@@ -200,9 +200,9 @@ export const caseStudies = [
   },
   {
     client: 'Heritage Resorts, Wayanad',
-    product: 'Kada Dine Hotel PMS',
+    product: 'Kada Stay PMS',
     metric: '92% Guest Satisfaction',
-    description: 'Replaced paper room directory guides with the Kada Dine Hotel guest ordering portal, driving direct guest amenity revenue growth by 28%.',
+    description: 'Replaced paper room directory guides with the Kada Stay guest ordering portal, driving direct guest amenity revenue growth by 28%.',
   },
   {
     client: 'Maryam Group Retailers',

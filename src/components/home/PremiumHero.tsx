@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ChevronRight, Sparkles, TrendingUp, CheckCircle2, Zap, Activity } from 'lucide-react'
-import { Container, Aurora } from '../ui'
+import { Container, Aurora, TextReveal } from '../ui'
 import MagneticButton from '../ui/MagneticButton'
 import HeroDashboard from './HeroDashboard'
 
@@ -35,26 +35,31 @@ export default function PremiumHero() {
               <span>The operating system for modern business</span>
             </motion.div>
 
-            <h1 style={{ fontSize: 'clamp(2.7rem, 5.6vw, 4.6rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.02, color: 'var(--ink)', marginBottom: '1.5rem' }}>
-              The software<br />infrastructure for{' '}
-              <span style={{ position: 'relative', display: 'inline-block', minWidth: '6ch' }}>
+            <TextReveal
+              as="h1"
+              text="Building software that powers modern businesses."
+              highlight={['powers', 'modern', 'businesses.']}
+              highlightClassName="gradient-text-blue"
+              stagger={0.05}
+              style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.04, color: 'var(--ink)', marginBottom: '1.25rem' }}
+            />
+
+            <p className="lead" style={{ maxWidth: 530, marginBottom: '1.25rem' }}>
+              The Kada builds intuitive products and bespoke software that automate operations, eliminate manual
+              busywork, and connect every part of a business into one intelligent system —{' '}
+              <span style={{ position: 'relative', display: 'inline-block', minWidth: '5.5ch', fontWeight: 700 }}>
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={i}
-                    initial={{ y: 18, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -18, opacity: 0 }}
+                    initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -14, opacity: 0 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     className="text-shimmer"
                     style={{ display: 'inline-block' }}
                   >
-                    {rotating[i]}.
+                    {rotating[i]}
                   </motion.span>
                 </AnimatePresence>
-              </span>
-            </h1>
-
-            <p className="lead" style={{ maxWidth: 520, marginBottom: '2.25rem' }}>
-              The Kada builds intuitive products and bespoke software that automate operations, eliminate manual
-              busywork, and connect every part of a business into one intelligent system.
+              </span>{' '}included.
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>

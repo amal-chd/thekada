@@ -4,6 +4,7 @@ import Lenis from '@studio-freight/lenis'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToTop'
+import { CustomCursor } from './components/ui'
 import Home from './pages/Home'
 
 const About = lazy(() => import('./pages/About'))
@@ -86,6 +87,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
+        <CustomCursor />
         <ScrollRestorer />
         <Header />
         <Suspense fallback={<PageLoader />}>

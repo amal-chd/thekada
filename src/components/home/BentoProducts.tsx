@@ -76,7 +76,7 @@ const cards: Card[] = [
     ),
   },
   {
-    id: 'hotel', name: 'Kada Dine Hotel', benefit: 'App-less guest services & PMS.', color: '#7C6AF7', path: '/products/kada-stay', span: 'b-2col',
+    id: 'hotel', name: 'Kada Stay', benefit: 'App-less guest services & PMS.', color: '#7C6AF7', path: '/products/kada-stay', span: 'b-2col',
     mini: <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}><MiniStat color="#7C6AF7" value="84%" label="Occupancy" delta="+6%" /><MiniStat color="#7C6AF7" value="47" label="Requests" /></div>,
   },
   {

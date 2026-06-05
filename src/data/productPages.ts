@@ -67,10 +67,10 @@ export const productPages: Record<string, ProductConfig> = {
     ctaSub: 'Try Kada Dine free for 7 days — billing, QR menus, KDS, and inventory, fully set up for you.',
   },
 
-  // ─────────────────────────── KADA DINE HOTEL ───────────────────────────
+  // ─────────────────────────── KADA STAY ───────────────────────────
   'kada-stay': {
     accent: '#7C6AF7', accentSoft: '#F2F0FF', gradientClass: 'gradient-text-violet',
-    EyebrowIcon: BedDouble, eyebrowLabel: 'Kada Dine Hotel · PMS',
+    EyebrowIcon: BedDouble, eyebrowLabel: 'Kada Stay · PMS',
     title: { pre: 'Guest services & bookings,', accent: 'beautifully digital.' },
     subtitle: 'A digital hospitality platform that replaces printed room books with app-less QR guest services — manage bookings, front-desk dispatch, and in-room ordering from one console.',
     primaryCta: { label: 'Book a demo', to: '/contact' },
@@ -82,7 +82,7 @@ export const productPages: Record<string, ProductConfig> = {
       { value: '24/7', label: 'Operations support' },
     ],
     preview: {
-      appLabel: 'Kada Dine Hotel',
+      appLabel: 'Kada Stay',
       kpis: [{ label: 'Occupancy', value: '84%', delta: '+6%' }, { label: 'Requests today', value: '47' }],
       rows: [
         { label: 'Room 204 · Dining', sub: 'In-room order', value: '₹620', tag: 'Kitchen' },
@@ -113,13 +113,13 @@ export const productPages: Record<string, ProductConfig> = {
       points: ['Up to 28% more in-room dining revenue', 'No printed directories or guest apps', 'Every request tracked, nothing slips', 'Live status board across all departments'],
     },
     faqs: [
-      { q: 'What is Kada Dine Hotel?', a: 'Kada Dine Hotel is a cloud-based digital guest services, ordering, and property management platform for hotels, boutique properties, resorts, and homestays. It digitises guest stays via QR-based, app-less services.' },
+      { q: 'What is Kada Stay?', a: 'Kada Stay is a cloud-based digital guest services, ordering, and property management platform for hotels, boutique properties, resorts, and homestays. It digitises guest stays via QR-based, app-less services.' },
       { q: 'Do guests need to download an app?', a: 'No. Guests scan the in-room QR code and the room directory, room-service menu, and front-desk requests open instantly as a progressive web app in their browser.' },
       { q: 'How does staff track guest requests?', a: 'Your team gets a central operations console with instant audio alerts and categorised request queues — housekeeping, food orders, front desk, and laundry — so nothing gets missed.' },
       { q: 'Does it support bookings and reservations?', a: 'Yes. The platform includes a booking engine, room-status monitors, automated billing sync, and guest feedback tools to run full hotel operations.' },
     ],
     faqTitle: 'Property operations, answered.',
-    faqSubtitle: 'Common questions from hospitality operators using Kada Dine Hotel.',
+    faqSubtitle: 'Common questions from hospitality operators using Kada Stay.',
     ctaTitle: 'Give guests a five-star digital welcome.',
     ctaSub: 'Replace legacy processes with clean QR guest portals. Book a demo with our hospitality team today.',
   },

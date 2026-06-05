@@ -19,7 +19,7 @@ const thesis = [
 const milestones = [
   { year: '2023', title: 'Founded & first product', desc: 'Incorporated in Kannur; Kada Dine and Kada Ledger ship to early customers.', state: 'done' },
   { year: '2024', title: 'PMF + studio launch', desc: 'Strong retention on products; custom software studio opens, adding a second revenue engine.', state: 'done' },
-  { year: '2025', title: 'Ecosystem at six products', desc: 'SellrApp, DevFlow, Kada Dine Hotel, and Lunoo launch; 45+ custom partners onboarded.', state: 'done' },
+  { year: '2025', title: 'Ecosystem at six products', desc: 'SellrApp, DevFlow, Kada Stay, and Lunoo launch; 45+ custom partners onboarded.', state: 'done' },
   { year: '2026', title: 'Scaling nationally', desc: 'Targeting broader SMB expansion across India and a deeper, more integrated product suite.', state: 'next' },
 ]
 
