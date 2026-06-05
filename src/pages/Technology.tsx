@@ -51,7 +51,7 @@ export default function Technology() {
       {/* PRINCIPLES */}
       <Section bg="white">
         <SectionHeading eyebrow="Engineering principles" title="How we think about building software." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {principles.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.07}>
               <div className="card-feature" style={{ height: '100%' }}>
@@ -67,7 +67,7 @@ export default function Technology() {
       {/* STACK */}
       <Section bg="ink">
         <SectionHeading eyebrow="The stack" title="Proven tools, end to end." subtitle="A carefully chosen, modern toolchain we know deeply — so we move fast without cutting corners." accent="#93B8FF" accentBg="rgba(94,144,250,0.14)" titleStyle={{ color: '#fff' }} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {techStack.map((s, i) => {
             const Icon = stackIcons[s.category] || Server
             return (
@@ -92,7 +92,7 @@ export default function Technology() {
       {/* SECURITY */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Security & reliability" title="Enterprise-grade, by default." subtitle="Security isn't a feature we bolt on later — it's how we build from the very first commit." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {security.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
               <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>

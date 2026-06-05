@@ -46,7 +46,7 @@ export default function Press() {
       {/* COVERAGE */}
       <Section bg="white">
         <SectionHeading eyebrow="Featured in" title="Recent press coverage." align="left" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {features.map((item, i) => (
             <Reveal key={item.outlet} delay={i * 0.05}>
               <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
@@ -70,7 +70,7 @@ export default function Press() {
       {/* BRAND ASSETS */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Brand resources" title="Press kit & brand assets." align="left" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {brandAssets.map((asset, i) => (
             <Reveal key={asset.name} delay={i * 0.04}>
               <SpotlightCard className="card-premium" style={{ padding: '1.5rem', cursor: 'pointer' }}>

@@ -67,7 +67,7 @@ export default function Careers() {
       {/* PERKS */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Why The Kada Digital Ventures" title="Built for the people who build it." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {perks.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.05}>
               <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>

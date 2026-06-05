@@ -36,7 +36,7 @@ export default function Contact() {
       {/* CHANNELS */}
       <section className="section-white" style={{ padding: '0 0 clamp(3rem, 6vw, 4.5rem)' }}>
         <Container>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.1rem' }} className="grid-responsive-2col">
             {channels.map((c, i) => (
               <Reveal key={c.title} delay={i * 0.05}>
                 <a href={`mailto:${c.email}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>

@@ -111,7 +111,7 @@ const lunoo = { id: 'lunoo' as const, name: 'Lunoo', benefit: 'Personal producti
 
 export default function BentoProducts() {
   return (
-    <div className="bento">
+    <div className="bento products-bento">
       {cards.map((c, idx) => {
         const I = Icon[c.id]
         return (

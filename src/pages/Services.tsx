@@ -62,11 +62,12 @@ export default function Services() {
       {/* SERVICES GRID */}
       <Section bg="white" id="capabilities">
         <SectionHeading eyebrow="Capabilities" title="End-to-end product engineering." subtitle="Whatever stage you're at — idea, prototype, or scaling product — we have the team to take it forward." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {services.map((s, i) => {
             const meta = serviceMeta[s.id] || { Icon: Code2, slug: '' }
+            const isLast = i === services.length - 1
             return (
-              <Reveal key={s.id} delay={i * 0.04}>
+              <Reveal key={s.id} delay={i * 0.04} className={isLast ? 'col-span-2-mobile' : ''}>
                 <Link to={`/services/${meta.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                   <div className="service-card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                     <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem' }}>
@@ -88,7 +89,7 @@ export default function Services() {
       {/* PROCESS */}
       <Section bg="soft" bordered id="process">
         <SectionHeading eyebrow="How we work" title="A transparent path from idea to impact." subtitle="Agile delivery with a working demo every week — you always know exactly where your project stands." />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {devProcess.map((proc, i) => {
             const Icon = processIcons[i] || Code2
             const isLast = i === devProcess.length - 1
@@ -96,7 +97,7 @@ export default function Services() {
               <Reveal
                 key={proc.step}
                 delay={i * 0.06}
-                className={isLast ? 'sm:col-span-2 lg:col-span-1' : ''}
+                className={isLast ? 'col-span-2 sm:col-span-2 lg:col-span-1' : ''}
               >
                 <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
                   <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
@@ -113,26 +114,29 @@ export default function Services() {
       {/* ENGAGEMENT MODELS */}
       <Section bg="white">
         <SectionHeading eyebrow="Engagement models" title="Work with us the way that fits." subtitle="Whether you need a one-off build or a long-term product partner, there's a model that matches." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
-          {engagements.map((e, i) => (
-            <Reveal key={e.title} delay={i * 0.07}>
-              <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
-                  <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem', flexShrink: 0 }}><e.Icon size={22} color="#2563EB" /></span>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{e.title}</h3>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.4rem' }}>{e.desc}</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: 'auto' }}>
-                    {e.points.map((p) => (
-                      <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-                        <Check size={15} color="#2563EB" style={{ flexShrink: 0 }} />
-                        <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 550 }}>{p}</span>
-                      </div>
-                    ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
+          {engagements.map((e, i) => {
+            const isLast = i === engagements.length - 1
+            return (
+              <Reveal key={e.title} delay={i * 0.07} className={isLast ? 'col-span-2-mobile' : ''}>
+                <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.15rem', flexShrink: 0 }}><e.Icon size={22} color="#2563EB" /></span>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{e.title}</h3>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.4rem' }}>{e.desc}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: 'auto' }}>
+                      {e.points.map((p) => (
+                        <div key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                          <Check size={15} color="#2563EB" style={{ flexShrink: 0 }} />
+                          <span style={{ fontSize: '0.84rem', color: 'var(--dark-muted)', fontWeight: 550 }}>{p}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </SpotlightCard>
-            </Reveal>
-          ))}
+                </SpotlightCard>
+              </Reveal>
+            )
+          })}
         </div>
       </Section>
 

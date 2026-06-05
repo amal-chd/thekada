@@ -69,25 +69,28 @@ export default function Insights() {
           </Reveal>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {rest.map((post, i) => (
-            <Reveal key={post.id} delay={i * 0.05}>
-              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
-                  <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', fontWeight: 750, color: post.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{post.category}</span>
-                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{post.readTime}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
+          {rest.map((post, i) => {
+            const isLast = i === rest.length - 1
+            return (
+              <Reveal key={post.id} delay={i * 0.05} className={isLast && rest.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 750, color: post.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{post.category}</span>
+                      <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{post.readTime}</span>
+                    </div>
+                    <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', lineHeight: 1.4, letterSpacing: '-0.015em', marginBottom: '0.7rem' }}>{post.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, flex: 1 }}>{post.excerpt}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{post.date}</span>
+                      <ArrowUpRight size={15} color={post.color} />
+                    </div>
                   </div>
-                  <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', lineHeight: 1.4, letterSpacing: '-0.015em', marginBottom: '0.7rem' }}>{post.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, flex: 1 }}>{post.excerpt}</p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{post.date}</span>
-                    <ArrowUpRight size={15} color={post.color} />
-                  </div>
-                </div>
-              </SpotlightCard>
-            </Reveal>
-          ))}
+                </SpotlightCard>
+              </Reveal>
+            )
+          })}
         </div>
       </Section>
     </main>

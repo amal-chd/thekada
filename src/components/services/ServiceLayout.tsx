@@ -114,25 +114,28 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
       {/* OFFERINGS */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="What we deliver" title="Capabilities in this practice." accent={a} accentBg={`${a}14`} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {config.offerings.map((o, i) => (
-            <Reveal key={o.title} delay={i * 0.05}>
-              <div className="card-feature" style={{ height: '100%' }}>
-                <span style={{ width: 48, height: 48, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.2rem' }}>
-                  <o.Icon size={22} color={a} />
-                </span>
-                <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{o.title}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{o.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
+          {config.offerings.map((o, i) => {
+            const isLast = i === config.offerings.length - 1
+            return (
+              <Reveal key={o.title} delay={i * 0.05} className={isLast && config.offerings.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                <div className="card-feature" style={{ height: '100%' }}>
+                  <span style={{ width: 48, height: 48, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.2rem' }}>
+                    <o.Icon size={22} color={a} />
+                  </span>
+                  <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{o.title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{o.desc}</p>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </Section>
 
       {/* PROCESS */}
       <Section bg="white">
         <SectionHeading eyebrow="How we work" title="A clear path to delivery." accent={a} accentBg={`${a}14`} subtitle="Transparent, agile, and collaborative — with a working demo every week." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.1rem' }} className="grid-responsive-2col">
           {steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
               <div className="process-card" style={{ position: 'relative', background: '#fff', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>

@@ -234,7 +234,7 @@ export default function Home() {
       {/* ───────────────── INDUSTRIES ───────────────── */}
       <Section bg="white">
         <SectionHeading eyebrow="Industries we serve" title="Deep expertise across sectors." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {industries.map((ind, i) => {
             const meta = industryMeta[ind.name] || { Icon: Building2, color: '#2563EB' }
             return (
@@ -257,7 +257,7 @@ export default function Home() {
       {/* ───────────────── PROCESS ───────────────── */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="How we work" title="A clear path from idea to impact." subtitle="A proven, transparent process for custom builds — with weekly demos so you're never in the dark." />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {devProcess.map((proc, i) => {
             const StepIcon = [Search, PenTool, Code2, ShieldCheck, ServerCog][i] || Code2
             const isLast = i === devProcess.length - 1
@@ -265,7 +265,7 @@ export default function Home() {
               <Reveal
                 key={proc.step}
                 delay={i * 0.06}
-                className={isLast ? 'sm:col-span-2 lg:col-span-1' : ''}
+                className={isLast ? 'col-span-2 sm:col-span-2 lg:col-span-1' : ''}
               >
                 <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
                   <div style={{ position: 'absolute', top: 18, right: 18, fontSize: '2.4rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
@@ -284,23 +284,26 @@ export default function Home() {
       {/* ───────────────── PROOF: case studies + testimonials ───────────────── */}
       <Section bg="white">
         <SectionHeading eyebrow="Proof of impact" title="Real businesses. Measurable results." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
-          {caseStudies.map((cs, i) => (
-            <Reveal key={cs.client} delay={i * 0.06}>
-              <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
-                  <span style={{ alignSelf: 'flex-start', fontSize: '1.4rem', fontWeight: 800, color: '#10B981', background: '#E9FBF4', padding: '0.3rem 0.85rem', borderRadius: 100, letterSpacing: '-0.02em', marginBottom: '1.25rem' }}>{cs.metric}</span>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{cs.description}</p>
-                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 750, color: 'var(--ink)' }}>{cs.client}</div>
-                    <div style={{ fontSize: '0.76rem', color: '#64748B', fontWeight: 600, marginTop: '0.1rem' }}>{cs.product}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }} className="grid-responsive-2col">
+          {caseStudies.map((cs, i) => {
+            const isLast = i === caseStudies.length - 1
+            return (
+              <Reveal key={cs.client} delay={i * 0.06} className={isLast && caseStudies.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                <SpotlightCard className="card-premium" style={{ padding: '2rem', height: '100%' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <span style={{ alignSelf: 'flex-start', fontSize: '1.4rem', fontWeight: 800, color: '#10B981', background: '#E9FBF4', padding: '0.3rem 0.85rem', borderRadius: 100, letterSpacing: '-0.02em', marginBottom: '1.25rem' }}>{cs.metric}</span>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--dark-muted)', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>{cs.description}</p>
+                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 750, color: 'var(--ink)' }}>{cs.client}</div>
+                      <div style={{ fontSize: '0.76rem', color: '#64748B', fontWeight: 600, marginTop: '0.1rem' }}>{cs.product}</div>
+                    </div>
                   </div>
-                </div>
-              </SpotlightCard>
-            </Reveal>
-          ))}
+                </SpotlightCard>
+              </Reveal>
+            )
+          })}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {[
             { quote: 'They replaced our messy billing spreadsheets with a system that syncs everything in real time. Our POS is twice as fast and month-end takes minutes, not days.', name: 'Paragon Cafe', loc: 'Kozhikode', color: '#FF6B2B', initial: 'P' },
             { quote: 'SellrApp let us launch an online storefront in an afternoon and accept UPI instantly. The zero-commission model saved us over ₹35,000 in our first month.', name: 'Maryam Group Stores', loc: 'Kannur', color: '#EC4899', initial: 'M' },

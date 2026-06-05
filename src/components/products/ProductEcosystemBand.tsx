@@ -30,11 +30,12 @@ export default function ProductEcosystemBand({ accent }: { accent: string }) {
         accent={accent}
         accentBg={`${accent}14`}
       />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }} className="grid-responsive-2col">
         {ALL.map((p, i) => {
           const isCurrent = p.id === currentId
+          const isLast = i === ALL.length - 1
           return (
-            <Reveal key={p.id} delay={i * 0.04}>
+            <Reveal key={p.id} delay={i * 0.04} className={isLast ? 'col-span-2-mobile' : ''}>
               {isCurrent ? (
                 <div style={{ position: 'relative', height: '100%', borderRadius: 18, padding: '1.5rem', background: `linear-gradient(160deg, ${p.color}14, ${p.color}06)`, border: `1.5px solid ${p.color}44`, overflow: 'hidden' }}>
                   <div aria-hidden style={{ position: 'absolute', top: -40, right: -40, width: 120, height: 120, borderRadius: '50%', background: `${p.color}22`, filter: 'blur(14px)' }} />

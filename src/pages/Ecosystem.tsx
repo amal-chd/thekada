@@ -51,11 +51,11 @@ export default function Ecosystem() {
 
       {/* PRODUCT GRID */}
       <Section bg="white" id="products">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {products.map((p, i) => {
             const Icon = productIcons[p.id] || Sparkles
             return (
-              <Reveal key={p.id} delay={i * 0.05}>
+              <Reveal key={p.id} delay={i * 0.05} className={p.id === 'the-kada' || p.id === 'kada-dine-restaurant' || p.id === 'lunoo' ? 'col-span-2-mobile' : ''}>
                 <Link to={p.path} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                   <SpotlightCard className="card-premium spotlight" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: p.color }} />
@@ -91,7 +91,7 @@ export default function Ecosystem() {
       {/* HOW THEY CONNECT */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Better together" title="An ecosystem, not just a toolbox." subtitle="Each product stands strong on its own — but used together, they share one account, one data layer, and one security standard." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {connections.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.06}>
               <div className="card" style={{ padding: '1.85rem', height: '100%' }}>

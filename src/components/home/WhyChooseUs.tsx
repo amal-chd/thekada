@@ -22,7 +22,7 @@ export default function WhyChooseUs() {
         title={<TextReveal as="span" text="One partner for every layer of your software." highlight="every layer" style={{ display: 'inline' }} />}
         subtitle="From a single feature to a full platform — products, custom builds, automation, cloud, AI and mobile, all under one roof."
       />
-      <div className="bento">
+      <div className="bento capabilities-bento">
         {caps.map((c, i) => (
           <motion.div
             key={c.title}

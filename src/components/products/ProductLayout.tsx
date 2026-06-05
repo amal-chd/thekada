@@ -73,9 +73,9 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
                 </div>
               )}
               {/* animated stat counters */}
-              <div style={{ display: 'flex', gap: 'clamp(1.4rem, 4vw, 2.5rem)', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 'clamp(1.4rem, 4vw, 2.5rem)', flexWrap: 'wrap' }} className="grid-responsive-2col">
                 {config.stats.map((s, i) => (
-                  <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}>
+                  <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }} className="product-stat-card">
                     <AnimatedCounter value={s.value} style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 800, color: a, letterSpacing: '-0.03em', lineHeight: 1, display: 'block', fontFamily: "'Outfit', sans-serif" }} />
                     <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600, marginTop: '0.35rem', maxWidth: 130 }}>{s.label}</div>
                   </motion.div>
@@ -91,20 +91,23 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
       {config.audiences && (
         <Section bg="soft" bordered>
           <SectionHeading eyebrow="Built for" title={config.audiencesHeading || 'Made for businesses like yours.'} accent={a} accentBg={`${a}14`} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
-            {config.audiences.map((aud, i) => (
-              <Reveal key={aud.label} delay={i * 0.05}>
-                <SpotlightCard className="card-premium" style={{ height: '100%' }}>
-                  <div style={{ padding: '1.85rem', height: '100%' }}>
-                    <span style={{ width: 50, height: 50, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}>
-                      <aud.Icon size={23} color={a} />
-                    </span>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem' }}>{aud.label}</h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{aud.desc}</p>
-                  </div>
-                </SpotlightCard>
-              </Reveal>
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
+            {config.audiences.map((aud, i, arr) => {
+              const isLast = i === arr.length - 1
+              return (
+                <Reveal key={aud.label} delay={i * 0.05} className={isLast && arr.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                  <SpotlightCard className="card-premium" style={{ height: '100%' }}>
+                    <div style={{ padding: '1.85rem', height: '100%' }}>
+                      <span style={{ width: 50, height: 50, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}>
+                        <aud.Icon size={23} color={a} />
+                      </span>
+                      <h3 style={{ fontSize: '1.05rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem' }}>{aud.label}</h3>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{aud.desc}</p>
+                    </div>
+                  </SpotlightCard>
+                </Reveal>
+              )
+            })}
           </div>
         </Section>
       )}
@@ -112,23 +115,26 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
       {/* ───────────────── FEATURES (spotlight + numbered) ───────────────── */}
       <Section bg="white">
         <SectionHeading eyebrow="Features" title={config.featuresHeading} subtitle={config.featuresSub} accent={a} accentBg={`${a}14`} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
-          {config.features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.05}>
-              <SpotlightCard className="card-premium" style={{ height: '100%' }}>
-                <div style={{ padding: '1.85rem', height: '100%', position: 'relative' }}>
-                  <span aria-hidden style={{ position: 'absolute', top: '1.3rem', right: '1.5rem', fontFamily: "'Outfit', sans-serif", fontSize: '2.2rem', fontWeight: 800, color: `${a}14`, lineHeight: 1 }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span style={{ width: 48, height: 48, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.2rem' }}>
-                    <f.Icon size={22} color={a} />
-                  </span>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{f.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.desc}</p>
-                </div>
-              </SpotlightCard>
-            </Reveal>
-          ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
+          {config.features.map((f, i) => {
+            const isLast = i === config.features.length - 1
+            return (
+              <Reveal key={f.title} delay={i * 0.05} className={isLast && config.features.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                <SpotlightCard className="card-premium" style={{ height: '100%' }}>
+                  <div style={{ padding: '1.85rem', height: '100%', position: 'relative' }}>
+                    <span aria-hidden style={{ position: 'absolute', top: '1.3rem', right: '1.5rem', fontFamily: "'Outfit', sans-serif", fontSize: '2.2rem', fontWeight: 800, color: `${a}14`, lineHeight: 1 }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ width: 48, height: 48, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.2rem' }}>
+                      <f.Icon size={22} color={a} />
+                    </span>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{f.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.desc}</p>
+                  </div>
+                </SpotlightCard>
+              </Reveal>
+            )
+          })}
         </div>
       </Section>
 

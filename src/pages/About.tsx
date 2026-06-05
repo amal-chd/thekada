@@ -95,7 +95,7 @@ export default function About() {
 
       {/* STATS */}
       <Section bg="ink" size="sm">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.06} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 'clamp(2rem, 4vw, 2.85rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.value}</div>
@@ -129,7 +129,7 @@ export default function About() {
       {/* VALUES */}
       <Section bg="white">
         <SectionHeading eyebrow="What we believe" title="Our operating principles." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 0.05}>
               <div className="card-feature" style={{ height: '100%' }}>
@@ -145,7 +145,7 @@ export default function About() {
       {/* TEAM */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Leadership" title="A senior team that ships." subtitle="A small, experienced group across engineering, design, product, and growth — aligned around one mission and supported by 20+ builders." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {team.map((person, i) => (
             <Reveal key={person.role} delay={i * 0.05}>
               <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>

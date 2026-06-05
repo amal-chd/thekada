@@ -508,6 +508,37 @@ button { font-family: inherit; }
 }
 @media (min-width: 901px) { .show-mobile-only { display: none !important; } }
 
+@media (max-width: 640px) {
+  /* Prevent lists from going vertical on mobile, keeping them as a 2-column grid */
+  .grid-responsive-2col {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  .col-span-2-mobile {
+    grid-column: span 2 !important;
+  }
+  .product-stat-card:nth-child(odd) {
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+  .product-stat-card:nth-child(even) {
+    border-left: 1px solid var(--border) !important;
+    padding-left: 1rem !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .product-stat-card {
+    border-left: 1px solid var(--border) !important;
+    padding-left: 1.25rem !important;
+  }
+  .product-stat-card:first-child {
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+}
+
 /* ═══════════════════════════════════════
    LENIS SMOOTH SCROLL
    ═══════════════════════════════════════ */
@@ -606,7 +637,23 @@ html.lenis, html.lenis body { height: auto; }
 .bento > .b-2row { grid-row: span 2; }
 @media (max-width: 1000px) { .bento { grid-template-columns: repeat(2, 1fr); }
   .bento > .b-2col, .bento > .b-3col, .bento > .b-4col, .bento > .b-6col { grid-column: span 1; } }
-@media (max-width: 600px) { .bento { grid-template-columns: 1fr; } .bento > * { grid-column: span 1 !important; } }
+@media (max-width: 600px) {
+  .bento {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  .bento > * {
+    grid-column: span 1 !important;
+  }
+  .bento > .b-3col,
+  .bento > .b-4col,
+  .bento > .b-6col {
+    grid-column: span 2 !important;
+  }
+  .capabilities-bento > div:nth-child(5) {
+    grid-column: span 2 !important;
+  }
+}
 
 /* ── Marquee logos (premium) ── */
 .marquee-mask {
