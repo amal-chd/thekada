@@ -114,7 +114,7 @@ export default function Header() {
 
         {/* Mobile toggle */}
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu"
-          style={{ background: 'none', border: 'none', color: '#0B1B33', cursor: 'pointer', padding: '0.4rem', display: 'none' }}
+          style={{ background: 'none', border: 'none', color: '#0B1B33', cursor: 'pointer', width: 44, height: 44, display: 'none', alignItems: 'center', justifyContent: 'center' }}
           className="mobile-menu-btn">
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -177,7 +177,19 @@ export default function Header() {
       </AnimatePresence>
 
       <style>{`
-        @media (max-width: 540px) { .logo-vc { display: none; } }
+        @media (max-width: 540px) {
+          .logo-text-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1px !important;
+            line-height: 1 !important;
+          }
+          .logo-vc {
+            font-size: 9px !important;
+            margin-top: -1px;
+            opacity: 0.85;
+          }
+        }
       `}</style>
     </header>
   )
