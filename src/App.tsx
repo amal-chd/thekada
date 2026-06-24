@@ -14,6 +14,7 @@ const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Technology = lazy(() => import('./pages/Technology'))
 const Insights = lazy(() => import('./pages/Insights'))
 const Careers = lazy(() => import('./pages/Careers'))
+const InternshipPortal = lazy(() => import('./pages/InternshipPortal'))
 const Contact = lazy(() => import('./pages/Contact'))
 const InvestorRelations = lazy(() => import('./pages/InvestorRelations'))
 const KadaDine = lazy(() => import('./pages/products/KadaDine'))
@@ -103,6 +104,7 @@ export default function App() {
             <Route path="/technology" element={<Technology />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/internship" element={<InternshipPortal />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/investor-relations" element={<InvestorRelations />} />
             <Route path="/products/kada-dine" element={<KadaDine />} />

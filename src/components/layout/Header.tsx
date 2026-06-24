@@ -5,7 +5,7 @@ import {
   ChevronDown, Menu, X, ArrowUpRight, ArrowRight,
   Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, Bike,
   Globe, Smartphone, Rocket, Workflow, PenTool, Cloud,
-  Building2, Cpu, Briefcase, BookOpen, Megaphone, TrendingUp,
+  Building2, Cpu, Briefcase, BookOpen, Megaphone, TrendingUp, GraduationCap
 } from 'lucide-react'
 import Logo from './Logo'
 
@@ -33,6 +33,7 @@ const companyCols = [
     { label: 'About Us', sub: 'Our mission & team', path: '/about', Icon: Building2 },
     { label: 'Technology', sub: 'Engineering & stack', path: '/technology', Icon: Cpu },
     { label: 'Careers', sub: 'Join the team', path: '/careers', Icon: Briefcase },
+    { label: 'Internships', sub: 'Apply & onboarding', path: '/careers/internship', Icon: GraduationCap },
   ] },
   { heading: 'Resources', links: [
     { label: 'Insights & Blog', sub: 'Engineering notes', path: '/insights', Icon: BookOpen },

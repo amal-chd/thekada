@@ -945,3 +945,19 @@ button:focus-visible, a:focus-visible {
   .col-span-2-mobile { grid-column: span 1 !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
 }
+
+/* ── Bento Capabilities Grid ── */
+.bento-capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 1024px) {
+  .bento-capabilities-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .bento-capabilities-grid > div {
+    grid-column: span 12 !important;
+  }
+}
+

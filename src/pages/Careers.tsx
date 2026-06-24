@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, MapPin, Clock, Globe, TrendingUp, BookText, Heart, Target } from 'lucide-react'
+import { ArrowUpRight, MapPin, Clock, Globe, TrendingUp, BookText, Heart, Target, GraduationCap, Award } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
 
 const openings = [
@@ -32,9 +32,13 @@ export default function Careers() {
             <h1 style={{ fontSize: 'clamp(2.5rem, 5.4vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.5rem' }}>
               Build software that <span className="gradient-text-blue">actually ships.</span>
             </h1>
-            <p className="lead" style={{ maxWidth: 580 }}>
+            <p className="lead" style={{ maxWidth: 580, marginBottom: '2rem' }}>
               We’re a small, senior team with an outsized mission — building products and custom software that help thousands of businesses run better. Come build with us.
             </p>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button to="/careers/internship"><GraduationCap size={17} /> Apply for an internship</Button>
+              <Button to="/careers/internship#certificate" variant="secondary"><Award size={17} /> Get your certificate</Button>
+            </div>
           </motion.div>
         </Container>
       </section>
@@ -79,6 +83,28 @@ export default function Careers() {
               </SpotlightCard>
             </Reveal>
           ))}
+        </div>
+      </Section>
+
+      {/* INTERNSHIP PORTAL CTA */}
+      <Section bg="soft" bordered id="internship-portal">
+        <div className="card-premium" style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2rem', alignItems: 'center' }}>
+          <div>
+            <span style={{ fontSize: '0.74rem', fontWeight: 750, color: '#2563EB', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Internship Hub</span>
+            <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', fontWeight: 800, color: 'var(--ink)', marginTop: '0.5rem', marginBottom: '1rem', letterSpacing: '-0.03em' }}>
+              Learn. Ship. Grow.
+            </h2>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem', fontSize: '1.02rem' }}>
+              We’ve moved our entire internship setup — applications, onboarding milestones, active intern resources, and certificate verification — to a dedicated, separate portal.
+            </p>
+            <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
+              <Button to="/careers/internship"><GraduationCap size={17} /> Enter Internship Portal</Button>
+              <Button to="/careers/internship#certificate" variant="secondary"><Award size={17} /> Verify Certificate</Button>
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }} className="hidden-mobile">
+            <GraduationCap size={140} color="#2563EB" style={{ opacity: 0.15 }} />
+          </div>
         </div>
       </Section>
 

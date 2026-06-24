@@ -37,6 +37,7 @@ const footerLinks: Record<string, { label: string; path: string }[]> = {
     { label: 'Technology', path: '/technology' },
     { label: 'Product Ecosystem', path: '/ecosystem' },
     { label: 'Careers', path: '/careers' },
+    { label: 'Internships', path: '/careers/internship' },
   ],
   Resources: [
     { label: 'Insights & Blog', path: '/insights' },
