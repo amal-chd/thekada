@@ -138,6 +138,100 @@ export default function Admin() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  // Sync Internship Hub with localStorage
+  useEffect(() => {
+    const localGet = (key: string, initial: any) => {
+      const data = localStorage.getItem(key)
+      if (data) return JSON.parse(data)
+      localStorage.setItem(key, JSON.stringify(initial))
+      return initial
+    }
+
+    const seedApps = [
+      {
+        id: 'app-1',
+        name: 'Meera Joshi',
+        email: 'meera.joshi@example.com',
+        phone: '+91 94456 78120',
+        college: 'NITT Trichy',
+        domain: 'Mobile (React Native / Flutter)',
+        duration: '3 months',
+        start: '2026-07-01',
+        portfolio: 'https://github.com/meerajoshi',
+        message: 'I want to build highly performant mobile applications.',
+        photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=60',
+        cvName: 'Meera_Joshi_Resume.pdf',
+        appliedDate: '2026-06-22'
+      }
+    ]
+
+    const seedInterns = [
+      {
+        id: 'int-1',
+        name: 'Aravind Nair',
+        email: 'aravind.nair@example.com',
+        phone: '+91 98765 43210',
+        college: 'CET Trivandrum',
+        domain: 'Backend Engineering',
+        duration: '3 months',
+        start: '2026-05-15',
+        end: '2026-08-15',
+        status: 'Active',
+        checklist: [
+          { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
+          { id: 'c2', task: 'Set up Local Database & Dev Workspace', done: true },
+          { id: 'c3', task: 'Complete Supabase/PostgreSQL bootcamp tasks', done: true },
+          { id: 'c4', task: 'First Pull Request reviewed & merged', done: false },
+          { id: 'c5', task: 'Submit project handover & documentation', done: false }
+        ],
+        photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60',
+        cvName: 'Aravind_Nair_CV.pdf'
+      },
+      {
+        id: 'int-2',
+        name: 'Anjali Menon',
+        email: 'anjali.menon@example.com',
+        phone: '+91 91234 56789',
+        college: 'LBS Institute of Technology',
+        domain: 'UI/UX Design',
+        duration: '2 months',
+        start: '2026-06-15',
+        end: '2026-08-15',
+        status: 'Onboarding',
+        checklist: [
+          { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
+          { id: 'c2', task: 'Access Figma workspace & Design Guide', done: false },
+          { id: 'c3', task: 'Review user personas for KadaDine app', done: false },
+          { id: 'c4', task: 'Draft wireframes for dashboard navigation', done: false },
+          { id: 'c5', task: 'Submit final design kit handover', done: false }
+        ],
+        photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=60',
+        cvName: 'Anjali_Menon_Portfolio.pdf'
+      }
+    ]
+
+    localGet('tkdv_applications', seedApps)
+    const storedInterns = localGet('tkdv_interns', seedInterns)
+
+    if (storedInterns) {
+      const mapped = storedInterns.map((i: any) => {
+        const assigned = i.checklist ? i.checklist.length : 5
+        const completed = i.checklist ? i.checklist.filter((c: any) => c.done).length : 0
+        return {
+          id: i.id,
+          name: i.name,
+          email: i.email,
+          domain: i.domain,
+          status: i.status,
+          mentor: i.mentorId || (i.domain.includes('Backend') ? 'Siddharth R.' : 'Rohan K.'),
+          tasks: `${completed}/${assigned}`,
+          certId: i.certificateId || ''
+        }
+      })
+      setInterns(mapped)
+    }
+  }, [])
+
   // Push Notification Simulation
   const triggerNotification = (msg: string) => {
     setNotifications(prev => [msg, ...prev].slice(0, 5))
@@ -171,19 +265,113 @@ export default function Admin() {
   }
 
   // Internship Workflows
+  const onboardFirstPendingIntern = () => {
+    const apps = JSON.parse(localStorage.getItem('tkdv_applications') || '[]')
+    if (apps.length === 0) {
+      triggerNotification('No pending applications found in database to onboard.')
+      return
+    }
+    const app = apps[0]
+    
+    const newIntern = {
+      id: 'int-' + Date.now(),
+      name: app.name,
+      email: app.email,
+      phone: app.phone,
+      college: app.college,
+      domain: app.domain,
+      duration: app.duration,
+      start: app.start || new Date().toISOString().split('T')[0],
+      end: '',
+      status: 'Onboarding',
+      photoUrl: app.photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=60',
+      cvName: app.cvName || 'Resume.pdf',
+      checklist: [
+        { id: 'c1', task: 'Submit signed offer letter & college NOC', done: false },
+        { id: 'c2', task: 'Complete Git & workspace onboarding', done: false },
+        { id: 'c3', task: 'Review core architecture & style guide', done: false },
+        { id: 'c4', task: 'Submit first Pull Request for review', done: false },
+        { id: 'c5', task: 'Deliver final task presentation', done: false }
+      ]
+    }
+    
+    const currentInterns = JSON.parse(localStorage.getItem('tkdv_interns') || '[]')
+    const updatedInterns = [...currentInterns, newIntern]
+    localStorage.setItem('tkdv_interns', JSON.stringify(updatedInterns))
+    
+    const updatedApps = apps.filter((a: any) => a.id !== app.id)
+    localStorage.setItem('tkdv_applications', JSON.stringify(updatedApps))
+    
+    const mapped = updatedInterns.map((i: any) => {
+      const assigned = i.checklist ? i.checklist.length : 5
+      const completed = i.checklist ? i.checklist.filter((c: any) => c.done).length : 0
+      return {
+        id: i.id,
+        name: i.name,
+        email: i.email,
+        domain: i.domain,
+        status: i.status,
+        mentor: i.mentorId || (i.domain.includes('Backend') ? 'Siddharth R.' : 'Rohan K.'),
+        tasks: `${completed}/${assigned}`,
+        certId: i.certificateId || ''
+      }
+    })
+    setInterns(mapped)
+    triggerNotification(`Successfully onboarded intern ${app.name} (${app.domain})`)
+  }
+
   const approveInternLeave = (internId: string) => {
-    triggerNotification(`Approved Leave request for Intern ID: ${internId}`)
+    const currentLeaves = JSON.parse(localStorage.getItem('tkdv_leaves') || '[]')
+    let found = false
+    const updatedLeaves = currentLeaves.map((l: any) => {
+      if (l.internId === internId && l.status === 'Pending') {
+        found = true
+        return { ...l, status: 'Approved' }
+      }
+      return l
+    })
+    localStorage.setItem('tkdv_leaves', JSON.stringify(updatedLeaves))
+    
+    if (found) {
+      triggerNotification(`Approved Leave request for Intern ID: ${internId}`)
+    } else {
+      triggerNotification(`Approved general leave allowance for Intern ID: ${internId}`)
+    }
   }
 
   const issueInternCertificate = (internId: string) => {
-    setInterns(prev => prev.map(intern => {
-      if (intern.id === internId) {
-        const certId = `CERT-KADA-${Math.floor(1000 + Math.random() * 9000)}`
-        triggerNotification(`Generated Official Certificate ${certId} for ${intern.name}`)
-        return { ...intern, status: 'Completed', certId }
+    const certId = 'TKDV-INT-2026-' + String(Math.floor(1000 + Math.random() * 9000))
+    
+    const currentInterns = JSON.parse(localStorage.getItem('tkdv_interns') || '[]')
+    const updatedInterns = currentInterns.map((i: any) => {
+      if (i.id === internId) {
+        return { ...i, status: 'Completed', certificateId: certId, end: new Date().toISOString().split('T')[0] }
       }
-      return intern
+      return i
+    })
+    localStorage.setItem('tkdv_interns', JSON.stringify(updatedInterns))
+    
+    const intern = currentInterns.find((i: any) => i.id === internId)
+    if (intern) {
+      const currentCerts = JSON.parse(localStorage.getItem('tkdv_certificates') || '[]')
+      const newCert = {
+        id: certId,
+        name: intern.name,
+        role: intern.domain,
+        start: intern.start,
+        end: new Date().toISOString().split('T')[0]
+      }
+      localStorage.setItem('tkdv_certificates', JSON.stringify([...currentCerts, newCert]))
+    }
+    
+    setInterns(prev => prev.map(i => {
+      if (i.id === internId) {
+        return { ...i, status: 'Completed', certId }
+      }
+      return i
     }))
+    
+    triggerNotification(`Generated and issued Certificate ${certId} for ${intern?.name || 'Intern'}`)
   }
 
   // CRM Workflows
@@ -876,7 +1064,7 @@ export default function Admin() {
                     <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>Internship Workspace Checklist</h3>
                     <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginTop: '0.2rem' }}>Audit and allocate tasks, manage leaves, and issue official verified certificates.</p>
                   </div>
-                  <button className="btn-primary btn-sm" onClick={() => triggerNotification('Simulated automated internship onboarding triggered')}><Plus size={13} /> Onboard Intern</button>
+                  <button className="btn-primary btn-sm" onClick={onboardFirstPendingIntern}><Plus size={13} /> Onboard Intern</button>
                 </div>
 
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.82rem' }}>
