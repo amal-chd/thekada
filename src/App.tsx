@@ -28,6 +28,7 @@ const Press = lazy(() => import('./pages/Press'))
 const Proposal = lazy(() => import('./pages/Proposal'))
 const Legal = lazy(() => import('./pages/Legal'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 
 function PageLoader() {
@@ -118,6 +119,7 @@ export default function App() {
             <Route path="/press" element={<Press />} />
             <Route path="/legal" element={<Legal />} />
             <Route path="/legal/:type" element={<Legal />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
