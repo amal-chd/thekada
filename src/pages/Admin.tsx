@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { 
   Users, FileText, ShieldCheck, Ticket, 
   MapPin, UserCheck, LayoutDashboard, Search, Sparkles, Plus, 
   Send, Laptop, TrendingUp, Award, BadgeCheck, Bell, RefreshCw, 
   Terminal, Moon, Sun, Bike, Utensils, BedDouble, Store, BookText, 
-  KanbanSquare, MessageSquare
+  KanbanSquare, MessageSquare, LogOut
 } from 'lucide-react'
 import { Aurora, SpotlightCard } from '../components/ui'
 
@@ -86,6 +87,7 @@ const INITIAL_AUDIT_LOGS = [
 ]
 
 export default function Admin() {
+  const navigate = useNavigate()
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'org' | 'internships' | 'crm' | 'tickets' | 'franchise' | 'rbac'>('dashboard')
   
@@ -276,7 +278,7 @@ export default function Admin() {
       display: 'flex',
       fontFamily: "'Inter', sans-serif",
       transition: 'all 0.3s ease',
-      paddingTop: '72px'
+      paddingTop: 0
     }}>
       <Aurora soft />
 
@@ -350,6 +352,23 @@ export default function Admin() {
         }}>
           💡 Press <kbd style={{ background: theme === 'dark' ? '#1E293B' : '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: 4, fontFamily: 'monospace' }}>⌘K</kbd> anywhere to open Global Command Palette.
         </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            ...(theme === 'dark' ? trigBase : trigBaseLight),
+            color: '#EF4444',
+            marginTop: '0.5rem',
+            borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(15,35,75,0.08)'}`,
+            paddingTop: '0.85rem',
+            borderRadius: 0,
+            cursor: 'pointer'
+          }}
+        >
+          <LogOut size={16} />
+          Logout Panel
+        </button>
       </aside>
 
       {/* --- MAIN PAGE CONTENT --- */}
@@ -381,6 +400,54 @@ export default function Admin() {
               {activeTab === 'franchise' && 'Franchise & Partner Operations'}
               {activeTab === 'rbac' && 'Access Control & Security Rules'}
             </h1>
+
+            {/* Mobile Tab Selector & Logout */}
+            <div className="show-mobile-only" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap', width: '100%' }}>
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as any)}
+                style={{
+                  background: theme === 'dark' ? '#111A2E' : '#FFFFFF',
+                  color: theme === 'dark' ? '#E2E8F0' : '#0B1B33',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                  padding: '0.45rem 1.75rem 0.45rem 0.75rem',
+                  borderRadius: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  outline: 'none',
+                  cursor: 'pointer',
+                  flexGrow: 1
+                }}
+              >
+                <option value="dashboard">Executive Stats</option>
+                <option value="products">Product Control</option>
+                <option value="org">HR & Org</option>
+                <option value="internships">Internship Hub</option>
+                <option value="crm">CRM & Proposals</option>
+                <option value="tickets">Support Queue</option>
+                <option value="franchise">Franchise Desk</option>
+                <option value="rbac">Security & RBAC</option>
+              </select>
+              <button
+                onClick={() => navigate('/')}
+                style={{
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  color: '#EF4444',
+                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                  padding: '0.45rem 1rem',
+                  borderRadius: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem'
+                }}
+              >
+                <LogOut size={14} />
+                Logout
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>

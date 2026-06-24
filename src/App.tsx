@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
 import Lenis from '@studio-freight/lenis'
 import Header from './components/layout/Header'
@@ -90,42 +90,51 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
-        <CustomCursor />
-        <ScrollRestorer />
-        <Header />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/request-proposal" element={<Proposal />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/ecosystem" element={<Ecosystem />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/:slug" element={<ServiceDetail />} />
-            <Route path="/technology" element={<Technology />} />
-            <Route path="/insights" element={<Insights />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/careers/internship" element={<InternshipPortal />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/investor-relations" element={<InvestorRelations />} />
-            <Route path="/products/kada-dine" element={<KadaDine />} />
-            <Route path="/products/kada-stay" element={<KadaStay />} />
-            <Route path="/products/kada-ledger" element={<KadaLedger />} />
-            <Route path="/products/sellrapp" element={<SellrApp />} />
-            <Route path="/products/devflow" element={<DevFlow />} />
-            <Route path="/products/lunoo" element={<Lunoo />} />
-            <Route path="/products/the-kada" element={<TheKada />} />
-
-            <Route path="/press" element={<Press />} />
-            <Route path="/legal" element={<Legal />} />
-            <Route path="/legal/:type" element={<Legal />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <Footer />
-        <ScrollToTopButton />
-      </div>
+      <AppContent />
     </BrowserRouter>
+  )
+}
+
+function AppContent() {
+  const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
+
+  return (
+    <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
+      <CustomCursor />
+      <ScrollRestorer />
+      {!isAdmin && <Header />}
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/request-proposal" element={<Proposal />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/ecosystem" element={<Ecosystem />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/technology" element={<Technology />} />
+          <Route path="/insights" element={<Insights />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/careers/internship" element={<InternshipPortal />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/investor-relations" element={<InvestorRelations />} />
+          <Route path="/products/kada-dine" element={<KadaDine />} />
+          <Route path="/products/kada-stay" element={<KadaStay />} />
+          <Route path="/products/kada-ledger" element={<KadaLedger />} />
+          <Route path="/products/sellrapp" element={<SellrApp />} />
+          <Route path="/products/devflow" element={<DevFlow />} />
+          <Route path="/products/lunoo" element={<Lunoo />} />
+          <Route path="/products/the-kada" element={<TheKada />} />
+
+          <Route path="/press" element={<Press />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/legal/:type" element={<Legal />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      {!isAdmin && <Footer />}
+      <ScrollToTopButton />
+    </div>
   )
 }
