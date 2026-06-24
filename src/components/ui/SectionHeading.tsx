@@ -14,6 +14,7 @@ export default function SectionHeading({
   accentBg = 'var(--blue-light)',
   maxWidth = 620,
   titleStyle,
+  subtitleStyle,
 }: {
   eyebrow?: ReactNode
   title: ReactNode
@@ -23,6 +24,7 @@ export default function SectionHeading({
   accentBg?: string
   maxWidth?: number
   titleStyle?: React.CSSProperties
+  subtitleStyle?: React.CSSProperties
 }) {
   const centered = align === 'center'
   return (
@@ -70,6 +72,7 @@ export default function SectionHeading({
             maxWidth: centered ? maxWidth - 40 : 600,
             marginLeft: centered ? 'auto' : 0,
             marginRight: centered ? 'auto' : 0,
+            ...subtitleStyle,
           }}
         >
           {subtitle}

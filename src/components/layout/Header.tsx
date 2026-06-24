@@ -80,30 +80,43 @@ export default function Header() {
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
+  const path = location.pathname.replace(/\/$/, '')
+  const isDarkHero = (path === '/services' || path.startsWith('/services/') || path === '/careers/internship') && !scrolled && !activeMenu && !mobileOpen
+
+  const headerBg = isDarkHero
+    ? 'transparent'
+    : (mobileOpen ? '#FFFFFF' : (scrolled || activeMenu ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.75)'))
+
+  const headerBorder = isDarkHero
+    ? 'transparent'
+    : (scrolled || activeMenu || mobileOpen ? 'rgba(15,35,75,0.08)' : 'transparent')
+
+  const logoVariant = isDarkHero ? 'light' : 'dark'
+
   return (
     <header
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         transition: 'all 0.3s ease',
-        background: scrolled || activeMenu ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.55)',
-        backdropFilter: 'blur(20px) saturate(140%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(140%)',
-        borderBottom: `1px solid ${scrolled || activeMenu ? 'rgba(15,35,75,0.08)' : 'transparent'}`,
-        boxShadow: scrolled ? '0 8px 30px rgba(11,27,51,0.05)' : 'none',
+        background: headerBg,
+        backdropFilter: isDarkHero ? 'none' : 'blur(20px) saturate(140%)',
+        WebkitBackdropFilter: isDarkHero ? 'none' : 'blur(20px) saturate(140%)',
+        borderBottom: `1px solid ${headerBorder}`,
+        boxShadow: scrolled && !isDarkHero ? '0 8px 30px rgba(11,27,51,0.05)' : 'none',
       }}
       onMouseLeave={() => setActiveMenu(null)}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1.25rem, 4vw, 2.5rem)', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Logo size={34} />
+        <Logo size={34} variant={logoVariant} />
 
         {/* Desktop nav */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '0.15rem' }} className="hidden-mobile">
           {/* Products */}
-          <NavTrigger label="Products" menuKey="products" activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+          <NavTrigger label="Products" menuKey="products" activeMenu={activeMenu} setActiveMenu={setActiveMenu} isDarkHero={isDarkHero} />
           {/* Services */}
-          <NavTrigger label="Services" menuKey="services" activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+          <NavTrigger label="Services" menuKey="services" activeMenu={activeMenu} setActiveMenu={setActiveMenu} isDarkHero={isDarkHero} />
           {/* Company */}
-          <NavTrigger label="Company" menuKey="company" activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+          <NavTrigger label="Company" menuKey="company" activeMenu={activeMenu} setActiveMenu={setActiveMenu} isDarkHero={isDarkHero} />
         </nav>
 
         {/* Right actions */}
@@ -115,7 +128,7 @@ export default function Header() {
 
         {/* Mobile toggle */}
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu"
-          style={{ background: 'none', border: 'none', color: '#0B1B33', cursor: 'pointer', width: 44, height: 44, display: 'none', alignItems: 'center', justifyContent: 'center' }}
+          style={{ background: 'none', border: 'none', color: isDarkHero ? '#FFFFFF' : '#0B1B33', cursor: 'pointer', width: 44, height: 44, display: 'none', alignItems: 'center', justifyContent: 'center' }}
           className="mobile-menu-btn">
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -181,13 +194,23 @@ export default function Header() {
   )
 }
 
-function NavTrigger({ label, menuKey, activeMenu, setActiveMenu }: {
-  label: string; menuKey: MenuKey; activeMenu: MenuKey | null; setActiveMenu: (k: MenuKey | null) => void
+function NavTrigger({ label, menuKey, activeMenu, setActiveMenu, isDarkHero }: {
+  label: string; menuKey: MenuKey; activeMenu: MenuKey | null; setActiveMenu: (k: MenuKey | null) => void; isDarkHero: boolean
 }) {
   const active = activeMenu === menuKey
+  
+  // Dynamic color resolution
+  const normalColor = isDarkHero ? 'rgba(255,255,255,0.85)' : '#334155'
+  const hoverBg = isDarkHero ? 'rgba(255,255,255,0.08)' : 'rgba(37,99,235,0.06)'
+  const activeColor = isDarkHero ? '#FFF' : '#2563EB'
+
   return (
     <button
-      style={{ ...triggerBase, color: active ? '#2563EB' : '#334155', background: active ? 'rgba(37,99,235,0.06)' : 'transparent' }}
+      style={{
+        ...triggerBase,
+        color: active ? activeColor : normalColor,
+        background: active ? hoverBg : 'transparent'
+      }}
       onMouseEnter={() => setActiveMenu(menuKey)}
       onFocus={() => setActiveMenu(menuKey)}
     >

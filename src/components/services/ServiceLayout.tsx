@@ -6,7 +6,7 @@ import {
   ArrowUpRight, ArrowRight, Check, Search, PenTool, Code2, ServerCog,
   RefreshCw, Server, Play, Terminal, HelpCircle
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard, AnimatedCounter } from '../ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard, AnimatedCounter, Aurora } from '../ui'
 import FAQ, { type FAQItem } from '../shared/FAQ'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
@@ -50,44 +50,44 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
         position: 'relative',
         overflow: 'hidden',
         padding: 'clamp(8rem, 14vw, 11rem) 0 clamp(4.5rem, 8vw, 6.5rem)',
-        background: `linear-gradient(180deg, ${config.accentSoft} 0%, #FFFFFF 100%)`
+        background: '#030712'
       }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
+        <Aurora soft dots />
         <div className="glow-orb" style={{ top: '-15%', right: '5%', width: 550, height: 550, background: `radial-gradient(circle, ${a}16 0%, transparent 70%)` }} />
         
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '3.5rem', alignItems: 'center' }} className="grid-2">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              <div className="eyebrow" style={{ marginBottom: '1.5rem', background: `${a}14`, color: a, borderColor: `${a}28` }}>
-                <config.EyebrowIcon size={13} /> {config.eyebrowLabel}
+              <div className="eyebrow" style={{ marginBottom: '1.5rem', background: `${a}15`, color: '#FFFFFF', borderColor: `${a}30`, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                <config.EyebrowIcon size={13} color={a} /> {config.eyebrowLabel}
               </div>
-              <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 3.85rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.06, color: 'var(--ink)', marginBottom: '1.4rem' }}>
+              <h1 style={{ fontSize: 'clamp(2.4rem, 5vw, 3.85rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.06, color: '#FFFFFF', marginBottom: '1.4rem' }}>
                 {config.title.pre}{' '}
                 <span className={config.gradientClass}>{config.title.accent}</span>
                 {config.title.post ? <>{' '}{config.title.post}</> : null}
               </h1>
-              <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem', color: 'var(--text-secondary)' }}>{config.subtitle}</p>
+              <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem', color: '#9CA3AF' }}>{config.subtitle}</p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Button to="/request-proposal" accent={a} size="lg" className="btn-glow" style={{ '--glow-bg': a } as React.CSSProperties}>Request a proposal <ArrowUpRight size={17} /></Button>
-                <Button to="/services" variant="secondary" size="lg">All services</Button>
+                <Button to="/services" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.2)' }}>All services</Button>
               </div>
             </motion.div>
 
             {/* WHAT'S INCLUDED SPOTLIGHT CARD */}
             <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.12 }} className="hero-illustration">
-              <SpotlightCard className="card-premium" style={{ padding: '2.25rem 2rem', background: '#FFFFFF', borderRadius: 24, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 10px 30px -10px rgba(0,0,0,0.04)' }}>
+              <SpotlightCard className="card-premium" style={{ padding: '2.25rem 2rem', background: 'rgba(17,24,39,0.5)', borderRadius: 24, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
                 <div style={{ position: 'relative', zIndex: 2 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.6rem' }}>
-                    <span style={{ width: 48, height: 48, borderRadius: 14, background: `${a}10`, border: `1px solid ${a}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ width: 48, height: 48, borderRadius: 14, background: `${a}20`, border: `1px solid ${a}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <config.EyebrowIcon size={22} color={a} />
                     </span>
-                    <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.01em' }}>What's Included</span>
+                    <span style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>What's Included</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
                     {config.highlights.map((h) => (
                       <div key={h} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
                         <span style={{ width: 22, height: 22, borderRadius: '50%', background: a, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}><Check size={12} /></span>
-                        <span style={{ fontSize: '0.92rem', color: 'var(--dark-muted)', fontWeight: 600, lineHeight: 1.45 }}>{h}</span>
+                        <span style={{ fontSize: '0.92rem', color: '#D1D5DB', fontWeight: 600, lineHeight: 1.45 }}>{h}</span>
                       </div>
                     ))}
                   </div>

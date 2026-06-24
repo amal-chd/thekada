@@ -66,7 +66,7 @@ export default function Technology() {
 
       {/* STACK */}
       <Section bg="ink">
-        <SectionHeading eyebrow="The stack" title="Proven tools, end to end." subtitle="A carefully chosen, modern toolchain we know deeply — so we move fast without cutting corners." accent="#93B8FF" accentBg="rgba(94,144,250,0.14)" titleStyle={{ color: '#fff' }} />
+        <SectionHeading eyebrow="The stack" title="Proven tools, end to end." subtitle="A carefully chosen, modern toolchain we know deeply — so we move fast without cutting corners." accent="#93B8FF" accentBg="rgba(94,144,250,0.14)" titleStyle={{ color: '#fff' }} subtitleStyle={{ color: '#9CA3AF' }} />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
           {techStack.map((s, i) => {
             const Icon = stackIcons[s.category] || Server

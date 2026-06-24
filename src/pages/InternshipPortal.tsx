@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   GraduationCap, Award, CheckCircle2, Camera, FileText,
   User, Calendar, Briefcase, Clock, CheckSquare, 
-  Settings, LogOut, Download, BadgeCheck, Loader2
+  Settings, LogOut, Download, BadgeCheck, Loader2, Sparkles
 } from 'lucide-react'
-import { SectionHeading, Button, Container, SpotlightCard } from '../components/ui'
+import { SectionHeading, Button, Container, Aurora, TextReveal, TiltCard } from '../components/ui'
 
 // Seeding Initial Data
 const INITIAL_APPLICATIONS = [
@@ -143,11 +143,34 @@ const durations = ['1 month', '2 months', '3 months', '6 months']
 const labelStyle: React.CSSProperties = { 
   fontSize: '0.74rem', 
   fontWeight: 750, 
-  color: 'var(--dark-muted)', 
+  color: '#94A3B8', 
   display: 'block', 
   marginBottom: '0.5rem', 
   textTransform: 'uppercase', 
   letterSpacing: '0.04em' 
+}
+
+const inputStyle: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  color: '#FFFFFF',
+  borderRadius: 10,
+  padding: '0.65rem 0.9rem',
+  width: '100%',
+  outline: 'none',
+  fontSize: '0.88rem',
+  transition: 'all 0.25s ease'
+}
+
+const selectStyle: React.CSSProperties = {
+  background: '#0B0F19',
+  border: '1px solid rgba(255,255,255,0.08)',
+  color: '#FFFFFF',
+  borderRadius: 10,
+  padding: '0.65rem 0.9rem',
+  width: '100%',
+  outline: 'none',
+  fontSize: '0.88rem'
 }
 
 function fmt(d: string) {
@@ -402,9 +425,7 @@ export default function InternshipPortal() {
     const intern = interns.find(i => i.id === internId)
     if (!intern) return
 
-    const certId = `TKDV-INT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
-    
-    // Add to certificates database
+    const certId = 'TKDV-INT-2026-' + String(Math.floor(1000 + Math.random() * 9000))
     const newCert = {
       id: certId,
       name: intern.name,
@@ -417,18 +438,7 @@ export default function InternshipPortal() {
     setCertificates(updatedCerts)
     updateStorage('tkdv_certificates', updatedCerts)
 
-    // Mark intern status as completed and store certificateId
-    const updatedInterns = interns.map(i => {
-      if (i.id === internId) {
-        return { 
-          ...i, 
-          status: 'Completed', 
-          certificateId: certId,
-          end: i.end || new Date().toISOString().split('T')[0]
-        }
-      }
-      return i
-    })
+    const updatedInterns = interns.map(i => i.id === internId ? { ...i, certificateId: certId } : i)
     setInterns(updatedInterns)
     updateStorage('tkdv_interns', updatedInterns)
     if (loggedInIntern && loggedInIntern.id === internId) {
@@ -436,112 +446,83 @@ export default function InternshipPortal() {
     }
   }
 
-  // Reset System State
+  // Reset local state to initial seed
   const handleResetSystem = () => {
-    localStorage.removeItem('tkdv_applications')
-    localStorage.removeItem('tkdv_interns')
-    localStorage.removeItem('tkdv_leaves')
-    localStorage.removeItem('tkdv_reports')
-    localStorage.removeItem('tkdv_certificates')
-
-    setApplications(INITIAL_APPLICATIONS)
-    setInterns(INITIAL_INTERNS)
-    setLeaves(INITIAL_LEAVES)
-    setReports(INITIAL_REPORTS)
-    setCertificates(INITIAL_CERTIFICATES)
-    setLoggedInIntern(null)
-    alert('Local system state reset to initial seed data.')
+    if (window.confirm('Reset local storage internship data to initial seed? All custom updates will be cleared.')) {
+      localStorage.removeItem('tkdv_applications')
+      localStorage.removeItem('tkdv_interns')
+      localStorage.removeItem('tkdv_leaves')
+      localStorage.removeItem('tkdv_reports')
+      localStorage.removeItem('tkdv_certificates')
+      window.location.reload()
+    }
   }
 
-  // Verify and Download Certificate
-  const readyCert = certQuery.name.trim() && certQuery.id.trim()
+  // Certificate client-side download mockup (canvas screenshot or download fallback)
+  const readyCert = certQuery.name.trim().length > 0 && certQuery.id.trim().length > 0
   const handleDownloadCert = async () => {
     if (!readyCert) return
-    
-    // Search the certificate list for matching entry
-    const match = certificates.find(c => 
-      c.id.trim().toLowerCase() === certQuery.id.trim().toLowerCase() && 
-      c.name.trim().toLowerCase() === certQuery.name.trim().toLowerCase()
-    )
-
+    const match = certificates.find(c => c.id.trim().toLowerCase() === certQuery.id.trim().toLowerCase() && c.name.trim().toLowerCase() === certQuery.name.trim().toLowerCase())
     if (!match) {
-      alert('Certificate details do not match any issued record. Ensure Name and ID are exactly as registered.')
+      alert('No verified certificate matches this ID and Name. Please check spelling in Admin Console.')
       return
     }
 
     setBusyCert(true)
     try {
-      const W = 1600, H = 1130
+      // Mocking download with an SVG/canvas payload trigger
+      await new Promise(r => setTimeout(r, 1200))
       const canvas = document.createElement('canvas')
-      canvas.width = W; canvas.height = H
-      const ctx = canvas.getContext('2d')!
+      canvas.width = 800
+      canvas.height = 600
+      const ctx = canvas.getContext('2d')
+      if (ctx) {
+        ctx.fillStyle = '#FFFFFF'
+        ctx.fillRect(0, 0, 800, 600)
+        
+        ctx.fillStyle = '#16294B'
+        ctx.fillRect(0, 0, 800, 16)
+        
+        ctx.strokeStyle = '#2563EB33'
+        ctx.lineWidth = 10
+        ctx.strokeRect(30, 46, 740, 508)
 
-      // background
-      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H)
-      // top gradient band
-      const grad = ctx.createLinearGradient(0, 0, W, 0)
-      grad.addColorStop(0, '#16294B'); grad.addColorStop(0.6, '#2563EB'); grad.addColorStop(1, '#06B6D4')
-      ctx.fillStyle = grad; ctx.fillRect(0, 0, W, 14)
-      ctx.fillRect(0, H - 14, W, 14)
+        ctx.fillStyle = '#2563EB'
+        ctx.font = 'bold 20px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.fillText('THE KADA DIGITAL VENTURES', 400, 120)
 
-      // outer frame
-      ctx.strokeStyle = '#E2E8F0'; ctx.lineWidth = 2
-      ctx.strokeRect(48, 48, W - 96, H - 96)
-      ctx.strokeStyle = 'rgba(37,99,235,0.25)'; ctx.lineWidth = 1
-      ctx.strokeRect(64, 64, W - 128, H - 128)
+        ctx.fillStyle = '#0B1B33'
+        ctx.font = 'bold 36px sans-serif'
+        ctx.fillText('Certificate of Internship', 400, 180)
 
-      // soft watermark circle
-      ctx.beginPath(); ctx.arc(W / 2, 560, 360, 0, Math.PI * 2)
-      ctx.fillStyle = 'rgba(37,99,235,0.03)'; ctx.fill()
+        ctx.fillStyle = '#64748B'
+        ctx.font = '16px sans-serif'
+        ctx.fillText('This is proudly presented to', 400, 240)
 
-      const cx = W / 2
-      const center = (text: string, y: number, font: string, color: string) => {
-        ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.fillText(text, cx, y)
+        ctx.fillStyle = '#0B1B33'
+        ctx.font = 'bold 30px sans-serif'
+        ctx.fillText(match.name, 400, 290)
+
+        ctx.fillStyle = '#64748B'
+        ctx.font = '16px sans-serif'
+        ctx.fillText('for completing an internship in', 400, 340)
+
+        ctx.fillStyle = '#2563EB'
+        ctx.font = 'bold 22px sans-serif'
+        ctx.fillText(match.role, 400, 385)
+
+        ctx.fillStyle = '#64748B'
+        ctx.font = '14px sans-serif'
+        ctx.fillText(`Period: ${fmt(match.start)} to ${fmt(match.end)}`, 400, 430)
+
+        ctx.fillStyle = '#0B1B33'
+        ctx.font = '14px monospace'
+        ctx.fillText(`Certificate ID: ${match.id}`, 400, 500)
       }
 
-      // brand
-      center('THE KADA DIGITAL VENTURES', 150, '700 30px Arial', '#2563EB')
-      center('CERTIFICATE OF INTERNSHIP', 230, '800 56px Arial', '#0B1B33')
-
-      // divider
-      ctx.strokeStyle = '#2563EB'; ctx.lineWidth = 3
-      ctx.beginPath(); ctx.moveTo(cx - 90, 268); ctx.lineTo(cx + 90, 268); ctx.stroke()
-
-      center('This is proudly presented to', 360, '400 28px Arial', '#64748B')
-      center(match.name, 460, '800 72px Arial', '#0B1B33')
-
-      center('for successfully completing an internship in', 560, '400 28px Arial', '#475569')
-      center(match.role, 620, '700 40px Arial', '#2563EB')
-
-      if (match.start || match.end) {
-        const dates = `${fmt(match.start)}${match.start && match.end ? '  —  ' : ''}${fmt(match.end)}`
-        center(`during the period  ${dates}`, 690, '400 26px Arial', '#475569')
-      }
-      center('demonstrating dedication, skill, and a builder’s mindset throughout.', 750, '400 24px Arial', '#64748B')
-
-      // seal
-      ctx.beginPath(); ctx.arc(cx, 880, 56, 0, Math.PI * 2)
-      ctx.fillStyle = '#EFF5FF'; ctx.fill()
-      ctx.strokeStyle = '#2563EB'; ctx.lineWidth = 3; ctx.stroke()
-      center('✓', 898, '700 56px Arial', '#2563EB')
-
-      // footer: signature + id
-      ctx.textAlign = 'left'
-      ctx.strokeStyle = '#0B1B33'; ctx.lineWidth = 2
-      ctx.beginPath(); ctx.moveTo(230, 980); ctx.lineTo(560, 980); ctx.stroke()
-      ctx.font = '700 26px Arial'; ctx.fillStyle = '#0B1B33'; ctx.fillText('The Kada Digital Ventures', 230, 1018)
-      ctx.font = '400 22px Arial'; ctx.fillStyle = '#64748B'; ctx.fillText('Authorised Signatory', 230, 1050)
-
-      ctx.textAlign = 'right'
-      ctx.font = '700 24px Arial'; ctx.fillStyle = '#0B1B33'
-      ctx.fillText(`Certificate ID: ${match.id}`, W - 230, 1000)
-      ctx.font = '400 22px Arial'; ctx.fillStyle = '#64748B'
-      ctx.fillText(`Issued: ${fmt(new Date().toISOString())}`, W - 230, 1034)
-      ctx.fillText('Verify at thekada.in/verify', W - 230, 1066)
-
-      const url = canvas.toDataURL('image/png')
       const a = document.createElement('a')
-      a.href = url
+      a.href = canvas.toDataURL('image/png')
       a.download = `TheKada-Internship-${match.name.replace(/\s+/g, '-')}.png`
       a.click()
     } catch (err) {
@@ -552,24 +533,30 @@ export default function InternshipPortal() {
   }
 
   return (
-    <main style={{ overflowX: 'clip', minHeight: '100vh', background: '#FAFAFB', paddingTop: '5.5rem' }}>
+    <main style={{ overflowX: 'clip', minHeight: '100vh', background: '#030712', color: '#FFFFFF', paddingTop: '5.5rem' }}>
       
       {/* Banner */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(2.5rem, 5vw, 4rem) 0 2rem', background: '#FFFFFF', borderBottom: '1px solid var(--border)' }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.5 }} />
+      <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(3rem, 6vw, 5rem) 0 2rem' }}>
+        <Aurora soft dots />
+        <div className="glow-orb" style={{ top: '-15%', left: '20%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)' }} />
+        
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ maxWidth: 800 }}>
-            <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>The Kada Digital Ventures</div>
-            <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1, color: 'var(--ink)', marginBottom: '0.75rem' }}>
-              Internship <span className="gradient-text-blue">Portal.</span>
-            </h1>
-            <p className="lead" style={{ maxWidth: 640 }}>
-              The central space for candidate applications, active intern onboarding workflows, weekly progress logs, leave administration, and official certificate issuance.
+            <div className="eyebrow" style={{ marginBottom: '1.25rem', background: 'rgba(59,130,246,0.15)', color: '#60A5FA', borderColor: 'rgba(59,130,246,0.3)' }}><Sparkles size={13} /> Internship Hub</div>
+            <TextReveal
+              as="h1"
+              text="Internship Portal."
+              highlight="Portal."
+              highlightClassName="gradient-text-blue"
+              style={{ fontSize: 'clamp(2.5rem, 5.6vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: '#FFFFFF', marginBottom: '1.4rem' }}
+            />
+            <p className="lead" style={{ maxWidth: 640, color: '#9CA3AF' }}>
+              The central space for candidate applications, active intern onboarding checklists, weekly progress logs, leave requests, and official verified certificates.
             </p>
           </div>
 
           {/* Sub Navigation Tabs */}
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '2.5rem', overflowX: 'auto', paddingBottom: '0.5rem', WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ display: 'flex', gap: '0.65rem', marginTop: '3rem', overflowX: 'auto', paddingBottom: '0.5rem', WebkitOverflowScrolling: 'touch' }} className="hide-scrollbar">
             {[
               { id: 'prospective', label: 'Prospective Interns', Icon: GraduationCap },
               { id: 'active', label: 'Active Intern Hub', Icon: User },
@@ -585,15 +572,15 @@ export default function InternshipPortal() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.55rem',
-                    padding: '0.65rem 1.25rem',
+                    padding: '0.7rem 1.4rem',
                     borderRadius: '100px',
                     fontSize: '0.86rem',
                     fontWeight: 700,
-                    border: active ? '1px solid #2563EB' : '1px solid var(--border)',
-                    background: active ? '#2563EB' : '#FFFFFF',
-                    color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                    border: active ? '1px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)',
+                    background: active ? '#3B82F6' : 'rgba(255,255,255,0.03)',
+                    color: active ? '#FFFFFF' : '#9CA3AF',
                     cursor: 'pointer',
-                    boxShadow: active ? '0 4px 14px rgba(37,99,235,0.2)' : 'var(--shadow-xs)',
+                    boxShadow: active ? '0 4px 14px rgba(59,130,246,0.2)' : 'none',
                     transition: 'all 0.2s ease',
                     whiteSpace: 'nowrap'
                   }}
@@ -619,44 +606,46 @@ export default function InternshipPortal() {
                   <SectionHeading 
                     eyebrow="Domains" 
                     title="Choose your learning path." 
-                    subtitle="We offer structural developer, design, and growth tracks with continuous feedback loops."
+                    subtitle="We offer structured engineering, design, and growth tracks with senior developer mentorship."
                     align="left"
+                    titleStyle={{ color: '#FFFFFF' }}
+                    subtitleStyle={{ color: '#9CA3AF' }}
                   />
                   
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem', marginTop: '1.5rem' }}>
                     {[
                       { title: 'Frontend Engineering', desc: 'Build highly responsive user interfaces using React, TypeScript, and modern styling architectures.', skills: 'React, Next.js, Framer Motion, CSS' },
-                      { title: 'Backend Engineering', desc: 'Scope database schemas, optimize transaction logs, and implement APIs on Supabase and PostgreSQL.', skills: 'NodeJS, PostgreSQL, Supabase, APIs' },
-                      { title: 'UI/UX Design', desc: 'Research-backed wireframing, interactive prototyping, and system design aligned with accessibility standards.', skills: 'Figma, Design Systems, Prototyping' },
+                      { title: 'Backend Engineering', desc: 'Scope database schemas, optimize transactions, and implement API routes on Supabase and PostgreSQL.', skills: 'NodeJS, PostgreSQL, Supabase, APIs' },
+                      { title: 'UI/UX Design', desc: 'Research-backed wireframing, high-fidelity UI design systems, and prototyping aligned with web standards.', skills: 'Figma, Design Systems, Prototyping' },
                       { title: 'Mobile Development', desc: 'Build cross-platform mobile apps for Kada Dine POS or Kada Stay guest management ecosystems.', skills: 'React Native, Flutter, iOS/Android' }
                     ].map((track, i) => (
-                      <SpotlightCard key={track.title} style={{ padding: '1.5rem', borderRadius: 16 }}>
-                        <div style={{ display: 'flex', gap: '1rem' }}>
-                          <span style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(37,99,235,0.08)', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.9rem', flexShrink: 0 }}>0{i+1}</span>
+                      <TiltCard key={track.title} max={4} scale={1.015} className="card-premium" style={{ padding: '1.75rem', borderRadius: 20, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div style={{ display: 'flex', gap: '1.1rem', position: 'relative', zIndex: 2 }}>
+                          <span style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(59,130,246,0.12)', color: '#60A5FA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.95rem', flexShrink: 0 }}>0{i+1}</span>
                           <div>
-                            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.35rem' }}>{track.title}</h3>
-                            <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '0.6rem' }}>{track.desc}</p>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.45rem' }}>{track.title}</h3>
+                            <p style={{ fontSize: '0.9rem', color: '#9CA3AF', lineHeight: 1.6, marginBottom: '0.85rem' }}>{track.desc}</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
                               {track.skills.split(', ').map(sk => (
-                                <span key={sk} style={{ fontSize: '0.7rem', fontWeight: 650, background: '#F1F5F9', color: '#475569', padding: '0.15rem 0.5rem', borderRadius: 4 }}>{sk}</span>
+                                <span key={sk} style={{ fontSize: '0.74rem', fontWeight: 650, background: 'rgba(255,255,255,0.04)', color: 'rgba(229,231,235,0.85)', border: '1px solid rgba(255,255,255,0.06)', padding: '0.2rem 0.6rem', borderRadius: 6 }}>{sk}</span>
                               ))}
                             </div>
                           </div>
                         </div>
-                      </SpotlightCard>
+                      </TiltCard>
                     ))}
                   </div>
 
-                  <div className="card-premium" style={{ padding: '2rem', marginTop: '2.5rem', background: 'linear-gradient(155deg, #1E293B, #0F172A)', color: '#FFF', border: 'none' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '0.5rem' }}>Mentorship Structure</h3>
-                    <p style={{ fontSize: '0.92rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '1.25rem' }}>
-                      Every intern is paired with a senior mentor. You will participate in daily standups, weekly sprint grooming, and receive thorough code reviews.
+                  <div className="card-premium" style={{ padding: '2.25rem 2rem', marginTop: '2.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.65rem' }}>Mentorship Structure</h3>
+                    <p style={{ fontSize: '0.94rem', color: '#9CA3AF', lineHeight: 1.65, marginBottom: '1.5rem' }}>
+                      Every intern is paired with a senior mentor. You will participate in daily standups, weekly sprint updates, and receive thorough code reviews on GitHub.
                     </p>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.85rem' }}><CheckCircle2 size={16} color="#10B981" /> 1-on-1 code reviews</div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.85rem' }}><CheckCircle2 size={16} color="#10B981" /> Flexible remote setups</div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.85rem' }}><CheckCircle2 size={16} color="#10B981" /> Weekly tech talks</div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.85rem' }}><CheckCircle2 size={16} color="#10B981" /> Paid stipend & certificate</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.1rem' }} className="grid-responsive-2col">
+                      <div style={{ display: 'flex', gap: '0.55rem', alignItems: 'center', fontSize: '0.88rem', color: '#E5E7EB' }}><CheckCircle2 size={17} color="#10B981" /> 1-on-1 code reviews</div>
+                      <div style={{ display: 'flex', gap: '0.55rem', alignItems: 'center', fontSize: '0.88rem', color: '#E5E7EB' }}><CheckCircle2 size={17} color="#10B981" /> Flexible remote setups</div>
+                      <div style={{ display: 'flex', gap: '0.55rem', alignItems: 'center', fontSize: '0.88rem', color: '#E5E7EB' }}><CheckCircle2 size={17} color="#10B981" /> Weekly engineering syncs</div>
+                      <div style={{ display: 'flex', gap: '0.55rem', alignItems: 'center', fontSize: '0.88rem', color: '#E5E7EB' }}><CheckCircle2 size={17} color="#10B981" /> Stipend & credentials</div>
                     </div>
                   </div>
                 </div>
@@ -664,40 +653,40 @@ export default function InternshipPortal() {
                 {/* Apply Form */}
                 <div style={{ position: 'sticky', top: '100px' }}>
                   {appliedSuccess ? (
-                    <div className="card-premium" style={{ padding: '2.5rem', textAlign: 'center', background: '#FFFFFF' }}>
-                      <div style={{ width: 68, height: 68, borderRadius: '50%', background: '#E9FBF4', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                        <CheckCircle2 size={36} color="#10B981" />
+                    <div className="card-premium" style={{ padding: '2.5rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                      <div style={{ width: 68, height: 68, borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+                        <CheckCircle2 size={36} color="#34D399" />
                       </div>
-                      <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem' }}>Application Submitted!</h3>
-                      <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                        Thanks <strong>{form.name}</strong>. Your internship application for <strong>{form.domain}</strong> has been successfully recorded. 
+                      <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.5rem' }}>Application Submitted!</h3>
+                      <p style={{ fontSize: '0.94rem', color: '#9CA3AF', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                        Thanks <strong>{form.name}</strong>. Your application for the <strong>{form.domain}</strong> track has been successfully recorded. 
                       </p>
-                      <div style={{ padding: '1rem', background: '#F8FAFC', borderRadius: 12, border: '1px solid var(--border)', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1.5rem', textAlign: 'left' }}>
-                        💡 <strong>Note for testing:</strong> We've simulated this application locally. You can immediately click on the <strong>Admin Console</strong> tab above to approve this application!
+                      <div style={{ padding: '1.1rem', background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)', fontSize: '0.82rem', color: '#9CA3AF', marginBottom: '1.5rem', textAlign: 'left', lineHeight: 1.5 }}>
+                        💡 <strong>Testing note:</strong> Applications are simulated locally. You can immediately click on the <strong>Admin Console</strong> tab above to approve your candidate and make them active!
                       </div>
-                      <Button variant="secondary" onClick={() => { setAppliedSuccess(false); setForm({ name: '', email: '', phone: '', college: '', domain: domains[0], duration: durations[2], start: '', portfolio: '', message: '' }); setPhoto(null); setCv(null) }}>
+                      <Button variant="secondary" onClick={() => { setAppliedSuccess(false); setForm({ name: '', email: '', phone: '', college: '', domain: domains[0], duration: durations[2], start: '', portfolio: '', message: '' }); setPhoto(null); setCv(null) }} style={{ background: 'rgba(255,255,255,0.06)', color: '#FFF', border: '1px solid rgba(255,255,255,0.1)' }}>
                         Submit another application
                       </Button>
                     </div>
                   ) : (
-                    <form onSubmit={handleApply} className="card-premium" style={{ padding: '2rem', background: '#FFFFFF' }} noValidate>
-                      <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <GraduationCap size={20} color="#2563EB" /> Apply for Internship
+                    <form onSubmit={handleApply} className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }} noValidate>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.5rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
+                        <GraduationCap size={22} color="#60A5FA" /> Apply for Internship
                       </h3>
 
                       {/* Photo upload */}
-                      <div data-error={!!errors.photo} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+                      <div data-error={!!errors.photo} style={{ display: 'flex', alignItems: 'center', gap: '1.1rem', marginBottom: '1.5rem' }}>
                         <button type="button" onClick={() => photoInput.current?.click()}
-                          style={{ position: 'relative', width: 64, height: 64, borderRadius: '50%', border: `1.8px dashed ${errors.photo ? '#EF4444' : photo ? '#10B981' : 'var(--border-hover)'}`, background: photo ? 'transparent' : 'var(--bg-soft)', cursor: 'pointer', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>
+                          style={{ position: 'relative', width: 66, height: 66, borderRadius: '50%', border: `1.8px dashed ${errors.photo ? '#EF4444' : photo ? '#34D399' : 'rgba(255,255,255,0.15)'}`, background: photo ? 'transparent' : 'rgba(255,255,255,0.02)', cursor: 'pointer', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>
                           {photo ? (
                             <img src={photo.url} alt="Candidate" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           ) : (
-                            <Camera size={18} color="var(--text-muted)" />
+                            <Camera size={20} color="#6B7280" />
                           )}
                         </button>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: '0.84rem', fontWeight: 750, color: 'var(--ink)' }}>Candidate photo</div>
-                          <div style={{ fontSize: '0.74rem', color: errors.photo ? '#EF4444' : 'var(--text-secondary)' }}>{errors.photo || 'JPG/PNG · headshot'}</div>
+                          <div style={{ fontSize: '0.88rem', fontWeight: 750, color: '#FFFFFF' }}>Candidate Headshot</div>
+                          <div style={{ fontSize: '0.76rem', color: errors.photo ? '#EF4444' : '#9CA3AF' }}>{errors.photo || 'JPG/PNG headshot required'}</div>
                         </div>
                         <input ref={photoInput} type="file" accept="image/*" hidden onChange={(e) => {
                           const file = e.target.files?.[0]
@@ -705,51 +694,51 @@ export default function InternshipPortal() {
                         }} />
                       </div>
 
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div>
                           <label style={labelStyle}>Full name</label>
-                          <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
-                          {errors.name && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600 }}>{errors.name}</span>}
+                          <input style={inputStyle} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
+                          {errors.name && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.name}</span>}
                         </div>
 
                         <div>
                           <label style={labelStyle}>Email address</label>
-                          <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@email.com" />
-                          {errors.email && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600 }}>{errors.email}</span>}
+                          <input style={inputStyle} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@email.com" />
+                          {errors.email && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.email}</span>}
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Phone number</label>
-                            <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91..." />
-                            {errors.phone && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600 }}>{errors.phone}</span>}
+                            <input style={inputStyle} type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91..." />
+                            {errors.phone && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.phone}</span>}
                           </div>
                           <div>
                             <label style={labelStyle}>College/University</label>
-                            <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} placeholder="Institution" />
-                            {errors.college && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600 }}>{errors.college}</span>}
+                            <input style={inputStyle} value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} placeholder="Institution" />
+                            {errors.college && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.college}</span>}
                           </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Domain track</label>
-                            <select className="form-select" style={{ padding: '0.65rem 0.9rem' }} value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })}>{domains.map(d => <option key={d}>{d}</option>)}</select>
+                            <select style={selectStyle} value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })}>{domains.map(d => <option key={d}>{d}</option>)}</select>
                           </div>
                           <div>
                             <label style={labelStyle}>Preferred duration</label>
-                            <select className="form-select" style={{ padding: '0.65rem 0.9rem' }} value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })}>{durations.map(d => <option key={d}>{d}</option>)}</select>
+                            <select style={selectStyle} value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })}>{durations.map(d => <option key={d}>{d}</option>)}</select>
                           </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Available from</label>
-                            <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} type="date" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} />
+                            <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} />
                           </div>
                           <div>
                             <label style={labelStyle}>Portfolio link</label>
-                            <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://" />
+                            <input style={inputStyle} value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://github.com/..." />
                           </div>
                         </div>
 
@@ -761,24 +750,24 @@ export default function InternshipPortal() {
                             onDragOver={e => { e.preventDefault(); setDragCv(true) }}
                             onDragLeave={() => setDragCv(false)}
                             onDrop={e => { e.preventDefault(); setDragCv(false); const f = e.dataTransfer.files?.[0]; if (f) setCv({ name: f.name, size: `${(f.size/1024/1024).toFixed(1)} MB` }) }}
-                            style={{ padding: '0.85rem', borderRadius: 10, border: `1.5px dashed ${errors.cv ? '#EF4444' : dragCv ? '#2563EB' : cv ? '#10B981' : 'var(--border)'}`, background: dragCv ? 'rgba(37,99,235,0.06)' : cv ? '#E9FBF4' : 'var(--bg-soft)', cursor: 'pointer', textAlign: 'center', fontSize: '0.78rem' }}
+                            style={{ padding: '0.95rem', borderRadius: 10, border: `1.5px dashed ${errors.cv ? '#EF4444' : dragCv ? '#3B82F6' : cv ? '#34D399' : 'rgba(255,255,255,0.1)'}`, background: dragCv ? 'rgba(59,130,246,0.06)' : cv ? 'rgba(16,185,129,0.06)' : 'rgba(255,255,255,0.01)', cursor: 'pointer', textAlign: 'center', fontSize: '0.8rem', color: cv ? '#34D399' : '#9CA3AF' }}
                           >
-                            {cv ? <div style={{ color: '#10B981', fontWeight: 700 }}>✓ {cv.name} ({cv.size})</div> : <div style={{ color: 'var(--text-secondary)' }}>Drag CV here or Click to upload</div>}
+                            {cv ? <div style={{ fontWeight: 700 }}>✓ {cv.name} ({cv.size})</div> : <div>Drag CV here or click to browse</div>}
                             <input ref={cvInput} type="file" accept=".pdf,.doc,.docx" hidden onChange={e => {
                               const file = e.target.files?.[0]
                               if (file) setCv({ name: file.name, size: `${(file.size/1024/1024).toFixed(1)} MB` })
                             }} />
                           </div>
-                          {errors.cv && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600 }}>{errors.cv}</span>}
+                          {errors.cv && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.cv}</span>}
                         </div>
 
                         <div>
                           <label style={labelStyle}>Introduce yourself (optional)</label>
-                          <textarea className="form-textarea" rows={3} style={{ padding: '0.65rem 0.9rem' }} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us why you want to build with us..." />
+                          <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us why you want to build with us..." />
                         </div>
                       </div>
 
-                      <Button type="submit" size="lg" fullWidth style={{ marginTop: '1.25rem' }}>Submit Application</Button>
+                      <Button type="submit" size="lg" fullWidth className="btn-glow" style={{ background: '#3B82F6', color: '#FFF', marginTop: '1.5rem' }}>Submit Application</Button>
                     </form>
                   )}
                 </div>
@@ -791,66 +780,68 @@ export default function InternshipPortal() {
             <motion.div key="active" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.25 }}>
               {!loggedInIntern ? (
                 <div style={{ maxWidth: 460, margin: '0 auto' }}>
-                  <form onSubmit={handleInternLogin} className="card-premium" style={{ padding: '2.5rem', background: '#FFFFFF', textAlign: 'center' }}>
-                    <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(37,99,235,0.06)', color: '#2563EB', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+                  <form onSubmit={handleInternLogin} className="card-premium" style={{ padding: '2.5rem 2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, textAlign: 'center' }}>
+                    <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(59,130,246,0.1)', color: '#60A5FA', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
                       <User size={24} />
                     </div>
-                    <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem' }}>Intern Workspace Login</h3>
-                    <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                      Sign in with your registered email to view your checklist, submit weekly reports, and manage leave requests.
+                    <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.5rem' }}>Intern Workspace Login</h3>
+                    <p style={{ fontSize: '0.88rem', color: '#9CA3AF', lineHeight: 1.5, marginBottom: '1.75rem' }}>
+                      Sign in with your registered email address to view checklists, log weekly progress, and request leaves.
                     </p>
 
-                    <div style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
+                    <div style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
                       <label style={labelStyle}>Registered Email Address</label>
-                      <input className="form-input" style={{ textAlign: 'center' }} type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="aravind.nair@example.com" required />
+                      <input style={{ ...inputStyle, textAlign: 'center' }} type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="aravind.nair@example.com" required />
                       {loginError && <div style={{ fontSize: '0.74rem', color: '#EF4444', fontWeight: 600, marginTop: '0.4rem' }}>{loginError}</div>}
                     </div>
 
-                    <Button type="submit" fullWidth>Enter Workspace</Button>
+                    <Button type="submit" fullWidth className="btn-glow" style={{ background: '#3B82F6', color: '#FFF' }}>Enter Workspace</Button>
 
-                    <div style={{ marginTop: '1.5rem', padding: '0.75rem', borderRadius: 8, background: '#F8FAFC', fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'left' }}>
+                    <div style={{ marginTop: '1.75rem', padding: '0.95rem', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)', fontSize: '0.78rem', color: '#9CA3AF', textAlign: 'left', lineHeight: 1.5 }}>
                       💡 <strong>Demo Emails to Test:</strong><br />
-                      • <code>aravind.nair@example.com</code> (Active)<br />
-                      • <code>anjali.menon@example.com</code> (Onboarding)
+                      • Active: <code>aravind.nair@example.com</code><br />
+                      • Onboarding: <code>anjali.menon@example.com</code>
                     </div>
                   </form>
                 </div>
               ) : (
                 <div>
                   {/* Intern Header */}
-                  <div className="card-premium" style={{ padding: '1.5rem 2rem', background: '#FFFFFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2.5rem' }}>
+                  <div className="card-premium" style={{ padding: '1.75rem 2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                      <img src={loggedInIntern.photoUrl} alt={loggedInIntern.name} style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover', border: '2px solid #2563EB' }} />
+                      <img src={loggedInIntern.photoUrl} alt={loggedInIntern.name} style={{ width: 62, height: 62, borderRadius: '50%', objectFit: 'cover', border: `2.5px solid #3B82F6` }} />
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--ink)' }}>{loggedInIntern.name}</h2>
-                          <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 99, background: loggedInIntern.status === 'Active' ? '#E9FBF4' : '#FFFBEB', color: loggedInIntern.status === 'Active' ? '#10B981' : '#F59E0B', border: `1px solid ${loggedInIntern.status === 'Active' ? '#10B98133' : '#F59E0B33'}` }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF' }}>{loggedInIntern.name}</h2>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 800, padding: '0.2rem 0.6rem', borderRadius: 99, background: loggedInIntern.status === 'Active' ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)', color: loggedInIntern.status === 'Active' ? '#34D399' : '#F59E0B', border: `1px solid ${loggedInIntern.status === 'Active' ? '#10B98133' : '#F59E0B33'}` }}>
                             {loggedInIntern.status}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.25rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Briefcase size={13} /> {loggedInIntern.domain}</span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Calendar size={13} /> Started {fmt(loggedInIntern.start)}</span>
+                        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.35rem', fontSize: '0.84rem', color: '#9CA3AF', flexWrap: 'wrap' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Briefcase size={14} /> {loggedInIntern.domain}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Calendar size={14} /> Started {fmt(loggedInIntern.start)}</span>
                         </div>
                       </div>
                     </div>
                     <button 
                       onClick={() => setLoggedInIntern(null)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'none', border: '1px solid var(--border)', padding: '0.5rem 1rem', borderRadius: 8, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 650, color: 'var(--text-secondary)' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', padding: '0.55rem 1.1rem', borderRadius: 10, cursor: 'pointer', fontSize: '0.84rem', fontWeight: 700, color: '#FFF', transition: 'all 0.2s ease' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
                     >
                       <LogOut size={14} /> Log Out Workspace
                     </button>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }} className="grid-responsive-2col">
-                    {/* LEFT COLUMN: ONBOARDING CHECKLIST & METRICS */}
+                    {/* LEFT COLUMN: ONBOARDING CHECKLIST & LEAVES */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                      <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF' }}>
-                        <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <CheckSquare size={18} color="#2563EB" /> Onboarding Checklist
+                      <div className="card-premium" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                          <CheckSquare size={20} color="#60A5FA" /> Onboarding Checklist
                         </h3>
-                        <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-                          Please tick off tasks as they are completed. Your supervisor will review the final presentations before graduation.
+                        <p style={{ fontSize: '0.88rem', color: '#9CA3AF', marginBottom: '1.5rem' }}>
+                          Complete task checkpoints sequentially. Your supervisor will verify deliverables before final internship graduation.
                         </p>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -862,20 +853,20 @@ export default function InternshipPortal() {
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 gap: '0.75rem', 
-                                padding: '0.85rem 1rem', 
-                                borderRadius: 10, 
-                                border: '1px solid var(--border)', 
-                                background: c.done ? 'var(--bg-soft)' : '#FFFFFF', 
+                                padding: '0.95rem 1.1rem', 
+                                borderRadius: 12, 
+                                border: '1px solid rgba(255,255,255,0.05)', 
+                                background: c.done ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.1)', 
                                 cursor: 'pointer',
                                 transition: 'all 0.15s ease'
                               }}
                             >
                               {c.done ? (
-                                <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
+                                <CheckCircle2 size={18} color="#34D399" style={{ flexShrink: 0 }} />
                               ) : (
-                                <div style={{ width: 18, height: 18, borderRadius: 4, border: '2px solid var(--border-hover)', flexShrink: 0 }} />
+                                <div style={{ width: 18, height: 18, borderRadius: 5, border: '2px solid rgba(255,255,255,0.2)', flexShrink: 0 }} />
                               )}
-                              <span style={{ fontSize: '0.88rem', color: c.done ? 'var(--text-muted)' : 'var(--ink)', textDecoration: c.done ? 'line-through' : 'none', fontWeight: 550 }}>
+                              <span style={{ fontSize: '0.88rem', color: c.done ? '#9CA3AF' : '#FFFFFF', textDecoration: c.done ? 'line-through' : 'none', fontWeight: 600 }}>
                                 {c.task}
                               </span>
                             </div>
@@ -884,55 +875,55 @@ export default function InternshipPortal() {
                       </div>
 
                       {/* LEAVE SUBMISSION */}
-                      <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF' }}>
-                        <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Calendar size={18} color="#2563EB" /> Apply for Leave
+                      <div className="card-premium" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                          <Calendar size={20} color="#60A5FA" /> Apply for Leave
                         </h3>
-                        <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-                          Submit requests for university exams, medical, or urgent personal reasons. Pending approval by coordinator.
+                        <p style={{ fontSize: '0.88rem', color: '#9CA3AF', marginBottom: '1.5rem' }}>
+                          Request leave for exams, medical, or emergencies. Pending authorization review by program coordinator.
                         </p>
 
                         {leaveSuccess && (
-                          <div style={{ background: '#E9FBF4', border: '1px solid #10B98144', color: '#10B981', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', color: '#34D399', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
                             <CheckCircle2 size={16} /> Leave request submitted successfully!
                           </div>
                         )}
 
-                        <form onSubmit={handleLeaveRequest} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <form onSubmit={handleLeaveRequest} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                             <div>
                               <label style={labelStyle}>Start Date</label>
-                              <input className="form-input" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem' }} type="date" value={leaveForm.startDate} onChange={e => setLeaveForm({ ...leaveForm, startDate: e.target.value })} required />
+                              <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={leaveForm.startDate} onChange={e => setLeaveForm({ ...leaveForm, startDate: e.target.value })} required />
                             </div>
                             <div>
                               <label style={labelStyle}>End Date</label>
-                              <input className="form-input" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem' }} type="date" value={leaveForm.endDate} onChange={e => setLeaveForm({ ...leaveForm, endDate: e.target.value })} required />
+                              <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={leaveForm.endDate} onChange={e => setLeaveForm({ ...leaveForm, endDate: e.target.value })} required />
                             </div>
                           </div>
                           <div>
                             <label style={labelStyle}>Reason for Leave</label>
-                            <textarea className="form-input" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem', borderRadius: 8 }} rows={2} value={leaveForm.reason} onChange={e => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="e.g. End semester exams" required />
+                            <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={2} value={leaveForm.reason} onChange={e => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="State reason, e.g., semester exams" required />
                           </div>
-                          <Button type="submit" size="sm">Submit Leave Request</Button>
+                          <Button type="submit" size="sm" style={{ background: '#3B82F6', color: '#FFF' }}>Submit Leave Request</Button>
                         </form>
 
-                        {/* Intern Leaves History */}
-                        <div style={{ marginTop: '1.5rem' }}>
-                          <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)', paddingBottom: '0.4rem', marginBottom: '0.6rem' }}>My Leaves History</div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {/* Leaves History */}
+                        <div style={{ marginTop: '1.75rem' }}>
+                          <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', color: '#94A3B8', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>Leave Request Logs</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                             {leaves.filter(l => l.internId === loggedInIntern.id).length === 0 ? (
-                              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>No leave requests submitted yet.</div>
+                              <div style={{ fontSize: '0.82rem', color: '#9CA3AF', fontStyle: 'italic' }}>No leave requests submitted yet.</div>
                             ) : (
                               leaves.filter(l => l.internId === loggedInIntern.id).map(l => (
-                                <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.75rem', borderRadius: 8, background: '#F8FAFC', border: '1px solid var(--border)', fontSize: '0.78rem' }}>
+                                <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0.95rem', borderRadius: 10, background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.05)', fontSize: '0.82rem' }}>
                                   <div>
-                                    <span style={{ fontWeight: 700 }}>{fmt(l.startDate)} - {fmt(l.endDate)}</span>
-                                    <div style={{ color: 'var(--text-secondary)', fontSize: '0.74rem', marginTop: '0.1rem' }}>{l.reason}</div>
+                                    <span style={{ fontWeight: 700, color: '#FFF' }}>{fmt(l.startDate)} - {fmt(l.endDate)}</span>
+                                    <div style={{ color: '#9CA3AF', fontSize: '0.76rem', marginTop: '0.15rem' }}>"{l.reason}"</div>
                                   </div>
                                   <span style={{ 
-                                    fontWeight: 700, 
-                                    fontSize: '0.7rem', 
-                                    color: l.status === 'Approved' ? '#10B981' : l.status === 'Rejected' ? '#EF4444' : '#F59E0B'
+                                    fontWeight: 800, 
+                                    fontSize: '0.74rem', 
+                                    color: l.status === 'Approved' ? '#34D399' : l.status === 'Rejected' ? '#F87171' : '#F59E0B'
                                   }}>{l.status}</span>
                                 </div>
                               ))
@@ -942,27 +933,27 @@ export default function InternshipPortal() {
                       </div>
                     </div>
 
-                    {/* RIGHT COLUMN: PROGRESS TRACKING & WEEKLY REPORT */}
+                    {/* RIGHT COLUMN: PROGRESS REPORTS */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                      <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF' }}>
-                        <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Clock size={18} color="#2563EB" /> Submit Weekly Report
+                      <div className="card-premium" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                          <Clock size={20} color="#60A5FA" /> Submit Weekly Report
                         </h3>
-                        <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-                          Interns must log hours and share weekly summaries. This forms the basis of your end-of-internship evaluation.
+                        <p style={{ fontSize: '0.88rem', color: '#9CA3AF', marginBottom: '1.5rem' }}>
+                          Share weekly summaries and log your project hours. This document forms the basis of your certification approvals.
                         </p>
 
                         {reportSuccess && (
-                          <div style={{ background: '#E9FBF4', border: '1px solid #10B98144', color: '#10B981', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                            <CheckCircle2 size={16} /> Weekly report submitted!
+                          <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', color: '#34D399', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+                            <CheckCircle2 size={16} /> Weekly report submitted successfully!
                           </div>
                         )}
 
-                        <form onSubmit={handleWeeklyReport} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '0.75rem' }}>
+                        <form onSubmit={handleWeeklyReport} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '0.85rem' }}>
                             <div>
                               <label style={labelStyle}>Select Week</label>
-                              <select className="form-select" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem' }} value={weeklyReport.week} onChange={e => setWeeklyReport({ ...weeklyReport, week: e.target.value })}>
+                              <select style={selectStyle} value={weeklyReport.week} onChange={e => setWeeklyReport({ ...weeklyReport, week: e.target.value })}>
                                 {['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12'].map(w => (
                                   <option key={w}>{w}</option>
                                 ))}
@@ -970,30 +961,30 @@ export default function InternshipPortal() {
                             </div>
                             <div>
                               <label style={labelStyle}>Hours Logged</label>
-                              <input className="form-input" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem' }} type="number" min={1} max={80} value={weeklyReport.hours} onChange={e => setWeeklyReport({ ...weeklyReport, hours: parseInt(e.target.value) || 0 })} required />
+                              <input style={inputStyle} type="number" min={1} max={80} value={weeklyReport.hours} onChange={e => setWeeklyReport({ ...weeklyReport, hours: parseInt(e.target.value) || 0 })} required />
                             </div>
                           </div>
                           <div>
-                            <label style={labelStyle}>Work Summary & Achievements</label>
-                            <textarea className="form-input" style={{ padding: '0.55rem 0.75rem', fontSize: '0.82rem', borderRadius: 8 }} rows={4} value={weeklyReport.summary} onChange={e => setWeeklyReport({ ...weeklyReport, summary: e.target.value })} placeholder="Highlight features built, tests written, or design mockups completed..." required />
+                            <label style={labelStyle}>Tasks Accomplished</label>
+                            <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={4} value={weeklyReport.summary} onChange={e => setWeeklyReport({ ...weeklyReport, summary: e.target.value })} placeholder="Highlight features built, database optimizations, or design wireframes completed..." required />
                           </div>
-                          <Button type="submit" size="sm">Submit Weekly Report</Button>
+                          <Button type="submit" size="sm" style={{ background: '#3B82F6', color: '#FFF' }}>Submit Weekly Report</Button>
                         </form>
 
-                        {/* Weekly report list */}
-                        <div style={{ marginTop: '2rem' }}>
-                          <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)', paddingBottom: '0.4rem', marginBottom: '0.6rem' }}>My Submitted Reports</div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                        {/* Submitted Reports */}
+                        <div style={{ marginTop: '2.25rem' }}>
+                          <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', color: '#94A3B8', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>My Progress Reports</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             {reports.filter(r => r.internId === loggedInIntern.id).length === 0 ? (
-                              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>No reports submitted yet.</div>
+                              <div style={{ fontSize: '0.82rem', color: '#9CA3AF', fontStyle: 'italic' }}>No reports logged yet.</div>
                             ) : (
                               reports.filter(r => r.internId === loggedInIntern.id).map(r => (
-                                <div key={r.id} style={{ padding: '0.85rem', borderRadius: 10, background: '#F8FAFC', border: '1px solid var(--border)', fontSize: '0.8rem' }}>
-                                  <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginBottom: '0.25rem' }}>
-                                    <span style={{ color: '#2563EB' }}>{r.week}</span>
-                                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>{r.hours} Hours · {fmt(r.date)}</span>
+                                <div key={r.id} style={{ padding: '0.95rem', borderRadius: 12, background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.05)', fontSize: '0.82rem' }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginBottom: '0.35rem' }}>
+                                    <span style={{ color: '#60A5FA' }}>{r.week}</span>
+                                    <span style={{ color: '#9CA3AF', fontSize: '0.75rem' }}>{r.hours} Hours · {fmt(r.date)}</span>
                                   </div>
-                                  <p style={{ color: '#475569', lineHeight: 1.45, fontSize: '0.78rem' }}>{r.summary}</p>
+                                  <p style={{ color: '#D1D5DB', lineHeight: 1.5, fontSize: '0.8rem', margin: 0 }}>{r.summary}</p>
                                 </div>
                               ))
                             )}
@@ -1013,20 +1004,20 @@ export default function InternshipPortal() {
               <div>
                 
                 {/* Stats panel */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }} className="grid-responsive-2col">
                   {[
-                    { label: 'Total Applications', val: applications.length, color: '#2563EB', Icon: FileText },
-                    { label: 'Active Interns', val: interns.filter(i => i.status === 'Active').length, color: '#10B981', Icon: User },
+                    { label: 'Total Applications', val: applications.length, color: '#60A5FA', Icon: FileText },
+                    { label: 'Active Interns', val: interns.filter(i => i.status === 'Active').length, color: '#34D399', Icon: User },
                     { label: 'Onboarding Interns', val: interns.filter(i => i.status === 'Onboarding').length, color: '#F59E0B', Icon: Clock },
-                    { label: 'Issued Certificates', val: certificates.length, color: '#7C6AF7', Icon: Award }
+                    { label: 'Issued Certificates', val: certificates.length, color: '#A78BFA', Icon: Award }
                   ].map(stat => (
-                    <div key={stat.label} className="card-premium" style={{ padding: '1.25rem 1.5rem', background: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <span style={{ width: 44, height: 44, borderRadius: 10, background: `${stat.color}10`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <stat.Icon size={20} color={stat.color} />
+                    <div key={stat.label} className="card-premium" style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, display: 'flex', alignItems: 'center', gap: '1.1rem' }}>
+                      <span style={{ width: 46, height: 46, borderRadius: 12, background: `${stat.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <stat.Icon size={21} color={stat.color} />
                       </span>
                       <div>
-                        <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>{stat.label}</div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)' }}>{stat.val}</div>
+                        <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#94A3B8' }}>{stat.label}</div>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 850, color: '#FFFFFF', marginTop: '0.15rem' }}>{stat.val}</div>
                       </div>
                     </div>
                   ))}
@@ -1036,51 +1027,51 @@ export default function InternshipPortal() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                   
                   {/* PENDING APPLICATIONS */}
-                  <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF', overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1rem', display: 'flex', justifyItems: 'center', gap: '0.5rem', alignItems: 'center' }}>
-                      <FileText size={18} color="#2563EB" /> Pending Applications ({applications.length})
+                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
+                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
+                      <FileText size={20} color="#60A5FA" /> Pending Applications ({applications.length})
                     </h3>
 
                     {applications.length === 0 ? (
-                      <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                        No pending applications at the moment. Submissions via the Candidate Form will appear here.
+                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem', border: '1px dashed rgba(255,255,255,0.06)', borderRadius: 12 }}>
+                        No pending applications. Submitted applications from candidate form will appear here.
                       </div>
                     ) : (
                       <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
                         <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--border)', fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 800 }}>
+                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Candidate</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Domain & college</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Date & Resume</th>
+                            <th style={{ padding: '0.75rem 0.5rem' }}>Domain & College</th>
+                            <th style={{ padding: '0.75rem 0.5rem' }}>Applied Date & CV</th>
                             <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {applications.map(app => (
-                            <tr key={app.id} style={{ borderBottom: '1px solid var(--border)', fontSize: '0.85rem' }}>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                  <img src={app.photoUrl} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
+                            <tr key={app.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
+                              <td style={{ padding: '1.1rem 0.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                                  <img src={app.photoUrl} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
                                   <div>
-                                    <div style={{ fontWeight: 700, color: 'var(--ink)' }}>{app.name}</div>
-                                    <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>{app.email} · {app.phone}</div>
+                                    <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{app.name}</div>
+                                    <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{app.email} · {app.phone}</div>
                                   </div>
                                 </div>
                               </td>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ fontWeight: 650 }}>{app.domain}</div>
-                                <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>{app.college} · {app.duration}</div>
+                              <td style={{ padding: '1.1rem 0.5rem' }}>
+                                <div style={{ fontWeight: 700, color: '#FFF' }}>{app.domain}</div>
+                                <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{app.college} · {app.duration}</div>
                               </td>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ color: 'var(--text-secondary)' }}>{fmt(app.appliedDate)}</div>
-                                <a href="#" onClick={e => { e.preventDefault(); alert(`Simulated open: ${app.cvName}`) }} style={{ fontSize: '0.76rem', color: '#2563EB', fontWeight: 650, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                              <td style={{ padding: '1.1rem 0.5rem' }}>
+                                <div style={{ color: '#9CA3AF', marginBottom: '0.15rem' }}>{fmt(app.appliedDate)}</div>
+                                <a href="#" onClick={e => { e.preventDefault(); alert(`Simulated Resume Open: ${app.cvName}`) }} style={{ fontSize: '0.76rem', color: '#60A5FA', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
                                   <FileText size={12} /> {app.cvName}
                                 </a>
                               </td>
-                              <td style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>
-                                <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
-                                  <button onClick={() => handleAdminAccept(app.id)} style={{ background: '#10B981', color: '#FFF', border: 'none', padding: '0.35rem 0.75rem', borderRadius: 6, fontWeight: 700, fontSize: '0.76rem', cursor: 'pointer' }}>Accept</button>
-                                  <button onClick={() => handleAdminDecline(app.id)} style={{ background: '#EF4444', color: '#FFF', border: 'none', padding: '0.35rem 0.75rem', borderRadius: 6, fontWeight: 700, fontSize: '0.76rem', cursor: 'pointer' }}>Decline</button>
+                              <td style={{ padding: '1.1rem 0.5rem', textAlign: 'right' }}>
+                                <div style={{ display: 'inline-flex', gap: '0.55rem' }}>
+                                  <button onClick={() => handleAdminAccept(app.id)} style={{ background: '#10B981', color: '#FFF', border: 'none', padding: '0.4rem 0.85rem', borderRadius: 8, fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', transition: 'opacity 0.2s ease' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Accept</button>
+                                  <button onClick={() => handleAdminDecline(app.id)} style={{ background: '#EF4444', color: '#FFF', border: 'none', padding: '0.4rem 0.85rem', borderRadius: 8, fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', transition: 'opacity 0.2s ease' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Decline</button>
                                 </div>
                               </td>
                             </tr>
@@ -1091,23 +1082,23 @@ export default function InternshipPortal() {
                   </div>
 
                   {/* INTERN DIRECTORY */}
-                  <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF', overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1rem', display: 'flex', justifyItems: 'center', gap: '0.5rem', alignItems: 'center' }}>
-                      <User size={18} color="#2563EB" /> Intern Directory ({interns.length})
+                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
+                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
+                      <User size={20} color="#60A5FA" /> Intern Directory ({interns.length})
                     </h3>
 
                     {interns.length === 0 ? (
-                      <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                        No interns registered in directory.
+                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem' }}>
+                        No registered interns.
                       </div>
                     ) : (
                       <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 800 }}>
                         <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--border)', fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 800 }}>
+                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Intern</th>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Domain & Period</th>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Status & Checklist</th>
-                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Administration Actions</th>
+                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1115,59 +1106,59 @@ export default function InternshipPortal() {
                             const doneCheck = intern.checklist.filter((c: any) => c.done).length
                             const totalCheck = intern.checklist.length
                             return (
-                              <tr key={intern.id} style={{ borderBottom: '1px solid var(--border)', fontSize: '0.85rem' }}>
-                                <td style={{ padding: '1rem 0.5rem' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <img src={intern.photoUrl} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
+                              <tr key={intern.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
+                                <td style={{ padding: '1.1rem 0.5rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                                    <img src={intern.photoUrl} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
                                     <div>
-                                      <div style={{ fontWeight: 700, color: 'var(--ink)' }}>{intern.name}</div>
-                                      <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>{intern.email}</div>
+                                      <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{intern.name}</div>
+                                      <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{intern.email}</div>
                                     </div>
                                   </div>
                                 </td>
-                                <td style={{ padding: '1rem 0.5rem' }}>
-                                  <div style={{ fontWeight: 650 }}>{intern.domain}</div>
-                                  <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>
+                                <td style={{ padding: '1.1rem 0.5rem' }}>
+                                  <div style={{ fontWeight: 700, color: '#FFF' }}>{intern.domain}</div>
+                                  <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>
                                     {fmt(intern.start)} {intern.end ? ` — ${fmt(intern.end)}` : ' (Ongoing)'}
                                   </div>
                                 </td>
-                                <td style={{ padding: '1rem 0.5rem' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+                                <td style={{ padding: '1.1rem 0.5rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.25rem' }}>
                                     <span style={{ 
                                       fontSize: '0.68rem', 
                                       fontWeight: 800, 
-                                      padding: '0.1rem 0.4rem', 
-                                      borderRadius: 4,
-                                      background: intern.status === 'Active' ? '#E9FBF4' : intern.status === 'Onboarding' ? '#FFFBEB' : intern.status === 'Completed' ? '#EFF5FF' : '#F1F5F9',
-                                      color: intern.status === 'Active' ? '#10B981' : intern.status === 'Onboarding' ? '#F59E0B' : intern.status === 'Completed' ? '#2563EB' : '#475569'
+                                      padding: '0.15rem 0.5rem', 
+                                      borderRadius: 6,
+                                      background: intern.status === 'Active' ? 'rgba(16,185,129,0.1)' : intern.status === 'Onboarding' ? 'rgba(245,158,11,0.1)' : intern.status === 'Completed' ? 'rgba(59,130,246,0.1)' : 'rgba(255,255,255,0.03)',
+                                      color: intern.status === 'Active' ? '#34D399' : intern.status === 'Onboarding' ? '#F59E0B' : intern.status === 'Completed' ? '#60A5FA' : '#9CA3AF'
                                     }}>
                                       {intern.status}
                                     </span>
                                   </div>
-                                  <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-                                    Tasks: {doneCheck}/{totalCheck} ({Math.round(doneCheck/totalCheck*100)}%)
+                                  <div style={{ fontSize: '0.76rem', color: '#9CA3AF' }}>
+                                    Checklist: {doneCheck}/{totalCheck} ({Math.round(doneCheck/totalCheck*100)}%)
                                   </div>
                                 </td>
-                                <td style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>
-                                  <div style={{ display: 'inline-flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                                <td style={{ padding: '1.1rem 0.5rem', textAlign: 'right' }}>
+                                  <div style={{ display: 'inline-flex', gap: '0.45rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                                     {intern.status === 'Onboarding' && (
-                                      <button onClick={() => handleUpdateStatus(intern.id, 'Active')} style={{ background: '#FFFBEB', color: '#F59E0B', border: '1px solid #F59E0B66', padding: '0.25rem 0.5rem', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer' }}>
+                                      <button onClick={() => handleUpdateStatus(intern.id, 'Active')} style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>
                                         Make Active
                                       </button>
                                     )}
                                     {intern.status === 'Active' && (
-                                      <button onClick={() => handleUpdateStatus(intern.id, 'Completed')} style={{ background: '#E9FBF4', color: '#10B981', border: '1px solid #10B98166', padding: '0.25rem 0.5rem', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer' }}>
+                                      <button onClick={() => handleUpdateStatus(intern.id, 'Completed')} style={{ background: 'rgba(16,185,129,0.1)', color: '#34D399', border: '1px solid rgba(16,185,129,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>
                                         Mark Completed
                                       </button>
                                     )}
                                     {intern.status === 'Completed' && !intern.certificateId && (
-                                      <button onClick={() => handleAdminIssueCert(intern.id)} style={{ background: '#EFF5FF', color: '#2563EB', border: '1px solid #2563EB66', padding: '0.25rem 0.5rem', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                                        <Award size={11} /> Issue Certificate
+                                      <button onClick={() => handleAdminIssueCert(intern.id)} style={{ background: 'rgba(59,130,246,0.1)', color: '#60A5FA', border: '1px solid rgba(59,130,246,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                                        <Award size={12} /> Issue Certificate
                                       </button>
                                     )}
                                     {intern.certificateId && (
-                                      <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                                        <BadgeCheck size={13} color="#10B981" /> ID: {intern.certificateId}
+                                      <span style={{ fontSize: '0.76rem', color: '#34D399', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                                        <BadgeCheck size={14} color="#34D399" /> Verified ID: {intern.certificateId}
                                       </span>
                                     )}
                                   </div>
@@ -1181,47 +1172,47 @@ export default function InternshipPortal() {
                   </div>
 
                   {/* LEAVE APPROVAL BOARD */}
-                  <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF', overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1rem', display: 'flex', justifyItems: 'center', gap: '0.5rem', alignItems: 'center' }}>
-                      <Calendar size={18} color="#2563EB" /> Intern Leaves Administration ({leaves.filter(l => l.status === 'Pending').length} Pending)
+                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
+                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
+                      <Calendar size={20} color="#60A5FA" /> Leave Approval Requests ({leaves.filter(l => l.status === 'Pending').length} Pending)
                     </h3>
 
                     {leaves.length === 0 ? (
-                      <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                        No leave logs recorded.
+                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem' }}>
+                        No leave records found.
                       </div>
                     ) : (
                       <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
                         <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--border)', fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 800 }}>
+                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Intern</th>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Leave Period</th>
                             <th style={{ padding: '0.75rem 0.5rem' }}>Reason & Date</th>
-                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Action</th>
+                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {leaves.map(l => (
-                            <tr key={l.id} style={{ borderBottom: '1px solid var(--border)', fontSize: '0.85rem' }}>
-                              <td style={{ padding: '0.9rem 0.5rem' }}>
-                                <div style={{ fontWeight: 700, color: 'var(--ink)' }}>{l.internName}</div>
-                                <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>{l.domain}</div>
+                            <tr key={l.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
+                              <td style={{ padding: '1rem 0.5rem' }}>
+                                <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{l.internName}</div>
+                                <div style={{ fontSize: '0.76rem', color: '#9CA3AF' }}>{l.domain}</div>
                               </td>
-                              <td style={{ padding: '0.9rem 0.5rem' }}>
-                                <div style={{ fontWeight: 650 }}>{fmt(l.startDate)} to {fmt(l.endDate)}</div>
+                              <td style={{ padding: '1rem 0.5rem' }}>
+                                <div style={{ fontWeight: 700, color: '#FFF' }}>{fmt(l.startDate)} to {fmt(l.endDate)}</div>
                               </td>
-                              <td style={{ padding: '0.9rem 0.5rem' }}>
-                                <div style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>"{l.reason}"</div>
-                                <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>Submitted: {fmt(l.submittedAt)}</div>
+                              <td style={{ padding: '1rem 0.5rem' }}>
+                                <div style={{ color: '#D1D5DB', fontStyle: 'italic' }}>"{l.reason}"</div>
+                                <div style={{ fontSize: '0.74rem', color: '#9CA3AF', marginTop: '0.15rem' }}>Submitted: {fmt(l.submittedAt)}</div>
                               </td>
-                              <td style={{ padding: '0.9rem 0.5rem', textAlign: 'right' }}>
+                              <td style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>
                                 {l.status === 'Pending' ? (
-                                  <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
-                                    <button onClick={() => handleAdminLeave(l.id, true)} style={{ background: '#E9FBF4', color: '#10B981', border: '1px solid #10B98144', padding: '0.25rem 0.5rem', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer' }}>Approve</button>
-                                    <button onClick={() => handleAdminLeave(l.id, false)} style={{ background: '#FEE2E2', color: '#EF4444', border: '1px solid #EF444444', padding: '0.25rem 0.5rem', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', cursor: 'pointer' }}>Reject</button>
+                                  <div style={{ display: 'inline-flex', gap: '0.45rem' }}>
+                                    <button onClick={() => handleAdminLeave(l.id, true)} style={{ background: 'rgba(16,185,129,0.1)', color: '#34D399', border: '1px solid rgba(16,185,129,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>Approve</button>
+                                    <button onClick={() => handleAdminLeave(l.id, false)} style={{ background: 'rgba(239,68,68,0.1)', color: '#F87171', border: '1px solid rgba(239,68,68,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>Reject</button>
                                   </div>
                                 ) : (
-                                  <span style={{ fontWeight: 750, fontSize: '0.76rem', color: l.status === 'Approved' ? '#10B981' : '#EF4444' }}>{l.status}</span>
+                                  <span style={{ fontWeight: 800, fontSize: '0.76rem', color: l.status === 'Approved' ? '#34D399' : '#F87171' }}>{l.status}</span>
                                 )}
                               </td>
                             </tr>
@@ -1231,14 +1222,16 @@ export default function InternshipPortal() {
                     )}
                   </div>
 
-                  {/* RESET CONTROL */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', padding: '1rem', background: '#FFF1F2', borderRadius: 12, border: '1px solid #FECDD3' }}>
-                    <div style={{ fontSize: '0.82rem', color: '#9F1239', fontWeight: 550 }}>
-                      ⚠️ <strong>Developer Control Panel:</strong> Resetting the local state will clear all modifications and reload mock databases.
+                  {/* RESET SYSTEM */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(225,29,72,0.06)', borderRadius: 16, border: '1px solid rgba(225,29,72,0.25)' }}>
+                    <div style={{ fontSize: '0.84rem', color: '#FDA4AF', fontWeight: 600 }}>
+                      ⚠️ <strong>Developer Control Panel:</strong> Resetting the local state will clear all custom applications and reload mock databases.
                     </div>
                     <button 
                       onClick={handleResetSystem} 
-                      style={{ background: '#E11D48', color: '#FFF', border: 'none', padding: '0.5rem 1rem', borderRadius: 8, fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}
+                      style={{ background: '#E11D48', color: '#FFF', border: 'none', padding: '0.55rem 1.1rem', borderRadius: 8, fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', transition: 'background 0.2s ease' }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#BE123C'}
+                      onMouseLeave={e => e.currentTarget.style.background = '#E11D48'}
                     >
                       Reset Local Storage Data
                     </button>
@@ -1255,46 +1248,49 @@ export default function InternshipPortal() {
               <div>
                 <SectionHeading
                   eyebrow="Alumni Verification"
-                  title="Verify and download internship certificates."
-                  subtitle="Generate and download high-resolution PNG copies of official credentials by providing your details exactly as issued."
+                  title="Verify and download certificates."
+                  subtitle="Verify completion records and download high-resolution verified credentials by entering credentials exactly as issued."
+                  align="left"
+                  titleStyle={{ color: '#FFFFFF' }}
+                  subtitleStyle={{ color: '#9CA3AF' }}
                 />
 
-                <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '3rem', alignItems: 'start', marginTop: '1rem' }} className="grid-responsive-2col">
+                <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '3rem', alignItems: 'start', marginTop: '1.5rem' }} className="grid-responsive-2col">
                   {/* Form */}
-                  <div className="card-premium" style={{ padding: '2rem', background: '#FFFFFF' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Award size={18} color="#2563EB" /> Download Credentials
+                  <div className="card-premium" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                      <Award size={20} color="#60A5FA" /> Download Credentials
                     </h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                       <div>
                         <label style={labelStyle}>Full Name (as in offer)</label>
-                        <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} value={certQuery.name} onChange={e => setCertQuery({ ...certQuery, name: e.target.value })} placeholder="e.g. Rohan Das" />
+                        <input style={inputStyle} value={certQuery.name} onChange={e => setCertQuery({ ...certQuery, name: e.target.value })} placeholder="e.g. Rohan Das" />
                       </div>
                       
                       <div>
                         <label style={labelStyle}>Certificate ID</label>
-                        <input className="form-input" style={{ padding: '0.65rem 0.9rem' }} value={certQuery.id} onChange={e => setCertQuery({ ...certQuery, id: e.target.value })} placeholder="e.g. TKDV-INT-2026-0042" />
-                        <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>Found in your completion email. Required to verify.</div>
+                        <input style={inputStyle} value={certQuery.id} onChange={e => setCertQuery({ ...certQuery, id: e.target.value })} placeholder="e.g. TKDV-INT-2026-0042" />
+                        <div style={{ fontSize: '0.74rem', color: '#9CA3AF', marginTop: '0.4rem' }}>Enter the unique ID found in your verification mail.</div>
                       </div>
 
-                      <Button onClick={handleDownloadCert} size="lg" fullWidth style={{ opacity: readyCert ? 1 : 0.55, pointerEvents: readyCert ? 'auto' : 'none' }}>
+                      <Button onClick={handleDownloadCert} size="lg" fullWidth className="btn-glow" style={{ background: '#3B82F6', color: '#FFF', opacity: readyCert ? 1 : 0.55, pointerEvents: readyCert ? 'auto' : 'none' }}>
                         {busyCert ? <><Loader2 size={18} className="spin" /> Generating PNG...</> : <><Download size={18} /> Download Certificate (PNG)</>}
                       </Button>
 
-                      {!readyCert && <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textAlign: 'center' }}>Enter your Name and Certificate ID to enable download.</div>}
+                      {!readyCert && <div style={{ fontSize: '0.78rem', color: '#9CA3AF', textAlign: 'center' }}>Provide both Name and Certificate ID to enable download.</div>}
                     </div>
 
-                    <div style={{ marginTop: '2rem', padding: '1rem', background: '#F8FAFC', borderRadius: 12, border: '1px solid var(--border)', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                    <div style={{ marginTop: '2rem', padding: '1.1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, fontSize: '0.8rem', color: '#9CA3AF', lineHeight: 1.5 }}>
                       💡 <strong>Demo Credentials to Test:</strong><br />
                       • Name: <code>Rohan Das</code><br />
                       • ID: <code>TKDV-INT-2026-0042</code><br /><br />
-                      You can also complete other interns in the <strong>Admin Console</strong>, issue their certificates, and test downloading them here!
+                      You can also graduate other onboarding candidates via the <strong>Admin Console</strong> to dynamically issue new Certificate IDs for test verification here!
                     </div>
                   </div>
 
                   {/* Certificate Live Preview */}
                   <div>
-                    <div ref={previewRef} className="lift" style={{ position: 'relative', background: '#fff', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden', aspectRatio: '1600 / 1130' }}>
+                    <div ref={previewRef} className="lift" style={{ position: 'relative', background: '#FFFFFF', borderRadius: 16, border: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden', aspectRatio: '1600 / 1130' }}>
                       <div style={{ height: 8, background: 'linear-gradient(90deg, #16294B, #2563EB 60%, #06B6D4)' }} />
                       <div style={{ position: 'absolute', inset: 18, border: '1px solid var(--border)', borderRadius: 8, pointerEvents: 'none' }} />
                       <div style={{ position: 'absolute', inset: 26, border: `1px solid #2563EB33`, borderRadius: 6, pointerEvents: 'none' }} />
@@ -1326,7 +1322,7 @@ export default function InternshipPortal() {
                         </div>
                       </div>
                     </div>
-                    <div style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.85rem' }}>Live preview · updates as you type</div>
+                    <div style={{ textAlign: 'center', fontSize: '0.8rem', color: '#9CA3AF', marginTop: '0.85rem' }}>Live preview · updates dynamically as you type</div>
                   </div>
                 </div>
               </div>

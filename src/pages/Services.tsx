@@ -54,7 +54,7 @@ export default function Services() {
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Button to="/request-proposal" size="lg" className="btn-glow" style={{ background: '#3B82F6', color: '#FFF' }}>Request a proposal <ArrowUpRight size={17} /></Button>
-              <Button href="#capabilities" variant="secondary" size="lg" style={{ color: '#E5E7EB', borderColor: 'rgba(255,255,255,0.15)' }}>Explore Capabilities</Button>
+              <Button href="#capabilities" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.2)' }}>Explore Capabilities</Button>
             </motion.div>
           </div>
 
