@@ -178,7 +178,7 @@ export default function Home() {
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                   Seven purpose-built products covering restaurants, hotels, retail, food delivery, merchant finance, agency workflows, and personal productivity — live in minutes, not months.
                 </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.75rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.75rem' }} className="grid-1-mobile">
                   {products.map((p) => (
                     <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span style={{ width: 8, height: 8, borderRadius: '50%', background: p.color, flexShrink: 0 }} />

@@ -83,7 +83,7 @@ export default function Careers() {
                 />
                 
                 <motion.div 
-                  className="career-card" 
+                  className="career-card grid-1-mobile" 
                   variants={{
                     rest: { y: 0, borderColor: 'var(--border)', boxShadow: 'var(--shadow-sm)' },
                     hover: { y: -4, borderColor: `${role.color}30`, boxShadow: '0 12px 30px -10px rgba(0,0,0,0.1)' }

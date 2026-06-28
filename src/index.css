@@ -549,7 +549,8 @@ button { font-family: inherit; }
 @media (max-width: 900px) {
   .hidden-mobile { display: none !important; }
   .mobile-menu-btn { display: flex !important; }
-  .grid-2, .grid-2-narrow { grid-template-columns: 1fr !important; }
+  .grid-2, .grid-2-narrow, .grid-1-mobile { grid-template-columns: 1fr !important; }
+  .flex-col-mobile { flex-direction: column !important; }
   
   .legal-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
   .legal-grid > nav, .legal-grid > div:first-child { position: static !important; }

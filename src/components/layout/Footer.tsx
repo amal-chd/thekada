@@ -4,6 +4,7 @@ import { ArrowRight, Mail, MapPin, Check } from 'lucide-react'
 import Logo from './Logo'
 import AppDownload from '../shared/AppDownload'
 import { appLinks } from '../../data/content'
+import { isFirebaseConfigured, db } from '../../lib/firebase'
 
 function SocialIcon({ name }: { name: 'linkedin' | 'x' | 'instagram' }) {
   const common = { width: 17, height: 17, viewBox: '0 0 24 24', 'aria-hidden': true as const }
@@ -56,6 +57,53 @@ const socials = [
 export default function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim() || submitting) return
+
+    setSubmitting(true)
+    const subEmail = email.toLowerCase().trim()
+    const isLive = isFirebaseConfigured && db !== null
+
+    if (isLive) {
+      try {
+        const { collection, addDoc, serverTimestamp } = await import('firebase/firestore')
+        await addDoc(collection(db!, 'newsletter_subscribers'), {
+          email: subEmail,
+          subscribedAt: serverTimestamp()
+        })
+        setSubscribed(true)
+        setEmail('')
+      } catch (err) {
+        console.error('Newsletter subscription failed:', err)
+      } finally {
+        setSubmitting(false)
+      }
+      return
+    }
+
+    // Local Storage Mock Mode
+    try {
+      const val = localStorage.getItem('tkdv_newsletter_subscribers')
+      const currentSubs = val ? JSON.parse(val) : []
+      const exists = currentSubs.some((s: any) => s.email === subEmail)
+      if (!exists) {
+        const newSub = {
+          id: 'sub-' + Date.now(),
+          email: subEmail,
+          subscribedAt: new Date().toISOString()
+        }
+        localStorage.setItem('tkdv_newsletter_subscribers', JSON.stringify([...currentSubs, newSub]))
+      }
+    } catch (err) {
+      console.error(err)
+    }
+    setSubscribed(true)
+    setEmail('')
+    setSubmitting(false)
+  }
 
   return (
     <footer style={{ background: '#F8FAFC', position: 'relative', overflow: 'hidden' }}>
@@ -73,24 +121,25 @@ export default function Footer() {
             </p>
           </div>
           <form
-            onSubmit={(e) => { e.preventDefault(); if (email) setSubscribed(true) }}
+            onSubmit={handleSubscribe}
             style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
           >
             <input
               type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: '100%', maxWidth: 260, minWidth: 180, boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.2s ease' }}
+              disabled={submitting}
+              style={{ background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: '100px', padding: '0.8rem 1.3rem', color: '#0B1B33', fontSize: '0.88rem', outline: 'none', width: '100%', maxWidth: 260, minWidth: 180, boxShadow: 'var(--shadow-xs)', transition: 'border-color 0.2s ease', cursor: submitting ? 'not-allowed' : 'text' }}
               onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = '#2563EB' }}
               onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)' }}
             />
-            <button type="submit" className="btn-blue-primary" style={{ padding: '0.8rem 1.5rem' }}>
-              {subscribed ? <>Subscribed <Check size={15} /></> : <>Subscribe <ArrowRight size={15} /></>}
+            <button type="submit" className="btn-blue-primary" style={{ padding: '0.8rem 1.5rem' }} disabled={submitting}>
+              {subscribed ? <>Subscribed <Check size={15} /></> : submitting ? <>Submitting...</> : <>Subscribe <ArrowRight size={15} /></>}
             </button>
           </form>
         </div>
 
         {/* Links */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, 1.5fr) repeat(4, minmax(120px, 1fr))', gap: '2.5rem', marginBottom: '3rem' }} className="footer-grid">
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, 1.5fr) repeat(4, minmax(120px, 1fr))', gap: '2.5rem', marginBottom: '3rem' }} className="footer-grid grid-1-mobile">
           <div>
             <Logo size={32} />
             <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.65, maxWidth: 280, margin: '1.25rem 0 1.5rem' }}>

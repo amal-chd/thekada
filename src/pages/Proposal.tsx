@@ -171,7 +171,7 @@ export default function Proposal() {
               {/* Budget Picker */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-muted, #64748B)', display: 'block', marginBottom: '0.75rem' }}>Project Budget</label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.5rem' }}>
                   {[{ id: 'low', label: '< ₹2L' }, { id: 'mid', label: '₹2L–₹10L' }, { id: 'high', label: '₹10L+' }].map((b) => (
                     <motion.button
                       key={b.id}

@@ -183,14 +183,13 @@ export default function About() {
         </div>
       </Section>
 
-      {/* VALUES - HORIZONTAL CAROUSEL */}
-      <section ref={valuesRef} style={{ height: '300vh', position: 'relative', background: 'var(--bg-white)' }}>
-        <div style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+      <section ref={valuesRef} style={{ height: '300vh', position: 'relative', background: 'var(--bg-white)' }} className="mobile-horizontal-scroll-section">
+        <div style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }} className="mobile-horizontal-scroll-sticky">
           <Container>
             <SectionHeading eyebrow="What we believe" title="Our operating principles." align="left" />
-            <motion.div style={{ x: valuesX, display: 'flex', gap: '2rem', width: 'max-content', paddingRight: '20vw', marginTop: '3rem' }}>
+            <motion.div style={{ x: valuesX, display: 'flex', gap: '2rem', width: 'max-content', paddingRight: '20vw', marginTop: '3rem' }} className="mobile-horizontal-scroll-container hide-scrollbar">
               {values.map((v) => (
-                <div key={v.title} className="card-feature" style={{ width: '380px', flexShrink: 0, padding: '2.5rem', background: 'var(--bg-soft)', borderRadius: '24px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div key={v.title} className="card-feature mobile-horizontal-scroll-card" style={{ width: '380px', flexShrink: 0, padding: '2.5rem', background: 'var(--bg-soft)', borderRadius: '24px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <span style={{ width: 64, height: 64, borderRadius: 16, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}><v.Icon size={32} color="#2563EB" /></span>
                   <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1rem', letterSpacing: '-0.02em' }}>{v.title}</h3>
                   <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{v.desc}</p>
@@ -200,6 +199,35 @@ export default function About() {
           </Container>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-horizontal-scroll-section {
+            height: auto !important;
+          }
+          .mobile-horizontal-scroll-sticky {
+            position: relative !important;
+            height: auto !important;
+            padding: 3rem 0 !important;
+          }
+          .mobile-horizontal-scroll-container {
+            transform: none !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+            margin-left: -1.25rem !important;
+            margin-right: -1.25rem !important;
+            width: 100vw !important;
+          }
+          .mobile-horizontal-scroll-card {
+            width: 80vw !important;
+            max-width: 320px !important;
+            scroll-snap-align: start !important;
+          }
+        }
+      `}</style>
 
       {/* TEAM */}
       <Section bg="soft" bordered>

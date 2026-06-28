@@ -146,6 +146,12 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /newsletter_subscribers/{id} {
+      allow create: if true;
+      allow read, delete: if isExecutive();
+      allow update: if false;
+    }
+
     match /activity_logs/{id} {
       allow read: if isExecutive();
       allow create: if signedIn();

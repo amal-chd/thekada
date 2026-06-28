@@ -174,6 +174,12 @@ type ProductCard = {
   Icon: LucideIcon
 }
 
+type NewsletterSubscriber = {
+  id: string
+  email: string
+  subscribedAt: string
+}
+
 const INITIAL_INTERNSHIP_APPLICATIONS: StoredApplication[] = [
   {
     id: 'app-1',
@@ -247,6 +253,11 @@ const PRODUCT_CARDS: ProductCard[] = [
   { id: 'lunoo', name: 'Lunoo', color: '#EC4899', Icon: Sparkles },
   { id: 'parayu-ai', name: 'Parayu AI', color: '#84CC16', Icon: MessageSquare },
   { id: 'whichott', name: 'WhichOTT', color: '#3B82F6', Icon: Laptop }
+]
+
+const INITIAL_SUBSCRIBERS: NewsletterSubscriber[] = [
+  { id: 'sub-1', email: 'elena@thekada.in', subscribedAt: '2026-06-25T14:22:18.000Z' },
+  { id: 'sub-2', email: 'siddharth@thekada.in', subscribedAt: '2026-06-25T15:10:44.000Z' }
 ]
 
 const readLocalArray = <T,>(key: string, initial: T[]): T[] => {
@@ -329,6 +340,7 @@ export default function Admin() {
   const [notifications, setNotifications] = useState<string[]>([])
   const [metrics, setMetrics] = useState(INTRO_METRICS)
   const [usersCount, setUsersCount] = useState(0)
+  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>(() => readLocalArray('tkdv_newsletter_subscribers', INITIAL_SUBSCRIBERS))
   
   // Modals & Triggers
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
@@ -505,22 +517,32 @@ export default function Admin() {
       }
     })
     const unsubUsers = onSnapshot(collection(db, 'users'), (snap) => {
-      if (!snap.empty) setUsersCount(snap.size)
+      setUsersCount(snap.size)
     })
     const unsubFran = onSnapshot(collection(db, 'franchise_requests'), (snap) => {
-      if (!snap.empty) {
-        setFranchises(snap.docs.map(d => {
-          const data = d.data()
-          return {
-            id: d.id,
-            owner: data.name ?? 'Unknown',
-            location: data.city ?? 'Unknown',
-            status: data.status === 'active' || data.status === 'approved' ? 'Active' : 'Pending',
-            share: data.plan_selected === 'premium' ? '12%' : '10%',
-            revenue: data.budget && data.budget !== 'N/A' ? data.budget : '₹0'
-          }
-        }))
-      }
+      setFranchises(snap.docs.map(d => {
+        const data = d.data()
+        return {
+          id: d.id,
+          owner: data.name ?? 'Unknown',
+          location: data.city ?? 'Unknown',
+          status: data.status === 'active' || data.status === 'approved' ? 'Active' : 'Pending',
+          share: data.plan_selected === 'premium' ? '12%' : '10%',
+          revenue: data.budget && data.budget !== 'N/A' ? data.budget : '₹0'
+        }
+      }))
+    })
+    const unsubSubs = onSnapshot(collection(db, 'newsletter_subscribers'), (snap) => {
+      setSubscribers(snap.docs.map(d => {
+        const data = d.data()
+        return {
+          id: d.id,
+          email: data.email ?? '',
+          subscribedAt: data.subscribedAt
+            ? (data.subscribedAt.toDate ? data.subscribedAt.toDate().toISOString() : String(data.subscribedAt))
+            : ''
+        }
+      }))
     })
 
     return () => {
@@ -534,6 +556,7 @@ export default function Admin() {
       unsubMetrics()
       unsubUsers()
       unsubFran()
+      unsubSubs()
     }
   }, [isLive, currentUser])
 
@@ -899,6 +922,24 @@ export default function Admin() {
     setProposals(prev => prev.map(pr => pr.id === proposalId ? { ...pr, status: 'Signed' } : pr))
     setLeads(prev => prev.map(ld => ld.company === leadCompany ? { ...ld, status: 'Contract' } : ld))
     triggerNotification(`Client signed proposal ${proposalId}. Contract active.`)
+  }
+
+  const removeSubscriber = async (subId: string, email: string) => {
+    if (isLive) {
+      try {
+        const { deleteDoc } = await import('firebase/firestore')
+        await deleteDoc(doc(db, 'newsletter_subscribers', subId))
+        triggerNotification(`Removed newsletter subscriber: ${email}`)
+      } catch (err: any) {
+        triggerNotification('Error removing subscriber: ' + err.message)
+      }
+      return
+    }
+    const currentSubs = readLocalArray<NewsletterSubscriber>('tkdv_newsletter_subscribers', INITIAL_SUBSCRIBERS)
+    const updatedSubs = currentSubs.filter(s => s.id !== subId)
+    localStorage.setItem('tkdv_newsletter_subscribers', JSON.stringify(updatedSubs))
+    setSubscribers(updatedSubs)
+    triggerNotification(`Removed newsletter subscriber: ${email}`)
   }
 
   // Support workflows
@@ -2235,6 +2276,54 @@ export default function Admin() {
                   </div>
                 ))}
               </div>
+            </SpotlightCard>
+
+            {/* Newsletter Subscribers list */}
+            <SpotlightCard className="card-premium" style={{
+              background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+              borderRadius: 24,
+              padding: '2rem',
+              marginTop: '1.5rem'
+            }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '1.1rem' }}>Newsletter Subscribers</h3>
+              {subscribers.length === 0 ? (
+                <p style={{ fontSize: '0.85rem', color: '#94A3B8' }}>No newsletter subscribers found.</p>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+                  {subscribers.map((sub: NewsletterSubscriber) => (
+                    <div key={sub.id} style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)'}`,
+                      borderRadius: 16,
+                      padding: '1.25rem',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <div>
+                        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>{sub.email}</div>
+                        <div style={{ fontSize: '0.74rem', color: '#94A3B8', marginTop: '0.15rem' }}>Subscribed: {formatTimestamp(sub.subscribedAt)}</div>
+                      </div>
+                      <button 
+                        style={{ 
+                          background: 'rgba(239,68,68,0.1)', 
+                          color: '#EF4444', 
+                          border: '1px solid rgba(239,68,68,0.2)', 
+                          padding: '0.35rem 0.65rem', 
+                          borderRadius: 8, 
+                          fontSize: '0.72rem', 
+                          fontWeight: 700, 
+                          cursor: 'pointer' 
+                        }} 
+                        onClick={() => removeSubscriber(sub.id, sub.email)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </SpotlightCard>
           </div>
         )}
