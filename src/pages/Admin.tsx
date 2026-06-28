@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { 
   Users, FileText, ShieldCheck, Ticket, 
-  MapPin, UserCheck, LayoutDashboard, Search, Sparkles, Plus, 
-  Send, Laptop, TrendingUp, Award, BadgeCheck, Bell, RefreshCw, 
+  MapPin, UserCheck, LayoutDashboard, Search, Sparkles, 
+  Send, Laptop, TrendingUp, Bell, RefreshCw, 
   Terminal, Moon, Sun, Bike, Utensils, BedDouble, Store, BookText, 
-  KanbanSquare, MessageSquare, LogOut, Database, Cloud, Lock
+  KanbanSquare, MessageSquare, LogOut, Database, Cloud, Lock,
+  Plus, Award, BadgeCheck
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Aurora, SpotlightCard } from '../components/ui'
@@ -2073,7 +2074,25 @@ export default function Admin() {
 
         {/* ──────────────────────────────────────────────────────────────────
             TAB 4: INTERNSHIP MANAGEMENT PORTAL
-                            <div style={{ overflowX: 'auto' }}>
+            ────────────────────────────────────────────────────────────────── */}
+        {activeTab === 'internships' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+              <SpotlightCard className="card-premium" style={{
+                background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                borderRadius: 24,
+                padding: '2rem'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '1.8rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>Internship Workspace Checklist</h3>
+                    <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginTop: '0.2rem' }}>Audit and allocate tasks, manage leaves, and issue official verified certificates.</p>
+                  </div>
+                  <button className="btn-primary btn-sm" onClick={onboardFirstPendingIntern}><Plus size={13} /> Onboard Intern</button>
+                </div>
+
+                <div style={{ overflowX: 'auto' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.82rem' }}>
                     <thead>
                       <tr style={{ borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, color: '#94A3B8', fontWeight: 700 }}>
@@ -2106,7 +2125,7 @@ export default function Admin() {
                           </td>
                           <td style={{ padding: '1rem 0.75rem', textAlign: 'right' }}>
                             <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
-                              <button style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`, padding: '0.35rem 0.6' + 'rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.74rem', fontWeight: 755 }} onClick={() => approveInternLeave(intern.id)}>Approve Leave</button>
+                              <button style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`, padding: '0.35rem 0.6rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.74rem', fontWeight: 750 }} onClick={() => approveInternLeave(intern.id)}>Approve Leave</button>
                               {intern.status !== 'Completed' ? (
                                 <button className="btn-primary" style={{ padding: '0.35rem 0.6rem', fontSize: '0.74rem', borderRadius: 6 }} onClick={() => issueInternCertificate(intern.id)}><Award size={12} /> Issue Cert</button>
                               ) : (
@@ -2118,25 +2137,7 @@ export default function Admin() {
                       ))}
                     </tbody>
                   </table>
-                </div>9' : (intern.status === 'Completed' ? '#60A5FA' : '#F59E0B')
-                          }}>
-                            {intern.status}
-                          </span>
-                        </td>
-                        <td style={{ padding: '1rem 0.75rem', textAlign: 'right' }}>
-                          <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
-                            <button style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`, padding: '0.35rem 0.6rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.74rem', fontWeight: 750 }} onClick={() => approveInternLeave(intern.id)}>Approve Leave</button>
-                            {intern.status !== 'Completed' ? (
-                              <button className="btn-primary" style={{ padding: '0.35rem 0.6rem', fontSize: '0.74rem', borderRadius: 6 }} onClick={() => issueInternCertificate(intern.id)}><Award size={12} /> Issue Cert</button>
-                            ) : (
-                              <span style={{ fontSize: '0.72rem', color: '#10B981', display: 'flex', alignItems: 'center', gap: '0.2rem', fontWeight: 700 }}><BadgeCheck size={12} /> {intern.certId}</span>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                </div>
               </SpotlightCard>
             </div>
           </div>
