@@ -126,6 +126,32 @@ service cloud.firestore {
       ];
     }
 
+    match /internship_applications/{id} {
+      allow read, write: if true;
+    }
+
+    match /internships/{id} {
+      allow read, write: if true;
+    }
+
+    match /internship_leaves/{id} {
+      allow read, write: if true;
+    }
+
+    match /internship_reports/{id} {
+      allow read, write: if true;
+    }
+
+    match /internship_certificates/{id} {
+      allow read, write: if true;
+    }
+
+    match /activity_logs/{id} {
+      allow read: if isExecutive();
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+
     match /users/{userId} {
       allow read: if isExecutive() || request.auth.uid == userId;
       allow create: if isExecutive() && request.resource.data.uid == userId && belongsToOrg(request.resource.data);

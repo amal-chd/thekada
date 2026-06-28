@@ -507,6 +507,21 @@ export default function Admin() {
     const unsubUsers = onSnapshot(collection(db, 'users'), (snap) => {
       if (!snap.empty) setUsersCount(snap.size)
     })
+    const unsubFran = onSnapshot(collection(db, 'franchise_requests'), (snap) => {
+      if (!snap.empty) {
+        setFranchises(snap.docs.map(d => {
+          const data = d.data()
+          return {
+            id: d.id,
+            owner: data.name ?? 'Unknown',
+            location: data.city ?? 'Unknown',
+            status: data.status === 'active' || data.status === 'approved' ? 'Active' : 'Pending',
+            share: data.plan_selected === 'premium' ? '12%' : '10%',
+            revenue: data.budget && data.budget !== 'N/A' ? data.budget : '₹0'
+          }
+        }))
+      }
+    })
 
     return () => {
       unsubEmp()
@@ -518,6 +533,7 @@ export default function Admin() {
       unsubInterns()
       unsubMetrics()
       unsubUsers()
+      unsubFran()
     }
   }, [isLive, currentUser])
 
@@ -1747,12 +1763,18 @@ export default function Admin() {
                       <motion.div 
                         initial={{ height: 0 }}
                         animate={{ height: `${bar.val}%` }}
-                        transition={{ duration: 1, ease: 'easeOut' }}
+                        whileHover={{ scaleY: 1.05, filter: 'brightness(1.15)', boxShadow: '0 0 12px rgba(37,99,235,0.4)' }}
+                        transition={{ 
+                          height: { duration: 1, ease: 'easeOut' },
+                          scaleY: { type: 'spring', stiffness: 300, damping: 15 }
+                        }}
                         style={{
                           width: '100%',
                           background: 'linear-gradient(180deg, #2563EB 0%, #3B82F640 100%)',
                           borderRadius: '6px 6px 0 0',
-                          position: 'relative'
+                          position: 'relative',
+                          cursor: 'pointer',
+                          originY: 1
                         }}
                       >
                         <div style={{
@@ -1791,8 +1813,13 @@ export default function Admin() {
                         </span>
                         <span style={{ color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>{p.revenue} ({p.percentage}%)</span>
                       </div>
-                      <div style={{ height: 6, background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', borderRadius: 99 }}>
-                        <div style={{ height: '100%', width: `${p.percentage}%`, background: p.color, borderRadius: 99 }} />
+                      <div style={{ height: 6, background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', borderRadius: 99, overflow: 'hidden' }}>
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${p.percentage}%` }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                          style={{ height: '100%', background: p.color, borderRadius: 99 }} 
+                        />
                       </div>
                     </div>
                   ))}
