@@ -851,6 +851,7 @@ html.lenis, html.lenis body { height: auto; }
 
 .btn-glow {
   position: relative;
+  z-index: 1;
 }
 .btn-glow::after {
   content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1;
