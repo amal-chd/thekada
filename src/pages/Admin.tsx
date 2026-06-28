@@ -6,9 +6,24 @@ import {
   MapPin, UserCheck, LayoutDashboard, Search, Sparkles, Plus, 
   Send, Laptop, TrendingUp, Award, BadgeCheck, Bell, RefreshCw, 
   Terminal, Moon, Sun, Bike, Utensils, BedDouble, Store, BookText, 
-  KanbanSquare, MessageSquare, LogOut
+  KanbanSquare, MessageSquare, LogOut, Database, Cloud, Lock
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Aurora, SpotlightCard } from '../components/ui'
+import {
+  ADMIN_COLLECTIONS,
+  ADMIN_ROLES,
+  AUTOMATION_WORKFLOWS,
+  COMPANY_PROFILE,
+  FIREBASE_SERVICES,
+  PRODUCT_REGISTRY,
+  PRODUCTION_CHECKLIST,
+  REPORT_EXPORTS,
+} from '../lib/adminSchema'
+import { firebaseProjectId, firebaseRegion, isFirebaseConfigured, auth as firebaseAuth, db as firebaseDb } from '../lib/firebase'
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { doc, getDoc, collection, onSnapshot, query, orderBy, limit, addDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
+
 
 // --- SEED / SIMULATED DATA ---
 const INTRO_METRICS = {
@@ -86,12 +101,201 @@ const INITIAL_AUDIT_LOGS = [
   { timestamp: '2026-06-24T18:30:15', user: 'thekadaapp@gmail.com', role: 'Founder', action: 'Approved Franchise Application: Kochi Hub', ip: '103.44.22.108' }
 ]
 
+type AdminTab = 'dashboard' | 'architecture' | 'products' | 'org' | 'internships' | 'crm' | 'tickets' | 'franchise' | 'rbac'
+
+type ChecklistItem = {
+  id: string
+  task: string
+  done: boolean
+}
+
+type StoredApplication = {
+  id: string
+  name: string
+  email: string
+  phone: string
+  college: string
+  domain: string
+  duration: string
+  start?: string
+  portfolio?: string
+  message?: string
+  photoUrl?: string
+  cvName?: string
+  appliedDate?: string
+}
+
+type StoredIntern = {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  college?: string
+  domain: string
+  duration?: string
+  start?: string
+  end?: string
+  status: string
+  mentorId?: string
+  photoUrl?: string
+  cvName?: string
+  checklist?: ChecklistItem[]
+  certificateId?: string
+}
+
+type UiIntern = {
+  id: string
+  name: string
+  email: string
+  domain: string
+  status: string
+  mentor: string
+  tasks: string
+  certId: string
+}
+
+type StoredLeave = {
+  internId: string
+  status: string
+}
+
+type StoredCertificate = {
+  id: string
+  name: string
+  role: string
+  start?: string
+  end: string
+}
+
+type ProductCard = {
+  id: string
+  name: string
+  color: string
+  Icon: LucideIcon
+}
+
+const INITIAL_INTERNSHIP_APPLICATIONS: StoredApplication[] = [
+  {
+    id: 'app-1',
+    name: 'Meera Joshi',
+    email: 'meera.joshi@example.com',
+    phone: '+91 94456 78120',
+    college: 'NITT Trichy',
+    domain: 'Mobile (React Native / Flutter)',
+    duration: '3 months',
+    start: '2026-07-01',
+    portfolio: 'https://github.com/meerajoshi',
+    message: 'I want to build highly performant mobile applications.',
+    photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=60',
+    cvName: 'Meera_Joshi_Resume.pdf',
+    appliedDate: '2026-06-22'
+  }
+]
+
+const INITIAL_STORED_INTERNS: StoredIntern[] = [
+  {
+    id: 'int-1',
+    name: 'Aravind Nair',
+    email: 'aravind.nair@example.com',
+    phone: '+91 98765 43210',
+    college: 'CET Trivandrum',
+    domain: 'Backend Engineering',
+    duration: '3 months',
+    start: '2026-05-15',
+    end: '2026-08-15',
+    status: 'Active',
+    checklist: [
+      { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
+      { id: 'c2', task: 'Set up Local Database & Dev Workspace', done: true },
+      { id: 'c3', task: 'Complete Supabase/PostgreSQL bootcamp tasks', done: true },
+      { id: 'c4', task: 'First Pull Request reviewed & merged', done: false },
+      { id: 'c5', task: 'Submit project handover & documentation', done: false }
+    ],
+    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60',
+    cvName: 'Aravind_Nair_CV.pdf'
+  },
+  {
+    id: 'int-2',
+    name: 'Anjali Menon',
+    email: 'anjali.menon@example.com',
+    phone: '+91 91234 56789',
+    college: 'LBS Institute of Technology',
+    domain: 'UI/UX Design',
+    duration: '2 months',
+    start: '2026-06-15',
+    end: '2026-08-15',
+    status: 'Onboarding',
+    checklist: [
+      { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
+      { id: 'c2', task: 'Access Figma workspace & Design Guide', done: false },
+      { id: 'c3', task: 'Review user personas for KadaDine app', done: false },
+      { id: 'c4', task: 'Draft wireframes for dashboard navigation', done: false },
+      { id: 'c5', task: 'Submit final design kit handover', done: false }
+    ],
+    photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=60',
+    cvName: 'Anjali_Menon_Portfolio.pdf'
+  }
+]
+
+const PRODUCT_CARDS: ProductCard[] = [
+  { id: 'the-kada', name: 'The Kada', color: '#2563EB', Icon: Bike },
+  { id: 'kada-dine', name: 'Kada Dine', color: '#FF6B2B', Icon: Utensils },
+  { id: 'kada-stay', name: 'Kada Stay', color: '#7C6AF7', Icon: BedDouble },
+  { id: 'sellrapp', name: 'SellrApp', color: '#F59E0B', Icon: Store },
+  { id: 'kada-ledger', name: 'Kada Ledger', color: '#10B981', Icon: BookText },
+  { id: 'devflow', name: 'DevFlow', color: '#06B6D4', Icon: KanbanSquare },
+  { id: 'lunoo', name: 'Lunoo', color: '#EC4899', Icon: Sparkles },
+  { id: 'parayu-ai', name: 'Parayu AI', color: '#84CC16', Icon: MessageSquare },
+  { id: 'whichott', name: 'WhichOTT', color: '#3B82F6', Icon: Laptop }
+]
+
+const readLocalArray = <T,>(key: string, initial: T[]): T[] => {
+  const data = localStorage.getItem(key)
+  if (!data) {
+    localStorage.setItem(key, JSON.stringify(initial))
+    return initial
+  }
+
+  try {
+    return JSON.parse(data) as T[]
+  } catch {
+    localStorage.setItem(key, JSON.stringify(initial))
+    return initial
+  }
+}
+
+const mapStoredInterns = (storedInterns: StoredIntern[]): UiIntern[] =>
+  storedInterns.map((intern) => {
+    const assigned = intern.checklist?.length ?? 5
+    const completed = intern.checklist?.filter((item) => item.done).length ?? 0
+
+    return {
+      id: intern.id,
+      name: intern.name,
+      email: intern.email,
+      domain: intern.domain,
+      status: intern.status,
+      mentor: intern.mentorId || (intern.domain.includes('Backend') ? 'Siddharth R.' : 'Rohan K.'),
+      tasks: `${completed}/${assigned}`,
+      certId: intern.certificateId || ''
+    }
+  })
+
+const createRuntimeId = (prefix: string) => {
+  const randomId = globalThis.crypto?.randomUUID?.() || String(new Date().getTime())
+  return `${prefix}-${randomId}`
+}
+
+const createCertificateId = () => `TKDV-INT-2026-${createRuntimeId('cert').replace('cert-', '').slice(0, 8).toUpperCase()}`
+
 export default function Admin() {
+  const db = firebaseDb!
+  const auth = firebaseAuth!
   const navigate = useNavigate()
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'org' | 'internships' | 'crm' | 'tickets' | 'franchise' | 'rbac'>('dashboard')
+  const [activeTab, setActiveTab] = useState<AdminTab>('dashboard')
   
-  // Real-time Simulated States
+  // Real-time states
   const [employees, setEmployees] = useState(INITIAL_EMPLOYEES)
   const [candidates, setCandidates] = useState(INITIAL_CANDIDATES)
   const [leads, setLeads] = useState(INITIAL_LEADS)
@@ -113,10 +317,7 @@ export default function Admin() {
   const [propCost, setPropCost] = useState('₹5,00,000')
 
   // Internship Tracker states
-  const [interns, setInterns] = useState([
-    { id: 'int-1', name: 'Aravind Nair', email: 'aravind.nair@example.com', domain: 'Frontend', status: 'Active', mentor: 'Siddharth R.', tasks: '12/15', certId: '' },
-    { id: 'int-2', name: 'Anjali Menon', email: 'anjali.menon@example.com', domain: 'Backend', status: 'Onboarding', mentor: 'Rohan K.', tasks: '2/4', certId: '' }
-  ])
+  const [interns, setInterns] = useState<UiIntern[]>(() => mapStoredInterns(readLocalArray('tkdv_interns', INITIAL_STORED_INTERNS)))
 
   // Support Ticket state
   const [liveChatMessages, setLiveChatMessages] = useState<string[]>([
@@ -125,6 +326,189 @@ export default function Admin() {
     'Support Agent B: Troubleshooting printer IP configurations...'
   ])
   const [chatInput, setChatInput] = useState('')
+
+  // Authentication states
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
+
+  const isLive = isFirebaseConfigured && auth !== null && db !== null
+
+  // 1. Auth Listener
+  useEffect(() => {
+    if (!isLive) {
+      setAuthLoading(false)
+      setIsSuperAdmin(true) // simulated admin
+      return
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid))
+          if (userDoc.exists()) {
+            const userData = userDoc.data()
+            const role = userData?.role ?? ''
+            if (role === 'super_admin' || role === 'founder' || role === 'director' || role === 'store_owner') {
+              setCurrentUser(user)
+              setIsSuperAdmin(true)
+              setLoginError('')
+            } else {
+              setLoginError('Access denied: You do not have administrator permissions.')
+              await signOut(auth)
+              setCurrentUser(null)
+              setIsSuperAdmin(false)
+            }
+          } else {
+            setLoginError('Access denied: Admin record not found in database.')
+            await signOut(auth)
+            setCurrentUser(null)
+            setIsSuperAdmin(false)
+          }
+        } catch (error: any) {
+          setLoginError('Authorization error: ' + error.message)
+          await signOut(auth)
+          setCurrentUser(null)
+          setIsSuperAdmin(false)
+        }
+      } else {
+        setCurrentUser(null)
+        setIsSuperAdmin(false)
+      }
+      setAuthLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [isLive])
+
+  // 2. Seed Firestore if Empty
+  useEffect(() => {
+    const runSeeding = async () => {
+      if (!isLive || !currentUser) return
+      try {
+        // Seed employees
+        const empCheck = await getDoc(doc(db, 'employees', 'emp-1'))
+        if (!empCheck.exists()) {
+          for (const emp of INITIAL_EMPLOYEES) {
+            await setDoc(doc(db, 'employees', emp.id), emp)
+          }
+        }
+        // Seed candidates
+        const candCheck = await getDoc(doc(db, 'candidates', 'cand-1'))
+        if (!candCheck.exists()) {
+          for (const cand of INITIAL_CANDIDATES) {
+            await setDoc(doc(db, 'candidates', cand.id), cand)
+          }
+        }
+        // Seed leads
+        const leadCheck = await getDoc(doc(db, 'crm_leads', 'lead-1'))
+        if (!leadCheck.exists()) {
+          for (const lead of INITIAL_LEADS) {
+            await setDoc(doc(db, 'crm_leads', lead.id), lead)
+          }
+        }
+        // Seed proposals
+        const propCheck = await getDoc(doc(db, 'proposals', 'prop-1'))
+        if (!propCheck.exists()) {
+          for (const prop of INITIAL_PROPOSALS) {
+            await setDoc(doc(db, 'proposals', prop.id), prop)
+          }
+        }
+        // Seed tickets
+        const tktCheck = await getDoc(doc(db, 'support_tickets', 'tkt-1'))
+        if (!tktCheck.exists()) {
+          for (const tkt of INITIAL_TICKETS) {
+            await setDoc(doc(db, 'support_tickets', tkt.id), tkt)
+          }
+        }
+      } catch (err) {
+        console.error('Firestore seeding failed:', err)
+      }
+    }
+    runSeeding()
+  }, [isLive, currentUser])
+
+  // 3. Real-Time Snapshot Listeners (only active when logged in)
+  useEffect(() => {
+    if (!isLive || !currentUser) return
+
+    const unsubEmp = onSnapshot(collection(db, 'employees'), (snap) => {
+      if (!snap.empty) setEmployees(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubCand = onSnapshot(collection(db, 'candidates'), (snap) => {
+      if (!snap.empty) setCandidates(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubLeads = onSnapshot(collection(db, 'crm_leads'), (snap) => {
+      if (!snap.empty) setLeads(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubProps = onSnapshot(collection(db, 'proposals'), (snap) => {
+      if (!snap.empty) setProposals(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubTkts = onSnapshot(collection(db, 'support_tickets'), (snap) => {
+      if (!snap.empty) setTickets(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubAudit = onSnapshot(query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(25)), (snap) => {
+      if (!snap.empty) setAuditLogs(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
+    const unsubInterns = onSnapshot(collection(db, 'internships'), (snap) => {
+      if (!snap.empty) {
+        const storedList = snap.docs.map(d => ({ id: d.id, ...d.data() } as StoredIntern))
+        setInterns(mapStoredInterns(storedList))
+      }
+    })
+
+    return () => {
+      unsubEmp()
+      unsubCand()
+      unsubLeads()
+      unsubProps()
+      unsubTkts()
+      unsubAudit()
+      unsubInterns()
+    }
+  }, [isLive, currentUser])
+
+  // Auth operations
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!isLive) return
+    setLoginError('')
+    setIsLoggingIn(true)
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+    } catch (error: any) {
+      console.error('Login failed:', error)
+      setLoginError(error.message || 'Invalid email or password.')
+    } finally {
+      setIsLoggingIn(false)
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    if (!isLive) return
+    setLoginError('')
+    setIsLoggingIn(true)
+    try {
+      const provider = new GoogleAuthProvider()
+      await signInWithPopup(auth, provider)
+    } catch (error: any) {
+      console.error('Google sign-in failed:', error)
+      setLoginError(error.message || 'Google authentication failed.')
+    } finally {
+      setIsLoggingIn(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    if (isLive) {
+      await signOut(auth)
+    }
+    navigate('/')
+  }
 
   // Command Palette Keyboard Trigger
   useEffect(() => {
@@ -140,116 +524,39 @@ export default function Admin() {
 
   // Sync Internship Hub with localStorage
   useEffect(() => {
-    const localGet = (key: string, initial: any) => {
-      const data = localStorage.getItem(key)
-      if (data) return JSON.parse(data)
-      localStorage.setItem(key, JSON.stringify(initial))
-      return initial
-    }
-
-    const seedApps = [
-      {
-        id: 'app-1',
-        name: 'Meera Joshi',
-        email: 'meera.joshi@example.com',
-        phone: '+91 94456 78120',
-        college: 'NITT Trichy',
-        domain: 'Mobile (React Native / Flutter)',
-        duration: '3 months',
-        start: '2026-07-01',
-        portfolio: 'https://github.com/meerajoshi',
-        message: 'I want to build highly performant mobile applications.',
-        photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=60',
-        cvName: 'Meera_Joshi_Resume.pdf',
-        appliedDate: '2026-06-22'
-      }
-    ]
-
-    const seedInterns = [
-      {
-        id: 'int-1',
-        name: 'Aravind Nair',
-        email: 'aravind.nair@example.com',
-        phone: '+91 98765 43210',
-        college: 'CET Trivandrum',
-        domain: 'Backend Engineering',
-        duration: '3 months',
-        start: '2026-05-15',
-        end: '2026-08-15',
-        status: 'Active',
-        checklist: [
-          { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
-          { id: 'c2', task: 'Set up Local Database & Dev Workspace', done: true },
-          { id: 'c3', task: 'Complete Supabase/PostgreSQL bootcamp tasks', done: true },
-          { id: 'c4', task: 'First Pull Request reviewed & merged', done: false },
-          { id: 'c5', task: 'Submit project handover & documentation', done: false }
-        ],
-        photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60',
-        cvName: 'Aravind_Nair_CV.pdf'
-      },
-      {
-        id: 'int-2',
-        name: 'Anjali Menon',
-        email: 'anjali.menon@example.com',
-        phone: '+91 91234 56789',
-        college: 'LBS Institute of Technology',
-        domain: 'UI/UX Design',
-        duration: '2 months',
-        start: '2026-06-15',
-        end: '2026-08-15',
-        status: 'Onboarding',
-        checklist: [
-          { id: 'c1', task: 'Submit signed offer letter & college NOC', done: true },
-          { id: 'c2', task: 'Access Figma workspace & Design Guide', done: false },
-          { id: 'c3', task: 'Review user personas for KadaDine app', done: false },
-          { id: 'c4', task: 'Draft wireframes for dashboard navigation', done: false },
-          { id: 'c5', task: 'Submit final design kit handover', done: false }
-        ],
-        photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=60',
-        cvName: 'Anjali_Menon_Portfolio.pdf'
-      }
-    ]
-
-    localGet('tkdv_applications', seedApps)
-    const storedInterns = localGet('tkdv_interns', seedInterns)
-
-    if (storedInterns) {
-      const mapped = storedInterns.map((i: any) => {
-        const assigned = i.checklist ? i.checklist.length : 5
-        const completed = i.checklist ? i.checklist.filter((c: any) => c.done).length : 0
-        return {
-          id: i.id,
-          name: i.name,
-          email: i.email,
-          domain: i.domain,
-          status: i.status,
-          mentor: i.mentorId || (i.domain.includes('Backend') ? 'Siddharth R.' : 'Rohan K.'),
-          tasks: `${completed}/${assigned}`,
-          certId: i.certificateId || ''
-        }
-      })
-      setInterns(mapped)
-    }
+    readLocalArray('tkdv_applications', INITIAL_INTERNSHIP_APPLICATIONS)
+    readLocalArray('tkdv_interns', INITIAL_STORED_INTERNS)
   }, [])
 
   // Push Notification Simulation
-  const triggerNotification = (msg: string) => {
+  const triggerNotification = async (msg: string) => {
     setNotifications(prev => [msg, ...prev].slice(0, 5))
-    // Add to audit logs
-    const now = new Date().toISOString().slice(0, 19)
-    setAuditLogs(prev => [
-      { timestamp: now, user: 'thekadaapp@gmail.com', role: 'Super Admin', action: msg, ip: '127.0.0.1' },
-      ...prev
-    ])
+    const now = new Date().toISOString()
+    const logItem = {
+      timestamp: now,
+      user: isLive ? (auth?.currentUser?.email ?? 'admin@thekada.in') : 'thekadaapp@gmail.com',
+      role: isLive ? 'Admin' : 'Super Admin',
+      action: msg,
+      ip: '127.0.0.1'
+    }
+    
+    if (isLive) {
+      try {
+        await addDoc(collection(db, 'activity_logs'), logItem)
+      } catch (err) {
+        console.error('Error writing activity log:', err)
+      }
+    } else {
+      setAuditLogs(prev => [logItem, ...prev])
+    }
   }
 
   // HR Workflows
-  const hireCandidate = (candidateId: string) => {
+  const hireCandidate = async (candidateId: string) => {
     const candidate = candidates.find(c => c.id === candidateId)
     if (candidate) {
-      // Add to employees
       const newEmp = {
-        id: `emp-${Date.now()}`,
+        id: createRuntimeId('emp'),
         name: candidate.name,
         role: `Associate ${candidate.role}`,
         dept: 'Engineering',
@@ -258,6 +565,17 @@ export default function Admin() {
         leaves: 20,
         status: 'Active'
       }
+      if (isLive) {
+        try {
+          await setDoc(doc(db, 'employees', newEmp.id), newEmp)
+          const { deleteDoc } = await import('firebase/firestore')
+          await deleteDoc(doc(db, 'candidates', candidateId))
+          triggerNotification(`Hired Candidate ${candidate.name} as Associate ${candidate.role}`)
+        } catch (err: any) {
+          triggerNotification('Error: ' + err.message)
+        }
+        return
+      }
       setEmployees(prev => [newEmp, ...prev])
       setCandidates(prev => prev.filter(c => c.id !== candidateId))
       triggerNotification(`Hired Candidate ${candidate.name} as Associate ${candidate.role}`)
@@ -265,8 +583,55 @@ export default function Admin() {
   }
 
   // Internship Workflows
-  const onboardFirstPendingIntern = () => {
-    const apps = JSON.parse(localStorage.getItem('tkdv_applications') || '[]')
+  const onboardFirstPendingIntern = async () => {
+    if (isLive) {
+      try {
+        const { getDocs } = await import('firebase/firestore')
+        const appsQuery = query(collection(db, 'internship_applications'), limit(1))
+        const appsSnapshot = await getDocs(appsQuery)
+        if (appsSnapshot.empty) {
+          triggerNotification('No pending applications found in database to onboard.')
+          return
+        }
+        const appDoc = appsSnapshot.docs[0]
+        const app = { id: appDoc.id, ...appDoc.data() } as StoredApplication
+
+        const newId = createRuntimeId('int')
+        const newIntern = {
+          id: newId,
+          name: app.name,
+          email: app.email,
+          phone: app.phone,
+          college: app.college,
+          domain: app.domain,
+          duration: app.duration,
+          start: app.start || new Date().toISOString().split('T')[0],
+          end: '',
+          status: 'Onboarding',
+          photoUrl: app.photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=60',
+          cvName: app.cvName || 'Resume.pdf',
+          checklist: [
+            { id: 'c1', task: 'Submit signed offer letter & college NOC', done: false },
+            { id: 'c2', task: 'Complete Git & workspace onboarding', done: false },
+            { id: 'c3', task: 'Review core architecture & style guide', done: false },
+            { id: 'c4', task: 'Submit first Pull Request for review', done: false },
+            { id: 'c5', task: 'Deliver final task presentation', done: false }
+          ]
+        }
+
+        await setDoc(doc(db, 'internships', newId), newIntern)
+        const { deleteDoc } = await import('firebase/firestore')
+        await deleteDoc(doc(db, 'internship_applications', app.id))
+
+        triggerNotification(`Successfully onboarded intern ${app.name} (${app.domain})`)
+      } catch (err: any) {
+        console.error('Error onboarding intern:', err)
+        triggerNotification('Error onboarding intern: ' + err.message)
+      }
+      return
+    }
+
+    const apps = readLocalArray<StoredApplication>('tkdv_applications', INITIAL_INTERNSHIP_APPLICATIONS)
     if (apps.length === 0) {
       triggerNotification('No pending applications found in database to onboard.')
       return
@@ -274,7 +639,7 @@ export default function Admin() {
     const app = apps[0]
     
     const newIntern = {
-      id: 'int-' + Date.now(),
+      id: createRuntimeId('int'),
       name: app.name,
       email: app.email,
       phone: app.phone,
@@ -295,40 +660,47 @@ export default function Admin() {
       ]
     }
     
-    const currentInterns = JSON.parse(localStorage.getItem('tkdv_interns') || '[]')
+    const currentInterns = readLocalArray<StoredIntern>('tkdv_interns', INITIAL_STORED_INTERNS)
     const updatedInterns = [...currentInterns, newIntern]
     localStorage.setItem('tkdv_interns', JSON.stringify(updatedInterns))
     
-    const updatedApps = apps.filter((a: any) => a.id !== app.id)
+    const updatedApps = apps.filter((application) => application.id !== app.id)
     localStorage.setItem('tkdv_applications', JSON.stringify(updatedApps))
     
-    const mapped = updatedInterns.map((i: any) => {
-      const assigned = i.checklist ? i.checklist.length : 5
-      const completed = i.checklist ? i.checklist.filter((c: any) => c.done).length : 0
-      return {
-        id: i.id,
-        name: i.name,
-        email: i.email,
-        domain: i.domain,
-        status: i.status,
-        mentor: i.mentorId || (i.domain.includes('Backend') ? 'Siddharth R.' : 'Rohan K.'),
-        tasks: `${completed}/${assigned}`,
-        certId: i.certificateId || ''
-      }
-    })
-    setInterns(mapped)
+    setInterns(mapStoredInterns(updatedInterns))
     triggerNotification(`Successfully onboarded intern ${app.name} (${app.domain})`)
   }
 
-  const approveInternLeave = (internId: string) => {
-    const currentLeaves = JSON.parse(localStorage.getItem('tkdv_leaves') || '[]')
-    let found = false
-    const updatedLeaves = currentLeaves.map((l: any) => {
-      if (l.internId === internId && l.status === 'Pending') {
-        found = true
-        return { ...l, status: 'Approved' }
+  const approveInternLeave = async (internId: string) => {
+    if (isLive) {
+      try {
+        const { getDocs, where } = await import('firebase/firestore')
+        const q = query(collection(db, 'internship_leaves'), where('internId', '==', internId), where('status', '==', 'Pending'))
+        const snap = await getDocs(q)
+        if (!snap.empty) {
+          for (const d of snap.docs) {
+            await updateDoc(doc(db, 'internship_leaves', d.id), { status: 'Approved' })
+          }
+          triggerNotification(`Approved Leave request for Intern ID: ${internId}`)
+        } else {
+          await addDoc(collection(db, 'internship_leaves'), { internId, status: 'Approved', timestamp: serverTimestamp() })
+          triggerNotification(`Approved general leave allowance for Intern ID: ${internId}`)
+        }
+      } catch (err: any) {
+        console.error(err)
+        triggerNotification('Error approving leave: ' + err.message)
       }
-      return l
+      return
+    }
+
+    const currentLeaves = readLocalArray<StoredLeave>('tkdv_leaves', [])
+    let found = false
+    const updatedLeaves = currentLeaves.map((leave) => {
+      if (leave.internId === internId && leave.status === 'Pending') {
+        found = true
+        return { ...leave, status: 'Approved' }
+      }
+      return leave
     })
     localStorage.setItem('tkdv_leaves', JSON.stringify(updatedLeaves))
     
@@ -339,22 +711,48 @@ export default function Admin() {
     }
   }
 
-  const issueInternCertificate = (internId: string) => {
-    const certId = 'TKDV-INT-2026-' + String(Math.floor(1000 + Math.random() * 9000))
-    
-    const currentInterns = JSON.parse(localStorage.getItem('tkdv_interns') || '[]')
-    const updatedInterns = currentInterns.map((i: any) => {
-      if (i.id === internId) {
-        return { ...i, status: 'Completed', certificateId: certId, end: new Date().toISOString().split('T')[0] }
+  const issueInternCertificate = async (internId: string) => {
+    const certId = createCertificateId()
+    if (isLive) {
+      try {
+        const internDoc = await getDoc(doc(db, 'internships', internId))
+        if (internDoc.exists()) {
+          const internData = internDoc.data() as StoredIntern
+          const newCert = {
+            id: certId,
+            name: internData.name,
+            role: internData.domain,
+            start: internData.start,
+            end: new Date().toISOString().split('T')[0]
+          }
+          await setDoc(doc(db, 'internship_certificates', certId), newCert)
+          await updateDoc(doc(db, 'internships', internId), {
+            status: 'Completed',
+            certificateId: certId,
+            end: new Date().toISOString().split('T')[0]
+          })
+          triggerNotification(`Generated and issued Certificate ${certId} for ${internData.name}`)
+        }
+      } catch (err: any) {
+        console.error(err)
+        triggerNotification('Error issuing certificate: ' + err.message)
       }
-      return i
+      return
+    }
+
+    const currentInterns = readLocalArray<StoredIntern>('tkdv_interns', INITIAL_STORED_INTERNS)
+    const updatedInterns = currentInterns.map((intern) => {
+      if (intern.id === internId) {
+        return { ...intern, status: 'Completed', certificateId: certId, end: new Date().toISOString().split('T')[0] }
+      }
+      return intern
     })
     localStorage.setItem('tkdv_interns', JSON.stringify(updatedInterns))
     
-    const intern = currentInterns.find((i: any) => i.id === internId)
+    const intern = currentInterns.find((item) => item.id === internId)
     if (intern) {
-      const currentCerts = JSON.parse(localStorage.getItem('tkdv_certificates') || '[]')
-      const newCert = {
+      const currentCerts = readLocalArray<StoredCertificate>('tkdv_certificates', [])
+      const newCert: StoredCertificate = {
         id: certId,
         name: intern.name,
         role: intern.domain,
@@ -375,7 +773,7 @@ export default function Admin() {
   }
 
   // CRM Workflows
-  const generateProposal = (e: React.FormEvent) => {
+  const generateProposal = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!propTitle) return
     const newProp = {
@@ -386,6 +784,17 @@ export default function Admin() {
       status: 'Sent',
       date: new Date().toISOString().slice(0, 10)
     }
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'proposals', newProp.id), newProp)
+        setPropTitle('')
+        triggerNotification(`Created & Transmitted Proposal: "${propTitle}" for ${propLead}`)
+      } catch (err: any) {
+        triggerNotification('Error creating proposal: ' + err.message)
+      }
+      return
+    }
+
     setProposals(prev => [newProp, ...prev])
     setPropTitle('')
     triggerNotification(`Created & Transmitted Proposal: "${propTitle}" for ${propLead}`)
@@ -401,7 +810,20 @@ export default function Admin() {
     }, 1000)
   }
 
-  const escalateTicket = (ticketId: string) => {
+  const escalateTicket = async (ticketId: string) => {
+    if (isLive) {
+      try {
+        await updateDoc(doc(db, 'support_tickets', ticketId), {
+          priority: 'Urgent',
+          deadline: 'Escalated Matrix Triggered'
+        })
+        triggerNotification(`Ticket #${ticketId} Escalated to Super Admin General Queue`)
+      } catch (err: any) {
+        triggerNotification('Error: ' + err.message)
+      }
+      return
+    }
+
     setTickets(prev => prev.map(t => {
       if (t.id === ticketId) {
         triggerNotification(`Ticket #${ticketId} Escalated to Super Admin General Queue`)
@@ -412,7 +834,12 @@ export default function Admin() {
   }
 
   // Franchise Workflows
-  const approveFranchise = (franId: string) => {
+  const approveFranchise = async (franId: string) => {
+    if (isLive) {
+      triggerNotification('Action not permitted: Franchise Database is Read-Only.')
+      return
+    }
+
     setFranchises(prev => prev.map(f => {
       if (f.id === franId) {
         triggerNotification(`Approved Franchise application for ${f.location}`)
@@ -427,6 +854,7 @@ export default function Admin() {
     setCommandPaletteOpen(false)
     setCommandQuery('')
     if (cmd === 'goto_dashboard') setActiveTab('dashboard')
+    else if (cmd === 'goto_architecture') setActiveTab('architecture')
     else if (cmd === 'goto_products') setActiveTab('products')
     else if (cmd === 'goto_org') setActiveTab('org')
     else if (cmd === 'goto_internships') setActiveTab('internships')
@@ -456,6 +884,266 @@ export default function Admin() {
   const trigBaseLight: React.CSSProperties = {
     ...trigBase,
     color: '#475569'
+  }
+
+
+  if (authLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: theme === 'dark' ? '#080E1C' : '#F8FAFC',
+        color: theme === 'dark' ? '#E2E8F0' : '#334155',
+        fontFamily: "'Inter', sans-serif"
+      }}>
+        <Aurora soft />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', zIndex: 10 }}>
+          <div style={{
+            width: '40px', height: '40px',
+            borderRadius: '50%',
+            border: `2px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(37,99,235,0.15)'}`,
+            borderTopColor: '#2563EB',
+            animation: 'spin 0.8s linear infinite',
+          }} />
+          <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94A3B8' }}>Loading Operating System...</div>
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    )
+  }
+
+  const authenticated = isLive ? (currentUser && isSuperAdmin) : true
+
+  if (!authenticated) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#040712',
+        color: '#E2E8F0',
+        fontFamily: "'Inter', sans-serif",
+        position: 'relative',
+        overflow: 'hidden',
+        padding: '1.5rem'
+      }}>
+        <Aurora soft />
+        <div style={{
+          position: 'absolute',
+          width: '500px',
+          height: '500px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(0,0,0,0) 70%)',
+          top: '20%',
+          left: '10%',
+          zIndex: 1
+        }} />
+        <div style={{
+          position: 'absolute',
+          width: '400px',
+          height: '400px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(168,85,247,0.1) 0%, rgba(0,0,0,0) 70%)',
+          bottom: '10%',
+          right: '10%',
+          zIndex: 1
+        }} />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            width: '100%',
+            maxWidth: '440px',
+            background: 'rgba(11, 21, 43, 0.6)',
+            backdropFilter: 'blur(30px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '28px',
+            padding: '2.5rem',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+            zIndex: 10,
+            textAlign: 'center'
+          }}
+        >
+          {/* Logo & Header */}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.65rem', marginBottom: '1.5rem' }}>
+            <img src="/favicon.png" alt="Logo" width={38} height={38} />
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#FFFFFF', letterSpacing: '-0.02em' }}>The Kada</div>
+              <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Admin Operating OS</div>
+            </div>
+          </div>
+
+          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>Authenticate Session</h2>
+          <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '2rem' }}>Provide credentials to access the central company database</p>
+
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'left' }}>
+            {loginError && (
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                color: '#FCA5A5',
+                padding: '0.75rem 1rem',
+                borderRadius: '10px',
+                fontSize: '0.78rem',
+                lineHeight: 1.4
+              }}>
+                ⚠️ {loginError}
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="email" style={{ display: 'block', fontSize: '0.72rem', color: '#94A3B8', fontWeight: 700, marginBottom: '0.45rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Email</label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={loginEmail}
+                onChange={e => setLoginEmail(e.target.value)}
+                placeholder="email@thekada.in"
+                style={{
+                  width: '100%',
+                  padding: '0.85rem 1.1rem',
+                  borderRadius: '12px',
+                  background: 'rgba(15, 23, 42, 0.6)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  fontSize: '0.85rem',
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  fontFamily: 'inherit'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#2563EB'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
+              />
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
+                <label htmlFor="password" style={{ display: 'block', fontSize: '0.72rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Security Key / Password</label>
+              </div>
+              <input
+                id="password"
+                type="password"
+                required
+                value={loginPassword}
+                onChange={e => setLoginPassword(e.target.value)}
+                placeholder="••••••••••••"
+                style={{
+                  width: '100%',
+                  padding: '0.85rem 1.1rem',
+                  borderRadius: '12px',
+                  background: 'rgba(15, 23, 42, 0.6)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  fontSize: '0.85rem',
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  fontFamily: 'inherit'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#2563EB'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              style={{
+                width: '100%',
+                padding: '0.9rem',
+                borderRadius: '12px',
+                background: '#2563EB',
+                color: '#FFFFFF',
+                fontSize: '0.86rem',
+                fontWeight: 700,
+                border: 'none',
+                cursor: isLoggingIn ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                marginTop: '0.5rem'
+              }}
+              onMouseEnter={(e) => { if (!isLoggingIn) e.currentTarget.style.background = '#1D4ED8' }}
+              onMouseLeave={(e) => { if (!isLoggingIn) e.currentTarget.style.background = '#2563EB' }}
+            >
+              {isLoggingIn ? (
+                <>
+                  <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', borderTopColor: '#FFFFFF', animation: 'spin 0.6s linear infinite' }} />
+                  Verifying Identity...
+                </>
+              ) : (
+                <>
+                  <Lock size={15} /> Access System Control
+                </>
+              )}
+            </button>
+          </form>
+
+          {isLive && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '1.5rem 0 1rem' }}>
+                <div style={{ flexGrow: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+                <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>or</span>
+                <div style={{ flexGrow: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+              </div>
+
+              <button
+                onClick={handleGoogleLogin}
+                disabled={isLoggingIn}
+                style={{
+                  width: '100%',
+                  padding: '0.9rem',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#FFFFFF',
+                  fontSize: '0.86rem',
+                  fontWeight: 700,
+                  cursor: isLoggingIn ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.65rem'
+                }}
+                onMouseEnter={(e) => { if (!isLoggingIn) e.currentTarget.style.background = 'rgba(255,255,255,0.08)' }}
+                onMouseLeave={(e) => { if (!isLoggingIn) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)' }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                </svg>
+                Sign in with Google
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#64748B',
+              fontSize: '0.78rem',
+              marginTop: '1.5rem',
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
+          >
+            Back to Public Site
+          </button>
+        </motion.div>
+      </div>
+    )
   }
 
   return (
@@ -496,6 +1184,7 @@ export default function Admin() {
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           {[
             { id: 'dashboard', label: 'Executive Stats', Icon: LayoutDashboard },
+            { id: 'architecture', label: 'Firebase Ops', Icon: Database },
             { id: 'products', label: 'Product Control', Icon: Laptop },
             { id: 'org', label: 'HR & Org', Icon: Users },
             { id: 'internships', label: 'Internships Hub', Icon: UserCheck },
@@ -513,7 +1202,7 @@ export default function Admin() {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id as any)}
+                onClick={() => setActiveTab(item.id as AdminTab)}
                 style={{
                   ...(theme === 'dark' ? trigBase : trigBaseLight),
                   color: itemColor,
@@ -543,7 +1232,7 @@ export default function Admin() {
 
         {/* Logout Button */}
         <button
-          onClick={() => navigate('/')}
+          onClick={handleLogout}
           style={{
             ...(theme === 'dark' ? trigBase : trigBaseLight),
             color: '#EF4444',
@@ -580,6 +1269,7 @@ export default function Admin() {
             <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#2563EB', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Central Operating System</div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', letterSpacing: '-0.025em', marginTop: '0.2rem' }}>
               {activeTab === 'dashboard' && 'Executive Global Analytics'}
+              {activeTab === 'architecture' && 'Firebase Backend Architecture'}
               {activeTab === 'products' && 'Multi-Tenant Product Control'}
               {activeTab === 'org' && 'Organization & HR Center'}
               {activeTab === 'internships' && 'Internship Management Portal'}
@@ -588,12 +1278,17 @@ export default function Admin() {
               {activeTab === 'franchise' && 'Franchise & Partner Operations'}
               {activeTab === 'rbac' && 'Access Control & Security Rules'}
             </h1>
+            <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginTop: '0.3rem', maxWidth: 720 }}>
+              {isFirebaseConfigured
+                ? `Connected to Firebase project ${firebaseProjectId} in ${firebaseRegion}.`
+                : 'Local simulation mode: add Vite Firebase environment variables to connect live Auth, Firestore, Storage, Functions, Analytics, Messaging, App Check, Remote Config, Crashlytics, and Performance.'}
+            </p>
 
             {/* Mobile Tab Selector & Logout */}
             <div className="show-mobile-only" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap', width: '100%' }}>
               <select
                 value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as any)}
+                onChange={(e) => setActiveTab(e.target.value as AdminTab)}
                 style={{
                   background: theme === 'dark' ? '#111A2E' : '#FFFFFF',
                   color: theme === 'dark' ? '#E2E8F0' : '#0B1B33',
@@ -608,6 +1303,7 @@ export default function Admin() {
                 }}
               >
                 <option value="dashboard">Executive Stats</option>
+                <option value="architecture">Firebase Ops</option>
                 <option value="products">Product Control</option>
                 <option value="org">HR & Org</option>
                 <option value="internships">Internship Hub</option>
@@ -617,7 +1313,7 @@ export default function Admin() {
                 <option value="rbac">Security & RBAC</option>
               </select>
               <button
-                onClick={() => navigate('/')}
+                onClick={handleLogout}
                 style={{
                   background: 'rgba(239, 68, 68, 0.1)',
                   color: '#EF4444',
@@ -639,6 +1335,22 @@ export default function Admin() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.5rem 0.85rem',
+              borderRadius: 99,
+              background: isFirebaseConfigured ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+              color: isFirebaseConfigured ? '#10B981' : '#F59E0B',
+              border: `1px solid ${isFirebaseConfigured ? 'rgba(16,185,129,0.24)' : 'rgba(245,158,11,0.24)'}`,
+              fontSize: '0.75rem',
+              fontWeight: 800,
+              whiteSpace: 'nowrap'
+            }}>
+              <Database size={14} />
+              {isFirebaseConfigured ? 'Firebase Live' : 'Local Mode'}
+            </div>
             {/* Command search trigger button */}
             <button 
               onClick={() => setCommandPaletteOpen(true)}
@@ -718,6 +1430,170 @@ export default function Admin() {
             >
               Clear
             </button>
+          </div>
+        )}
+
+        {/* ──────────────────────────────────────────────────────────────────
+            TAB 0: FIREBASE BACKEND ARCHITECTURE
+            ────────────────────────────────────────────────────────────────── */}
+        {activeTab === 'architecture' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+              {[
+                { label: 'Firebase Services', value: FIREBASE_SERVICES.length, sub: 'Auth, Firestore, Functions, Storage, Messaging, App Check', Icon: Cloud, tone: '#2563EB' },
+                { label: 'Firestore Collections', value: ADMIN_COLLECTIONS.length, sub: 'Org-scoped, indexed, audit-ready root collections', Icon: Database, tone: '#10B981' },
+                { label: 'Role Hierarchy', value: ADMIN_ROLES.length, sub: 'Custom-claims RBAC with MFA enforcement', Icon: Lock, tone: '#F59E0B' },
+                { label: 'Automation Workflows', value: AUTOMATION_WORKFLOWS.length, sub: `Exports supported: ${REPORT_EXPORTS.join(', ')}`, Icon: RefreshCw, tone: '#7C6AF7' }
+              ].map(item => (
+                <div key={item.label} style={{
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#FFFFFF',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                  borderRadius: 16,
+                  padding: '1.25rem',
+                  boxShadow: 'var(--shadow-xs)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 12,
+                      background: `${item.tone}16`,
+                      color: item.tone,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <item.Icon size={18} />
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</div>
+                      <div style={{ fontSize: '1.55rem', fontWeight: 850, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', lineHeight: 1 }}>{item.value}</div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '0.8rem', lineHeight: 1.5 }}>{item.sub}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '1.5rem' }} className="grid-responsive-2col">
+              <SpotlightCard className="card-premium" style={{
+                background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                borderRadius: 24,
+                padding: '2rem'
+              }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '0.35rem' }}>Deployment Boundary</h3>
+                <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '1.4rem', lineHeight: 1.6 }}>
+                  Firebase credentials are environment-driven. The primary admin identity is created in Firebase Auth, then elevated through a bootstrap Cloud Function and custom claims.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.85rem' }}>
+                  {[
+                    { label: 'Company', value: COMPANY_PROFILE.legalName },
+                    { label: 'Primary Admin', value: COMPANY_PROFILE.primaryAdminEmail },
+                    { label: 'Default Org', value: COMPANY_PROFILE.defaultOrganizationId },
+                    { label: 'Functions Region', value: firebaseRegion },
+                    { label: 'Active Project', value: firebaseProjectId || 'Not configured' },
+                    { label: 'Runtime Mode', value: isFirebaseConfigured ? 'Firebase connected' : 'Local simulation' }
+                  ].map(meta => (
+                    <div key={meta.label} style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+                      borderRadius: 12,
+                      padding: '1rem'
+                    }}>
+                      <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{meta.label}</div>
+                      <div style={{ fontSize: '0.86rem', color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', fontWeight: 800, marginTop: '0.25rem', wordBreak: 'break-word' }}>{meta.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard className="card-premium" style={{
+                background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                borderRadius: 24,
+                padding: '2rem'
+              }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '1.1rem' }}>Production Checklist</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {PRODUCTION_CHECKLIST.map(item => (
+                    <div key={item} style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start', fontSize: '0.8rem', color: theme === 'dark' ? '#CBD5E1' : '#475569', lineHeight: 1.5 }}>
+                      <ShieldCheck size={15} color="#10B981" style={{ flexShrink: 0, marginTop: 2 }} />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </SpotlightCard>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 0.75fr', gap: '1.5rem' }} className="grid-responsive-2col">
+              <SpotlightCard className="card-premium" style={{
+                background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                borderRadius: 24,
+                padding: '2rem'
+              }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '1.1rem' }}>Firestore Collection Strategy</h3>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.78rem' }}>
+                    <thead>
+                      <tr style={{ borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, color: '#94A3B8' }}>
+                        <th style={{ padding: '0.65rem' }}>Collection</th>
+                        <th style={{ padding: '0.65rem' }}>Owner</th>
+                        <th style={{ padding: '0.65rem' }}>PII</th>
+                        <th style={{ padding: '0.65rem' }}>Index Keys</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ADMIN_COLLECTIONS.map(collection => (
+                        <tr key={collection.id} style={{ borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}` }}>
+                          <td style={{ padding: '0.75rem 0.65rem', color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', fontWeight: 800 }}>{collection.id}</td>
+                          <td style={{ padding: '0.75rem 0.65rem' }}>{collection.owner}</td>
+                          <td style={{ padding: '0.75rem 0.65rem' }}>{collection.pii ? 'Yes' : 'No'}</td>
+                          <td style={{ padding: '0.75rem 0.65rem', color: '#94A3B8' }}>{collection.indexes.join(', ')}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </SpotlightCard>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <SpotlightCard className="card-premium" style={{
+                  background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                  borderRadius: 24,
+                  padding: '2rem'
+                }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '1rem' }}>Cloud Function Workflows</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                    {AUTOMATION_WORKFLOWS.map(workflow => (
+                      <div key={workflow} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: theme === 'dark' ? '#CBD5E1' : '#475569', fontSize: '0.8rem' }}>
+                        <RefreshCw size={13} color="#7C6AF7" />
+                        {workflow}
+                      </div>
+                    ))}
+                  </div>
+                </SpotlightCard>
+
+                <SpotlightCard className="card-premium" style={{
+                  background: theme === 'dark' ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+                  borderRadius: 24,
+                  padding: '2rem'
+                }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33', marginBottom: '1rem' }}>Product Tenant Registry</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                    {PRODUCT_REGISTRY.map(product => (
+                      <div key={product.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', fontSize: '0.78rem', color: theme === 'dark' ? '#CBD5E1' : '#475569' }}>
+                        <span style={{ fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>{product.name}</span>
+                        <span style={{ color: '#94A3B8' }}>{product.domainCollections.length} domain tables</span>
+                      </div>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </div>
+            </div>
           </div>
         )}
 
@@ -840,19 +1716,9 @@ export default function Admin() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Product selection grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.85rem' }}>
-              {[
-                { id: 'the-kada', name: 'The Kada', color: '#2563EB', Icon: Bike },
-                { id: 'kada-dine', name: 'Kada Dine', color: '#FF6B2B', Icon: Utensils },
-                { id: 'kada-stay', name: 'Kada Stay', color: '#7C6AF7', Icon: BedDouble },
-                { id: 'sellrapp', name: 'SellrApp', color: '#F59E0B', Icon: Store },
-                { id: 'kada-ledger', name: 'Kada Ledger', color: '#10B981', Icon: BookText },
-                { id: 'devflow', name: 'DevFlow', color: '#06B6D4', Icon: KanbanSquare },
-                { id: 'lunoo', name: 'Lunoo', color: '#EC4899', Icon: Sparkles },
-                { id: 'parayu-ai', name: 'Parayu AI', color: '#84CC16', Icon: MessageSquare },
-                { id: 'whichott', name: 'WhichOTT', color: '#3B82F6', Icon: Laptop }
-              ].map(prod => {
+              {PRODUCT_CARDS.map(prod => {
                 const isSelected = selectedProduct === prod.id
-                const P_Icon = prod.Icon as any
+                const ProductIcon = prod.Icon
                 return (
                   <button
                     key={prod.id}
@@ -877,7 +1743,7 @@ export default function Admin() {
                       display: 'flex', alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <P_Icon size={20} />
+                      <ProductIcon size={20} />
                     </span>
                     <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isSelected ? prod.color : (theme === 'dark' ? '#E2E8F0' : '#0B1B33') }}>
                       {prod.name}
@@ -1035,7 +1901,7 @@ export default function Admin() {
                         <div style={{ fontWeight: 850, fontSize: '0.86rem', color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>{emp.name}</div>
                         <div style={{ fontSize: '0.76rem', color: '#94A3B8', marginTop: '0.1' }}>{emp.role} ({emp.dept})</div>
                       </div>
-                      <div style={{ textRight: 'right', fontSize: '0.76rem' } as any}>
+                      <div style={{ textAlign: 'right', fontSize: '0.76rem' }}>
                         <div style={{ fontWeight: 700, color: '#10B981' }}>{emp.salary}</div>
                         <div style={{ color: '#94A3B8', marginTop: '0.1rem' }}>Att: {emp.attendance}</div>
                       </div>
@@ -1617,6 +2483,7 @@ export default function Admin() {
                 <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#94A3B8', padding: '0.5rem 0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dashboard Navigation</div>
                 {[
                   { label: 'Go to Executive Dashboard Stats', action: 'goto_dashboard', shortcut: 'GD' },
+                  { label: 'Go to Firebase Backend Architecture', action: 'goto_architecture', shortcut: 'GA' },
                   { label: 'Go to Multi-Tenant Product Control', action: 'goto_products', shortcut: 'GP' },
                   { label: 'Go to HR & Organization Directory', action: 'goto_org', shortcut: 'GO' },
                   { label: 'Go to Internship Management Hub', action: 'goto_internships', shortcut: 'GI' },

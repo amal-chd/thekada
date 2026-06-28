@@ -1,0 +1,181 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return signedIn() && request.auth.token.role != null
+        ? request.auth.token.role
+        : 'anonymous';
+    }
+
+    function orgId() {
+      return signedIn() && request.auth.token.organizationId != null
+        ? request.auth.token.organizationId
+        : '';
+    }
+
+    function productIds() {
+      return signedIn() && request.auth.token.productIds != null
+        ? request.auth.token.productIds
+        : [];
+    }
+
+    function hasAnyRole(roles) {
+      return signedIn() && role() in roles;
+    }
+
+    function isSuperAdmin() {
+      return hasAnyRole(['super_admin', 'founder']);
+    }
+
+    function isExecutive() {
+      return hasAnyRole(['super_admin', 'founder', 'director']);
+    }
+
+    function isStaff() {
+      return hasAnyRole([
+        'super_admin',
+        'founder',
+        'director',
+        'department_head',
+        'manager',
+        'team_lead',
+        'employee',
+        'support_agent'
+      ]);
+    }
+
+    function isFinanceRole() {
+      return hasAnyRole(['super_admin', 'founder', 'director', 'finance_manager']);
+    }
+
+    function isHrRole() {
+      return hasAnyRole(['super_admin', 'founder', 'director', 'department_head', 'hr_manager']);
+    }
+
+    function isSupportRole() {
+      return hasAnyRole(['super_admin', 'founder', 'director', 'manager', 'support_agent']);
+    }
+
+    function isPartnerRole() {
+      return hasAnyRole(['franchise_owner', 'partner']);
+    }
+
+    function belongsToOrg(data) {
+      return !('organizationId' in data) || data.organizationId == orgId();
+    }
+
+    function productAllowed(data) {
+      return !('productId' in data) || data.productId in productIds() || isExecutive();
+    }
+
+    function canReadManaged(data) {
+      return isExecutive() || (isStaff() && belongsToOrg(data) && productAllowed(data)) || (isPartnerRole() && belongsToOrg(data));
+    }
+
+    function canWriteManaged(existingData, incomingData) {
+      return isExecutive()
+        || (
+          isStaff()
+          && belongsToOrg(existingData)
+          && belongsToOrg(incomingData)
+          && productAllowed(incomingData)
+          && !('role' in incomingData)
+          && !('permissions' in incomingData)
+        );
+    }
+
+    function canCreateManaged(incomingData) {
+      return isExecutive()
+        || (
+          isStaff()
+          && belongsToOrg(incomingData)
+          && productAllowed(incomingData)
+          && !('role' in incomingData)
+          && !('permissions' in incomingData)
+        );
+    }
+
+    function managedCollection(collectionId) {
+      return collectionId in [
+        'users',
+        'organizations',
+        'departments',
+        'employees',
+        'internships',
+        'careers',
+        'applications',
+        'proposals',
+        'contacts',
+        'crm_leads',
+        'tickets',
+        'franchises',
+        'partners',
+        'products',
+        'subscriptions',
+        'invoices',
+        'transactions',
+        'notifications',
+        'reports',
+        'analytics',
+        'settings'
+      ];
+    }
+
+    match /users/{userId} {
+      allow read: if isExecutive() || request.auth.uid == userId;
+      allow create: if isExecutive() && request.resource.data.uid == userId && belongsToOrg(request.resource.data);
+      allow update: if isExecutive() && belongsToOrg(resource.data) && belongsToOrg(request.resource.data);
+      allow delete: if isSuperAdmin();
+    }
+
+    match /organizations/{organizationId} {
+      allow read: if isExecutive() || (signedIn() && organizationId == orgId());
+      allow create, update, delete: if isSuperAdmin();
+
+      match /{collectionId}/{documentId} {
+        allow read: if managedCollection(collectionId) && canReadManaged(resource.data);
+        allow create: if managedCollection(collectionId) && canCreateManaged(request.resource.data);
+        allow update: if managedCollection(collectionId) && canWriteManaged(resource.data, request.resource.data);
+        allow delete: if managedCollection(collectionId) && isExecutive() && belongsToOrg(resource.data);
+      }
+    }
+
+    match /{collectionId}/{documentId} {
+      allow read: if managedCollection(collectionId) && canReadManaged(resource.data);
+      allow create: if managedCollection(collectionId) && canCreateManaged(request.resource.data);
+      allow update: if managedCollection(collectionId) && canWriteManaged(resource.data, request.resource.data);
+      allow delete: if managedCollection(collectionId) && isExecutive() && belongsToOrg(resource.data);
+    }
+
+    match /audit_logs/{logId} {
+      allow read: if isExecutive();
+      allow create: if signedIn()
+        && request.resource.data.actorUid == request.auth.uid
+        && request.resource.data.organizationId == orgId();
+      allow update, delete: if false;
+    }
+
+    match /public_content/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isExecutive();
+    }
+
+    match /integrations/{integrationId} {
+      allow read, write: if isSuperAdmin();
+    }
+
+    match /system_jobs/{jobId} {
+      allow read: if isExecutive();
+      allow create, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

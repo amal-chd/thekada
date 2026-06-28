@@ -1,0 +1,67 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return signedIn() && request.auth.token.role != null
+        ? request.auth.token.role
+        : 'anonymous';
+    }
+
+    function orgId() {
+      return signedIn() && request.auth.token.organizationId != null
+        ? request.auth.token.organizationId
+        : '';
+    }
+
+    function hasAnyRole(roles) {
+      return signedIn() && role() in roles;
+    }
+
+    function isExecutive() {
+      return hasAnyRole(['super_admin', 'founder', 'director']);
+    }
+
+    function isStaff() {
+      return hasAnyRole([
+        'super_admin',
+        'founder',
+        'director',
+        'department_head',
+        'manager',
+        'team_lead',
+        'employee',
+        'support_agent'
+      ]);
+    }
+
+    function isSafeFile() {
+      return request.resource == null
+        || request.resource.size < 25 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf|text/csv|application/vnd.openxmlformats-officedocument.*|application/vnd.ms-excel');
+    }
+
+    match /organizations/{organizationId}/{allPaths=**} {
+      allow read: if signedIn() && (isExecutive() || organizationId == orgId());
+      allow write: if signedIn() && (isExecutive() || (isStaff() && organizationId == orgId())) && isSafeFile();
+      allow delete: if isExecutive() && organizationId == orgId();
+    }
+
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isExecutive() && isSafeFile();
+    }
+
+    match /private/{uid}/{allPaths=**} {
+      allow read, write: if signedIn() && request.auth.uid == uid && isSafeFile();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

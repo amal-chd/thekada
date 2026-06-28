@@ -1,4 +1,28 @@
-# React + TypeScript + Vite
+# The Kada Website
+
+React + TypeScript + Vite frontend for The Kada Digital Ventures, including the Firebase-ready Admin Operating System at `/admin`.
+
+## Admin Backend
+
+The production admin architecture is documented in [docs/admin-architecture.md](docs/admin-architecture.md). Firebase client config is loaded from `.env` using `.env.example`; privileged actions are handled in `functions/` through Firebase Cloud Functions, custom claims, Firestore rules, Storage rules, and indexed collections.
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Production Firebase deployment:
+
+```bash
+cd functions && npm install && npm run build && cd ..
+npm run build
+firebase deploy --only firestore:rules,firestore:indexes,storage,functions:admin,hosting
+```
+
+Never commit Firebase service account keys, admin passwords, bootstrap tokens, or private credentials.
+
+## Vite Reference
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

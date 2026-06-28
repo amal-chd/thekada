@@ -6,6 +6,9 @@ import {
   Settings, LogOut, Download, BadgeCheck, Loader2, Sparkles
 } from 'lucide-react'
 import { SectionHeading, Button, Container, Aurora, TextReveal, TiltCard } from '../components/ui'
+import { isFirebaseConfigured, db as firebaseDb } from '../lib/firebase'
+import { doc, getDoc, collection, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore'
+
 
 // Seeding Initial Data
 const INITIAL_APPLICATIONS = [
@@ -150,28 +153,7 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: '0.04em' 
 }
 
-const inputStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(255,255,255,0.08)',
-  color: '#FFFFFF',
-  borderRadius: 10,
-  padding: '0.65rem 0.9rem',
-  width: '100%',
-  outline: 'none',
-  fontSize: '0.88rem',
-  transition: 'all 0.25s ease'
-}
 
-const selectStyle: React.CSSProperties = {
-  background: '#0B0F19',
-  border: '1px solid rgba(255,255,255,0.08)',
-  color: '#FFFFFF',
-  borderRadius: 10,
-  padding: '0.65rem 0.9rem',
-  width: '100%',
-  outline: 'none',
-  fontSize: '0.88rem'
-}
 
 function fmt(d: string) {
   if (!d) return ''
@@ -181,6 +163,7 @@ function fmt(d: string) {
 }
 
 export default function InternshipPortal() {
+  const db = firebaseDb!
   // Tabs: 'prospective' | 'active' | 'admin' | 'certificate'
   const [activeTab, setActiveTab] = useState<'prospective' | 'active' | 'admin' | 'certificate'>('prospective')
   
@@ -217,26 +200,116 @@ export default function InternshipPortal() {
   const [leaveForm, setLeaveForm] = useState({ startDate: '', endDate: '', reason: '' })
   const [leaveSuccess, setLeaveSuccess] = useState(false)
 
-  // Initialize and Seed localStorage
+  const isLive = isFirebaseConfigured && db !== null
+
+  // 1. Initialize and Seed localStorage/Firestore
   useEffect(() => {
-    const localGet = (key: string, initial: any) => {
-      const data = localStorage.getItem(key)
-      if (data) return JSON.parse(data)
-      localStorage.setItem(key, JSON.stringify(initial))
-      return initial
+    if (!isLive) {
+      const localGet = (key: string, initial: any) => {
+        const data = localStorage.getItem(key)
+        if (data) return JSON.parse(data)
+        localStorage.setItem(key, JSON.stringify(initial))
+        return initial
+      }
+
+      setApplications(localGet('tkdv_applications', INITIAL_APPLICATIONS))
+      setInterns(localGet('tkdv_interns', INITIAL_INTERNS))
+      setLeaves(localGet('tkdv_leaves', INITIAL_LEAVES))
+      setReports(localGet('tkdv_reports', INITIAL_REPORTS))
+      setCertificates(localGet('tkdv_certificates', INITIAL_CERTIFICATES))
     }
 
-    setApplications(localGet('tkdv_applications', INITIAL_APPLICATIONS))
-    setInterns(localGet('tkdv_interns', INITIAL_INTERNS))
-    setLeaves(localGet('tkdv_leaves', INITIAL_LEAVES))
-    setReports(localGet('tkdv_reports', INITIAL_REPORTS))
-    setCertificates(localGet('tkdv_certificates', INITIAL_CERTIFICATES))
-
-    // Handle hash links (e.g. #certificate)
     if (window.location.hash === '#certificate') {
       setActiveTab('certificate')
     }
-  }, [])
+  }, [isLive])
+
+  // 2. Seed Firestore if live and empty
+  useEffect(() => {
+    const seedLiveDB = async () => {
+      if (!isLive) return
+      try {
+        const appCheck = await getDoc(doc(db, 'internship_applications', 'app-1'))
+        if (!appCheck.exists()) {
+          for (const app of INITIAL_APPLICATIONS) {
+            await setDoc(doc(db, 'internship_applications', app.id), app)
+          }
+        }
+        const intCheck = await getDoc(doc(db, 'internships', 'int-1'))
+        if (!intCheck.exists()) {
+          for (const intern of INITIAL_INTERNS) {
+            await setDoc(doc(db, 'internships', intern.id), intern)
+          }
+        }
+        const leaveCheck = await getDoc(doc(db, 'internship_leaves', 'leave-1'))
+        if (!leaveCheck.exists()) {
+          for (const leave of INITIAL_LEAVES) {
+            await setDoc(doc(db, 'internship_leaves', leave.id), leave)
+          }
+        }
+        const repCheck = await getDoc(doc(db, 'internship_reports', 'rep-1'))
+        if (!repCheck.exists()) {
+          for (const rep of INITIAL_REPORTS) {
+            await setDoc(doc(db, 'internship_reports', rep.id), rep)
+          }
+        }
+        const certCheck = await getDoc(doc(db, 'internship_certificates', 'TKDV-INT-2026-8051'))
+        if (!certCheck.exists()) {
+          for (const cert of INITIAL_CERTIFICATES) {
+            await setDoc(doc(db, 'internship_certificates', cert.id), cert)
+          }
+        }
+      } catch (err) {
+        console.error('Seeding Firestore from portal failed:', err)
+      }
+    }
+    seedLiveDB()
+  }, [isLive])
+
+  // 3. Live Firestore Listeners
+  useEffect(() => {
+    if (!isLive) return
+
+    const unsubApps = onSnapshot(collection(db, 'internship_applications'), (snap) => {
+      if (!snap.empty) {
+        setApplications(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
+      }
+    })
+
+    const unsubInterns = onSnapshot(collection(db, 'internships'), (snap) => {
+      if (!snap.empty) {
+        const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any))
+        setInterns(list)
+        setLoggedInIntern((prev: any) => prev ? (list.find((i: any) => i.id === prev.id) || prev) : null)
+      }
+    })
+
+    const unsubLeaves = onSnapshot(collection(db, 'internship_leaves'), (snap) => {
+      if (!snap.empty) {
+        setLeaves(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
+      }
+    })
+
+    const unsubReports = onSnapshot(collection(db, 'internship_reports'), (snap) => {
+      if (!snap.empty) {
+        setReports(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
+      }
+    })
+
+    const unsubCerts = onSnapshot(collection(db, 'internship_certificates'), (snap) => {
+      if (!snap.empty) {
+        setCertificates(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
+      }
+    })
+
+    return () => {
+      unsubApps()
+      unsubInterns()
+      unsubLeaves()
+      unsubReports()
+      unsubCerts()
+    }
+  }, [isLive])
 
   // Sync back to localStorage helper
   const updateStorage = (key: string, data: any) => {
@@ -256,7 +329,7 @@ export default function InternshipPortal() {
     return Object.keys(e).length === 0
   }
 
-  const handleApply = (ev: React.FormEvent) => {
+  const handleApply = async (ev: React.FormEvent) => {
     ev.preventDefault()
     if (!validateForm()) return
 
@@ -268,6 +341,16 @@ export default function InternshipPortal() {
       appliedDate: new Date().toISOString().split('T')[0]
     }
 
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'internship_applications', newApp.id), newApp)
+        setAppliedSuccess(true)
+      } catch (err) {
+        console.error('Error submitting application:', err)
+      }
+      return
+    }
+
     const updatedApps = [...applications, newApp]
     setApplications(updatedApps)
     updateStorage('tkdv_applications', updatedApps)
@@ -275,9 +358,29 @@ export default function InternshipPortal() {
   }
 
   // Active Intern Sign-In
-  const handleInternLogin = (e: React.FormEvent) => {
+  const handleInternLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const found = interns.find(i => i.email.toLowerCase() === loginEmail.toLowerCase().trim())
+    const emailToSearch = loginEmail.toLowerCase().trim()
+    if (isLive) {
+      try {
+        const { getDocs, where } = await import('firebase/firestore')
+        const q = query(collection(db, 'internships'), where('email', '==', emailToSearch))
+        const snap = await getDocs(q)
+        if (!snap.empty) {
+          const docData = snap.docs[0].data() as any
+          setLoggedInIntern(docData)
+          setLoginEmail('')
+          setLoginError('')
+        } else {
+          setLoginError('No active or onboarding intern matches this email address.')
+        }
+      } catch (err: any) {
+        setLoginError('Sign-in error: ' + err.message)
+      }
+      return
+    }
+
+    const found = interns.find(i => i.email.toLowerCase() === emailToSearch)
     if (found) {
       setLoggedInIntern(found)
       setLoginEmail('')
@@ -288,11 +391,20 @@ export default function InternshipPortal() {
   }
 
   // Toggle Checklist item
-  const handleToggleChecklist = (taskId: string) => {
+  const handleToggleChecklist = async (taskId: string) => {
     if (!loggedInIntern) return
+    const list = loggedInIntern.checklist.map((c: any) => c.id === taskId ? { ...c, done: !c.done } : c)
+    if (isLive) {
+      try {
+        await updateDoc(doc(db, 'internships', loggedInIntern.id), { checklist: list })
+      } catch (err) {
+        console.error('Error updating checklist:', err)
+      }
+      return
+    }
+
     const updatedInterns = interns.map(item => {
       if (item.id === loggedInIntern.id) {
-        const list = item.checklist.map((c: any) => c.id === taskId ? { ...c, done: !c.done } : c)
         return { ...item, checklist: list }
       }
       return item
@@ -303,7 +415,7 @@ export default function InternshipPortal() {
   }
 
   // Submit Weekly Report
-  const handleWeeklyReport = (e: React.FormEvent) => {
+  const handleWeeklyReport = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!loggedInIntern || !weeklyReport.summary.trim()) return
 
@@ -312,6 +424,18 @@ export default function InternshipPortal() {
       internId: loggedInIntern.id,
       ...weeklyReport,
       date: new Date().toISOString().split('T')[0]
+    }
+
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'internship_reports', newRep.id), newRep)
+        setReportSuccess(true)
+        setWeeklyReport({ week: 'Week 1', summary: '', hours: 40 })
+        setTimeout(() => setReportSuccess(false), 4000)
+      } catch (err) {
+        console.error('Error submitting report:', err)
+      }
+      return
     }
 
     const updatedReps = [...reports, newRep]
@@ -323,7 +447,7 @@ export default function InternshipPortal() {
   }
 
   // Submit Leave Request
-  const handleLeaveRequest = (e: React.FormEvent) => {
+  const handleLeaveRequest = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!loggedInIntern || !leaveForm.startDate || !leaveForm.endDate || !leaveForm.reason.trim()) return
 
@@ -337,6 +461,18 @@ export default function InternshipPortal() {
       submittedAt: new Date().toISOString().split('T')[0]
     }
 
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'internship_leaves', newLeave.id), newLeave)
+        setLeaveSuccess(true)
+        setLeaveForm({ startDate: '', endDate: '', reason: '' })
+        setTimeout(() => setLeaveSuccess(false), 4000)
+      } catch (err) {
+        console.error('Error requesting leave:', err)
+      }
+      return
+    }
+
     const updatedLeaves = [...leaves, newLeave]
     setLeaves(updatedLeaves)
     updateStorage('tkdv_leaves', updatedLeaves)
@@ -344,6 +480,7 @@ export default function InternshipPortal() {
     setLeaveForm({ startDate: '', endDate: '', reason: '' })
     setTimeout(() => setLeaveSuccess(false), 4000)
   }
+
 
   // Admin: Accept Applicant
   const handleAdminAccept = (appId: string) => {
@@ -697,25 +834,25 @@ export default function InternshipPortal() {
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div>
                           <label style={labelStyle}>Full name</label>
-                          <input style={inputStyle} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
+                          <input className="input-dark" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
                           {errors.name && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.name}</span>}
                         </div>
 
                         <div>
                           <label style={labelStyle}>Email address</label>
-                          <input style={inputStyle} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@email.com" />
+                          <input className="input-dark" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@email.com" />
                           {errors.email && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.email}</span>}
                         </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Phone number</label>
-                            <input style={inputStyle} type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91..." />
+                            <input className="input-dark" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91..." />
                             {errors.phone && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.phone}</span>}
                           </div>
                           <div>
                             <label style={labelStyle}>College/University</label>
-                            <input style={inputStyle} value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} placeholder="Institution" />
+                            <input className="input-dark" value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} placeholder="Institution" />
                             {errors.college && <span style={{ fontSize: '0.72rem', color: '#EF4444', fontWeight: 600, display: 'block', marginTop: '0.2rem' }}>{errors.college}</span>}
                           </div>
                         </div>
@@ -723,22 +860,22 @@ export default function InternshipPortal() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Domain track</label>
-                            <select style={selectStyle} value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })}>{domains.map(d => <option key={d}>{d}</option>)}</select>
+                            <select className="select-dark" value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })}>{domains.map(d => <option key={d}>{d}</option>)}</select>
                           </div>
                           <div>
                             <label style={labelStyle}>Preferred duration</label>
-                            <select style={selectStyle} value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })}>{durations.map(d => <option key={d}>{d}</option>)}</select>
+                            <select className="select-dark" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })}>{durations.map(d => <option key={d}>{d}</option>)}</select>
                           </div>
                         </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                           <div>
                             <label style={labelStyle}>Available from</label>
-                            <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} />
+                            <input className="input-dark" style={{ colorScheme: 'dark' }} type="date" value={form.start} onChange={(e) => setForm({ ...form, start: e.target.value })} />
                           </div>
                           <div>
                             <label style={labelStyle}>Portfolio link</label>
-                            <input style={inputStyle} value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://github.com/..." />
+                            <input className="input-dark" value={form.portfolio} onChange={(e) => setForm({ ...form, portfolio: e.target.value })} placeholder="https://github.com/..." />
                           </div>
                         </div>
 
@@ -763,7 +900,7 @@ export default function InternshipPortal() {
 
                         <div>
                           <label style={labelStyle}>Introduce yourself (optional)</label>
-                          <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us why you want to build with us..." />
+                          <textarea className="input-dark" style={{ borderRadius: 10 } as React.CSSProperties} rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us why you want to build with us..." />
                         </div>
                       </div>
 
@@ -791,7 +928,7 @@ export default function InternshipPortal() {
 
                     <div style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
                       <label style={labelStyle}>Registered Email Address</label>
-                      <input style={{ ...inputStyle, textAlign: 'center' }} type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="aravind.nair@example.com" required />
+                      <input className="input-dark" style={{ textAlign: 'center' }} type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="aravind.nair@example.com" required />
                       {loginError && <div style={{ fontSize: '0.74rem', color: '#EF4444', fontWeight: 600, marginTop: '0.4rem' }}>{loginError}</div>}
                     </div>
 
@@ -893,16 +1030,16 @@ export default function InternshipPortal() {
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                             <div>
                               <label style={labelStyle}>Start Date</label>
-                              <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={leaveForm.startDate} onChange={e => setLeaveForm({ ...leaveForm, startDate: e.target.value })} required />
+                              <input className="input-dark" style={{ colorScheme: 'dark' }} type="date" value={leaveForm.startDate} onChange={e => setLeaveForm({ ...leaveForm, startDate: e.target.value })} required />
                             </div>
                             <div>
                               <label style={labelStyle}>End Date</label>
-                              <input style={{ ...inputStyle, colorScheme: 'dark' }} type="date" value={leaveForm.endDate} onChange={e => setLeaveForm({ ...leaveForm, endDate: e.target.value })} required />
+                              <input className="input-dark" style={{ colorScheme: 'dark' }} type="date" value={leaveForm.endDate} onChange={e => setLeaveForm({ ...leaveForm, endDate: e.target.value })} required />
                             </div>
                           </div>
                           <div>
                             <label style={labelStyle}>Reason for Leave</label>
-                            <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={2} value={leaveForm.reason} onChange={e => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="State reason, e.g., semester exams" required />
+                            <textarea className="input-dark" style={{ borderRadius: 10 } as React.CSSProperties} rows={2} value={leaveForm.reason} onChange={e => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="State reason, e.g., semester exams" required />
                           </div>
                           <Button type="submit" size="sm" style={{ background: '#3B82F6', color: '#FFF' }}>Submit Leave Request</Button>
                         </form>
@@ -953,7 +1090,7 @@ export default function InternshipPortal() {
                           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '0.85rem' }}>
                             <div>
                               <label style={labelStyle}>Select Week</label>
-                              <select style={selectStyle} value={weeklyReport.week} onChange={e => setWeeklyReport({ ...weeklyReport, week: e.target.value })}>
+                              <select className="select-dark" value={weeklyReport.week} onChange={e => setWeeklyReport({ ...weeklyReport, week: e.target.value })}>
                                 {['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12'].map(w => (
                                   <option key={w}>{w}</option>
                                 ))}
@@ -961,12 +1098,12 @@ export default function InternshipPortal() {
                             </div>
                             <div>
                               <label style={labelStyle}>Hours Logged</label>
-                              <input style={inputStyle} type="number" min={1} max={80} value={weeklyReport.hours} onChange={e => setWeeklyReport({ ...weeklyReport, hours: parseInt(e.target.value) || 0 })} required />
+                              <input className="input-dark" type="number" min={1} max={80} value={weeklyReport.hours} onChange={e => setWeeklyReport({ ...weeklyReport, hours: parseInt(e.target.value) || 0 })} required />
                             </div>
                           </div>
                           <div>
                             <label style={labelStyle}>Tasks Accomplished</label>
-                            <textarea style={{ ...inputStyle, borderRadius: 10 } as React.CSSProperties} rows={4} value={weeklyReport.summary} onChange={e => setWeeklyReport({ ...weeklyReport, summary: e.target.value })} placeholder="Highlight features built, database optimizations, or design wireframes completed..." required />
+                            <textarea className="input-dark" style={{ borderRadius: 10 } as React.CSSProperties} rows={4} value={weeklyReport.summary} onChange={e => setWeeklyReport({ ...weeklyReport, summary: e.target.value })} placeholder="Highlight features built, database optimizations, or design wireframes completed..." required />
                           </div>
                           <Button type="submit" size="sm" style={{ background: '#3B82F6', color: '#FFF' }}>Submit Weekly Report</Button>
                         </form>
@@ -1264,12 +1401,12 @@ export default function InternshipPortal() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                       <div>
                         <label style={labelStyle}>Full Name (as in offer)</label>
-                        <input style={inputStyle} value={certQuery.name} onChange={e => setCertQuery({ ...certQuery, name: e.target.value })} placeholder="e.g. Rohan Das" />
+                        <input className="input-dark" value={certQuery.name} onChange={e => setCertQuery({ ...certQuery, name: e.target.value })} placeholder="e.g. Rohan Das" />
                       </div>
                       
                       <div>
                         <label style={labelStyle}>Certificate ID</label>
-                        <input style={inputStyle} value={certQuery.id} onChange={e => setCertQuery({ ...certQuery, id: e.target.value })} placeholder="e.g. TKDV-INT-2026-0042" />
+                        <input className="input-dark" value={certQuery.id} onChange={e => setCertQuery({ ...certQuery, id: e.target.value })} placeholder="e.g. TKDV-INT-2026-0042" />
                         <div style={{ fontSize: '0.74rem', color: '#9CA3AF', marginTop: '0.4rem' }}>Enter the unique ID found in your verification mail.</div>
                       </div>
 

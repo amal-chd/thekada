@@ -340,6 +340,7 @@ button { font-family: inherit; }
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, var(--blue), #5E90FA);
   transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
+  pointer-events: none;
 }
 .service-card:hover::after { transform: scaleX(1); }
 
@@ -386,6 +387,43 @@ button { font-family: inherit; }
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 .form-textarea { resize: vertical; min-height: 120px; }
+
+/* Premium dark inputs for portal/admin */
+.input-dark {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  width: 100%;
+  outline: none;
+  font-size: 0.88rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.input-dark::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.input-dark:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.select-dark {
+  background: #0B0F19;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  width: 100%;
+  outline: none;
+  font-size: 0.88rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.select-dark:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
 
 /* ═══════════════════════════════════════
    TABS / TOGGLES
@@ -717,6 +755,7 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   opacity: 0; transition: opacity 0.4s var(--ease);
+  pointer-events: none;
 }
 .card-premium:hover { transform: translateY(-6px); box-shadow: var(--shadow-float-lg); }
 .card-premium:hover::before { opacity: 1; }
@@ -914,6 +953,7 @@ button:focus-visible, a:focus-visible {
   -webkit-mask-composite: xor; mask-composite: exclude;
   opacity: 0; transition: opacity 0.4s ease;
   animation: border-spin 4s linear infinite;
+  pointer-events: none;
 }
 .border-animated:hover::before { opacity: 1; }
 @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }

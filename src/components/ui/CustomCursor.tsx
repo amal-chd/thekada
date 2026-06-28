@@ -18,6 +18,8 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!supported) return
 
+    document.body.classList.add('has-custom-cursor')
+
     let rx = window.innerWidth / 2
     let ry = window.innerHeight / 2
     let mx = rx
@@ -48,6 +50,7 @@ export default function CustomCursor() {
       cancelAnimationFrame(raf)
       window.removeEventListener('mousemove', move)
       document.removeEventListener('mouseleave', leave)
+      document.body.classList.remove('has-custom-cursor')
     }
   }, [supported])
 
