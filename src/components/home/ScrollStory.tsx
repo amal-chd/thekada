@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValueEvent, useSpring } from 'framer-motion'
 import { ShoppingBag, ChefHat, Boxes, BookText, BarChart3, Sparkles } from 'lucide-react'
 
 const steps = [
@@ -8,17 +8,31 @@ const steps = [
   { Icon: Boxes, color: '#F59E0B', title: 'Inventory updates itself', desc: 'Ingredients and stock deplete automatically as items sell. No manual counting.', tag: 'Live Inventory' },
   { Icon: BookText, color: '#10B981', title: 'The ledger records everything', desc: 'Sales, payments, and dues post to the books in real time — GST-ready.', tag: 'Kada Ledger' },
   { Icon: BarChart3, color: '#06B6D4', title: 'Analytics refresh in real time', desc: 'Revenue, best-sellers, and trends recompute the moment anything changes.', tag: 'Business Intelligence' },
-  { Icon: Sparkles, color: '#2563EB', title: 'The owner gets the insight', desc: '\u201CSales are up 24% this week, and paneer is running low.\u201D Decisions, not data entry.', tag: 'Kada AI' },
+  { Icon: Sparkles, color: '#2563EB', title: 'The owner gets the insight', desc: '“Sales are up 24% this week, and paneer is running low.” Decisions, not data entry.', tag: 'Kada AI' },
 ]
 
-/**
- * Sticky scroll story — desktop uses a sticky scroll-driven animation
- * that pins the heading on the left and animates cards on the right.
- * Mobile falls back to a simple stacked list (no sticky, no scroll hijack).
- */
 export default function ScrollStory() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [progress, setProgress] = useState(0)
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end']
+  })
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
+
+  const [activeIndex, setActiveIndex] = useState(0)
+  const n = steps.length
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const index = Math.round(latest * (n - 1))
+    setActiveIndex(Math.min(n - 1, Math.max(0, index)))
+  })
+
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.matchMedia('(max-width: 900px)').matches
@@ -32,40 +46,6 @@ export default function ScrollStory() {
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
   }, [])
-
-  useEffect(() => {
-    if (isMobile) return
-    let last = -1
-    const compute = () => {
-      const el = ref.current
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      const total = rect.height - window.innerHeight
-      const scrolled = Math.min(Math.max(-rect.top, 0), total)
-      const p = total > 0 ? scrolled / total : 0
-      if (Math.abs(p - last) > 0.001) {
-        last = p
-        setProgress(p)
-      }
-    }
-
-    compute()
-
-    // Lenis (smooth-scroll engine set up in App.tsx) emits its own scroll event
-    // on every frame it moves. Prefer it; fall back to native scroll otherwise.
-    const lenis = (window as unknown as { lenis?: { on: (e: string, cb: () => void) => void; off: (e: string, cb: () => void) => void } }).lenis
-    if (lenis?.on) lenis.on('scroll', compute)
-    window.addEventListener('scroll', compute, { passive: true })
-    window.addEventListener('resize', compute)
-    return () => {
-      if (lenis?.off) lenis.off('scroll', compute)
-      window.removeEventListener('scroll', compute)
-      window.removeEventListener('resize', compute)
-    }
-  }, [isMobile])
-
-  const n = steps.length
-  const activeIndex = Math.min(n - 1, Math.floor(progress * n + 0.0001))
 
   /* ── Mobile: simple stacked layout, no sticky ── */
   if (isMobile) {
@@ -122,10 +102,12 @@ export default function ScrollStory() {
 
   /* ── Desktop: sticky scroll story ── */
   return (
-    <div ref={ref} style={{ position: 'relative', height: `${n * 50}vh` }}>
-      <div className="story-sticky">
+    <div ref={containerRef} style={{ position: 'relative', height: `${n * 80}vh` }}>
+      {/* Sticky wrapper */}
+      <div style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <div className="container-width" style={{ width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center' }}>
+            
             {/* Left — heading + progress rail */}
             <div>
               <div className="eyebrow" style={{ marginBottom: '1.2rem' }}>⚡ One connected flow</div>
@@ -137,11 +119,23 @@ export default function ScrollStory() {
               </p>
 
               {/* Progress rail with step dots */}
-              <div style={{ position: 'relative', height: 220, width: 6, marginLeft: 8 }}>
+              <div style={{ position: 'relative', height: 260, width: 6, marginLeft: 8 }}>
                 {/* Background track */}
                 <div style={{ position: 'absolute', inset: 0, background: 'var(--border)', borderRadius: 99 }} />
+                
                 {/* Filled progress */}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: `${Math.min(progress * 100, 100)}%`, background: 'linear-gradient(180deg, #2563EB, #06B6D4)', borderRadius: 99, transition: 'height 0.15s linear' }} />
+                <motion.div 
+                  style={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    right: 0, 
+                    background: 'linear-gradient(180deg, #2563EB, #06B6D4)', 
+                    borderRadius: 99, 
+                    height: useTransform(smoothProgress, [0, 1], ['0%', '100%'])
+                  }} 
+                />
+
                 {/* Step dot markers */}
                 {steps.map((s, idx) => {
                   const dotTop = (idx / (n - 1)) * 100
@@ -167,12 +161,12 @@ export default function ScrollStory() {
                     />
                   )
                 })}
+
                 {/* Moving indicator */}
-                <div
+                <motion.div
                   style={{
                     position: 'absolute',
                     left: '50%',
-                    top: `${progress * 100}%`,
                     width: 22,
                     height: 22,
                     marginLeft: -11,
@@ -181,8 +175,8 @@ export default function ScrollStory() {
                     background: '#fff',
                     border: '3px solid #2563EB',
                     boxShadow: '0 0 0 5px rgba(37,99,235,0.12), 0 4px 12px rgba(37,99,235,0.2)',
-                    transition: 'top 0.15s linear',
                     zIndex: 3,
+                    top: useTransform(smoothProgress, [0, 1], ['0%', '100%'])
                   }}
                 />
               </div>
@@ -198,65 +192,75 @@ export default function ScrollStory() {
               </div>
             </div>
 
-            {/* Right — stacked cards that activate on scroll */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {/* Right — Stacking Cards */}
+            <div style={{ position: 'relative', height: '480px', width: '100%', perspective: 1000 }}>
               {steps.map((s, idx) => {
-                const active = idx === activeIndex
-                const passed = idx < activeIndex
+                const yPos = useTransform(
+                  smoothProgress,
+                  [(idx - 1) / (n - 1), idx / (n - 1), (idx + 1) / (n - 1)],
+                  ['120%', '0%', '-8%']
+                )
+
+                const scale = useTransform(
+                  smoothProgress,
+                  [(idx - 1) / (n - 1), idx / (n - 1), (idx + 1) / (n - 1)],
+                  [1, 1, 0.92]
+                )
+
+                const opacity = useTransform(
+                  smoothProgress,
+                  [(idx - 1) / (n - 1), idx / (n - 1), (idx + 1) / (n - 1), (idx + 2) / (n - 1)],
+                  [0, 1, 1, 0]
+                )
+                
+                // Add a subtle rotation for a true 3D stacking feel
+                const rotateX = useTransform(
+                  smoothProgress,
+                  [(idx - 1) / (n - 1), idx / (n - 1), (idx + 1) / (n - 1)],
+                  [10, 0, -5]
+                )
+
                 return (
                   <motion.div
                     key={s.title}
-                    animate={{
-                      opacity: active ? 1 : passed ? 0.5 : 0.25,
-                      scale: active ? 1 : 0.98,
-                      x: active ? 0 : passed ? -4 : 8,
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      y: yPos,
+                      scale,
+                      opacity,
+                      rotateX,
+                      transformOrigin: 'top center',
+                      zIndex: idx,
                     }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div
                       style={{
+                        background: '#fff',
+                        border: `1px solid ${s.color}30`,
+                        borderRadius: 32,
+                        padding: '3rem',
+                        boxShadow: `0 24px 48px -12px ${s.color}25, var(--shadow-xl)`,
                         display: 'flex',
-                        gap: '1.1rem',
-                        alignItems: 'flex-start',
-                        background: active ? '#fff' : '#FAFBFC',
-                        border: `1px solid ${active ? `${s.color}40` : 'var(--border)'}`,
-                        borderRadius: 18,
-                        padding: '1.35rem 1.5rem',
-                        boxShadow: active ? `0 8px 30px -8px ${s.color}22, var(--shadow-lg)` : 'var(--shadow-xs)',
-                        transition: 'box-shadow 0.4s ease, border-color 0.4s ease, background 0.3s ease',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        height: '100%',
                         position: 'relative',
                         overflow: 'hidden',
                       }}
                     >
-                      {/* Active indicator bar */}
-                      {active && (
-                        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: s.color, borderRadius: '3px 0 0 3px' }} />
-                      )}
+                      {/* Background glow */}
+                      <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, background: s.color, opacity: 0.08, filter: 'blur(50px)', borderRadius: '50%' }} />
 
-                      {/* Icon with step number */}
-                      <div style={{ position: 'relative', flexShrink: 0 }}>
-                        <span style={{ width: 50, height: 50, borderRadius: 14, background: `${s.color}${active ? '16' : '0A'}`, border: `1px solid ${s.color}${active ? '30' : '18'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
-                          <s.Icon size={24} color={active ? s.color : `${s.color}90`} />
-                        </span>
-                        <span style={{
-                          position: 'absolute', top: -5, right: -5,
-                          width: 18, height: 18, borderRadius: '50%',
-                          background: active ? s.color : '#CBD5E1',
-                          color: '#fff', fontSize: '0.58rem', fontWeight: 800,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          boxShadow: active ? `0 2px 6px ${s.color}40` : 'none',
-                          transition: 'all 0.3s ease',
-                        }}>
-                          {idx + 1}
-                        </span>
+                      <div style={{ width: 80, height: 80, borderRadius: 24, background: `${s.color}15`, border: `1px solid ${s.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
+                        <s.Icon size={40} color={s.color} />
                       </div>
-
-                      {/* Content */}
-                      <div style={{ minWidth: 0 }}>
-                        <span style={{ fontSize: '0.64rem', fontWeight: 750, color: active ? s.color : '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', transition: 'color 0.3s ease' }}>{s.tag}</span>
-                        <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: active ? 'var(--ink)' : '#94A3B8', margin: '0.2rem 0 0.3rem', letterSpacing: '-0.015em', transition: 'color 0.3s ease' }}>{s.title}</h3>
-                        <p style={{ fontSize: '0.85rem', color: active ? 'var(--text-secondary)' : '#B8C4D0', lineHeight: 1.55, transition: 'color 0.3s ease' }}>{s.desc}</p>
-                      </div>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800, color: s.color, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem' }}>{s.tag}</span>
+                      <h3 style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--ink)', margin: '0 0 1rem', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{s.title}</h3>
+                      <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '90%' }}>{s.desc}</p>
                     </div>
                   </motion.div>
                 )

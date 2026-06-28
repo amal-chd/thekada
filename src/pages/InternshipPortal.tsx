@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import { SectionHeading, Button, Container, Aurora, TextReveal, TiltCard } from '../components/ui'
 import { isFirebaseConfigured, db as firebaseDb } from '../lib/firebase'
-import { doc, getDoc, collection, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot, query, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 
 
 // Seeding Initial Data
@@ -253,7 +253,7 @@ export default function InternshipPortal() {
             await setDoc(doc(db, 'internship_reports', rep.id), rep)
           }
         }
-        const certCheck = await getDoc(doc(db, 'internship_certificates', 'TKDV-INT-2026-8051'))
+        const certCheck = await getDoc(doc(db, 'internship_certificates', 'TKDV-INT-2026-0042'))
         if (!certCheck.exists()) {
           for (const cert of INITIAL_CERTIFICATES) {
             await setDoc(doc(db, 'internship_certificates', cert.id), cert)
@@ -271,35 +271,25 @@ export default function InternshipPortal() {
     if (!isLive) return
 
     const unsubApps = onSnapshot(collection(db, 'internship_applications'), (snap) => {
-      if (!snap.empty) {
-        setApplications(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-      }
+      setApplications(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
     })
 
     const unsubInterns = onSnapshot(collection(db, 'internships'), (snap) => {
-      if (!snap.empty) {
-        const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any))
-        setInterns(list)
-        setLoggedInIntern((prev: any) => prev ? (list.find((i: any) => i.id === prev.id) || prev) : null)
-      }
+      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any))
+      setInterns(list)
+      setLoggedInIntern((prev: any) => prev ? (list.find((i: any) => i.id === prev.id) || prev) : null)
     })
 
     const unsubLeaves = onSnapshot(collection(db, 'internship_leaves'), (snap) => {
-      if (!snap.empty) {
-        setLeaves(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-      }
+      setLeaves(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
     })
 
     const unsubReports = onSnapshot(collection(db, 'internship_reports'), (snap) => {
-      if (!snap.empty) {
-        setReports(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-      }
+      setReports(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
     })
 
     const unsubCerts = onSnapshot(collection(db, 'internship_certificates'), (snap) => {
-      if (!snap.empty) {
-        setCertificates(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-      }
+      setCertificates(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
     })
 
     return () => {
@@ -483,13 +473,14 @@ export default function InternshipPortal() {
 
 
   // Admin: Accept Applicant
-  const handleAdminAccept = (appId: string) => {
+  const handleAdminAccept = async (appId: string) => {
     const app = applications.find(a => a.id === appId)
     if (!app) return
 
     // Create new onboarding intern object
+    const newId = 'int-' + Date.now()
     const newIntern = {
-      id: 'int-' + Date.now(),
+      id: newId,
       name: app.name,
       email: app.email,
       phone: app.phone,
@@ -499,8 +490,8 @@ export default function InternshipPortal() {
       start: app.start || new Date().toISOString().split('T')[0],
       end: '',
       status: 'Onboarding',
-      photoUrl: app.photoUrl,
-      cvName: app.cvName,
+      photoUrl: app.photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=60',
+      cvName: app.cvName || 'Resume.pdf',
       checklist: [
         { id: 'c1', task: 'Submit signed offer letter & college NOC', done: false },
         { id: 'c2', task: 'Complete Git & workspace onboarding', done: false },
@@ -508,6 +499,16 @@ export default function InternshipPortal() {
         { id: 'c4', task: 'Submit first Pull Request for review', done: false },
         { id: 'c5', task: 'Deliver final task presentation', done: false }
       ]
+    }
+
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'internships', newId), newIntern)
+        await deleteDoc(doc(db, 'internship_applications', appId))
+      } catch (err) {
+        console.error('Error accepting application in Firestore:', err)
+      }
+      return
     }
 
     const updatedInterns = [...interns, newIntern]
@@ -520,14 +521,35 @@ export default function InternshipPortal() {
   }
 
   // Admin: Decline Applicant
-  const handleAdminDecline = (appId: string) => {
+  const handleAdminDecline = async (appId: string) => {
+    if (isLive) {
+      try {
+        await deleteDoc(doc(db, 'internship_applications', appId))
+      } catch (err) {
+        console.error('Error declining application in Firestore:', err)
+      }
+      return
+    }
+
     const updatedApps = applications.filter(a => a.id !== appId)
     setApplications(updatedApps)
     updateStorage('tkdv_applications', updatedApps)
   }
 
   // Admin: Update Intern Status
-  const handleUpdateStatus = (internId: string, newStatus: string) => {
+  const handleUpdateStatus = async (internId: string, newStatus: string) => {
+    if (isLive) {
+      try {
+        await updateDoc(doc(db, 'internships', internId), {
+          status: newStatus,
+          end: newStatus === 'Completed' ? new Date().toISOString().split('T')[0] : ''
+        })
+      } catch (err) {
+        console.error('Error updating intern status in Firestore:', err)
+      }
+      return
+    }
+
     const updatedInterns = interns.map(i => {
       if (i.id === internId) {
         return { 
@@ -546,7 +568,18 @@ export default function InternshipPortal() {
   }
 
   // Admin: Leave Approval
-  const handleAdminLeave = (leaveId: string, approve: boolean) => {
+  const handleAdminLeave = async (leaveId: string, approve: boolean) => {
+    if (isLive) {
+      try {
+        await updateDoc(doc(db, 'internship_leaves', leaveId), {
+          status: approve ? 'Approved' : 'Rejected'
+        })
+      } catch (err) {
+        console.error('Error updating leave status in Firestore:', err)
+      }
+      return
+    }
+
     const updatedLeaves = leaves.map(l => {
       if (l.id === leaveId) {
         return { ...l, status: approve ? 'Approved' : 'Rejected' }
@@ -558,7 +591,7 @@ export default function InternshipPortal() {
   }
 
   // Admin: Issue Certificate
-  const handleAdminIssueCert = (internId: string) => {
+  const handleAdminIssueCert = async (internId: string) => {
     const intern = interns.find(i => i.id === internId)
     if (!intern) return
 
@@ -571,11 +604,25 @@ export default function InternshipPortal() {
       end: intern.end || new Date().toISOString().split('T')[0]
     }
 
+    if (isLive) {
+      try {
+        await setDoc(doc(db, 'internship_certificates', certId), newCert)
+        await updateDoc(doc(db, 'internships', internId), {
+          status: 'Completed',
+          certificateId: certId,
+          end: intern.end || new Date().toISOString().split('T')[0]
+        })
+      } catch (err) {
+        console.error('Error issuing certificate in Firestore:', err)
+      }
+      return
+    }
+
     const updatedCerts = [...certificates, newCert]
     setCertificates(updatedCerts)
     updateStorage('tkdv_certificates', updatedCerts)
 
-    const updatedInterns = interns.map(i => i.id === internId ? { ...i, certificateId: certId } : i)
+    const updatedInterns = interns.map(i => i.id === internId ? { ...i, certificateId: certId, status: 'Completed', end: i.end || new Date().toISOString().split('T')[0] } : i)
     setInterns(updatedInterns)
     updateStorage('tkdv_interns', updatedInterns)
     if (loggedInIntern && loggedInIntern.id === internId) {
@@ -585,6 +632,10 @@ export default function InternshipPortal() {
 
   // Reset local state to initial seed
   const handleResetSystem = () => {
+    if (isLive) {
+      alert('System reset is only available in local simulation mode. Firestore database cannot be reset from this interface.')
+      return
+    }
     if (window.confirm('Reset local storage internship data to initial seed? All custom updates will be cleared.')) {
       localStorage.removeItem('tkdv_applications')
       localStorage.removeItem('tkdv_interns')

@@ -6,7 +6,7 @@ import {
   Globe, Smartphone, Rocket, Workflow, Building2, Palette, Plug, Cloud, LineChart,
   Code2, ShieldCheck, Handshake, Users, Boxes, Database, RefreshCw, Send, Lock, Sparkles, Settings
 } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard, Aurora, TextReveal, TiltCard } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard, Aurora, TextReveal } from '../components/ui'
 import { services, devProcess, techStack } from '../data/content'
 
 const serviceMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; slug: string; color: string; tags: string[] }> = {
@@ -37,7 +37,16 @@ export default function Services() {
       {/* HERO SECTION */}
       <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(8rem, 14vw, 11rem) 0 clamp(4rem, 8vw, 6rem)', background: '#030712' }}>
         <Aurora soft dots />
-        <div className="glow-orb" style={{ top: '-15%', left: '30%', width: 600, height: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)' }} />
+        <motion.div
+          className="glow-orb"
+          animate={{
+            background: hoveredCard && serviceMeta[hoveredCard]
+              ? `radial-gradient(circle at 50% 50%, ${serviceMeta[hoveredCard].color}45 0%, transparent 65%)`
+              : 'radial-gradient(circle at 50% 50%, rgba(37,99,235,0.35) 0%, transparent 65%)'
+          }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
+          style={{ position: 'absolute', top: '-25%', left: '15%', width: 900, height: 900, filter: 'blur(80px)', pointerEvents: 'none', zIndex: 1 }}
+        />
         
         <Container style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ textAlign: 'center', maxWidth: 840, margin: '0 auto 4rem' }}>
@@ -68,14 +77,18 @@ export default function Services() {
       </section>
 
       {/* CAPABILITIES BENTO GRID */}
-      <Section bg="white" id="capabilities" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 100% 20%, rgba(37,99,235,0.015), transparent 45%)', pointerEvents: 'none' }} />
-        <Container>
-          <SectionHeading
-            eyebrow="Capabilities"
-            title="End-to-end product engineering."
-            subtitle="Explore our specialized practices. We provide complete cross-functional pods to build, launch, and scale your systems."
-          />
+      <Section bg="ink" id="capabilities" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 100% 20%, rgba(37,99,235,0.05), transparent 45%)', pointerEvents: 'none' }} />
+        <Container style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 3rem' }}>
+            <div className="eyebrow" style={{ marginBottom: '1rem', background: 'rgba(255,255,255,0.05)', color: '#9CA3AF', borderColor: 'rgba(255,255,255,0.1)' }}>Capabilities</div>
+            <h2 style={{ fontSize: 'clamp(2rem, 3.8vw, 2.75rem)', fontWeight: 800, letterSpacing: '-0.035em', color: '#FFFFFF', lineHeight: 1.12, marginBottom: '1.25rem' }}>
+              End-to-end product engineering.
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#9CA3AF', lineHeight: 1.6 }}>
+              Explore our specialized practices. We provide complete cross-functional pods to build, launch, and scale your systems.
+            </p>
+          </div>
 
           <div className="bento-capabilities-grid" style={{ margin: '2rem 0 0' }}>
             {services.map((s, i) => {
@@ -96,24 +109,25 @@ export default function Services() {
                     onMouseEnter={() => setHoveredCard(s.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <TiltCard
-                      scale={1.01}
-                      max={6}
+                    <motion.div
+                      layout
                       className="card-premium"
                       style={{
                         height: '100%',
                         padding: '2.25rem 2rem',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        background: '#FFFFFF',
-                        border: '1px solid rgba(0,0,0,0.06)',
+                        justifyContent: 'flex-start',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(16px)',
+                        WebkitBackdropFilter: 'blur(16px)',
+                        border: '1px solid',
+                        borderColor: hoveredCard === s.id ? `${meta.color}50` : 'rgba(255, 255, 255, 0.08)',
                         borderRadius: 24,
-                        boxShadow: '0 4px 20px -6px rgba(0,0,0,0.02)',
+                        boxShadow: hoveredCard === s.id ? `0 20px 40px -10px ${meta.color}15` : '0 4px 30px rgba(0, 0, 0, 0.1)',
                         overflow: 'hidden',
                         position: 'relative',
                         transition: 'all 0.4s var(--ease)',
-                        borderColor: hoveredCard === s.id ? `${meta.color}40` : 'rgba(0,0,0,0.06)',
                       }}
                     >
                       <div style={{ position: 'relative', zIndex: 2 }}>
@@ -126,7 +140,7 @@ export default function Services() {
                             width: 120,
                             height: 120,
                             borderRadius: '50%',
-                            background: `radial-gradient(circle, ${meta.color}15 0%, transparent 70%)`,
+                            background: `radial-gradient(circle, ${meta.color}25 0%, transparent 70%)`,
                             opacity: hoveredCard === s.id ? 1 : 0,
                             transition: 'opacity 0.4s ease',
                             zIndex: -1
@@ -137,15 +151,15 @@ export default function Services() {
                             width: 52,
                             height: 52,
                             borderRadius: 16,
-                            background: `${meta.color}10`,
-                            border: `1px solid ${meta.color}20`,
+                            background: hoveredCard === s.id ? `${meta.color}20` : 'rgba(255,255,255,0.05)',
+                            border: `1px solid ${hoveredCard === s.id ? `${meta.color}40` : 'rgba(255,255,255,0.1)'}`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            transition: 'transform 0.4s var(--ease)',
+                            transition: 'all 0.4s var(--ease)',
                             transform: hoveredCard === s.id ? 'scale(1.1) rotate(5deg)' : 'scale(1)',
                           }}>
-                            <meta.Icon size={24} color={meta.color} />
+                            <meta.Icon size={24} color={hoveredCard === s.id ? meta.color : '#FFFFFF'} />
                           </span>
                           <span style={{
                             display: 'inline-flex',
@@ -154,7 +168,7 @@ export default function Services() {
                             width: 32,
                             height: 32,
                             borderRadius: '50%',
-                            background: 'rgba(0,0,0,0.02)',
+                            background: 'rgba(255,255,255,0.05)',
                             transition: 'all 0.3s ease',
                             transform: hoveredCard === s.id ? 'translate(3px, -3px) scale(1.1)' : 'none',
                             color: hoveredCard === s.id ? meta.color : '#9CA3AF'
@@ -163,33 +177,45 @@ export default function Services() {
                           </span>
                         </div>
 
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.65rem', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                        <motion.h3 layout style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '0.65rem', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
                           {s.title}
-                        </h3>
-                        <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.75rem' }}>
+                        </motion.h3>
+                        <motion.p layout style={{ fontSize: '0.92rem', color: '#9CA3AF', lineHeight: 1.6, marginBottom: '0' }}>
                           {s.description}
-                        </p>
+                        </motion.p>
                       </div>
-
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', marginTop: 'auto', position: 'relative', zIndex: 2 }}>
-                        {meta.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            style={{
-                              fontSize: '0.74rem',
-                              fontWeight: 600,
-                              color: 'rgba(75,85,99,0.9)',
-                              background: 'rgba(0,0,0,0.03)',
-                              border: '1px solid rgba(0,0,0,0.04)',
-                              borderRadius: 99,
-                              padding: '0.25rem 0.65rem'
-                            }}
+                      
+                      <AnimatePresence>
+                        {hoveredCard === s.id && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: 'auto', marginTop: 24 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            style={{ position: 'relative', zIndex: 2, overflow: 'hidden' }}
                           >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </TiltCard>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+                              {meta.tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  style={{
+                                    fontSize: '0.74rem',
+                                    fontWeight: 600,
+                                    color: '#E5E7EB',
+                                    background: 'rgba(255,255,255,0.06)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: 99,
+                                    padding: '0.25rem 0.65rem'
+                                  }}
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+
                   </Link>
                 </Reveal>
               )

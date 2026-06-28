@@ -60,57 +60,121 @@ export default function EcosystemMap() {
         {/* connecting flow lines */}
         {NODES.map((n) => {
           const p = pos(n.angle)
-          const dim = active && active !== n.id
+          const isActive = active === n.id
+          const dim = active && !isActive
+          
           return (
-            <g key={n.id} style={{ opacity: dim ? 0.18 : 1, transition: 'opacity 0.3s ease' }}>
-              <line x1={CX} y1={CY} x2={p.x} y2={p.y} stroke="rgba(15,35,75,0.1)" strokeWidth="1.5" />
-              <line
+            <motion.g 
+              key={n.id} 
+              initial={false}
+              animate={{ opacity: dim ? 0.05 : isActive ? 1 : 0.4 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              {/* Base line */}
+              <line x1={CX} y1={CY} x2={p.x} y2={p.y} stroke="rgba(15,35,75,0.15)" strokeWidth={isActive ? 2 : 1.5} />
+              
+              {/* Highlight line */}
+              <motion.line
                 x1={CX} y1={CY} x2={p.x} y2={p.y}
-                stroke={`url(#line-${n.id})`} strokeWidth={active === n.id ? 3 : 2}
-                className="flow-line" strokeLinecap="round"
-                style={{ animationDuration: active === n.id ? '0.7s' : '1.6s' }}
+                stroke={`url(#line-${n.id})`}
+                strokeLinecap="round"
+                initial={false}
+                animate={{ 
+                  strokeWidth: isActive ? 4 : 2,
+                  opacity: isActive ? 1 : 0 
+                }}
+                transition={{ duration: 0.3 }}
               />
-            </g>
+              
+              {/* Flow line animation */}
+              {isActive && (
+                <motion.line
+                  x1={p.x} y1={p.y} x2={CX} y2={CY}
+                  stroke={n.color}
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeDasharray="4 16"
+                  initial={{ strokeDashoffset: 20 }}
+                  animate={{ strokeDashoffset: 0 }}
+                  transition={{ duration: 0.6, ease: "linear", repeat: Infinity }}
+                  style={{ filter: `drop-shadow(0 0 4px ${n.color})` }}
+                />
+              )}
+            </motion.g>
           )
         })}
 
         {/* moving pulse dots toward hub */}
         {NODES.map((n) => {
           const p = pos(n.angle)
+          const isActive = active === n.id
+          const dim = active && !isActive
+          
           return (
             <motion.circle
               key={`pulse-${n.id}`}
-              r={active === n.id ? 5 : 3.5}
+              r={isActive ? 6 : 4}
               fill={n.color}
               initial={false}
               animate={{ cx: [p.x, CX], cy: [p.y, CY] }}
-              transition={{ duration: active === n.id ? 1.1 : 2.4, repeat: Infinity, ease: 'easeInOut', delay: n.angle / 360 }}
-              style={{ opacity: active && active !== n.id ? 0.1 : 0.9 }}
+              transition={{ duration: isActive ? 1.2 : 2.5, repeat: Infinity, ease: 'linear', delay: n.angle / 360 }}
+              style={{ 
+                opacity: dim ? 0 : isActive ? 1 : 0.8,
+                filter: isActive ? `drop-shadow(0 0 8px ${n.color})` : 'none'
+              }}
             />
           )
         })}
       </svg>
 
       {/* Central hub */}
-      <div style={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: '34%', aspectRatio: '1', borderRadius: '50%',
-        background: 'linear-gradient(160deg, #16294B, #0B1B33)',
-        border: '1px solid rgba(94,144,250,0.3)',
-        boxShadow: '0 24px 60px -18px rgba(37,99,235,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
-      }}>
-        <div style={{ width: 34, height: 34, marginBottom: 6 }}>
-          <img src="/favicon.png" alt="The Kada Digital Ventures Logo" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
-        </div>
-        <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>Our Products</div>
-        <div style={{ fontSize: '0.6rem', color: 'rgba(147,184,255,0.9)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>Business Core</div>
-      </div>
+      {(() => {
+        const activeNode = NODES.find(n => n.id === active)
+        const hubColor = activeNode ? activeNode.color : '#2563EB'
+        return (
+          <motion.div 
+            initial={false}
+            animate={{
+              boxShadow: activeNode 
+                ? `0 24px 60px -15px ${hubColor}66, inset 0 1px 0 rgba(255,255,255,0.1), 0 0 30px ${hubColor}33` 
+                : '0 24px 60px -18px rgba(37,99,235,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+              borderColor: activeNode ? `${hubColor}80` : 'rgba(94,144,250,0.3)',
+              scale: activeNode ? 1.02 : 1
+            }}
+            transition={{ duration: 0.4 }}
+            style={{
+              position: 'absolute', top: '50%', left: '50%', x: '-50%', y: '-50%',
+              width: '34%', aspectRatio: '1', borderRadius: '50%',
+              background: 'linear-gradient(160deg, #16294B, #0B1B33)',
+              border: '1px solid',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+              zIndex: 2,
+            }}
+          >
+            <motion.div 
+              animate={{ scale: activeNode ? 1.1 : 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              style={{ width: 34, height: 34, marginBottom: 6 }}
+            >
+              <img src="/favicon.png" alt="The Kada Digital Ventures Logo" width={34} height={34} style={{ filter: 'brightness(0) invert(1)', opacity: 0.95 }} />
+            </motion.div>
+            <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: 'clamp(0.9rem, 2vw, 1.15rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>Our Products</div>
+            <motion.div 
+              animate={{ color: activeNode ? hubColor : 'rgba(147,184,255,0.9)' }}
+              style={{ fontSize: '0.6rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}
+            >
+              Business Core
+            </motion.div>
+          </motion.div>
+        )
+      })()}
 
       {/* Product nodes */}
       {NODES.map((n) => {
         const p = pos(n.angle)
-        const dim = active && active !== n.id
+        const isActive = active === n.id
+        const dim = active && !isActive
+        
         return (
           <Link
             key={n.id}
@@ -122,23 +186,47 @@ export default function EcosystemMap() {
               left: `${(p.x / SIZE) * 100}%`, top: `${(p.y / SIZE) * 100}%`,
               transform: 'translate(-50%, -50%)',
               textDecoration: 'none', zIndex: 3,
-              opacity: dim ? 0.35 : 1, transition: 'opacity 0.3s ease',
             }}
           >
             <motion.div
-              whileHover={{ scale: 1.12 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+              initial={false}
+              animate={{
+                scale: isActive ? 1.15 : dim ? 0.92 : 1,
+                opacity: dim ? 0.5 : 1,
+                borderColor: isActive ? n.color : 'rgba(15,35,75,0.08)',
+                boxShadow: isActive ? `0 20px 40px -10px ${n.color}99, 0 0 20px ${n.color}40` : '0 10px 25px -5px rgba(0,0,0,0.05)',
+              }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               style={{
                 width: 'clamp(56px, 11vw, 76px)', height: 'clamp(56px, 11vw, 76px)', borderRadius: '50%',
-                background: '#fff', border: `1px solid ${active === n.id ? n.color : 'var(--border)'}`,
-                boxShadow: active === n.id ? `0 16px 36px -12px ${n.color}88` : 'var(--shadow-md)',
+                background: '#fff', border: `2px solid`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
+                position: 'relative'
               }}
             >
-              <span style={{ width: 'clamp(34px, 6.5vw, 44px)', height: 'clamp(34px, 6.5vw, 44px)', borderRadius: '50%', background: `${n.color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <n.Icon size={20} color={n.color} />
-              </span>
+              {/* Outer glow ring on active */}
+              {isActive && (
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1.4, opacity: 0 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+                  style={{
+                    position: 'absolute', inset: -2, borderRadius: '50%',
+                    border: `2px solid ${n.color}`,
+                  }}
+                />
+              )}
+
+              <motion.span 
+                animate={{ 
+                  background: isActive ? `${n.color}20` : `${n.color}10`,
+                  scale: isActive ? 1.1 : 1
+                }}
+                transition={{ duration: 0.2 }}
+                style={{ width: 'clamp(34px, 6.5vw, 44px)', height: 'clamp(34px, 6.5vw, 44px)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <n.Icon size={isActive ? 22 : 20} color={n.color} />
+              </motion.span>
             </motion.div>
           </Link>
         )

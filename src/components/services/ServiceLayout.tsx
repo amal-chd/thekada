@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import {
   ArrowUpRight, ArrowRight, Check, Search, PenTool, Code2, ServerCog,
@@ -42,6 +42,9 @@ const steps = [
 
 export default function ServiceLayout({ config }: { config: ServiceConfig }) {
   const a = config.accent
+  const processRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: processRef, offset: ["start center", "end center"] })
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
     <main style={{ overflowX: 'clip' }}>
@@ -171,17 +174,55 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
       <Section bg="soft" bordered>
         <Container>
           <SectionHeading eyebrow="How we work" title="A clear path to deployment." accent={a} accentBg={`${a}14`} subtitle="Transparent sprint cycles with absolute visibility into task updates." />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginTop: '2.5rem' }} className="grid-responsive-2col">
-            {steps.map((s, i) => (
-              <Reveal key={s.title} delay={i * 0.06}>
-                <div className="process-card" style={{ position: 'relative', background: '#fff', border: '1px solid var(--border)', borderRadius: 20, padding: '2rem 1.5rem', height: '100%' }}>
-                  <div style={{ position: 'absolute', top: 16, right: 18, fontSize: '2.2rem', fontWeight: 800, color: `${a}1a`, lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>0{i + 1}</div>
-                  <span style={{ width: 44, height: 44, borderRadius: 12, background: `${a}10`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}><s.Icon size={21} color={a} /></span>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.45rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
-                  <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{s.desc}</p>
+          <style>
+            {`
+              .timeline-container { position: relative; margin: 4rem auto 0; max-width: 900px; padding-bottom: 2rem; }
+              .timeline-svg { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; z-index: 0; }
+              .timeline-node { position: absolute; left: 50%; top: 32px; transform: translateX(-50%); width: 20px; height: 20px; border-radius: 50%; background: #fff; z-index: 2; border: 4px solid; transition: all 0.3s ease; }
+              .timeline-row { display: flex; position: relative; margin-bottom: 4rem; width: 100%; }
+              .timeline-card-wrapper { width: 45%; }
+              @media (max-width: 768px) {
+                .timeline-svg { left: 24px; transform: translateX(-50%); }
+                .timeline-node { left: 24px; }
+                .timeline-row { justify-content: flex-end !important; }
+                .timeline-card-wrapper { width: calc(100% - 60px); }
+              }
+            `}
+          </style>
+
+          <div className="timeline-container" ref={processRef}>
+            <div className="timeline-svg">
+              <svg width="100%" height="100%" viewBox="0 0 60 100" preserveAspectRatio="none" style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+                <path d="M30,0 L30,100" stroke="rgba(0,0,0,0.06)" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" strokeDasharray="6,6" />
+                <motion.path
+                  d="M30,0 L30,100"
+                  stroke={a}
+                  strokeWidth="4"
+                  fill="none"
+                  style={{ pathLength }}
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </div>
+
+            {steps.map((s, i) => {
+              const isEven = i % 2 === 0
+              return (
+                <div key={s.title} className="timeline-row" style={{ justifyContent: isEven ? 'flex-start' : 'flex-end', marginBottom: i === steps.length - 1 ? 0 : '4rem' }}>
+                  <div className="timeline-node" style={{ borderColor: a, boxShadow: `0 0 0 6px ${a}15` }} />
+                  <div className="timeline-card-wrapper">
+                    <Reveal delay={0.1}>
+                      <div className="process-card" style={{ position: 'relative', background: '#fff', border: '1px solid var(--border)', borderRadius: 20, padding: '2.5rem 2rem', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', top: -10, right: -10, fontSize: '6rem', fontWeight: 900, color: `${a}08`, lineHeight: 1, fontFamily: "'Outfit', sans-serif", zIndex: 0 }}>0{i + 1}</div>
+                        <span style={{ position: 'relative', zIndex: 1, width: 52, height: 52, borderRadius: 14, background: `${a}12`, border: `1px solid ${a}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}><s.Icon size={24} color={a} /></span>
+                        <h3 style={{ position: 'relative', zIndex: 1, fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.65rem', letterSpacing: '-0.015em' }}>{s.title}</h3>
+                        <p style={{ position: 'relative', zIndex: 1, fontSize: '0.94rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.desc}</p>
+                      </div>
+                    </Reveal>
+                  </div>
                 </div>
-              </Reveal>
-            ))}
+              )
+            })}
           </div>
         </Container>
       </Section>

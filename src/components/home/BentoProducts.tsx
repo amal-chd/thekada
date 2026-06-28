@@ -1,7 +1,89 @@
+import React, { useState, useRef } from 'react'
+
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles, ArrowUpRight, TrendingUp, Bike } from 'lucide-react'
-import SpotlightCard from '../ui/SpotlightCard'
+
+function TiltSpotlightCard({ children, className, style }: { children: React.ReactNode, className?: string, style?: React.CSSProperties }) {
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [opacity, setOpacity] = useState(0)
+  const [rotate, setRotate] = useState({ x: 0, y: 0 })
+  const rectRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current) return
+    const rect = rectRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    setPos({ x, y })
+    setOpacity(1)
+
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateX = ((y - centerY) / centerY) * -3 
+    const rotateY = ((x - centerX) / centerX) * 3
+
+    setRotate({ x: rotateX, y: rotateY })
+  }
+
+  const handleMouseLeave = () => {
+    setOpacity(0)
+    setRotate({ x: 0, y: 0 })
+  }
+
+  return (
+    <motion.div
+      ref={rectRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX: rotate.x, rotateY: rotate.y }}
+      transition={{ type: 'spring', damping: 30, stiffness: 400, mass: 0.5 }}
+      style={{
+        position: 'relative',
+        transformStyle: 'preserve-3d',
+        perspective: 1000,
+        ...style
+      }}
+      className={className}
+    >
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 'inherit', overflow: 'hidden' }}>
+         <div
+          style={{
+            position: 'absolute',
+            pointerEvents: 'none',
+            inset: 0,
+            opacity,
+            background: `radial-gradient(600px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.25), transparent 40%)`,
+            transition: 'opacity 0.4s ease',
+            zIndex: 1,
+            mixBlendMode: 'overlay',
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          pointerEvents: 'none',
+          inset: 0,
+          opacity,
+          background: `radial-gradient(400px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.4), transparent 40%)`,
+          transition: 'opacity 0.4s ease',
+          zIndex: 3,
+          borderRadius: 'inherit',
+          padding: 1,
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+        }}
+      />
+      
+      <div style={{ height: '100%', transform: 'translateZ(12px)', position: 'relative', zIndex: 2 }}>
+        {children}
+      </div>
+    </motion.div>
+  )
+}
 
 const Icon = {
   dine: Utensils, hotel: BedDouble, sellr: Store, ledger: BookText, devflow: KanbanSquare, lunoo: Sparkles, thekada: Bike,
@@ -121,7 +203,7 @@ export default function BentoProducts() {
             initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.55, delay: (idx % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
           >
-            <SpotlightCard className="card-premium" style={{ height: '100%' }}>
+            <TiltSpotlightCard className="card-premium" style={{ height: '100%' }}>
               <Link to={c.path} style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.5rem', textDecoration: 'none', position: 'relative', zIndex: 2 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
@@ -135,7 +217,7 @@ export default function BentoProducts() {
                 <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '1.1rem' }}>{c.benefit}</p>
                 <div style={{ marginTop: 'auto' }}>{c.mini}</div>
               </Link>
-            </SpotlightCard>
+            </TiltSpotlightCard>
           </motion.div>
         )
       })}
@@ -146,7 +228,7 @@ export default function BentoProducts() {
         initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       >
-        <SpotlightCard className="card-premium" style={{ height: '100%' }}>
+        <TiltSpotlightCard className="card-premium" style={{ height: '100%' }}>
           <Link to={lunoo.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', height: '100%', padding: '1.5rem 1.75rem', textDecoration: 'none', flexWrap: 'wrap', position: 'relative', zIndex: 2 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ width: 48, height: 48, borderRadius: 13, background: `${lunoo.color}14`, border: `1px solid ${lunoo.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -161,7 +243,7 @@ export default function BentoProducts() {
               Explore <ArrowUpRight size={15} />
             </span>
           </Link>
-        </SpotlightCard>
+        </TiltSpotlightCard>
       </motion.div>
     </div>
   )

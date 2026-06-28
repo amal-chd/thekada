@@ -51,37 +51,68 @@ export default function Ecosystem() {
 
       {/* PRODUCT GRID */}
       <Section bg="white" id="products">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
+        <style>{`
+          .staggered-wrapper {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+          }
+          .staggered-wrapper:hover {
+            transform: translateY(-8px) !important;
+          }
+          .staggered-wrapper:hover .arrow-hover {
+            transform: translateX(4px);
+          }
+          @media (min-width: 800px) {
+            .staggered-even {
+              transform: translateY(48px);
+            }
+            .staggered-even:hover {
+              transform: translateY(40px) !important;
+            }
+            .staggered-grid-container {
+              padding-bottom: 48px; /* Extra padding for the staggered items */
+            }
+          }
+        `}</style>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))', gap: '2rem' }} className="grid-responsive-2col staggered-grid-container">
           {products.map((p, i) => {
             const Icon = productIcons[p.id] || Sparkles
             return (
               <Reveal key={p.id} delay={i * 0.05} className={(products.length % 2 !== 0 && i === products.length - 1) ? 'col-span-2-mobile' : ''}>
-                <Link to={p.path} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-                  <SpotlightCard className="card-premium spotlight" style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: p.color }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.1rem', position: 'relative', zIndex: 2 }}>
-                      <span style={{ width: 50, height: 50, borderRadius: 14, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Icon size={24} color={p.color} />
-                      </span>
-                      <div>
-                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{p.shortName}</h3>
-                        <div style={{ fontSize: '0.72rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{p.badge}</div>
-                      </div>
-                    </div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem', position: 'relative', zIndex: 2 }}>{p.description}</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem', position: 'relative', zIndex: 2 }}>
-                      {p.features.slice(0, 3).map((f) => (
-                        <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                          <Check size={14} color={p.color} style={{ marginTop: 3, flexShrink: 0 }} />
-                          <span style={{ fontSize: '0.82rem', color: 'var(--dark-muted)', lineHeight: 1.45 }}>{f}</span>
+                <div className={`staggered-wrapper ${i % 2 !== 0 ? 'staggered-even' : ''}`}>
+                  <Link to={p.path} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                    <SpotlightCard className="card-premium spotlight" style={{ padding: '2.5rem', height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden', borderRadius: '24px' }}>
+                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: p.color }} />
+                      
+                      {/* Background abstract blob for premium feel */}
+                      <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: 120, height: 120, borderRadius: '50%', background: p.color, opacity: 0.04, filter: 'blur(24px)' }} />
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem', position: 'relative', zIndex: 2 }}>
+                        <span style={{ width: 56, height: 56, borderRadius: 16, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Icon size={26} color={p.color} />
+                        </span>
+                        <div>
+                          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{p.shortName}</h3>
+                          <div style={{ fontSize: '0.75rem', fontWeight: 750, color: p.color, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>{p.badge}</div>
                         </div>
-                      ))}
-                    </div>
-                    <span style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', fontWeight: 750, color: p.color, position: 'relative', zIndex: 2 }}>
-                      Explore {p.shortName} <ArrowRight size={15} />
-                    </span>
-                  </SpotlightCard>
-                </Link>
+                      </div>
+                      <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.75rem', position: 'relative', zIndex: 2 }}>{p.description}</p>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '2rem', position: 'relative', zIndex: 2 }}>
+                        {p.features.slice(0, 3).map((f) => (
+                          <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                            <Check size={16} color={p.color} style={{ marginTop: 2, flexShrink: 0 }} />
+                            <span style={{ fontSize: '0.85rem', color: 'var(--dark-muted)', lineHeight: 1.45, fontWeight: 500 }}>{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <span style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', fontWeight: 750, color: p.color, position: 'relative', zIndex: 2, padding: '0.5rem 0' }}>
+                        Explore {p.shortName} <ArrowRight size={16} style={{ transition: 'transform 0.2s' }} className="arrow-hover" />
+                      </span>
+                    </SpotlightCard>
+                  </Link>
+                </div>
               </Reveal>
             )
           })}

@@ -288,6 +288,28 @@ const createRuntimeId = (prefix: string) => {
 
 const createCertificateId = () => `TKDV-INT-2026-${createRuntimeId('cert').replace('cert-', '').slice(0, 8).toUpperCase()}`
 
+const formatTimestamp = (ts: any) => {
+  if (!ts) return ''
+  if (typeof ts === 'string') {
+    return ts.includes('T') ? ts.slice(11, 19) : ts
+  }
+  if (ts.toDate && typeof ts.toDate === 'function') {
+    try {
+      return ts.toDate().toISOString().slice(11, 19)
+    } catch {
+      return ''
+    }
+  }
+  if (ts.seconds) {
+    try {
+      return new Date(ts.seconds * 1000).toISOString().slice(11, 19)
+    } catch {
+      return ''
+    }
+  }
+  return String(ts)
+}
+
 export default function Admin() {
   const db = firebaseDb!
   const auth = firebaseAuth!
@@ -305,6 +327,8 @@ export default function Admin() {
   const [tickets, setTickets] = useState(INITIAL_TICKETS)
   const [auditLogs, setAuditLogs] = useState(INITIAL_AUDIT_LOGS)
   const [notifications, setNotifications] = useState<string[]>([])
+  const [metrics, setMetrics] = useState(INTRO_METRICS)
+  const [usersCount, setUsersCount] = useState(0)
   
   // Modals & Triggers
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
@@ -425,6 +449,11 @@ export default function Admin() {
             await setDoc(doc(db, 'support_tickets', tkt.id), tkt)
           }
         }
+        // Seed global metrics
+        const metricsCheck = await getDoc(doc(db, 'config', 'global_metrics'))
+        if (!metricsCheck.exists()) {
+          await setDoc(doc(db, 'config', 'global_metrics'), INTRO_METRICS)
+        }
       } catch (err) {
         console.error('Firestore seeding failed:', err)
       }
@@ -437,28 +466,46 @@ export default function Admin() {
     if (!isLive || !currentUser) return
 
     const unsubEmp = onSnapshot(collection(db, 'employees'), (snap) => {
-      if (!snap.empty) setEmployees(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setEmployees(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubCand = onSnapshot(collection(db, 'candidates'), (snap) => {
-      if (!snap.empty) setCandidates(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setCandidates(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubLeads = onSnapshot(collection(db, 'crm_leads'), (snap) => {
-      if (!snap.empty) setLeads(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setLeads(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubProps = onSnapshot(collection(db, 'proposals'), (snap) => {
-      if (!snap.empty) setProposals(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setProposals(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubTkts = onSnapshot(collection(db, 'support_tickets'), (snap) => {
-      if (!snap.empty) setTickets(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setTickets(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubAudit = onSnapshot(query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(25)), (snap) => {
-      if (!snap.empty) setAuditLogs(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+      setAuditLogs(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
     const unsubInterns = onSnapshot(collection(db, 'internships'), (snap) => {
-      if (!snap.empty) {
-        const storedList = snap.docs.map(d => ({ id: d.id, ...d.data() } as StoredIntern))
-        setInterns(mapStoredInterns(storedList))
+      const storedList = snap.docs.map(d => ({ id: d.id, ...d.data() } as StoredIntern))
+      setInterns(mapStoredInterns(storedList))
+    })
+    const unsubMetrics = onSnapshot(doc(db, 'config', 'global_metrics'), (snap) => {
+      if (snap.exists()) {
+        const data = snap.data()
+        setMetrics({
+          totalRevenue: Number(data.totalRevenue ?? INTRO_METRICS.totalRevenue),
+          mrr: Number(data.mrr ?? INTRO_METRICS.mrr),
+          arr: Number(data.arr ?? INTRO_METRICS.arr),
+          activeUsers: Number(data.activeUsers ?? INTRO_METRICS.activeUsers),
+          dau: Number(data.dau ?? INTRO_METRICS.dau),
+          burnRate: Number(data.burnRate ?? INTRO_METRICS.burnRate),
+          cashFlow: Number(data.cashFlow ?? INTRO_METRICS.cashFlow),
+          nps: Number(data.nps ?? INTRO_METRICS.nps),
+          churnRate: Number(data.churnRate ?? INTRO_METRICS.churnRate),
+          retentionRate: Number(data.retentionRate ?? INTRO_METRICS.retentionRate),
+        })
       }
+    })
+    const unsubUsers = onSnapshot(collection(db, 'users'), (snap) => {
+      if (!snap.empty) setUsersCount(snap.size)
     })
 
     return () => {
@@ -469,6 +516,8 @@ export default function Admin() {
       unsubTkts()
       unsubAudit()
       unsubInterns()
+      unsubMetrics()
+      unsubUsers()
     }
   }, [isLive, currentUser])
 
@@ -516,11 +565,13 @@ export default function Admin() {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
         setCommandPaletteOpen(prev => !prev)
+      } else if (e.key === 'Escape' && commandPaletteOpen) {
+        setCommandPaletteOpen(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [commandPaletteOpen])
 
   // Sync Internship Hub with localStorage
   useEffect(() => {
@@ -580,6 +631,21 @@ export default function Admin() {
       setCandidates(prev => prev.filter(c => c.id !== candidateId))
       triggerNotification(`Hired Candidate ${candidate.name} as Associate ${candidate.role}`)
     }
+  }
+
+  const rejectCandidate = async (candidateId: string, candidateName: string) => {
+    if (isLive) {
+      try {
+        const { deleteDoc } = await import('firebase/firestore')
+        await deleteDoc(doc(db, 'candidates', candidateId))
+        triggerNotification(`Archived Candidate application for ${candidateName}`)
+      } catch (err: any) {
+        triggerNotification('Error: ' + err.message)
+      }
+      return
+    }
+    setCandidates(prev => prev.filter(c => c.id !== candidateId))
+    triggerNotification(`Archived Candidate application for ${candidateName}`)
   }
 
   // Internship Workflows
@@ -800,6 +866,25 @@ export default function Admin() {
     triggerNotification(`Created & Transmitted Proposal: "${propTitle}" for ${propLead}`)
   }
 
+  const signProposal = async (proposalId: string, leadCompany: string) => {
+    if (isLive) {
+      try {
+        await updateDoc(doc(db, 'proposals', proposalId), { status: 'Signed' })
+        const lead = leads.find(l => l.company === leadCompany)
+        if (lead) {
+          await updateDoc(doc(db, 'crm_leads', lead.id), { status: 'Contract' })
+        }
+        triggerNotification(`Client signed proposal ${proposalId}. Contract active.`)
+      } catch (err: any) {
+        triggerNotification('Error signing proposal: ' + err.message)
+      }
+      return
+    }
+    setProposals(prev => prev.map(pr => pr.id === proposalId ? { ...pr, status: 'Signed' } : pr))
+    setLeads(prev => prev.map(ld => ld.company === leadCompany ? { ...ld, status: 'Contract' } : ld))
+    triggerNotification(`Client signed proposal ${proposalId}. Contract active.`)
+  }
+
   // Support workflows
   const sendChatMessage = () => {
     if (!chatInput) return
@@ -831,6 +916,21 @@ export default function Admin() {
       }
       return t
     }))
+  }
+
+  const resolveTicket = async (ticketId: string) => {
+    if (isLive) {
+      try {
+        const { deleteDoc } = await import('firebase/firestore')
+        await deleteDoc(doc(db, 'support_tickets', ticketId))
+        triggerNotification(`Resolved Support ticket #${ticketId}`)
+      } catch (err: any) {
+        triggerNotification('Error: ' + err.message)
+      }
+      return
+    }
+    setTickets(prev => prev.filter(t => t.id !== ticketId))
+    triggerNotification(`Resolved Support ticket #${ticketId}`)
   }
 
   // Franchise Workflows
@@ -978,7 +1078,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>Authenticate Session</h2>
+
           <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '2rem' }}>Provide credentials to access the central company database</p>
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', textAlign: 'left' }}>
@@ -1005,20 +1105,12 @@ export default function Admin() {
                 value={loginEmail}
                 onChange={e => setLoginEmail(e.target.value)}
                 placeholder="email@thekada.in"
+                className="input-dark"
                 style={{
-                  width: '100%',
                   padding: '0.85rem 1.1rem',
                   borderRadius: '12px',
-                  background: 'rgba(15, 23, 42, 0.6)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  color: '#FFFFFF',
-                  fontSize: '0.85rem',
-                  outline: 'none',
-                  transition: 'all 0.2s ease',
-                  fontFamily: 'inherit'
+                  background: 'rgba(15, 23, 42, 0.6)'
                 }}
-                onFocus={(e) => e.target.style.borderColor = '#2563EB'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
               />
             </div>
 
@@ -1033,20 +1125,12 @@ export default function Admin() {
                 value={loginPassword}
                 onChange={e => setLoginPassword(e.target.value)}
                 placeholder="••••••••••••"
+                className="input-dark"
                 style={{
-                  width: '100%',
                   padding: '0.85rem 1.1rem',
                   borderRadius: '12px',
-                  background: 'rgba(15, 23, 42, 0.6)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  color: '#FFFFFF',
-                  fontSize: '0.85rem',
-                  outline: 'none',
-                  transition: 'all 0.2s ease',
-                  fontFamily: 'inherit'
+                  background: 'rgba(15, 23, 42, 0.6)'
                 }}
-                onFocus={(e) => e.target.style.borderColor = '#2563EB'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'}
               />
             </div>
 
@@ -1436,7 +1520,16 @@ export default function Admin() {
         {/* ──────────────────────────────────────────────────────────────────
             TAB 0: FIREBASE BACKEND ARCHITECTURE
             ────────────────────────────────────────────────────────────────── */}
-        {activeTab === 'architecture' && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            style={{ width: '100%', outline: 'none' }}
+          >
+            {activeTab === 'architecture' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
               {[
@@ -1605,12 +1698,12 @@ export default function Admin() {
             {/* Numeric Executive stats */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
               {[
-                { label: 'Total Revenue', value: `₹${(INTRO_METRICS.totalRevenue / 10000000).toFixed(2)} Cr`, sub: '+18.4% YoY', trend: 'up' },
-                { label: 'Monthly Recurring (MRR)', value: `₹${(INTRO_METRICS.mrr / 100000).toFixed(1)} L`, sub: 'Target: ₹50L', trend: 'up' },
-                { label: 'Annual Recurring (ARR)', value: `₹${(INTRO_METRICS.arr / 10000000).toFixed(2)} Cr`, sub: 'Runrate target', trend: 'up' },
-                { label: 'Active Users (MAU)', value: INTRO_METRICS.activeUsers.toLocaleString(), sub: `DAU: ${INTRO_METRICS.dau.toLocaleString()}`, trend: 'up' },
-                { label: 'Net Cash Flow', value: `₹${(INTRO_METRICS.cashFlow / 100000).toFixed(1)} L`, sub: `Burn Rate: ₹${(INTRO_METRICS.burnRate / 100000).toFixed(1)}L/mo`, trend: 'neutral' },
-                { label: 'NPS & Satisfaction', value: `${INTRO_METRICS.nps}/100`, sub: `Retention: ${INTRO_METRICS.retentionRate}%`, trend: 'up' }
+                { label: 'Total Revenue', value: `₹${(metrics.totalRevenue / 10000000).toFixed(2)} Cr`, sub: '+18.4% YoY', trend: 'up' },
+                { label: 'Monthly Recurring (MRR)', value: `₹${(metrics.mrr / 100000).toFixed(1)} L`, sub: 'Target: ₹50L', trend: 'up' },
+                { label: 'Annual Recurring (ARR)', value: `₹${(metrics.arr / 10000000).toFixed(2)} Cr`, sub: 'Runrate target', trend: 'up' },
+                { label: 'Active Users (MAU)', value: isLive ? usersCount.toLocaleString() : metrics.activeUsers.toLocaleString(), sub: isLive ? 'Real-time DB accounts' : `DAU: ${metrics.dau.toLocaleString()}`, trend: 'up' },
+                { label: 'Net Cash Flow', value: `₹${(metrics.cashFlow / 100000).toFixed(1)} L`, sub: `Burn Rate: ₹${(metrics.burnRate / 100000).toFixed(1)}L/mo`, trend: 'neutral' },
+                { label: 'NPS & Satisfaction', value: `${metrics.nps}/100`, sub: `Retention: ${metrics.retentionRate}%`, trend: 'up' }
               ].map(stat => (
                 <div key={stat.label} style={{
                   background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#FFFFFF',
@@ -1875,10 +1968,7 @@ export default function Admin() {
                         </div>
                         <div style={{ display: 'flex', gap: '0.45rem' }}>
                           <button className="btn-primary btn-sm" onClick={() => hireCandidate(c.id)} style={{ padding: '0.35rem 0.75rem', fontSize: '0.74rem' }}>Hire Employee</button>
-                          <button style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.2)', padding: '0.35rem 0.75rem', borderRadius: 8, fontSize: '0.74rem', fontWeight: 700, cursor: 'pointer' }} onClick={() => {
-                            setCandidates(prev => prev.filter(cand => cand.id !== c.id))
-                            triggerNotification(`Archived Candidate application for ${c.name}`)
-                          }}>Reject</button>
+                          <button style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.2)', padding: '0.35rem 0.75rem', borderRadius: 8, fontSize: '0.74rem', fontWeight: 700, cursor: 'pointer' }} onClick={() => rejectCandidate(c.id, c.name)}>Reject</button>
                         </div>
                       </div>
                     ))}
@@ -2034,12 +2124,13 @@ export default function Admin() {
                     <select 
                       value={propLead}
                       onChange={e => setPropLead(e.target.value)}
-                      style={{
+                      className={theme === 'dark' ? 'select-dark' : ''}
+                      style={theme !== 'dark' ? {
                         width: '100%', padding: '0.75rem', borderRadius: 8,
-                        background: theme === 'dark' ? '#0F172A' : '#F1F5F9',
-                        border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'}`,
+                        background: '#F1F5F9',
+                        border: '1px solid rgba(0,0,0,0.1)',
                         color: 'inherit'
-                      }}
+                      } : { padding: '0.75rem' }}
                     >
                       {leads.map(l => <option key={l.id} value={l.company}>{l.company}</option>)}
                     </select>
@@ -2052,12 +2143,13 @@ export default function Admin() {
                       value={propTitle}
                       onChange={e => setPropTitle(e.target.value)}
                       required
-                      style={{
+                      className={theme === 'dark' ? 'input-dark' : ''}
+                      style={theme !== 'dark' ? {
                         width: '100%', padding: '0.75rem', borderRadius: 8,
-                        background: theme === 'dark' ? '#0F172A' : '#F1F5F9',
-                        border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'}`,
+                        background: '#F1F5F9',
+                        border: '1px solid rgba(0,0,0,0.1)',
                         color: 'inherit'
-                      }}
+                      } : { padding: '0.75rem' }}
                     />
                   </div>
                   <div>
@@ -2067,12 +2159,13 @@ export default function Admin() {
                       value={propCost}
                       onChange={e => setPropCost(e.target.value)}
                       required
-                      style={{
+                      className={theme === 'dark' ? 'input-dark' : ''}
+                      style={theme !== 'dark' ? {
                         width: '100%', padding: '0.75rem', borderRadius: 8,
-                        background: theme === 'dark' ? '#0F172A' : '#F1F5F9',
-                        border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)'}`,
+                        background: '#F1F5F9',
+                        border: '1px solid rgba(0,0,0,0.1)',
                         color: 'inherit'
-                      }}
+                      } : { padding: '0.75rem' }}
                     />
                   </div>
                   <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}><Send size={14} /> Transmit Proposal &amp; Contract</button>
@@ -2110,12 +2203,7 @@ export default function Admin() {
                     <div style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '0.15rem' }}>Client: {p.lead}</div>
                     <div style={{ borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`, paddingTop: '0.65rem', marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.9rem', fontWeight: 800, color: theme === 'dark' ? '#FFFFFF' : '#0B1B33' }}>{p.cost}</span>
-                      <button style={{ background: '#10B98115', color: '#10B981', border: '1px solid #10B98130', padding: '0.3rem 0.65rem', borderRadius: 6, fontSize: '0.72rem', fontWeight: 750, cursor: 'pointer' }} onClick={() => {
-                        setProposals(prev => prev.map(pr => pr.id === p.id ? { ...pr, status: 'Signed' } : pr))
-                        // Update Lead Status to Contract
-                        setLeads(prev => prev.map(ld => ld.company === p.lead ? { ...ld, status: 'Contract' } : ld))
-                        triggerNotification(`Client signed proposal ${p.id}. Contract active.`)
-                      }}>Simulate Signature</button>
+                      <button style={{ background: '#10B98115', color: '#10B981', border: '1px solid #10B98130', padding: '0.3rem 0.65rem', borderRadius: 6, fontSize: '0.72rem', fontWeight: 750, cursor: 'pointer' }} onClick={() => signProposal(p.id, p.lead)}>Simulate Signature</button>
                     </div>
                   </div>
                 ))}
@@ -2163,10 +2251,7 @@ export default function Admin() {
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '0.76rem', color: '#EF4444', fontWeight: 600 }}>{t.deadline}</div>
                         <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.45rem' }}>
-                          <button style={{ background: '#10B98115', color: '#10B981', border: '1px solid #10B98130', padding: '0.3rem 0.6rem', borderRadius: 6, fontSize: '0.7rem', fontWeight: 750, cursor: 'pointer' }} onClick={() => {
-                            setTickets(prev => prev.filter(tick => tick.id !== t.id))
-                            triggerNotification(`Resolved Support ticket #${t.id}`)
-                          }}>Resolve</button>
+                          <button style={{ background: '#10B98115', color: '#10B981', border: '1px solid #10B98130', padding: '0.3rem 0.6rem', borderRadius: 6, fontSize: '0.7rem', fontWeight: 750, cursor: 'pointer' }} onClick={() => resolveTicket(t.id)}>Resolve</button>
                           {t.priority !== 'Urgent' && (
                             <button style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.1)'}`, padding: '0.3rem 0.6rem', borderRadius: 6, fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer' }} onClick={() => escalateTicket(t.id)}>Escalate</button>
                           )}
@@ -2414,7 +2499,7 @@ export default function Admin() {
                     borderLeft: '3px solid #2563EB'
                   }}>
                     <span>
-                      <strong style={{ color: '#94A3B8' }}>[{log.timestamp.slice(11, 19)}]</strong>{' '}
+                      <strong style={{ color: '#94A3B8' }}>[{formatTimestamp(log.timestamp)}]</strong>{' '}
                       <span style={{ color: '#60A5FA' }}>{log.user} ({log.role})</span> : {log.action}
                     </span>
                     <span style={{ color: '#94A3B8' }}>IP: {log.ip}</span>
@@ -2424,6 +2509,8 @@ export default function Admin() {
             </SpotlightCard>
           </div>
         )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* ──────────────────────────────────────────────────────────────────

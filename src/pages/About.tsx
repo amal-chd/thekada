@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import {
   ArrowUpRight, ArrowRight,
   Target, Layers, Users, Zap, Eye, Compass,
@@ -33,19 +34,55 @@ const team = [
 ]
 
 export default function About() {
+  const valuesRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: valuesScrollProgress } = useScroll({
+    target: valuesRef,
+  })
+  // Map scroll progress to horizontal movement
+  const valuesX = useTransform(valuesScrollProgress, [0, 1], ["0%", "-60%"])
+
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: timelineScrollProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start center", "end center"]
+  })
+  // Smooth out the timeline filling progress
+  const timelineScaleY = useSpring(timelineScrollProgress, { stiffness: 100, damping: 30 })
+
   return (
     <main style={{ overflowX: 'clip' }}>
       {/* HERO */}
-      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)' }}>
+      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(8.5rem, 15vw, 12rem) 0 clamp(4.5rem, 8vw, 7rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
-        <div className="glow-orb" style={{ top: '-12%', right: '6%', width: 480, height: 460, background: 'rgba(37,99,235,0.14)' }} />
+        <div className="glow-orb" style={{ top: '-15%', right: '0%', width: 600, height: 600, background: 'rgba(37,99,235,0.18)', filter: 'blur(100px)' }} />
+        <div className="glow-orb" style={{ bottom: '-10%', left: '-5%', width: 400, height: 400, background: 'rgba(16,185,129,0.12)', filter: 'blur(80px)' }} />
         <Container style={{ position: 'relative', zIndex: 2 }}>
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ maxWidth: 760 }}>
-            <div className="eyebrow" style={{ marginBottom: '1.5rem' }}>About The Kada Digital Ventures</div>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 5.4vw, 4.25rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.5rem' }}>
-              We build software that<br /><span className="gradient-text-blue">moves businesses forward.</span>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ maxWidth: 900 }}>
+            <div className="eyebrow" style={{ marginBottom: '1.5rem', display: 'inline-block', padding: '0.4rem 1rem', background: 'var(--blue-light)', color: 'var(--blue)', borderRadius: '100px', fontWeight: 700 }}>
+              About The Kada Digital Ventures
+            </div>
+            <h1 style={{ 
+              fontSize: 'clamp(3.2rem, 7vw, 6.5rem)', 
+              fontWeight: 900, 
+              letterSpacing: '-0.04em', 
+              lineHeight: 1.05, 
+              marginBottom: '2rem',
+              backgroundImage: 'linear-gradient(45deg, #0f172a 10%, #2563EB 50%, #0f172a 90%)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: 'gradientShift 8s ease infinite'
+            }}>
+              We build software that<br />moves businesses forward.
             </h1>
-            <p className="lead" style={{ maxWidth: 640 }}>
+            <style>{`
+              @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+            `}</style>
+            <p className="lead" style={{ maxWidth: 680, fontSize: 'clamp(1.15rem, 2vw, 1.35rem)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               The Kada Digital Ventures is a technology company building intuitive digital products and custom software — helping businesses of every size digitize workflows, automate the busywork, and scale sustainably.
             </p>
           </motion.div>
@@ -108,39 +145,61 @@ export default function About() {
       {/* STORY / TIMELINE */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Our story" title="How we got here." align="left" />
-        <div style={{ position: 'relative' }}>
+        <div ref={timelineRef} style={{ position: 'relative', paddingLeft: '32px', marginTop: '2rem' }}>
+          {/* Background line */}
+          <div style={{ position: 'absolute', left: '6px', top: '12px', bottom: '24px', width: 2, background: 'var(--border)' }} />
+          {/* Animated filling line */}
+          <motion.div style={{ position: 'absolute', left: '6px', top: '12px', bottom: '24px', width: 2, background: 'var(--blue)', scaleY: timelineScaleY, transformOrigin: 'top' }} />
+
           {timeline.map((event, i) => (
-            <Reveal key={`${event.year}-${event.title}`} delay={i * 0.05}>
-              <div className="timeline-row" style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '1.5rem', paddingBottom: '1.75rem', paddingTop: '1.25rem', borderBottom: i === timeline.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', paddingTop: '0.15rem' }}>
-                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--blue)', flexShrink: 0, marginTop: 6 }} />
-                  <span style={{ fontSize: '0.82rem', fontWeight: 750, color: 'var(--blue)', whiteSpace: 'nowrap' }}>{event.year}</span>
+            <div key={`${event.year}-${event.title}`} style={{ position: 'relative', paddingBottom: i === timeline.length - 1 ? 0 : '3.5rem' }}>
+              {/* Dot animation triggered when scrolled into view */}
+              <motion.div 
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, margin: "-20% 0px -20% 0px" }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
+                style={{ position: 'absolute', left: '-31px', top: '4px', width: 12, height: 12, borderRadius: '50%', background: 'var(--blue)', border: '2px solid var(--bg-soft)', zIndex: 2, boxShadow: '0 0 0 4px rgba(37,99,235,0.1)' }} 
+              />
+              <Reveal delay={0.2}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(80px, max-content) 1fr', gap: '2rem' }} className="timeline-grid">
+                  <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--blue)', marginTop: '2px' }}>{event.year}</span>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{event.title}</h3>
+                    <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '600px' }}>{event.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 style={{ fontSize: '1.12rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.35rem', letterSpacing: '-0.02em' }}>{event.title}</h3>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{event.desc}</p>
-                </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           ))}
+          <style>{`
+            @media (max-width: 640px) {
+              .timeline-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+              }
+            }
+          `}</style>
         </div>
       </Section>
 
-      {/* VALUES */}
-      <Section bg="white">
-        <SectionHeading eyebrow="What we believe" title="Our operating principles." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
-          {values.map((v, i) => (
-            <Reveal key={v.title} delay={i * 0.05}>
-              <div className="card-feature" style={{ height: '100%' }}>
-                <span style={{ width: 46, height: 46, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}><v.Icon size={21} color="#2563EB" /></span>
-                <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.015em' }}>{v.title}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{v.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+      {/* VALUES - HORIZONTAL CAROUSEL */}
+      <section ref={valuesRef} style={{ height: '300vh', position: 'relative', background: 'var(--bg-white)' }}>
+        <div style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+          <Container>
+            <SectionHeading eyebrow="What we believe" title="Our operating principles." align="left" />
+            <motion.div style={{ x: valuesX, display: 'flex', gap: '2rem', width: 'max-content', paddingRight: '20vw', marginTop: '3rem' }}>
+              {values.map((v) => (
+                <div key={v.title} className="card-feature" style={{ width: '380px', flexShrink: 0, padding: '2.5rem', background: 'var(--bg-soft)', borderRadius: '24px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <span style={{ width: 64, height: 64, borderRadius: 16, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}><v.Icon size={32} color="#2563EB" /></span>
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '1rem', letterSpacing: '-0.02em' }}>{v.title}</h3>
+                  <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{v.desc}</p>
+                </div>
+              ))}
+            </motion.div>
+          </Container>
         </div>
-      </Section>
+      </section>
 
       {/* TEAM */}
       <Section bg="soft" bordered>
