@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ArrowUpRight, Calendar, Sparkles } from 'lucide-react'
 import { Container, Aurora } from '../ui'
 import MagneticButton from '../ui/MagneticButton'
@@ -9,14 +9,20 @@ export default function ClosingCTA() {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end end']
+    offset: ['start 90%', 'center center']
   })
 
-  const glowScale = useTransform(scrollYProgress, [0, 1], [0.8, 1.6])
-  const glowOpacity = useTransform(scrollYProgress, [0, 1], [0, 0.7])
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    restDelta: 0.001
+  })
+
+  const glowScale = useTransform(smoothProgress, [0, 1], [0.8, 1.6])
+  const glowOpacity = useTransform(smoothProgress, [0, 1], [0, 0.7])
   
-  const yText = useTransform(scrollYProgress, [0, 1], [80, 0])
-  const opacityText = useTransform(scrollYProgress, [0, 0.7], [0, 1])
+  const yText = useTransform(smoothProgress, [0, 1], [100, 0])
+  const opacityText = useTransform(smoothProgress, [0, 0.85], [0, 1])
 
   return (
     <section 

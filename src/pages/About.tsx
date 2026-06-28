@@ -204,16 +204,67 @@ export default function About() {
       {/* TEAM */}
       <Section bg="soft" bordered>
         <SectionHeading eyebrow="Leadership" title="A senior team that ships." subtitle="A small, experienced group across engineering, design, product, and growth — aligned around one mission and supported by 20+ builders." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
           {team.map((person, i) => (
             <Reveal key={person.role} delay={i * 0.05}>
-              <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 2 }}>
-                  <div style={{ width: 70, height: 70, borderRadius: '50%', background: `linear-gradient(135deg, ${person.color}, ${person.color}bb)`, margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: '#fff', boxShadow: `0 10px 24px -8px ${person.color}88` }}>{person.initial}</div>
-                  <div style={{ fontSize: '0.92rem', fontWeight: 800, color: person.color, marginBottom: '0.5rem' }}>{person.role}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{person.expertise}</div>
-                </div>
-              </SpotlightCard>
+              <motion.div 
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                style={{ height: '100%' }}
+              >
+                <SpotlightCard className="card-premium spotlight" style={{ padding: '2.5rem 2rem', height: '100%', position: 'relative', overflow: 'hidden', borderRadius: '24px', border: `1px solid ${person.color}20` }}>
+                  {/* Oversized background initial */}
+                  <div style={{ 
+                    position: 'absolute', 
+                    bottom: '-15%', 
+                    right: '-5%', 
+                    fontSize: '14rem', 
+                    fontWeight: 900, 
+                    lineHeight: 1, 
+                    color: person.color, 
+                    opacity: 0.03, 
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    fontFamily: 'serif'
+                  }}>
+                    {person.initial}
+                  </div>
+                  
+                  {/* Accent Top Line */}
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: person.color }} />
+                  
+                  {/* Avatar Graphic */}
+                  <div style={{ 
+                    width: 64, 
+                    height: 64, 
+                    borderRadius: 20, 
+                    background: `linear-gradient(135deg, ${person.color}15, ${person.color}05)`, 
+                    border: `1px solid ${person.color}30`, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    fontSize: '1.6rem', 
+                    fontWeight: 800, 
+                    color: person.color,
+                    marginBottom: '1.5rem',
+                    boxShadow: `0 8px 24px -8px ${person.color}40`,
+                    position: 'relative',
+                    zIndex: 2
+                  }}>
+                    {person.initial}
+                  </div>
+                  
+                  {/* Info */}
+                  <div style={{ position: 'relative', zIndex: 2 }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: person.color, marginBottom: '0.75rem' }}>
+                      {person.role}
+                    </div>
+                    <div style={{ fontSize: '1.05rem', color: 'var(--ink)', fontWeight: 700, lineHeight: 1.5, letterSpacing: '-0.01em' }}>
+                      {person.expertise}
+                    </div>
+                  </div>
+                </SpotlightCard>
+              </motion.div>
             </Reveal>
           ))}
         </div>
