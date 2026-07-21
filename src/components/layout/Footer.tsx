@@ -194,6 +194,7 @@ export default function Footer() {
                 { label: 'Terms', path: '/legal/terms' },
                 { label: 'Cookies', path: '/legal/cookies' },
                 { label: 'Refunds', path: '/legal/refunds' },
+                { label: 'Delete Account & Data', path: '/delete-account' },
               ].map((lk) => (
                 <Link key={lk.label} to={lk.path} style={{ color: '#94A3B8', textDecoration: 'none', transition: 'color 0.2s ease' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#2563EB' }}

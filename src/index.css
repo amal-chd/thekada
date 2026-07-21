@@ -986,6 +986,7 @@ button:focus-visible, a:focus-visible {
 @media (max-width: 480px) {
   .bento { grid-template-columns: 1fr !important; }
   .bento > .b-3col, .bento > .b-4col, .bento > .b-6col, .bento > .b-2col { grid-column: span 1 !important; }
+  .capabilities-bento > div:nth-child(5) { grid-column: span 1 !important; }
   .grid-responsive-2col { grid-template-columns: 1fr !important; }
   .col-span-2-mobile { grid-column: span 1 !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
@@ -1002,7 +1003,7 @@ button:focus-visible, a:focus-visible {
     grid-template-columns: 1fr !important;
   }
   .bento-capabilities-grid > div {
-    grid-column: span 12 !important;
+    grid-column: span 1 !important;
   }
 }
 

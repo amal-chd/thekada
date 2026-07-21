@@ -114,7 +114,7 @@ export default function Services() {
                       className="card-premium"
                       style={{
                         height: '100%',
-                        padding: '2.25rem 2rem',
+                        padding: 'clamp(1.5rem, 5vw, 2.25rem) clamp(1.25rem, 4vw, 2rem)',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
@@ -1081,7 +1081,7 @@ function ProcessTimeline() {
             background: '#FFFFFF',
             border: '1px solid rgba(0,0,0,0.05)',
             borderRadius: 24,
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 5vw, 2.5rem)',
             boxShadow: '0 10px 30px -10px rgba(0,0,0,0.03)',
             display: 'grid',
             gridTemplateColumns: '1.2fr 0.8fr',
@@ -1119,7 +1119,7 @@ function ProcessTimeline() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div style={{ background: 'var(--bg-soft)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.75rem', position: 'relative' }}>
+            <div style={{ background: 'var(--bg-soft)', border: '1px solid var(--border)', borderRadius: 20, padding: 'clamp(1rem, 4vw, 1.75rem)', position: 'relative' }}>
               <div style={{ fontSize: '0.74rem', textTransform: 'uppercase', color: '#64748B', fontWeight: 750, letterSpacing: '0.08em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                 <Settings size={13} /> Phase Operations & Output
               </div>

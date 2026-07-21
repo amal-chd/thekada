@@ -27,6 +27,7 @@ const TheKada = lazy(() => import('./pages/products/TheKada'))
 const Press = lazy(() => import('./pages/Press'))
 const Proposal = lazy(() => import('./pages/Proposal'))
 const Legal = lazy(() => import('./pages/Legal'))
+const DeleteAccount = lazy(() => import('./pages/DeleteAccount'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const Admin = lazy(() => import('./pages/Admin'))
 
@@ -129,6 +130,11 @@ function AppContent() {
           <Route path="/press" element={<Press />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/legal/:type" element={<Legal />} />
+          <Route path="/privacy" element={<Legal />} />
+          <Route path="/privacy-policy" element={<Legal />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/account-deletion" element={<DeleteAccount />} />
+          <Route path="/data-deletion" element={<DeleteAccount />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
