@@ -220,6 +220,7 @@ export default function Legal() {
                   const isActive = key === page.key
                   return (
                     <Link key={page.key} to={`/legal/${page.key}`}
+                      className={`legal-nav-item ${isActive ? 'active' : ''}`}
                       style={{ padding: '0.65rem 0.95rem', borderRadius: 10, fontSize: '0.875rem', fontWeight: 700, color: isActive ? '#2563EB' : 'var(--dark-muted)', background: isActive ? 'var(--blue-light)' : 'transparent', textDecoration: 'none', borderLeft: `2.5px solid ${isActive ? '#2563EB' : 'transparent'}`, transition: 'all 0.2s ease' }}
                       onMouseEnter={(e) => { if (!isActive) { (e.currentTarget as HTMLElement).style.background = 'var(--bg-soft)'; (e.currentTarget as HTMLElement).style.color = 'var(--ink)' } }}
                       onMouseLeave={(e) => { if (!isActive) { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--dark-muted)' } }}>
@@ -228,7 +229,7 @@ export default function Legal() {
                   )
                 })}
               </div>
-              <div style={{ marginTop: '1.75rem', background: 'var(--bg-soft)', padding: '1rem', borderRadius: 12, border: '1px solid var(--border)' }}>
+              <div className="legal-sidebar-card" style={{ marginTop: '1.75rem', background: 'var(--bg-soft)', padding: '1rem', borderRadius: 12, border: '1px solid var(--border)' }}>
                 <div style={{ fontSize: '0.78rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.35rem' }}>Direct Deletion Portal</div>
                 <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginBottom: '0.65rem', lineHeight: 1.5 }}>
                   Need to wipe your account data without logging into the mobile app?
@@ -239,7 +240,7 @@ export default function Legal() {
               </div>
             </nav>
 
-            <div>
+            <div style={{ wordBreak: 'break-word' }}>
               {content.sections.map((section, i) => (
                 <motion.div key={section.heading} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.03 }} style={{ marginBottom: '2.5rem' }}>
                   <h2 style={{ fontSize: '1.25rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>{section.heading}</h2>
@@ -251,7 +252,7 @@ export default function Legal() {
                 </motion.div>
               ))}
               <SpotlightCard className="card-premium" style={{ marginTop: '3rem', padding: '1.85rem', fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                <div style={{ position: 'relative', zIndex: 2 }}>
+                <div style={{ position: 'relative', zIndex: 2, wordBreak: 'break-word' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '0.95rem' }}>The Kada Digital Ventures Pvt Ltd</strong><br />
                   Attn: Data Protection Officer (DPO)<br />
                   Kannur, Kerala 670001, India<br />

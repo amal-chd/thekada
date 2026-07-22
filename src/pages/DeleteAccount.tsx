@@ -68,13 +68,13 @@ export default function DeleteAccount() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="section-white" style={{ padding: 'clamp(3.5rem, 6vw, 5.5rem) 0' }}>
+      <section className="section-white" style={{ padding: 'clamp(2.5rem, 6vw, 5.5rem) 0' }}>
         <Container>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 'clamp(2rem, 5vw, 3.5rem)', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: 'clamp(1.5rem, 5vw, 3.5rem)', alignItems: 'start' }}>
             
             {/* Left Form Panel */}
             <div>
-              <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.75rem, 4vw, 2.5rem)', borderRadius: 24, background: '#FFFFFF', border: '1px solid var(--border)' }}>
+              <SpotlightCard className="card-premium" style={{ padding: 'clamp(1.25rem, 4vw, 2.5rem)', borderRadius: 24, background: '#FFFFFF', border: '1px solid var(--border)' }}>
                 <AnimatePresence mode="wait">
                   {submittedId ? (
                     <motion.div key="success" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} style={{ textAlign: 'center', padding: '1.5rem 0' }}>
@@ -116,7 +116,7 @@ export default function DeleteAccount() {
                         <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>
                           Select Application / Service
                         </label>
-                        <select value={selectedApp} onChange={e => setSelectedApp(e.target.value)} style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '0.9rem', fontWeight: 600, outline: 'none', cursor: 'pointer' }}>
+                        <select value={selectedApp} onChange={e => setSelectedApp(e.target.value)} style={{ width: '100%', minHeight: '46px', padding: '0.75rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '16px', fontWeight: 600, outline: 'none', cursor: 'pointer' }}>
                           {APPS_LIST.map(app => (
                             <option key={app.id} value={app.id}>{app.name}</option>
                           ))}
@@ -127,24 +127,24 @@ export default function DeleteAccount() {
                         <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>
                           Registered Email or Phone Number *
                         </label>
-                        <input type="text" placeholder="e.g. name@example.com or +91 9876543210" value={identifier} onChange={e => setIdentifier(e.target.value)} style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '0.9rem', outline: 'none', transition: 'border-color 0.2s ease' }} required />
+                        <input type="text" placeholder="e.g. name@example.com or +91 9876543210" value={identifier} onChange={e => setIdentifier(e.target.value)} style={{ width: '100%', minHeight: '46px', padding: '0.75rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '16px', outline: 'none', transition: 'border-color 0.2s ease' }} required />
                       </div>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '0.825rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem' }}>
                           Reason for Deletion (Optional)
                         </label>
-                        <textarea placeholder="Let us know how we can improve our services..." value={reason} onChange={e => setReason(e.target.value)} rows={3} style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '0.875rem', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                        <textarea placeholder="Let us know how we can improve our services..." value={reason} onChange={e => setReason(e.target.value)} rows={3} style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 12, border: '1px solid var(--border)', background: '#F8FAFC', color: 'var(--ink)', fontSize: '16px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', background: '#FFFBEB', border: '1px solid #FEF3C7', padding: '1rem', borderRadius: 12 }}>
-                        <input type="checkbox" id="confirm-check" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} style={{ marginTop: '0.2rem', cursor: 'pointer', width: 18, height: 18, accentColor: '#D97706' }} />
-                        <label htmlFor="confirm-check" style={{ fontSize: '0.8rem', color: '#92400E', lineHeight: 1.5, cursor: 'pointer', fontWeight: 550 }}>
+                        <input type="checkbox" id="confirm-check" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} style={{ marginTop: '0.2rem', cursor: 'pointer', minWidth: 20, minHeight: 20, accentColor: '#D97706' }} />
+                        <label htmlFor="confirm-check" style={{ fontSize: '0.825rem', color: '#92400E', lineHeight: 1.55, cursor: 'pointer', fontWeight: 550 }}>
                           I confirm that requesting account deletion will permanently erase my profile information, authentication tokens, and user-generated records associated with the selected application.
                         </label>
                       </div>
 
-                      <button type="submit" disabled={isSubmitting} style={{ padding: '0.95rem', borderRadius: 12, background: isSubmitting ? '#94A3B8' : '#EF4444', color: '#FFFFFF', fontWeight: 800, fontSize: '0.925rem', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', transition: 'all 0.2s ease', boxShadow: isSubmitting ? 'none' : '0 4px 14px rgba(239, 68, 68, 0.25)' }}>
+                      <button type="submit" disabled={isSubmitting} style={{ minHeight: '48px', padding: '0.95rem', borderRadius: 12, background: isSubmitting ? '#94A3B8' : '#EF4444', color: '#FFFFFF', fontWeight: 800, fontSize: '0.925rem', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', transition: 'all 0.2s ease', boxShadow: isSubmitting ? 'none' : '0 4px 14px rgba(239, 68, 68, 0.25)' }}>
                         {isSubmitting ? 'Verifying Account...' : 'Request Permanent Data Deletion'} <ArrowRight size={17} />
                       </button>
                     </motion.form>
