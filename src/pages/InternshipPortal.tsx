@@ -851,7 +851,7 @@ export default function InternshipPortal() {
                         Thanks <strong>{form.name}</strong>. Your application for the <strong>{form.domain}</strong> track has been successfully recorded. 
                       </p>
                       <div style={{ padding: '1.1rem', background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: '1px solid rgba(255,255,255,0.06)', fontSize: '0.82rem', color: '#9CA3AF', marginBottom: '1.5rem', textAlign: 'left', lineHeight: 1.5 }}>
-                        💡 <strong>Testing note:</strong> Applications are simulated locally. You can immediately click on the <strong>Admin Console</strong> tab above to approve your candidate and make them active!
+                        💡 Our team reviews every application within <strong>5–7 working days</strong>. If shortlisted, we’ll reach out over email with the next steps and an onboarding schedule.
                       </div>
                       <Button variant="secondary" onClick={() => { setAppliedSuccess(false); setForm({ name: '', email: '', phone: '', college: '', domain: domains[0], duration: durations[2], start: '', portfolio: '', message: '' }); setPhoto(null); setCv(null) }} style={{ background: 'rgba(255,255,255,0.06)', color: '#FFF', border: '1px solid rgba(255,255,255,0.1)' }}>
                         Submit another application
@@ -1470,10 +1470,7 @@ export default function InternshipPortal() {
                     </div>
 
                     <div style={{ marginTop: '2rem', padding: '1.1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, fontSize: '0.8rem', color: '#9CA3AF', lineHeight: 1.5 }}>
-                      💡 <strong>Demo Credentials to Test:</strong><br />
-                      • Name: <code>Rohan Das</code><br />
-                      • ID: <code>TKDV-INT-2026-0042</code><br /><br />
-                      You can also graduate other onboarding candidates via the <strong>Admin Console</strong> to dynamically issue new Certificate IDs for test verification here!
+                      💡 Enter the full name and Certificate ID exactly as printed on your certificate to verify its authenticity and download an official copy.
                     </div>
                   </div>
 

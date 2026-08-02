@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Send, CheckCircle2, Code2, Headphones, Handshake, MessageSquare, AlertCircle } from 'lucide-react'
+import { MapPin, Send, CheckCircle2, Code2, Headphones, Handshake, MessageSquare, AlertCircle } from 'lucide-react'
 import { submitPublicForm } from '../lib/publicForms'
 
 const channels = [
@@ -147,10 +147,6 @@ export default function Contact() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <MapPin size={18} color="#60A5FA" />
                 <span style={{ fontSize: '0.9rem', color: '#E2E8F0' }}>The Kada Digital Ventures Pvt Ltd, Kannur, Kerala 670001</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <Phone size={18} color="#60A5FA" />
-                <span style={{ fontSize: '0.9rem', color: '#E2E8F0' }}>+91 98xxx xxxxx</span>
               </div>
             </motion.div>
           </motion.div>

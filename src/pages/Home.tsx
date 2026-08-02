@@ -2,37 +2,18 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, ChevronDown, CheckCircle2,
-  Workflow, Layers, LineChart, ShieldCheck, Boxes, Code2, Building2,
+  Layers, Boxes, Code2,
   Plug,
-  Utensils, BedDouble, ShoppingBag, Truck, Wallet, Briefcase, Quote,
-  Flame, Search, PenTool, ServerCog,
+  Utensils, BedDouble, ShoppingBag, Briefcase, Quote,
+  Flame,
 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, AnimatedCounter, SpotlightCard } from '../components/ui'
 import PremiumHero from '../components/home/PremiumHero'
-import EcosystemMap from '../components/home/EcosystemMap'
 import BentoProducts from '../components/home/BentoProducts'
-import WhyChooseUs from '../components/home/WhyChooseUs'
 import FounderSection from '../components/home/FounderSection'
 import ScrollStory from '../components/home/ScrollStory'
-import AISection from '../components/home/AISection'
 import ClosingCTA from '../components/home/ClosingCTA'
-import { products, caseStudies, industries, devProcess } from '../data/content'
-
-const industryMeta: Record<string, { Icon: React.ComponentType<{ size?: number; color?: string }>; color: string }> = {
-  'Restaurants & Cafes': { Icon: Utensils, color: '#FF6B2B' },
-  'Hotels & Hospitality': { Icon: BedDouble, color: '#7C6AF7' },
-  'Retail & E-commerce': { Icon: ShoppingBag, color: '#F59E0B' },
-  'Logistics & Delivery': { Icon: Truck, color: '#2563EB' },
-  'Finance & Accounting': { Icon: Wallet, color: '#10B981' },
-  'Agency & Professional Services': { Icon: Briefcase, color: '#06B6D4' },
-}
-
-const pillars = [
-  { Icon: Workflow, title: 'Automate the busywork', desc: 'Replace manual spreadsheets, paperwork, and repetitive data entry with software that runs the routine for you.' },
-  { Icon: Layers, title: 'Built to scale', desc: 'Cloud-native, multi-tenant architecture that grows cleanly from your first outlet to your hundredth.' },
-  { Icon: LineChart, title: 'Measurable impact', desc: 'Every build targets a real number — faster billing, higher throughput, fewer errors, more revenue.' },
-  { Icon: ShieldCheck, title: 'Enterprise-grade, SMB-friendly', desc: 'Bank-grade security and reliability, wrapped in interfaces anyone on your team can use on day one.' },
-]
+import { products, caseStudies } from '../data/content'
 
 const homeFaqs = [
   { q: 'Does The Kada Digital Ventures build custom software, or just sell SaaS products?', a: 'Both. We ship our own SaaS products (like Kada Dine and Kada Ledger) and we partner with businesses as a custom software development studio — building bespoke web apps, mobile apps, SaaS platforms, and automation systems around your exact operations.' },
@@ -82,38 +63,6 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────────────── ECOSYSTEM MAP ───────────────── */}
-      <section id="ecosystem" className="section-pad" style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)' }}>
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <SectionHeading
-            eyebrow="Our Products"
-            title="One core. Seven products. Zero silos."
-            subtitle="Every product plugs into the same intelligent core — sharing data, automation, and business intelligence. This is the operating system for your business."
-          />
-          <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center', marginTop: '1rem' }} className="grid-2">
-            <div>
-              {[
-                { t: 'Shared data layer', d: 'Sales, inventory, customers and payments live in one place — no double entry.' },
-                { t: 'Automation flow', d: 'An action in one product ripples through the rest, instantly and automatically.' },
-                { t: 'Business intelligence', d: 'One analytics brain reads every product to surface what actually matters.' },
-              ].map((row, idx) => (
-                <Reveal key={row.t} delay={idx * 0.08}>
-                  <div style={{ display: 'flex', gap: '1rem', padding: '1.1rem 0', borderBottom: idx < 2 ? '1px solid var(--border)' : 'none' }}>
-                    <span style={{ width: 30, height: 30, borderRadius: 9, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 800, color: '#2563EB', fontSize: '0.8rem' }}>{idx + 1}</span>
-                    <div>
-                      <h3 style={{ fontSize: '1.02rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.25rem' }}>{row.t}</h3>
-                      <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{row.d}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-              <div style={{ marginTop: '1.5rem' }}><Button to="/ecosystem">Explore the ecosystem <ArrowRight size={16} /></Button></div>
-            </div>
-            <Reveal delay={0.1}><EcosystemMap /></Reveal>
-          </div>
-        </Container>
-      </section>
-
       {/* ───────────────── IMPACT METRICS ───────────────── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 120% at 50% 0%, #16294B 0%, #0B1B33 60%)', padding: 'clamp(2rem, 4.5vw, 3rem) 0' }}>
         <div className="aurora aurora-soft" aria-hidden />
@@ -139,28 +88,6 @@ export default function Home() {
           </div>
         </Container>
       </section>
-
-      {/* ───────────────── PILLARS / WHY ───────────────── */}
-      <Section bg="white">
-        <SectionHeading
-          eyebrow="Why The Kada Digital Ventures"
-          title="Practical technology that earns its keep."
-          subtitle="We don't build software for its own sake. Every product and every line of custom code exists to remove friction, save time, and move a real business metric."
-        />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col">
-          {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.07}>
-              <div className="card-feature" style={{ height: '100%' }}>
-                <span style={{ width: 48, height: 48, borderRadius: 13, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                  <p.Icon size={22} color="#2563EB" />
-                </span>
-                <h3 style={{ fontSize: '1.12rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{p.title}</h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{p.desc}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
 
       {/* ───────────────── DUAL MODEL ───────────────── */}
       <Section bg="soft" bordered>
@@ -228,59 +155,6 @@ export default function Home() {
         <ScrollStory />
       </section>
 
-      {/* ───────────────── WHY CHOOSE US ───────────────── */}
-      <WhyChooseUs />
-
-      {/* ───────────────── INDUSTRIES ───────────────── */}
-      <Section bg="white">
-        <SectionHeading eyebrow="Industries we serve" title="Deep expertise across sectors." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }} className="grid-responsive-2col">
-          {industries.map((ind, i) => {
-            const meta = industryMeta[ind.name] || { Icon: Building2, color: '#2563EB' }
-            return (
-              <Reveal key={ind.name} delay={i * 0.05}>
-                <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
-                    <span style={{ width: 52, height: 52, borderRadius: 14, background: `${meta.color}12`, border: `1px solid ${meta.color}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem', flexShrink: 0 }}>
-                      <meta.Icon size={24} color={meta.color} />
-                    </span>
-                    <h3 style={{ fontSize: '1.08rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.4rem' }}>{ind.name}</h3>
-                    <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{ind.desc}</p>
-                  </div>
-                </SpotlightCard>
-              </Reveal>
-            )
-          })}
-        </div>
-      </Section>
-
-      {/* ───────────────── PROCESS ───────────────── */}
-      <Section bg="soft" bordered>
-        <SectionHeading eyebrow="How we work" title="A clear path from idea to impact." subtitle="A proven, transparent process for custom builds — with weekly demos so you're never in the dark." />
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 grid-responsive-2col">
-          {devProcess.map((proc, i) => {
-            const StepIcon = [Search, PenTool, Code2, ShieldCheck, ServerCog][i] || Code2
-            const isLast = i === devProcess.length - 1
-            return (
-              <Reveal
-                key={proc.step}
-                delay={i * 0.06}
-                className={isLast ? 'col-span-2 sm:col-span-2 lg:col-span-1' : ''}
-              >
-                <div className="process-card" style={{ position: 'relative', background: '#FFFFFF', border: '1px solid var(--border)', borderRadius: 18, padding: '1.75rem 1.5rem', height: '100%' }}>
-                  <div style={{ position: 'absolute', top: 18, right: 18, fontSize: '2.4rem', fontWeight: 800, color: 'rgba(37,99,235,0.06)', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>{proc.step}</div>
-                  <div style={{ width: 42, height: 42, borderRadius: 12, background: 'var(--blue-light)', border: '1px solid rgba(37,99,235,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                    <StepIcon size={20} color="var(--blue)" />
-                  </div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 750, color: 'var(--ink)', marginBottom: '0.45rem', letterSpacing: '-0.015em' }}>{proc.title}</h3>
-                  <p style={{ fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{proc.desc}</p>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
-      </Section>
-
       {/* ───────────────── PROOF: case studies + testimonials ───────────────── */}
       <Section bg="white">
         <SectionHeading eyebrow="Proof of impact" title="Real businesses. Measurable results." />
@@ -329,9 +203,6 @@ export default function Home() {
 
       {/* ───────────────── FOUNDER / JOURNEY ───────────────── */}
       <FounderSection />
-
-      {/* ───────────────── AI SECTION ───────────────── */}
-      <AISection />
 
       {/* ───────────────── FAQ ───────────────── */}
       <Section bg="white" containerSize="narrow">
