@@ -227,7 +227,8 @@ export default function InternshipPortal() {
   // 2. Seed Firestore if live and empty
   useEffect(() => {
     const seedLiveDB = async () => {
-      if (!isLive) return
+      // Only seed sample data when explicitly enabled — never against production.
+      if (!isLive || import.meta.env.VITE_ENABLE_SEED !== 'true') return
       try {
         const appCheck = await getDoc(doc(db, 'internship_applications', 'app-1'))
         if (!appCheck.exists()) {

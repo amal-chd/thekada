@@ -387,7 +387,8 @@ export default function Admin() {
   // 2. Seed Firestore if Empty
   useEffect(() => {
     const runSeeding = async () => {
-      if (!isLive || !currentUser) return
+      // Only seed sample data when explicitly enabled — never against production.
+      if (!isLive || !currentUser || import.meta.env.VITE_ENABLE_SEED !== 'true') return
       try {
         // Seed employees
         const empCheck = await getDoc(doc(db, 'employees', 'emp-1'))

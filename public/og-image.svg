@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none" role="img" aria-label="The Kada Digital Ventures">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1B33"/>
+      <stop offset="0.55" stop-color="#11254F"/>
+      <stop offset="1" stop-color="#081223"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(940 150) rotate(130) scale(520)">
+      <stop stop-color="#2563EB" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#7CB0EA"/>
+      <stop offset="1" stop-color="#2A6CAB"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#5E90FA"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- brand mark -->
+  <g transform="translate(96 150) scale(0.62)" stroke="url(#mark)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M172 190 A86 86 0 0 1 340 190"/>
+    <path d="M216 252 A40 40 0 0 1 296 252"/>
+    <path d="M216 254 C168 264 120 270 116 322"/>
+    <path d="M116 322 a26 26 0 1 0 42 10"/>
+    <path d="M296 254 C344 264 392 270 396 322"/>
+    <path d="M396 322 q42 4 32 48 q-11 30 -48 14"/>
+    <path d="M120 380 C134 424 198 430 256 430 C314 430 378 424 392 380"/>
+  </g>
+
+  <!-- eyebrow -->
+  <text x="98" y="410" font-family="'Outfit','Segoe UI',sans-serif" font-size="24" letter-spacing="4" font-weight="700" fill="#5E90FA">DIGITAL VENTURES</text>
+
+  <!-- headline -->
+  <text x="96" y="480" font-family="'Outfit','Segoe UI',sans-serif" font-size="76" font-weight="800" letter-spacing="-2" fill="#FFFFFF">The Kada</text>
+  <text x="96" y="556" font-family="'Outfit','Segoe UI',sans-serif" font-size="34" font-weight="500" fill="#AAB4C6">SaaS products &amp; custom software that scale businesses.</text>
+
+  <!-- accent bar -->
+  <rect x="98" y="122" width="70" height="6" rx="3" fill="url(#accent)"/>
+</svg>

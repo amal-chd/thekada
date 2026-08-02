@@ -1,19 +1,46 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, CheckCircle2, Clock, ShieldCheck, Zap, ArrowLeft } from 'lucide-react'
+import { Send, CheckCircle2, Clock, ShieldCheck, Zap, ArrowLeft, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { submitPublicForm } from '../lib/publicForms'
 
 export default function Proposal() {
   const [formState, setFormState] = useState({ name: '', email: '', phone: '', interest: 'custom-dev', budget: 'mid', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting || isSuccess) return
+    setError('')
+
+    if (!formState.name.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formState.email) || formState.message.trim().length < 10) {
+      setError('Please add your name, a valid email, and a short description of your project.')
+      return
+    }
+
     setIsSubmitting(true)
-    await new Promise(r => setTimeout(r, 1500))
-    setIsSubmitting(false)
-    setIsSuccess(true)
+    try {
+      await submitPublicForm(
+        'proposal_requests',
+        {
+          name: formState.name.trim(),
+          email: formState.email.trim(),
+          phone: formState.phone.trim() || null,
+          interest: formState.interest,
+          budget: formState.budget,
+          message: formState.message.trim(),
+        },
+        'PROP',
+      )
+      setIsSuccess(true)
+    } catch (err) {
+      console.error('Proposal request failed:', err)
+      setError('We couldn’t submit your request. Please email build@thekada.in and we’ll respond quickly.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -198,10 +225,21 @@ export default function Proposal() {
               </div>
 
               <FloatingTextarea label="Tell us about your project" required rows={6} value={formState.message} onChange={(e: any) => setFormState({ ...formState, message: e.target.value })} />
-              
+
+              {error && (
+                <div role="alert" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C', borderRadius: 12, padding: '0.75rem 0.9rem', fontSize: '0.85rem', lineHeight: 1.5, marginTop: '0.75rem' }}>
+                  <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} /> <span>{error}</span>
+                </div>
+              )}
+
               <div style={{ marginTop: '1rem' }}>
                 <SubmitButton isSubmitting={isSubmitting} isSuccess={isSuccess} text="Send request" />
               </div>
+              {isSuccess && (
+                <p style={{ marginTop: '0.85rem', fontSize: '0.85rem', color: 'var(--text-secondary, #64748B)', textAlign: 'center' }}>
+                  Request received — we’ll be in touch within one business day with next steps.
+                </p>
+              )}
             </form>
           </motion.div>
         </div>

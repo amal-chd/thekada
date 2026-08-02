@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Send, CheckCircle2, Code2, Headphones, Handshake, MessageSquare } from 'lucide-react'
+import { MapPin, Phone, Send, CheckCircle2, Code2, Headphones, Handshake, MessageSquare, AlertCircle } from 'lucide-react'
+import { submitPublicForm } from '../lib/publicForms'
 
 const channels = [
   { Icon: MessageSquare, title: 'Sales & demos', desc: 'Product walkthroughs, pricing, and onboarding for SaaS.', email: 'hello@thekada.in', color: '#60A5FA' },
@@ -13,13 +14,34 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'sales', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting || isSuccess) return
+    setError('')
+
+    if (!form.name.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email) || form.message.trim().length < 10) {
+      setError('Please add your name, a valid email, and a message of at least 10 characters.')
+      return
+    }
+
     setIsSubmitting(true)
-    await new Promise(r => setTimeout(r, 1200))
-    setIsSubmitting(false)
-    setIsSuccess(true)
+    try {
+      await submitPublicForm('contact_messages', {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        company: form.company.trim() || null,
+        intent: form.intent,
+        message: form.message.trim(),
+      })
+      setIsSuccess(true)
+    } catch (err) {
+      console.error('Contact submission failed:', err)
+      setError('Something went wrong sending your message. Please email hello@thekada.in and we’ll pick it up.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -166,9 +188,20 @@ export default function Contact() {
               </div>
               <FloatingTextarea label="Your message" required rows={5} value={form.message} onChange={(e: any) => setForm({ ...form, message: e.target.value })} />
               
+              {error && (
+                <div role="alert" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C', borderRadius: 12, padding: '0.75rem 0.9rem', fontSize: '0.85rem', lineHeight: 1.5, marginTop: '0.5rem' }}>
+                  <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} /> <span>{error}</span>
+                </div>
+              )}
+
               <div style={{ marginTop: '1rem' }}>
                 <SubmitButton isSubmitting={isSubmitting} isSuccess={isSuccess} text="Send message" />
               </div>
+              {isSuccess && (
+                <p style={{ marginTop: '0.85rem', fontSize: '0.85rem', color: 'var(--text-secondary, #64748B)', textAlign: 'center' }}>
+                  Thanks — we’ve received your message and will reply within 24 hours.
+                </p>
+              )}
             </form>
           </motion.div>
         </div>

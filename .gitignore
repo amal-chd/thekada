@@ -22,4 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Env files — keep real config out of the repo (Firebase web config lives in the
+# host's env vars / a local .env.production). The example stays tracked.
 .env
+.env.*
+!.env.example
+
+# Cloud Functions build output
+functions/lib

@@ -126,30 +126,69 @@ service cloud.firestore {
       ];
     }
 
+    // ── Internship portal ──────────────────────────────────────────────
+    // Anyone may SUBMIT an application (public form), but the payload is
+    // shape-checked, and applications can only be read or managed by staff.
+    function isInternshipApplication(data) {
+      return data.keys().hasAll(['name', 'email'])
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 120
+        && data.email is string
+        && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
     match /internship_applications/{id} {
-      allow read, write: if true;
+      allow create: if isInternshipApplication(request.resource.data);
+      allow read, update, delete: if isStaff();
     }
 
-    match /internships/{id} {
-      allow read, write: if true;
-    }
+    // Intern records, leave requests and weekly reports are staff-managed.
+    match /internships/{id}        { allow read, write: if isStaff(); }
+    match /internship_leaves/{id}  { allow read, write: if isStaff(); }
+    match /internship_reports/{id} { allow read, write: if isStaff(); }
 
-    match /internship_leaves/{id} {
-      allow read, write: if true;
-    }
-
-    match /internship_reports/{id} {
-      allow read, write: if true;
-    }
-
+    // Certificates: staff issue/manage. Public verification should go through a
+    // Cloud Function that looks up a single certificate by ID — not open reads.
     match /internship_certificates/{id} {
-      allow read, write: if true;
+      allow read, write: if isStaff();
     }
 
     match /newsletter_subscribers/{id} {
-      allow create: if true;
+      allow create: if request.resource.data.email is string
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
       allow read, delete: if isExecutive();
       allow update: if false;
+    }
+
+    // ── Public form intake ──────────────────────────────────────────────
+    // Marketing-site forms may CREATE a submission (shape-validated). Only
+    // staff can read them; they're never publicly readable or editable.
+    function isEmail(v) {
+      return v is string && v.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+    function isText(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+
+    match /contact_messages/{id} {
+      allow create: if isText(request.resource.data.name, 1, 120)
+        && isEmail(request.resource.data.email)
+        && isText(request.resource.data.message, 10, 5000);
+      allow read: if isStaff();
+      allow update, delete: if isExecutive();
+    }
+
+    match /proposal_requests/{id} {
+      allow create: if isText(request.resource.data.name, 1, 120)
+        && isEmail(request.resource.data.email)
+        && isText(request.resource.data.message, 10, 5000);
+      allow read: if isStaff();
+      allow update, delete: if isExecutive();
+    }
+
+    match /account_deletion_requests/{id} {
+      allow create: if isText(request.resource.data.identifier, 3, 200);
+      allow read: if isStaff();
+      allow update, delete: if isExecutive();
     }
 
     match /activity_logs/{id} {

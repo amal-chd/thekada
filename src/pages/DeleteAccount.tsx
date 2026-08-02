@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ShieldCheck, Trash2, CheckCircle2, AlertCircle, Mail, MapPin, Smartphone, FileText, ArrowRight, HelpCircle } from 'lucide-react'
 import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
+import { submitPublicForm } from '../lib/publicForms'
 
 const APPS_LIST = [
   { id: 'the-kada', name: 'The Kada App' },
@@ -26,10 +27,15 @@ export default function DeleteAccount() {
   const [submittedId, setSubmittedId] = useState<string | null>(null)
   const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!identifier.trim()) {
-      setError('Please provide your registered email address or phone number.')
+    if (isSubmitting) return
+
+    const value = identifier.trim()
+    const looksLikeEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)
+    const looksLikePhone = /^[+\d][\d\s-]{7,}$/.test(value)
+    if (!value || (!looksLikeEmail && !looksLikePhone)) {
+      setError('Please provide a valid registered email address or phone number.')
       return
     }
     if (!confirmed) {
@@ -39,12 +45,26 @@ export default function DeleteAccount() {
     setError('')
     setIsSubmitting(true)
 
-    // Simulate verified ticket creation
-    setTimeout(() => {
+    try {
+      const appName = APPS_LIST.find((a) => a.id === selectedApp)?.name ?? selectedApp
+      const result = await submitPublicForm(
+        'account_deletion_requests',
+        {
+          appId: selectedApp,
+          appName,
+          identifier: value,
+          identifierType: looksLikeEmail ? 'email' : 'phone',
+          reason: reason.trim() || null,
+        },
+        'TK-DEL',
+      )
+      setSubmittedId(result.id)
+    } catch (err) {
+      console.error('Deletion request failed:', err)
+      setError('We couldn’t record your request. Please email privacy@thekada.in and our DPO will action it manually.')
+    } finally {
       setIsSubmitting(false)
-      const ticketNum = 'TK-DEL-' + Math.floor(100000 + Math.random() * 900000)
-      setSubmittedId(ticketNum)
-    }, 1200)
+    }
   }
 
   return (
