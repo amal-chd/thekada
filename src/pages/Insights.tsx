@@ -1,7 +1,33 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Boxes, Cpu, PenTool, Workflow, Target, FileText, Sparkles } from 'lucide-react'
 import { Section, Reveal, Container, SpotlightCard } from '../components/ui'
+
+const COVER_ICON: Record<string, typeof Boxes> = {
+  Product: Boxes,
+  Engineering: Cpu,
+  Design: PenTool,
+  Automation: Workflow,
+  Strategy: Target,
+  'Case Study': FileText,
+}
+
+/** On-brand generated cover art — gradient + dot texture + category glyph, tinted per post. */
+function PostCover({ color, category, tall = false }: { color: string; category: string; tall?: boolean }) {
+  const Icon = COVER_ICON[category] ?? Sparkles
+  return (
+    <div className="post-cover" style={{ position: 'relative', overflow: 'hidden', borderRadius: 16, width: '100%', aspectRatio: tall ? '4 / 3' : '16 / 9', background: `linear-gradient(145deg, ${color}26, ${color}0a 55%, rgba(255,255,255,0))`, border: `1px solid ${color}22` }}>
+      <div aria-hidden style={{ position: 'absolute', inset: 0, color, opacity: 0.12, backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)', backgroundSize: '18px 18px', WebkitMaskImage: 'radial-gradient(ellipse 85% 80% at 72% 18%, #000 15%, transparent 72%)', maskImage: 'radial-gradient(ellipse 85% 80% at 72% 18%, #000 15%, transparent 72%)' }} />
+      <div aria-hidden style={{ position: 'absolute', top: '-28%', right: '-14%', width: '65%', height: '85%', background: `radial-gradient(circle, ${color}40, transparent 65%)`, filter: 'blur(22px)' }} />
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span className="post-cover-icon" style={{ width: 66, height: 66, borderRadius: 18, background: `${color}1f`, border: `1px solid ${color}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', color, boxShadow: `0 10px 30px ${color}2e` }}>
+          <Icon size={30} />
+        </span>
+      </div>
+      <span style={{ position: 'absolute', left: 14, bottom: 14, fontSize: '0.64rem', fontWeight: 750, letterSpacing: '0.08em', textTransform: 'uppercase', color, background: `${color}16`, border: `1px solid ${color}2a`, padding: '0.24rem 0.6rem', borderRadius: 100, backdropFilter: 'blur(4px)' }}>{category}</span>
+    </div>
+  )
+}
 
 const posts = [
   { id: 1, title: 'How we build high-converting SaaS products from the ground up', category: 'Product', date: 'May 2026', readTime: '6 min', color: '#2563EB', excerpt: 'Our playbook for product architecture, billing, and onboarding flows that turn trials into paying, long-retained customers.' },
@@ -67,8 +93,8 @@ export default function Insights() {
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '1.5rem' }}>{featured.excerpt}</p>
                 <span className="btn-ghost" style={{ width: 'fit-content' }}>Read article <ArrowUpRight size={16} /></span>
               </div>
-              <div style={{ aspectRatio: '4/3', borderRadius: 18, background: `linear-gradient(150deg, ${featured.color}1a, ${featured.color}08)`, border: `1px solid ${featured.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 2 }}>
-                <span style={{ width: 64, height: 64, borderRadius: '50%', background: `${featured.color}1f`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: featured.color }}><ArrowUpRight size={26} /></span>
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                <PostCover color={featured.color} category={featured.category} tall />
               </div>
             </SpotlightCard>
           </Reveal>
@@ -81,6 +107,7 @@ export default function Insights() {
               <Reveal key={post.id} delay={i * 0.05} className={isLast && rest.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
                 <SpotlightCard className="card-premium" style={{ padding: '1.85rem', height: '100%', cursor: 'pointer' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', zIndex: 2 }}>
+                    <div style={{ marginBottom: '1.25rem' }}><PostCover color={post.color} category={post.category} /></div>
                     <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.72rem', fontWeight: 750, color: post.color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{post.category}</span>
                       <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{post.readTime}</span>

@@ -779,6 +779,11 @@ html.lenis, html.lenis body { height: auto; }
 .card-premium:hover { transform: translateY(-6px); box-shadow: var(--shadow-float-lg); }
 .card-premium:hover::before { opacity: 1; }
 
+/* Insights post covers — subtle motion on card hover */
+.post-cover, .post-cover-icon { transition: transform 0.45s var(--ease-out); }
+.card-premium:hover .post-cover { transform: scale(1.015); }
+.card-premium:hover .post-cover-icon { transform: scale(1.1) rotate(-4deg); }
+
 /* spotlight that follows cursor (driven by --mx/--my vars) */
 .spotlight { position: relative; overflow: hidden; }
 .spotlight::after {
