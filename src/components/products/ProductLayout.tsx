@@ -12,6 +12,7 @@ import ProductEcosystemBand from './ProductEcosystemBand'
 type IconType = ComponentType<{ size?: number; color?: string }>
 
 export type ProductConfig = {
+  logoSrc?: string
   accent: string
   accentSoft: string
   EyebrowIcon: IconType
@@ -52,7 +53,11 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '3.5rem', alignItems: 'center' }} className="grid-2">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
               <div className="eyebrow" style={{ marginBottom: '1.5rem', background: `${a}14`, color: a, borderColor: `${a}28` }}>
-                <config.EyebrowIcon size={14} /> {config.eyebrowLabel}
+                {config.logoSrc ? (
+                  <img src={config.logoSrc} alt="" style={{ width: 18, height: 18, borderRadius: 5, objectFit: 'cover' }} />
+                ) : (
+                  <config.EyebrowIcon size={14} />
+                )} {config.eyebrowLabel}
               </div>
               <h1 style={{ fontSize: 'clamp(2.5rem, 5.4vw, 4.15rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.4rem' }}>
                 {config.title.pre}{' '}
@@ -95,7 +100,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
             {config.audiences.map((aud, i, arr) => {
               const isLast = i === arr.length - 1
               return (
-                <Reveal key={aud.label} delay={i * 0.05} className={isLast && arr.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+                <Reveal key={aud.label} delay={i * 0.05} className={`h-full ${isLast && arr.length % 2 !== 0 ? 'col-span-2-mobile' : ''}`}>
                   <SpotlightCard className="card-premium" style={{ height: '100%' }}>
                     <div style={{ padding: '1.85rem', height: '100%' }}>
                       <span style={{ width: 50, height: 50, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.1rem' }}>
@@ -119,7 +124,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
           {config.features.map((f, i) => {
             const isLast = i === config.features.length - 1
             return (
-              <Reveal key={f.title} delay={i * 0.05} className={isLast && config.features.length % 2 !== 0 ? 'col-span-2-mobile' : ''}>
+              <Reveal key={f.title} delay={i * 0.05} className={`h-full ${isLast && config.features.length % 2 !== 0 ? 'col-span-2-mobile' : ''}`}>
                 <SpotlightCard className="card-premium" style={{ height: '100%' }}>
                   <div style={{ padding: '1.85rem', height: '100%', position: 'relative' }}>
                     <span aria-hidden style={{ position: 'absolute', top: '1.3rem', right: '1.5rem', fontFamily: "'Outfit', sans-serif", fontSize: '2.2rem', fontWeight: 800, color: `${a}14`, lineHeight: 1 }}>

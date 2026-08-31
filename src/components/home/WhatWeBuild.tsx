@@ -1,0 +1,109 @@
+import { Section, SectionHeading, Reveal } from '@/components/ui'
+import { Globe, Smartphone, Cloud, Settings, Zap, Rocket, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const services = [
+  {
+    title: "Web Development",
+    icon: Globe,
+    color: '#2563EB',
+    tag: 'Web',
+    description: "High-performance web applications, customer portals, interactive dashboards, and modern corporate platforms.",
+    link: "/services/web-development"
+  },
+  {
+    title: "Mobile App Development",
+    icon: Smartphone,
+    color: '#7C6AF7',
+    tag: 'iOS & Android',
+    description: "Native and cross-platform mobile apps for iOS and Android built for seamless real-world use.",
+    link: "/services/mobile-app-development"
+  },
+  {
+    title: "SaaS Development",
+    icon: Cloud,
+    color: '#06B6D4',
+    tag: 'Cloud & Subscriptions',
+    description: "Multi-tenant platforms with subscription billing, role-based security, modular APIs, and analytics.",
+    link: "/services/saas-development"
+  },
+  {
+    title: "Custom Business Software",
+    icon: Settings,
+    color: '#F59E0B',
+    tag: 'CRM · ERP · Operations',
+    description: "Tailored CRM, ERP, billing, and internal operations tools that eliminate manual spreadsheets.",
+    link: "/services/custom-software-development"
+  },
+  {
+    title: "AI & Business Automation",
+    icon: Zap,
+    color: '#10B981',
+    tag: 'Workflows & AI',
+    description: "Intelligent workflows, WhatsApp business integration, automated document processing, and AI assistants.",
+    link: "/services/ai-automation"
+  },
+  {
+    title: "Product Development & MVP",
+    icon: Rocket,
+    color: '#EC4899',
+    tag: 'Idea to Launch',
+    description: "Complete end-to-end execution from architecture design and clickable prototypes to market launch.",
+    link: "/services/web-development"
+  }
+]
+
+export default function WhatWeBuild() {
+  return (
+    <Section bg="white" bordered id="what-we-build">
+      <SectionHeading
+        eyebrow="What We Build"
+        title="Software built around your business."
+        subtitle="From your first product MVP to comprehensive business software, we design and engineer systems around how your company operates."
+        align="center"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        {services.map((service, index) => (
+          <Reveal key={service.title} delay={index * 0.05} className="h-full">
+            <Link 
+              to={service.link} 
+              className="group flex flex-col h-full bg-white border border-[var(--border)] rounded-2xl p-7 transition-all duration-300 hover:shadow-lg hover:border-[var(--blue-light)] hover:-translate-y-1"
+              style={{
+                boxShadow: '0 2px 8px rgba(11,27,51,0.04)'
+              }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div 
+                  className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                  style={{
+                    backgroundColor: `${service.color}15`,
+                    color: service.color,
+                  }}
+                >
+                  <service.icon size={24} />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[var(--bg-soft)] text-[var(--text-secondary)] border border-[var(--border)]">
+                  {service.tag}
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold text-[var(--ink)] mb-2.5 group-hover:text-[var(--blue)] transition-colors">
+                {service.title}
+              </h3>
+
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-grow">
+                {service.description}
+              </p>
+
+              <div className="inline-flex items-center text-[var(--blue)] font-semibold text-sm pt-4 border-t border-[var(--border)]">
+                <span>Explore service</span>
+                <ArrowRight size={15} className="ml-1.5 transform group-hover:translate-x-1.5 transition-transform" />
+              </div>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </Section>
+  )
+}

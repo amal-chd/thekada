@@ -140,7 +140,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
             subtitle="Interact with our mock sandboxes to see how we design, optimize, and build functionalities in our workflows."
           />
           <div style={{ maxWidth: '1000px', margin: '2.5rem auto 0' }}>
-            <ServiceSandbox slug={config.slug} accent={a} />
+            <ServiceSandbox key={config.slug} slug={config.slug} accent={a} />
           </div>
         </Container>
       </Section>
@@ -286,6 +286,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
 /* ──────────────────────────────────────────────────────────────────────────
    SANDBOX WIDGET ROUTER & SUB-SIMULATORS
    ────────────────────────────────────────────────────────────────────────── */
+/* eslint-disable react-hooks/rules-of-hooks */
 function ServiceSandbox({ slug, accent }: { slug: string; accent: string }) {
   // Common UI styles
   const terminalStyle: React.CSSProperties = {

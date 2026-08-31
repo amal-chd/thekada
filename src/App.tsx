@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
 import Lenis from '@studio-freight/lenis'
 import Header from './components/layout/Header'
@@ -7,16 +7,16 @@ import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToT
 import { CustomCursor } from './components/ui'
 import Home from './pages/Home'
 
-const About = lazy(() => import('./pages/About'))
-const Ecosystem = lazy(() => import('./pages/Ecosystem'))
+// Core pages
 const Services = lazy(() => import('./pages/Services'))
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
-const Technology = lazy(() => import('./pages/Technology'))
-const Insights = lazy(() => import('./pages/Insights'))
-const Careers = lazy(() => import('./pages/Careers'))
-const InternshipPortal = lazy(() => import('./pages/InternshipPortal'))
+const Work = lazy(() => import('./pages/Work'))
+const CaseStudy = lazy(() => import('./pages/CaseStudy'))
+const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
-const InvestorRelations = lazy(() => import('./pages/InvestorRelations'))
+const StartProject = lazy(() => import('./pages/StartProject'))
+
+// Products
 const KadaDine = lazy(() => import('./pages/products/KadaDine'))
 const KadaStay = lazy(() => import('./pages/products/KadaStay'))
 const KadaLedger = lazy(() => import('./pages/products/KadaLedger'))
@@ -24,13 +24,16 @@ const SellrApp = lazy(() => import('./pages/products/SellrApp'))
 const DevFlow = lazy(() => import('./pages/products/DevFlow'))
 const Lunoo = lazy(() => import('./pages/products/Lunoo'))
 const TheKada = lazy(() => import('./pages/products/TheKada'))
-const Press = lazy(() => import('./pages/Press'))
-const Proposal = lazy(() => import('./pages/Proposal'))
+
+// Compliance & Legal
 const Legal = lazy(() => import('./pages/Legal'))
 const DeleteAccount = lazy(() => import('./pages/DeleteAccount'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-const Admin = lazy(() => import('./pages/Admin'))
 
+// Internal (hidden from public nav)
+const Admin = lazy(() => import('./pages/Admin'))
+const Careers = lazy(() => import('./pages/Careers'))
+const InternshipPortal = lazy(() => import('./pages/InternshipPortal'))
 
 function PageLoader() {
   return (
@@ -107,18 +110,18 @@ function AppContent() {
       {!isAdmin && <Header />}
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          {/* Core pages */}
           <Route path="/" element={<Home />} />
-          <Route path="/request-proposal" element={<Proposal />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/ecosystem" element={<Ecosystem />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
-          <Route path="/technology" element={<Technology />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/careers/internship" element={<InternshipPortal />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/work/:slug" element={<CaseStudy />} />
+          <Route path="/products" element={<Navigate to="/work" replace />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/investor-relations" element={<InvestorRelations />} />
+          <Route path="/start-project" element={<StartProject />} />
+
+          {/* Product pages */}
           <Route path="/products/kada-dine" element={<KadaDine />} />
           <Route path="/products/kada-stay" element={<KadaStay />} />
           <Route path="/products/kada-ledger" element={<KadaLedger />} />
@@ -127,7 +130,7 @@ function AppContent() {
           <Route path="/products/lunoo" element={<Lunoo />} />
           <Route path="/products/the-kada" element={<TheKada />} />
 
-          <Route path="/press" element={<Press />} />
+          {/* Compliance & Legal */}
           <Route path="/legal" element={<Legal />} />
           <Route path="/legal/:type" element={<Legal />} />
           <Route path="/privacy" element={<Legal />} />
@@ -135,7 +138,21 @@ function AppContent() {
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/account-deletion" element={<DeleteAccount />} />
           <Route path="/data-deletion" element={<DeleteAccount />} />
+
+          {/* Internal / secondary (not in main nav) */}
           <Route path="/admin" element={<Admin />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/careers/internship" element={<InternshipPortal />} />
+
+          {/* Redirects from old routes */}
+          <Route path="/ecosystem" element={<Navigate to="/products" replace />} />
+          <Route path="/request-proposal" element={<Navigate to="/start-project" replace />} />
+          <Route path="/technology" element={<Navigate to="/services" replace />} />
+          <Route path="/insights" element={<Navigate to="/" replace />} />
+          <Route path="/press" element={<Navigate to="/about" replace />} />
+          <Route path="/investor-relations" element={<Navigate to="/about" replace />} />
+
+          {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

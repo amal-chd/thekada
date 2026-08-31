@@ -10,4 +10,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    host: '127.0.0.1',
+    // Honour a harness/host-assigned port (e.g. autoPort), else default to 5173.
+    port: process.env.PORT ? Number(process.env.PORT) : 5173,
+  },
 })

@@ -18,11 +18,11 @@ export function ProductsTab({ theme, triggerNotification }: ProductsTabProps) {
       {/* Product selection grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.85rem' }}>
         {[
-  { id: 'the-kada', name: 'The Kada App', color: '#2563EB', Icon: Store },
+  { id: 'the-kada', name: 'The Kada App', color: '#2563EB', Icon: Store, logo: '/products/the-kada-logo.png' },
   { id: 'kada-dine', name: 'Kada Dine', color: '#FF6B2B', Icon: Utensils },
   { id: 'kada-ledger', name: 'Kada Ledger', color: '#10B981', Icon: BookText },
   { id: 'sellrapp', name: 'SellrApp', color: '#8B5CF6', Icon: Store },
-  { id: 'kada-stay', name: 'Kada Stay', color: '#06B6D4', Icon: BedDouble },
+  { id: 'kada-stay', name: 'Kada Stay', color: '#247CFF', Icon: BedDouble, logo: '/products/kada-stay-logo.png' },
   { id: 'devflow', name: 'DevFlow', color: '#F59E0B', Icon: KanbanSquare },
   { id: 'parayu-ai', name: 'Parayu AI', color: '#EC4899', Icon: MessageSquare }
 ].map((prod: any) => {
@@ -45,6 +45,9 @@ export function ProductsTab({ theme, triggerNotification }: ProductsTabProps) {
                 transition: 'all 0.25s ease'
               }}
             >
+              {prod.logo ? (
+                <img src={prod.logo} alt="" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} />
+              ) : (
               <span style={{
                 width: 44, height: 44, borderRadius: 12,
                 background: isSelected ? `${prod.color}24` : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'),
@@ -54,6 +57,7 @@ export function ProductsTab({ theme, triggerNotification }: ProductsTabProps) {
               }}>
                 <ProductIcon size={20} />
               </span>
+              )}
               <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isSelected ? prod.color : (isDark ? '#E2E8F0' : '#0B1B33') }}>
                 {prod.name}
               </span>

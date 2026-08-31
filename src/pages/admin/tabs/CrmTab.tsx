@@ -6,6 +6,8 @@ import type { ThemeMode, NewsletterSubscriber } from '../types'
 interface CrmTabProps {
   theme: ThemeMode
   leads: any[]
+  proposalRequests: any[]
+  promoteRequestToLead: (req: any) => void
   proposals: any[]
   subscribers: NewsletterSubscriber[]
   propLead: string
@@ -23,6 +25,8 @@ interface CrmTabProps {
 export function CrmTab({
   theme,
   leads,
+  proposalRequests,
+  promoteRequestToLead,
   proposals,
   subscribers,
   propLead,
@@ -58,6 +62,68 @@ export function CrmTab({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+      
+      {/* Incoming Website Requests */}
+      <SpotlightCard className="card-premium" style={{
+        background: isDark ? 'rgba(11,21,43,0.3)' : '#FFFFFF',
+        border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15,35,75,0.08)'}`,
+        borderRadius: 24,
+        padding: '2rem'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: isDark ? '#FFFFFF' : '#0B1B33' }}>Incoming Inquiries (Web Forms)</h3>
+          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#3B82F6', background: '#3B82F615', padding: '0.3rem 0.8rem', borderRadius: 8 }}>
+            {proposalRequests.length} Pending
+          </span>
+        </div>
+        
+        {proposalRequests.length === 0 ? (
+          <p style={{ fontSize: '0.85rem', color: '#94A3B8' }}>No new inquiries from the website.</p>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+            {proposalRequests.map(req => (
+              <div key={req.id} style={{
+                background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)'}`,
+                borderRadius: 16,
+                padding: '1.25rem'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 800, color: isDark ? '#FFFFFF' : '#0B1B33' }}>{req.name}</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#10B98115', color: '#10B981', padding: '0.2rem 0.5rem', borderRadius: 6 }}>{req.budget}</span>
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '0.2rem' }}>Company: <span style={{ color: isDark ? '#E2E8F0' : '#475569', fontWeight: 600 }}>{req.company || 'N/A'}</span></div>
+                <div style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '0.8rem' }}>Service: <span style={{ color: isDark ? '#E2E8F0' : '#475569', fontWeight: 600 }}>{req.needs}</span></div>
+                
+                <p style={{ fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.5, background: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)', padding: '0.75rem', borderRadius: 8, marginBottom: '1rem' }}>
+                  {req.projectDetails ? `"${req.projectDetails}"` : 'No additional details provided.'}
+                </p>
+                
+                <button 
+                  onClick={() => promoteRequestToLead(req)}
+                  style={{
+                    width: '100%',
+                    padding: '0.65rem',
+                    background: '#3B82F6',
+                    color: '#FFF',
+                    border: 'none',
+                    borderRadius: 8,
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '0.4rem'
+                  }}
+                >
+                  <Send size={14} /> Promote to CRM Lead
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </SpotlightCard>
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1.5rem' }} className="grid-responsive-2col">
         {/* Opportunities Pipeline */}
         <SpotlightCard className="card-premium" style={{

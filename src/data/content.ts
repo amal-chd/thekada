@@ -58,9 +58,9 @@ export const products = [
     shortName: 'Kada Stay',
     tagline: 'Hotel PMS, bookings, guest services & operations',
     description: 'A comprehensive digital room service and guest ordering platform for hotels, guesthouses, and homestays. Replace physical directories with an app-less QR guest web app and manage requests instantly.',
-    color: '#7C6AF7',
+    color: '#247CFF',
     badge: 'Guest Management',
-    gradient: 'from-violet-500/20 to-indigo-500/10',
+    gradient: 'from-blue-500/20 to-sky-500/10',
     features: [
       'App-less guest PWA (no download required)',
       'Instant digital room service ordering & payments',
@@ -211,26 +211,7 @@ export const services = [
   },
 ]
 
-export const caseStudies = [
-  {
-    client: 'Paragon Cafe, Kozhikode',
-    product: 'Kada Dine POS',
-    metric: '+35% Order Volume',
-    description: 'Digitized restaurant order billing and introduced table QR-code menus, reducing average order processing time from 15 minutes to under 8 minutes.',
-  },
-  {
-    client: 'Heritage Resorts, Wayanad',
-    product: 'Kada Stay PMS',
-    metric: '92% Guest Satisfaction',
-    description: 'Replaced paper room directory guides with the Kada Stay guest ordering portal, driving direct guest amenity revenue growth by 28%.',
-  },
-  {
-    client: 'Maryam Group Retailers',
-    product: 'SellrApp Storefronts',
-    metric: '180% Sales Expansion',
-    description: 'Helped regional retailers spin up local delivery storefronts, facilitating seamless order placements and UPI checkout directly via WhatsApp.',
-  },
-]
+
 
 export const industries = [
   { name: 'Restaurants & Cafes', icon: '🍽️', desc: 'Point of sale, kitchen display systems, inventory, and tableside ordering.' },
@@ -249,99 +230,4 @@ export const devProcess = [
   { step: '05', title: 'Launch, Support & Scaling', desc: 'We deploy your codebase to secure cloud servers, provide team onboarding, and continuously improve systems.' },
 ]
 
-export const stats = [
-  { label: 'SaaS Products Launched', value: '7', suffix: '' },
-  { label: 'Custom Enterprise Partners', value: '45+', suffix: '' },
-  { label: 'Active Monthly Transactions', value: '500K+', suffix: '' },
-  { label: 'Total Digital Revenue Enabled', value: '₹50Cr+', suffix: '' },
-]
 
-export const teamValues = [
-  {
-    title: 'Solve Real Problems',
-    description: 'We don\'t build technology for technology\'s sake. Every line of code must eliminate a manual process or solve a real user pain point.',
-    icon: '🎯',
-  },
-  {
-    title: 'Infrastructure First',
-    description: 'We build robust rails. Every software product and custom API we build is structured to scale cleanly for long-term operations.',
-    icon: '⚙️',
-  },
-  {
-    title: 'Vendor-Centric & Inclusive',
-    description: 'Our products are designed to be accessible. We create digital tools that are intuitive for users of all technical skill levels.',
-    icon: '🤝',
-  },
-  {
-    title: 'Continuous Innovation',
-    description: 'We stay on the cutting edge of modern software developments (such as WebAssembly, AI vision, and PostgreSQL optimization).',
-    icon: '⚡',
-  },
-]
-
-export const techStack = [
-  { category: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'] },
-  { category: 'Mobile Dev', items: ['React Native', 'Flutter', 'Swift (iOS)', 'Kotlin (Android)'] },
-  { category: 'Backend & APIs', items: ['Node.js', 'FastAPI', 'Express', 'GraphQL'] },
-  { category: 'Databases & Storage', items: ['Supabase', 'PostgreSQL', 'Redis', 'MongoDB'] },
-  { category: 'Cloud Infrastructure', items: ['AWS', 'Google Cloud', 'Docker', 'CI/CD Pipelines'] },
-  { category: 'Integrations', items: ['Razorpay Payments', 'UPI Stack', 'WhatsApp Business API', 'Twilio CRM'] },
-]
-
-export const blogPosts = [
-  {
-    id: 1,
-    title: 'How we build high-converting SaaS products from the ground up',
-    category: 'SaaS Innovator',
-    date: 'May 2026',
-    readTime: '6 min',
-    excerpt: 'Key strategies for product layout, custom billing configurations, and client onboarding sequences that drive SaaS growth.',
-    color: '#FF6B2B',
-  },
-  {
-    id: 2,
-    title: 'Why Supabase has become our go-to database for enterprise automation',
-    category: 'Technology',
-    date: 'April 2026',
-    readTime: '8 min',
-    excerpt: 'Detailed review of PostgreSQL row-level security, real-time sync systems, and why it is perfect for secure, multi-tenant databases.',
-    color: '#7C6AF7',
-  },
-  {
-    id: 3,
-    title: 'Replacing manual ledgers: digitizing merchant transactions in tier-2 cities',
-    category: 'Product Case Study',
-    date: 'March 2026',
-    readTime: '5 min',
-    excerpt: 'The product design challenges of building credit-book khata systems for traditional local shops and general merchants.',
-    color: '#22C997',
-  },
-]
-
-export const openPositions = [
-  { title: 'Senior React Developer', team: 'Frontend Team', type: 'Full-time', location: 'Kannur / Remote' },
-  { title: 'Backend Software Architect (Supabase/PostgreSQL)', team: 'Core Infrastructure', type: 'Full-time', location: 'Remote' },
-  { title: 'Product Designer (UI/UX)', team: 'Product Design', type: 'Full-time', location: 'Kannur / Remote' },
-  { title: 'Business Development Manager', team: 'Growth & Ventures', type: 'Full-time', location: 'Kerala' },
-]
-
-export const pressItems = [
-  { outlet: 'Kerala Startup Mission', headline: 'The Kada Digital Ventures secures seed grant to scale local merchant digitization tools', date: 'May 2026' },
-  { outlet: 'Tech Chronicle India', headline: 'Dual-model tech companies are building the backbone of Indian regional commerce', date: 'April 2026' },
-  { outlet: 'Inc42 Media', headline: 'Meet the team building SaaS products that are digitizing South Indian business operations', date: 'March 2026' },
-]
-
-// App Store / Play Store links. Replace placeholder IDs with real listing URLs.
-// `default` is used on general pages (footer, home); per-product keys override on product pages.
-export type StoreLinks = { appStore: string; playStore: string }
-
-export const appLinks: Record<string, StoreLinks> = {
-  default: { appStore: 'https://apps.apple.com/app/the-kada/id000000000', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.app' },
-  'kada-dine': { appStore: 'https://apps.apple.com/app/kada-dine/id000000001', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.dine' },
-  'kada-stay': { appStore: 'https://apps.apple.com/app/kada-dine-hotel/id000000002', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.hotel' },
-  sellrapp: { appStore: 'https://apps.apple.com/app/sellrapp/id000000003', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.sellrapp' },
-  'kada-ledger': { appStore: 'https://apps.apple.com/app/kada-ledger/id000000004', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.ledger' },
-  devflow: { appStore: 'https://apps.apple.com/app/devflow/id000000005', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.devflow' },
-  lunoo: { appStore: 'https://apps.apple.com/app/lunoo/id000000006', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.lunoo' },
-  'the-kada': { appStore: 'https://apps.apple.com/app/the-kada/id000000007', playStore: 'https://play.google.com/store/apps/details?id=in.thekada.delivery' },
-}

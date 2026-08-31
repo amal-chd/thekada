@@ -124,7 +124,7 @@ export function DashboardTab({ metrics, isLive, usersCount, theme }: DashboardTa
             {[
               { name: 'Kada Dine', revenue: '₹84.2 L', percentage: 42, color: '#FF6B2B' },
               { name: 'The Kada App', revenue: '₹55.1 L', percentage: 28, color: '#2563EB' },
-              { name: 'Kada Stay', revenue: '₹38.6 L', percentage: 19, color: '#7C6AF7' },
+              { name: 'Kada Stay', revenue: '₹38.6 L', percentage: 19, color: '#247CFF' },
               { name: 'SellrApp / Ledger', revenue: '₹22.1 L', percentage: 11, color: '#10B981' }
             ].map(p => (
               <div key={p.name}>

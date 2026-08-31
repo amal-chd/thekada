@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { MapPin, Send, CheckCircle2, Code2, Headphones, Handshake, MessageSquare, AlertCircle } from 'lucide-react'
+import { useState } from 'react'
+import { MapPin, Send, CheckCircle2, MessageSquare, Headphones, AlertCircle, ArrowUpRight, Mail } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { submitPublicForm } from '../lib/publicForms'
+import { Reveal } from '../components/ui'
 
 const channels = [
-  { Icon: MessageSquare, title: 'Sales & demos', desc: 'Product walkthroughs, pricing, and onboarding for SaaS.', email: 'hello@thekada.in', color: '#60A5FA' },
-  { Icon: Code2, title: 'Custom development', desc: 'Scope a bespoke web, mobile, SaaS, or automation project.', email: 'build@thekada.in', color: '#A78BFA' },
-  { Icon: Headphones, title: 'Product support', desc: 'Existing customer? Reach our support team for help.', email: 'support@thekada.in', color: '#34D399' },
-  { Icon: Handshake, title: 'Partnerships & press', desc: 'Integrations, collaborations, investor relations.', email: 'partners@thekada.in', color: '#FBBF24' },
+  { 
+    Icon: MessageSquare, 
+    title: 'General & Commercial Enquiries', 
+    desc: 'Ask about custom builds, partnership opportunities, or our SaaS products.', 
+    email: 'hello@thekada.in', 
+    color: 'var(--blue)' 
+  },
+  { 
+    Icon: Headphones, 
+    title: 'Product Support', 
+    desc: 'Existing customer or subscriber? Reach out for technical support.', 
+    email: 'support@thekada.in', 
+    color: 'var(--green)' 
+  },
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', company: '', intent: 'sales', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', intent: 'sales', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -31,14 +42,13 @@ export default function Contact() {
       await submitPublicForm('contact_messages', {
         name: form.name.trim(),
         email: form.email.trim(),
-        company: form.company.trim() || null,
         intent: form.intent,
         message: form.message.trim(),
       })
       setIsSuccess(true)
     } catch (err) {
       console.error('Contact submission failed:', err)
-      setError('Something went wrong sending your message. Please email hello@thekada.in and we’ll pick it up.')
+      setError('Something went wrong. Please email hello@thekada.in directly.')
     } finally {
       setIsSubmitting(false)
     }
@@ -46,330 +56,197 @@ export default function Contact() {
 
   return (
     <main>
-      <style>{`
-        .split-layout {
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
-        }
-        .split-left {
-          background: #060F1E;
-          background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-                            radial-gradient(circle at 90% 80%, rgba(124, 106, 247, 0.1) 0%, transparent 50%);
-          color: #fff;
-          padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 5vw, 6rem);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          position: relative;
-          overflow: hidden;
-        }
-        .split-right {
-          background: #ffffff;
-          padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 5vw, 6rem);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        @media (min-width: 1024px) {
-          .split-layout {
-            flex-direction: row;
-          }
-          .split-left, .split-right {
-            flex: 1;
-            width: 50%;
-          }
-          .split-left {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-          }
-        }
-        .glass-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 16px;
-          padding: 1.5rem;
-          backdrop-filter: blur(12px);
-          transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.12);
-        }
-        .form-container {
-          width: 100%;
-          max-width: 520px;
-        }
-      `}</style>
-      
-      <div className="split-layout">
-        {/* Left Side */}
-        <div className="split-left">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#60A5FA', marginBottom: '1rem', fontWeight: 700 }}>
-              Contact Us
-            </div>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.25rem', letterSpacing: '-0.02em' }}>
-              Let’s build <span style={{ color: '#60A5FA' }}>together.</span>
-            </h1>
-            <p style={{ fontSize: '1.1rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '3rem', maxWidth: '480px' }}>
-              Adopting a product, scoping a custom build, or just exploring — tell us what you’re working on and we’ll reply within 24 hours.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
-              {channels.map((c, i) => (
-                <motion.a 
-                  key={c.title} 
-                  href={`mailto:${c.email}`} 
-                  className="glass-card" 
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                >
-                  <c.Icon size={24} color={c.color} style={{ marginBottom: '1rem' }} />
-                  <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.4rem', color: '#F8FAFC' }}>{c.title}</h3>
-                  <p style={{ fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.5, marginBottom: '0.75rem' }}>{c.desc}</p>
-                  <span style={{ fontSize: '0.8rem', color: c.color, fontWeight: 600 }}>{c.email}</span>
-                </motion.a>
-              ))}
-            </div>
-
-            <motion.div 
-              className="glass-card" 
-              style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <MapPin size={18} color="#60A5FA" />
-                <span style={{ fontSize: '0.9rem', color: '#E2E8F0' }}>The Kada Digital Ventures Pvt Ltd, Kannur, Kerala 670001</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Right Side */}
-        <div className="split-right">
-          <motion.div className="form-container" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--ink, #0F172A)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Send a message</h2>
-            <p style={{ color: 'var(--text-secondary, #64748B)', marginBottom: '2.5rem', fontSize: '1rem' }}>Fill out the form below and we'll get back to you shortly.</p>
-            
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <div style={{ flex: '1 1 200px' }}>
-                  <FloatingInput label="Full name" required value={form.name} onChange={(e: any) => setForm({ ...form, name: e.target.value })} />
+      {/* HERO / SPLIT CONTAINER */}
+      <section 
+        className="hero-gradient relative overflow-hidden"
+        style={{
+          paddingTop: 'clamp(7.5rem, 14vw, 10.5rem)',
+          paddingBottom: 'clamp(4rem, 8vw, 6rem)',
+        }}
+      >
+        <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
+        <div className="container-width relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+            {/* Left Column: Contact info & Channels */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <Reveal>
+                <div className="eyebrow mb-6">
+                  Get in Touch
                 </div>
-                <div style={{ flex: '1 1 200px' }}>
-                  <FloatingInput label="Email address" type="email" required value={form.email} onChange={(e: any) => setForm({ ...form, email: e.target.value })} />
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <div style={{ flex: '1 1 200px' }}>
-                  <FloatingInput label="Company (optional)" value={form.company} onChange={(e: any) => setForm({ ...form, company: e.target.value })} />
-                </div>
-                <div style={{ flex: '1 1 200px' }}>
-                  <FloatingSelect label="What's this about?" value={form.intent} onChange={(e: any) => setForm({ ...form, intent: e.target.value })}>
-                    <option value="sales">Product / sales enquiry</option>
-                    <option value="custom">Custom software project</option>
-                    <option value="support">Product support</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="press">Press / investor</option>
-                    <option value="other">Something else</option>
-                  </FloatingSelect>
-                </div>
-              </div>
-              <FloatingTextarea label="Your message" required rows={5} value={form.message} onChange={(e: any) => setForm({ ...form, message: e.target.value })} />
-              
-              {error && (
-                <div role="alert" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C', borderRadius: 12, padding: '0.75rem 0.9rem', fontSize: '0.85rem', lineHeight: 1.5, marginTop: '0.5rem' }}>
-                  <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} /> <span>{error}</span>
-                </div>
-              )}
-
-              <div style={{ marginTop: '1rem' }}>
-                <SubmitButton isSubmitting={isSubmitting} isSuccess={isSuccess} text="Send message" />
-              </div>
-              {isSuccess && (
-                <p style={{ marginTop: '0.85rem', fontSize: '0.85rem', color: 'var(--text-secondary, #64748B)', textAlign: 'center' }}>
-                  Thanks — we’ve received your message and will reply within 24 hours.
+                <h1 className="display-1 text-[var(--ink)] mb-4 font-extrabold tracking-tight">
+                  Contact our <span className="gradient-text">team.</span>
+                </h1>
+                <p className="lead text-[var(--text-secondary)] mb-8 text-base sm:text-lg">
+                  Whether you have questions about custom software, need product support, or want to discuss a partnership — we're here to help.
                 </p>
-              )}
-            </form>
-          </motion.div>
+
+                {/* Direct Channel Cards */}
+                <div className="space-y-4 mb-8">
+                  {channels.map((channel) => (
+                    <div 
+                      key={channel.title}
+                      className="bg-white rounded-2xl border border-[var(--border)] p-5 shadow-xs flex items-start gap-4"
+                    >
+                      <div 
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                        style={{
+                          backgroundColor: `${channel.color}15`,
+                          color: channel.color,
+                        }}
+                      >
+                        <channel.Icon size={20} />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold text-[var(--ink)] mb-1">{channel.title}</h3>
+                        <p className="text-xs text-[var(--text-secondary)] mb-2 leading-relaxed">{channel.desc}</p>
+                        <a 
+                          href={`mailto:${channel.email}`} 
+                          className="text-xs font-bold text-[var(--blue)] hover:underline inline-flex items-center gap-1"
+                        >
+                          <Mail size={12} /> {channel.email}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Headquarters info */}
+                <div className="p-5 rounded-2xl bg-[var(--bg-soft)] border border-[var(--border)] flex items-start gap-3.5 text-xs text-[var(--text-secondary)]">
+                  <MapPin size={18} className="text-[var(--blue)] shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-bold text-[var(--ink)] mb-0.5">Corporate Headquarters</div>
+                    <div className="leading-relaxed">The Kada Digital Ventures Pvt Ltd<br />Kannur, Kerala 670001, India</div>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+
+            {/* Right Column: Contact Form */}
+            <div className="lg:col-span-7">
+              <Reveal delay={0.1}>
+                <div className="bg-white rounded-2xl border border-[var(--border)] p-7 sm:p-10 shadow-lg">
+                  <div className="flex items-center justify-between pb-6 mb-6 border-b border-[var(--border)]">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-[var(--ink)] mb-1">
+                        Send a message
+                      </h2>
+                      <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
+                        We typically respond within a few hours on business days.
+                      </p>
+                    </div>
+                    <Link
+                      to="/start-project"
+                      className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[var(--blue)] hover:underline bg-[var(--blue-light)] px-3 py-1.5 rounded-full"
+                    >
+                      <span>Project Quote Form</span>
+                      <ArrowUpRight size={13} />
+                    </Link>
+                  </div>
+
+                  {isSuccess ? (
+                    <div className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-center">
+                      <div className="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                        <CheckCircle2 size={24} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[var(--ink)] mb-2">Message Sent Successfully</h3>
+                      <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto mb-6">
+                        Thank you for reaching out. A member of our engineering team will review your message and reply to your email address shortly.
+                      </p>
+                      <button 
+                        onClick={() => { setIsSuccess(false); setForm({ name: '', email: '', intent: 'sales', message: '' }) }} 
+                        className="btn-secondary text-xs font-semibold px-4 py-2"
+                      >
+                        Send another message
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      {error && (
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2.5 text-red-700 text-xs font-medium">
+                          <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                          <span>{error}</span>
+                        </div>
+                      )}
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-[var(--ink)] mb-1.5 uppercase tracking-wider">
+                            Your Name *
+                          </label>
+                          <input 
+                            type="text" 
+                            required
+                            placeholder="John Doe" 
+                            value={form.name} 
+                            onChange={e => setForm({...form, name: e.target.value})} 
+                            disabled={isSubmitting}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] text-sm text-[var(--ink)] focus:bg-white focus:outline-none focus:border-[var(--blue)] focus:ring-2 focus:ring-[var(--blue-light)] transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-[var(--ink)] mb-1.5 uppercase tracking-wider">
+                            Email Address *
+                          </label>
+                          <input 
+                            type="email" 
+                            required
+                            placeholder="john@company.com" 
+                            value={form.email} 
+                            onChange={e => setForm({...form, email: e.target.value})} 
+                            disabled={isSubmitting}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] text-sm text-[var(--ink)] focus:bg-white focus:outline-none focus:border-[var(--blue)] focus:ring-2 focus:ring-[var(--blue-light)] transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-[var(--ink)] mb-1.5 uppercase tracking-wider">
+                          Topic / Subject
+                        </label>
+                        <select 
+                          value={form.intent} 
+                          onChange={e => setForm({...form, intent: e.target.value})} 
+                          disabled={isSubmitting}
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] text-sm text-[var(--ink)] focus:bg-white focus:outline-none focus:border-[var(--blue)] focus:ring-2 focus:ring-[var(--blue-light)] transition-all"
+                        >
+                          <option value="sales">Custom Software Development</option>
+                          <option value="support">SaaS Product Support</option>
+                          <option value="partnership">Partnership or Integration</option>
+                          <option value="other">General Enquiry</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-[var(--ink)] mb-1.5 uppercase tracking-wider">
+                          Message *
+                        </label>
+                        <textarea 
+                          required
+                          rows={4}
+                          placeholder="How can our engineering team help you?" 
+                          value={form.message} 
+                          onChange={e => setForm({...form, message: e.target.value})} 
+                          disabled={isSubmitting}
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] text-sm text-[var(--ink)] focus:bg-white focus:outline-none focus:border-[var(--blue)] focus:ring-2 focus:ring-[var(--blue-light)] transition-all resize-y"
+                        />
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="btn-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                        {!isSubmitting && <Send size={15} />}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </Reveal>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
   )
 }
-
-// Custom UI Components
-const FloatingInput = ({ label, ...props }: any) => {
-  const [focused, setFocused] = useState(false)
-  const active = focused || (props.value && props.value.length > 0)
-  return (
-    <div style={{ position: 'relative', width: '100%', marginBottom: '1.25rem' }}>
-      <motion.label
-        initial={false}
-        animate={{
-          top: active ? '0.5rem' : '1.15rem',
-          fontSize: active ? '0.75rem' : '0.95rem',
-          color: active ? '#2563EB' : '#94A3B8',
-        }}
-        style={{ position: 'absolute', left: '1.2rem', pointerEvents: 'none', fontWeight: active ? 600 : 400 }}
-      >
-        {label}
-      </motion.label>
-      <input
-        {...props}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: '100%',
-          padding: '1.6rem 1.2rem 0.6rem',
-          border: `1px solid ${focused ? '#2563EB' : '#E2E8F0'}`,
-          borderRadius: '12px',
-          outline: 'none',
-          background: focused ? '#fff' : '#F8FAFC',
-          boxShadow: focused ? '0 0 0 4px rgba(37,99,235,0.1)' : 'none',
-          transition: 'all 0.2s ease',
-          fontSize: '0.95rem',
-          color: '#0F172A',
-          boxSizing: 'border-box'
-        }}
-      />
-    </div>
-  )
-}
-
-const FloatingSelect = ({ label, children, ...props }: any) => {
-  const [focused, setFocused] = useState(false)
-  const active = focused || (props.value && props.value.length > 0)
-  return (
-    <div style={{ position: 'relative', width: '100%', marginBottom: '1.25rem' }}>
-      <motion.label
-        initial={false}
-        animate={{
-          top: active ? '0.5rem' : '1.15rem',
-          fontSize: active ? '0.75rem' : '0.95rem',
-          color: active ? '#2563EB' : '#94A3B8',
-        }}
-        style={{ position: 'absolute', left: '1.2rem', pointerEvents: 'none', fontWeight: active ? 600 : 400, zIndex: 1 }}
-      >
-        {label}
-      </motion.label>
-      <select
-        {...props}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: '100%',
-          padding: '1.6rem 1.2rem 0.6rem',
-          border: `1px solid ${focused ? '#2563EB' : '#E2E8F0'}`,
-          borderRadius: '12px',
-          outline: 'none',
-          background: focused ? '#fff' : '#F8FAFC',
-          boxShadow: focused ? '0 0 0 4px rgba(37,99,235,0.1)' : 'none',
-          transition: 'all 0.2s ease',
-          fontSize: '0.95rem',
-          color: '#0F172A',
-          cursor: 'pointer',
-          appearance: 'none',
-          boxSizing: 'border-box'
-        }}
-      >
-        {children}
-      </select>
-      <div style={{ position: 'absolute', right: '1.2rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#94A3B8' }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-    </div>
-  )
-}
-
-const FloatingTextarea = ({ label, ...props }: any) => {
-  const [focused, setFocused] = useState(false)
-  const active = focused || (props.value && props.value.length > 0)
-  return (
-    <div style={{ position: 'relative', width: '100%', marginBottom: '1.25rem' }}>
-      <motion.label
-        initial={false}
-        animate={{
-          top: active ? '0.6rem' : '1.15rem',
-          fontSize: active ? '0.75rem' : '0.95rem',
-          color: active ? '#2563EB' : '#94A3B8',
-        }}
-        style={{ position: 'absolute', left: '1.2rem', pointerEvents: 'none', fontWeight: active ? 600 : 400 }}
-      >
-        {label}
-      </motion.label>
-      <textarea
-        {...props}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: '100%',
-          padding: '1.8rem 1.2rem 0.8rem',
-          border: `1px solid ${focused ? '#2563EB' : '#E2E8F0'}`,
-          borderRadius: '12px',
-          outline: 'none',
-          background: focused ? '#fff' : '#F8FAFC',
-          boxShadow: focused ? '0 0 0 4px rgba(37,99,235,0.1)' : 'none',
-          transition: 'all 0.2s ease',
-          fontSize: '0.95rem',
-          color: '#0F172A',
-          resize: 'vertical',
-          minHeight: '120px',
-          fontFamily: 'inherit',
-          boxSizing: 'border-box'
-        }}
-      />
-    </div>
-  )
-}
-
-const SubmitButton = ({ isSubmitting, isSuccess, text }: any) => {
-  return (
-    <motion.button
-      type="submit"
-      disabled={isSubmitting || isSuccess}
-      style={{
-        width: '100%',
-        padding: '1.1rem',
-        borderRadius: '12px',
-        border: 'none',
-        background: isSuccess ? '#10B981' : '#2563EB',
-        color: '#fff',
-        fontWeight: 700,
-        fontSize: '1.05rem',
-        cursor: (isSubmitting || isSuccess) ? 'default' : 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.5rem',
-        boxShadow: isSuccess ? '0 4px 14px rgba(16,185,129,0.3)' : '0 4px 14px rgba(37,99,235,0.25)',
-      }}
-      whileHover={!(isSubmitting || isSuccess) ? { scale: 1.01, boxShadow: '0 6px 20px rgba(37,99,235,0.35)' } : {}}
-      whileTap={!(isSubmitting || isSuccess) ? { scale: 0.98 } : {}}
-      animate={{ background: isSuccess ? '#10B981' : '#2563EB' }}
-    >
-      {isSuccess ? (
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <CheckCircle2 size={20} /> Sent Successfully
-        </motion.div>
-      ) : isSubmitting ? (
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-          style={{ width: 22, height: 22, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%' }}
-        />
-      ) : (
-        <>{text} <Send size={18} /></>
-      )}
-    </motion.button>
-  )
-}
-

@@ -132,7 +132,7 @@ export default function Careers() {
         `}</style>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }} className="grid-responsive-2col staggered-perks">
           {perks.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.05}>
+            <Reveal key={p.title} delay={i * 0.05} className="h-full">
               <motion.div 
                 className={i % 2 !== 0 ? 'staggered-perk-even' : ''}
                 whileHover={{ y: -6, scale: 1.01 }}

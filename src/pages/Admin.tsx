@@ -295,6 +295,7 @@ export default function Admin() {
   const [employees, setEmployees] = useState(INITIAL_EMPLOYEES)
   const [candidates, setCandidates] = useState(INITIAL_CANDIDATES)
   const [leads, setLeads] = useState(INITIAL_LEADS)
+  const [proposalRequests, setProposalRequests] = useState<any[]>([])
   const [proposals, setProposals] = useState(INITIAL_PROPOSALS)
   const [franchises, setFranchises] = useState(INITIAL_FRANCHISES)
   const [partners] = useState(INITIAL_PARTNERS)
@@ -450,6 +451,9 @@ export default function Admin() {
     const unsubLeads = onSnapshot(collection(db, 'crm_leads'), (snap) => {
       setLeads(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
+    const unsubProposalReqs = onSnapshot(query(collection(db, 'proposal_requests'), orderBy('createdAt', 'desc')), (snap) => {
+      setProposalRequests(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
+    })
     const unsubProps = onSnapshot(collection(db, 'proposals'), (snap) => {
       setProposals(snap.docs.map(d => ({ id: d.id, ...d.data() } as any)))
     })
@@ -513,6 +517,7 @@ export default function Admin() {
       unsubEmp()
       unsubCand()
       unsubLeads()
+      unsubProposalReqs()
       unsubProps()
       unsubTkts()
       unsubAudit()
@@ -842,6 +847,33 @@ export default function Admin() {
   }
 
   // CRM Workflows
+  const promoteRequestToLead = async (req: any) => {
+    try {
+      const db = (await import('../lib/firebase')).db
+      const { deleteDoc, doc, addDoc, collection, serverTimestamp } = await import('firebase/firestore')
+      if (!db) return
+      
+      const newLead = {
+        company: req.company || 'Unknown',
+        contact: req.name || 'Unknown',
+        email: req.email || '',
+        value: req.budget || 'TBD',
+        status: 'New',
+        assigned: 'Unassigned',
+        createdAt: serverTimestamp(),
+        source: 'Website Form'
+      }
+      
+      // Add to leads
+      await addDoc(collection(db, 'crm_leads'), newLead)
+      // Remove from requests
+      await deleteDoc(doc(db, 'proposal_requests', req.id))
+      triggerNotification(`Promoted website inquiry from ${newLead.contact} to Lead`)
+    } catch (err) {
+      console.error('Error promoting request:', err)
+    }
+  }
+
   const generateProposal = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!propTitle) return
@@ -1555,7 +1587,7 @@ export default function Admin() {
             {activeTab === 'products' && <ProductsTab theme={theme} triggerNotification={triggerNotification} />}
             {activeTab === 'org' && <OrgTab theme={theme} employees={employees} candidates={candidates} hireCandidate={hireCandidate} rejectCandidate={rejectCandidate} />}
             {activeTab === 'internships' && <InternshipsTab theme={theme} interns={interns} onboardFirstPendingIntern={onboardFirstPendingIntern} approveInternLeave={approveInternLeave} issueInternCertificate={issueInternCertificate} />}
-            {activeTab === 'crm' && <CrmTab theme={theme} leads={leads} proposals={proposals} subscribers={subscribers} propLead={propLead} setPropLead={setPropLead} propTitle={propTitle} setPropTitle={setPropTitle} propCost={propCost} setPropCost={setPropCost} generateProposal={generateProposal} signProposal={signProposal} removeSubscriber={removeSubscriber} formatTimestamp={formatTimestamp} />}
+            {activeTab === 'crm' && <CrmTab theme={theme} leads={leads} proposalRequests={proposalRequests} promoteRequestToLead={promoteRequestToLead} proposals={proposals} subscribers={subscribers} propLead={propLead} setPropLead={setPropLead} propTitle={propTitle} setPropTitle={setPropTitle} propCost={propCost} setPropCost={setPropCost} generateProposal={generateProposal} signProposal={signProposal} removeSubscriber={removeSubscriber} formatTimestamp={formatTimestamp} />}
             {activeTab === 'tickets' && <TicketsTab theme={theme} tickets={tickets} liveChatMessages={liveChatMessages} chatInput={chatInput} setChatInput={setChatInput} sendChatMessage={sendChatMessage} resolveTicket={resolveTicket} escalateTicket={escalateTicket} />}
             {activeTab === 'franchise' && <FranchiseTab theme={theme} franchises={franchises} partners={partners} approveFranchise={approveFranchise} triggerNotification={triggerNotification} />}
             {activeTab === 'rbac' && <RbacTab theme={theme} auditLogs={auditLogs} triggerNotification={triggerNotification} formatTimestamp={formatTimestamp} />}

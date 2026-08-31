@@ -69,7 +69,8 @@ export const productPages: Record<string, ProductConfig> = {
 
   // ─────────────────────────── KADA STAY ───────────────────────────
   'kada-stay': {
-    accent: '#7C6AF7', accentSoft: '#F2F0FF', gradientClass: 'gradient-text-violet',
+    accent: '#247CFF', accentSoft: '#E8F1FF', gradientClass: 'gradient-text-blue',
+    logoSrc: '/products/kada-stay-logo.png',
     EyebrowIcon: BedDouble, eyebrowLabel: 'Kada Stay · PMS',
     title: { pre: 'Guest services & bookings,', accent: 'beautifully digital.' },
     subtitle: 'A digital hospitality platform that replaces printed room books with app-less QR guest services — manage bookings, front-desk dispatch, and in-room ordering from one console.',
@@ -354,6 +355,7 @@ export const productPages: Record<string, ProductConfig> = {
   // ─────────────────────────── THE KADA ───────────────────────────
   'the-kada': {
     accent: '#2563EB', accentSoft: '#EFF5FF', gradientClass: 'gradient-text-blue',
+    logoSrc: '/products/the-kada-logo.png',
     EyebrowIcon: Bike, eyebrowLabel: 'The Kada · Food Delivery',
     title: { pre: 'Your favourite food,', accent: 'delivered fast.' },
     subtitle: 'A hyperlocal food delivery and commerce platform connecting customers with nearby restaurants, cafes, and local food vendors — with real-time tracking, smart recommendations, and seamless payments.',
