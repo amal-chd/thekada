@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { 
   Users, FileText, ShieldCheck, Ticket, 
   MapPin, UserCheck, LayoutDashboard, Search, Sparkles, 
-  Laptop, Bell, Moon, Sun, LogOut, Lock, Database
+  Laptop, Bell, Moon, Sun, LogOut, Lock, Database, MessageSquare
 } from 'lucide-react'
 import { Aurora } from '../components/ui'
 
@@ -1524,6 +1524,36 @@ export default function Admin() {
               </button>
               {notifications.length > 0 && (
                 <span style={{ position: 'absolute', top: 2, right: 2, width: 9, height: 9, borderRadius: '50%', background: '#EF4444' }} />
+              )}
+            </div>
+
+            {/* Chat button with notification counter */}
+            <div style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setActiveTab('tickets')}
+                title="Live Chat & Support"
+                style={{
+                  width: 38, height: 38, borderRadius: '50%',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#FFFFFF',
+                  color: theme === 'dark' ? '#E2E8F0' : '#475569',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                  transition: 'background 0.2s'
+                }}
+              >
+                <MessageSquare size={16} />
+              </button>
+              {liveChatMessages.length > 0 && (
+                <span style={{ 
+                  position: 'absolute', top: -2, right: -2, 
+                  background: '#EF4444', color: '#FFFFFF',
+                  fontSize: '0.65rem', fontWeight: 800,
+                  width: 16, height: 16, borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  border: `2px solid ${theme === 'dark' ? '#0F172A' : '#F8FAFC'}`
+                }}>
+                  {liveChatMessages.length}
+                </span>
               )}
             </div>
 
