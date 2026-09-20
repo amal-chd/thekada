@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Mail, MapPin, ArrowUpRight } from 'lucide-react'
+import { Mail, MapPin } from 'lucide-react'
 import Logo from './Logo'
 
 const footerLinks: Record<string, { label: string; path: string }[]> = {
@@ -13,12 +13,10 @@ const footerLinks: Record<string, { label: string; path: string }[]> = {
   ],
   Products: [
     { label: 'Kada Dine', path: '/products/kada-dine' },
-    { label: 'The Kada', path: '/products/the-kada' },
     { label: 'SellrApp', path: '/products/sellrapp' },
     { label: 'Kada Ledger', path: '/products/kada-ledger' },
+    { label: 'The Kada', path: '/products/the-kada' },
     { label: 'Kada Stay', path: '/products/kada-stay' },
-    { label: 'DevFlow', path: '/products/devflow' },
-    { label: 'Lunoo', path: '/products/lunoo' },
   ],
   Company: [
     { label: 'About', path: '/about' },
@@ -47,37 +45,6 @@ export default function Footer() {
       }} />
 
       <div className="container-width" style={{ padding: 'clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2.5rem)' }}>
-        {/* CTA Banner */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          flexWrap: 'wrap', gap: '1.5rem',
-          paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-          marginBottom: 'clamp(2rem, 4vw, 3rem)',
-        }}>
-          <div>
-            <h3 style={{
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-              fontWeight: 700, color: '#FFFFFF',
-              letterSpacing: '-0.02em', lineHeight: 1.2,
-              marginBottom: '0.35rem',
-            }}>
-              Ready to build something?
-            </h3>
-            <p style={{ fontSize: '0.95rem', color: '#94A3B8', lineHeight: 1.5 }}>
-              Tell us about your project and get a proposal within 48 hours.
-            </p>
-          </div>
-          <Link
-            to="/start-project"
-            className="btn-primary"
-            style={{ fontSize: '0.9rem', gap: '0.4rem', whiteSpace: 'nowrap' }}
-          >
-            Start a Project <ArrowUpRight size={15} strokeWidth={2.5} />
-          </Link>
-        </div>
-
         {/* Link Grid */}
         <div style={{
           display: 'grid',

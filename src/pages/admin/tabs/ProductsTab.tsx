@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { RefreshCw, Terminal } from 'lucide-react'
 import { SpotlightCard } from '../../../components/ui'
-import { Utensils, BedDouble, Store, BookText, KanbanSquare, MessageSquare } from 'lucide-react'
+import { Utensils, BedDouble, Store, BookText } from 'lucide-react'
 import type { ThemeMode } from '../types'
 
 interface ProductsTabProps {
@@ -22,9 +22,7 @@ export function ProductsTab({ theme, triggerNotification }: ProductsTabProps) {
   { id: 'kada-dine', name: 'Kada Dine', color: '#FF6B2B', Icon: Utensils },
   { id: 'kada-ledger', name: 'Kada Ledger', color: '#10B981', Icon: BookText },
   { id: 'sellrapp', name: 'SellrApp', color: '#8B5CF6', Icon: Store },
-  { id: 'kada-stay', name: 'Kada Stay', color: '#247CFF', Icon: BedDouble, logo: '/products/kada-stay-logo.png' },
-  { id: 'devflow', name: 'DevFlow', color: '#F59E0B', Icon: KanbanSquare },
-  { id: 'parayu-ai', name: 'Parayu AI', color: '#EC4899', Icon: MessageSquare }
+  { id: 'kada-stay', name: 'Kada Stay', color: '#247CFF', Icon: BedDouble, logo: '/products/kada-stay-logo.png' }
 ].map((prod: any) => {
           const isSelected = selectedProduct === prod.id
           const ProductIcon = prod.Icon

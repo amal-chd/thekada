@@ -116,13 +116,15 @@ export default function StartProject() {
             {/* Left Information Pane */}
             <div className="lg:col-span-5 flex flex-col justify-between">
               <Reveal>
-                <Link 
-                  to="/" 
-                  className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors mb-6"
-                >
-                  <ArrowLeft size={14} className="mr-1.5" />
-                  Back to Homepage
-                </Link>
+                <div className="mb-6">
+                  <Link 
+                    to="/" 
+                    className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors"
+                  >
+                    <ArrowLeft size={14} className="mr-1.5" />
+                    Back to Homepage
+                  </Link>
+                </div>
 
                 <div className="eyebrow mb-6">
                   Start a Project

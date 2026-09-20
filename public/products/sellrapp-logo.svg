@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="sellrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="45%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#78350F" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Background -->
+  <rect x="32" y="32" width="960" height="960" rx="220" fill="url(#sellrGrad)" />
+  <!-- Gloss Overlay -->
+  <rect x="32" y="32" width="960" height="480" rx="220" fill="url(#highlight)" />
+
+  <!-- Storefront / Shopping Bag Icon Group -->
+  <g filter="url(#dropShadow)" transform="translate(192, 192)">
+    <!-- Bag Handle -->
+    <path d="M220 180 C220 90 420 90 420 180" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" />
+    <!-- Store Roof Awning -->
+    <path d="M60 250 L120 160 L520 160 L580 250 Z" fill="#FFFFFF" opacity="0.95" />
+    <path d="M60 250 C60 280 105 295 138 275 C171 295 216 295 249 275 C282 295 327 295 360 275 C393 295 438 295 471 275 C504 295 540 285 580 250" fill="#FFFFFF" />
+
+    <!-- Store Body -->
+    <rect x="90" y="270" width="460" height="290" rx="28" fill="#FFFFFF" />
+    
+    <!-- Doorway -->
+    <rect x="250" y="350" width="140" height="210" rx="16" fill="url(#sellrGrad)" />
+    <!-- Window Left -->
+    <rect x="135" y="350" width="85" height="110" rx="12" fill="url(#sellrGrad)" opacity="0.25" />
+    <!-- Window Right -->
+    <rect x="420" y="350" width="85" height="110" rx="12" fill="url(#sellrGrad)" opacity="0.25" />
+  </g>
+</svg>

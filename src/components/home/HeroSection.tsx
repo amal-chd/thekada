@@ -110,7 +110,7 @@ export default function HeroSection() {
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="p-3 bg-[var(--bg-soft)] rounded-xl border border-[var(--border)]">
                   <div className="text-xs text-[var(--text-muted)] font-medium mb-1">Platforms Shipped</div>
-                  <div className="text-xl font-extrabold text-[var(--ink)] font-sans">7 Live SaaS</div>
+                  <div className="text-xl font-extrabold text-[var(--ink)] font-sans">5 Live Platforms</div>
                 </div>
                 <div className="p-3 bg-[var(--bg-soft)] rounded-xl border border-[var(--border)]">
                   <div className="text-xs text-[var(--text-muted)] font-medium mb-1">Architecture</div>
@@ -127,13 +127,13 @@ export default function HeroSection() {
                 ].map((item) => (
                   <div 
                     key={item.label}
-                    className="flex items-center justify-between p-2.5 bg-[var(--bg-softer)] rounded-lg text-xs"
+                    className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg text-xs border border-slate-100"
                   >
-                    <div className="flex items-center gap-2 text-[var(--ink)] font-medium truncate pr-2">
-                      <CheckCircle size={14} className="text-[var(--blue)] shrink-0" />
+                    <div className="flex items-center gap-2 text-slate-900 font-medium truncate pr-2 min-w-0">
+                      <CheckCircle size={14} className="text-blue-600 shrink-0" />
                       <span className="truncate">{item.label}</span>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-[var(--text-secondary)] shrink-0 border border-[var(--border)]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-slate-500 shrink-0 border border-slate-200">
                       {item.status}
                     </span>
                   </div>
@@ -143,8 +143,8 @@ export default function HeroSection() {
               {/* Mini Footer Link */}
               <div className="mt-4 pt-3 border-t border-[var(--border)] flex items-center justify-between text-xs">
                 <span className="text-[var(--text-muted)]">Verified in-house engineering</span>
-                <Link to="/products" className="text-[var(--blue)] font-semibold hover:underline inline-flex items-center gap-0.5">
-                  See products <ArrowUpRight size={13} />
+                <Link to="/work" className="text-[var(--blue)] font-semibold hover:underline inline-flex items-center gap-0.5">
+                  See our work <ArrowUpRight size={13} />
                 </Link>
               </div>
             </div>

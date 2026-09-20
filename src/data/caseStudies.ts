@@ -32,7 +32,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       { title: 'Offline-First Data Sync', description: 'Continuous local checkout capability during internet dropouts with instant background syncing to cloud.' }
     ],
     technology: ['React', 'Node.js', 'PostgreSQL', 'Supabase', 'Firebase', 'WhatsApp Business API', 'UPI'],
-    productLink: '/products/kada-dine'
+    productLink: '/products/kada-dine',
+    logo: '/products/kada-dine-logo.png',
   },
   'sellrapp': {
     slug: 'sellrapp',
@@ -52,7 +53,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       { title: 'Merchant Business Insights', description: 'Real-time sales revenue dashboards, repeat customer stats, and best-selling product reports.' }
     ],
     technology: ['React', 'React Native', 'Node.js', 'PostgreSQL', 'Supabase', 'Razorpay', 'UPI'],
-    productLink: '/products/sellrapp'
+    productLink: '/products/sellrapp',
+    logo: '/products/sellrapp-logo.svg',
   },
   'kada-ledger': {
     slug: 'kada-ledger',
@@ -72,7 +74,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       { title: 'Automated Cloud Backups', description: 'Continuous cloud sync ensuring transaction data is never lost even if hardware is damaged or lost.' }
     ],
     technology: ['React Native', 'Node.js', 'PostgreSQL', 'Supabase', 'Firebase', 'WhatsApp Business API'],
-    productLink: '/products/kada-ledger'
+    productLink: '/products/kada-ledger',
+    logo: '/products/kada-ledger-logo.svg',
   },
   'the-kada': {
     slug: 'the-kada',
@@ -115,45 +118,5 @@ export const caseStudies: Record<string, CaseStudy> = {
     technology: ['React', 'Next.js', 'Node.js', 'PostgreSQL', 'Supabase', 'WebSockets'],
     productLink: '/products/kada-stay',
     logo: '/products/kada-stay-logo.png',
-  },
-  'devflow': {
-    slug: 'devflow',
-    name: 'DevFlow',
-    industry: 'Agency & Work Management',
-    type: 'SaaS · Client Portals',
-    color: '#06B6D4',
-    challenge: 'Agencies and development teams spent excessive hours manually updating clients via email, tracking billable time, and chasing invoice approvals.',
-    objective: 'Create an integrated client collaboration portal that combines milestone tracking, file approvals, and invoice automation in one workspace.',
-    solution: 'A multi-tenant agency management platform with private client portals, interactive Kanban/Gantt boards, and automated retainer billing.',
-    features: [
-      { title: 'Branded Client Portals', description: 'White-labeled project dashboards where clients view sprint progress, assets, and milestones.' },
-      { title: 'Interactive Milestones & Gantt', description: 'Visual project roadmaps, deliverable deadlines, and automated progress reporting.' },
-      { title: 'Integrated Time Tracking', description: 'Team billable hour logger with automated conversion into itemized client invoices.' },
-      { title: 'Document & Asset Approval', description: 'Centralized design file preview and client feedback sign-off workflow.' },
-      { title: 'Recurring Retainer Invoicing', description: 'Automated invoice generation with automated payment status reminders.' },
-      { title: 'Role-Based Team Access', description: 'Strict permission controls separating internal developer tasks from client-facing notes.' }
-    ],
-    technology: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Supabase', 'Tailwind CSS'],
-    productLink: '/products/devflow'
-  },
-  'lunoo': {
-    slug: 'lunoo',
-    name: 'Lunoo',
-    industry: 'Consumer Productivity',
-    type: 'Mobile · Personal Wellness',
-    color: '#EC4899',
-    challenge: 'Users struggled with fragmented apps for habit tracking, daily task organization, and personal budget logs.',
-    objective: 'Engineer an intuitive, offline-first personal organizer that combines habit streaks, expense tracking, and wellness routines.',
-    solution: 'A privacy-first mobile application featuring interactive streak trackers, local encrypted finance logs, and lock-screen widget reminders.',
-    features: [
-      { title: 'Habit Streak Trackers', description: 'Interactive habit builders with customizable frequencies, reminder alarms, and streak milestones.' },
-      { title: 'Personal Expense Budgeting', description: 'Categorized expense logs, savings goal trackers, and monthly cashflow visualizers.' },
-      { title: 'Daily Tasks & Routine Planner', description: 'Priority-based daily checklist organizer with smooth drag-and-drop ordering.' },
-      { title: 'Offline-First & Local Privacy', description: 'Full functionality without internet connectivity; user data is stored safely with local encryption.' },
-      { title: 'Lockscreen & Dynamic Widgets', description: 'Quick-access widgets for logging habits and water intake in seconds without opening the app.' },
-      { title: 'Dark Mode & Custom Themes', description: 'Elegantly crafted user interface with customizable color schemes and haptic feedback.' }
-    ],
-    technology: ['Flutter', 'Dart', 'SQLite', 'Firebase', 'iOS WidgetKit'],
-    productLink: '/products/lunoo'
   }
 }

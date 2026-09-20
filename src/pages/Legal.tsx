@@ -11,7 +11,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
     sections: [
       { 
         heading: '1. Introduction & Scope of Policy', 
-        body: 'The Kada Digital Ventures Pvt Ltd ("we", "our", "us") respects your privacy and is committed to protecting your personal data across our entire digital ecosystem. This Privacy Policy applies to all users of our mobile applications available on Google Play and Apple App Store — including The Kada App, Kada Dine, Kada Stay, SellrApp, Kada Ledger, DevFlow, Lunoo, Parayu AI, and WhichOTT — as well as our official web portals and cloud services. By installing, registering, or using any of our services, you consent to the collection, processing, and protection of your data as outlined in this policy.' 
+        body: 'The Kada Digital Ventures Pvt Ltd ("we", "our", "us") respects your privacy and is committed to protecting your personal data across our entire digital ecosystem. This Privacy Policy applies to all users of our mobile applications available on Google Play and Apple App Store — including The Kada App, Kada Dine, Kada Stay, SellrApp, and Kada Ledger — as well as our official web portals and cloud services. By installing, registering, or using any of our services, you consent to the collection, processing, and protection of your data as outlined in this policy.' 
       },
       { 
         heading: '2. Detailed Breakdown of Information We Collect', 
@@ -21,8 +21,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
             <ul style={{ paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <li><strong>Personal Identifiers (User Input):</strong> Name, email address, mobile phone number, postal address, profile photograph, and business details when creating an account across any Kada application.</li>
               <li><strong>Financial & Payment Information (Tokenized):</strong> Subscription tier choices, billing addresses, and UPI/card transaction receipts. <em>Note: All payment processing is handled securely by PCI-DSS Level 1 compliant gateways (e.g. Razorpay/Stripe). We never store raw credit/debit card numbers or bank credentials on our servers.</em></li>
-              <li><strong>Audio & Speech Data (Parayu AI specific):</strong> Real-time voice inputs and speech recordings collected exclusively during active practice sessions on Parayu AI. Voice data is processed strictly for speech recognition, pronunciation scoring, and speech therapy assistance.</li>
-              <li><strong>User-Generated Content & App Activity:</strong> Habit logs and sleep routines (Lunoo), KOT orders and restaurant reservations (Kada Dine), inventory items and store analytics (SellrApp), accounting ledgers (Kada Ledger), property bookings (Kada Stay), and project task workflows (DevFlow).</li>
+              <li><strong>User-Generated Content & App Activity:</strong> KOT orders and restaurant reservations (Kada Dine), inventory items and storefront analytics (SellrApp), accounting ledgers and customer transactions (Kada Ledger), property bookings and room service requests (Kada Stay), and food delivery orders (The Kada).</li>
               <li><strong>Device & Technical Telemetry (Automatic):</strong> IP address, device model, operating system version, unique device identifiers (Android ID / IDFV), Firebase instance IDs, crash reports via Firebase Crashlytics, and performance metrics via Firebase Performance Monitoring.</li>
             </ul>
           </div>
@@ -30,7 +29,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
       },
       { 
         heading: '3. Purposes of Data Processing', 
-        body: 'We collect and process your data strictly for legitimate operational purposes: (a) authenticating users and securing accounts with Firebase Authentication and App Check, (b) delivering core functionality such as syncing habits, generating invoices, processing voice therapy analysis, or dispatching orders, (c) providing real-time customer support via our ticketing system, (d) complying with statutory Indian financial and tax (GST) reporting laws, and (e) monitoring app stability and resolving technical crashes.' 
+        body: 'We collect and process your data strictly for legitimate operational purposes: (a) authenticating users and securing accounts with Firebase Authentication and App Check, (b) delivering core functionality such as managing restaurant POS, generating invoices, coordinating hotel guest services, or dispatching delivery orders, (c) providing real-time customer support via our ticketing system, (d) complying with statutory Indian financial and tax (GST) reporting laws, and (e) monitoring app stability and resolving technical crashes.' 
       },
       { 
         heading: '4. Third-Party Data Sharing & Non-Disclosure', 
@@ -47,8 +46,8 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
         )
       },
       { 
-        heading: '5. Audio Processing Policy (Parayu AI)', 
-        body: 'For users of Parayu AI, microphone access is required exclusively during speech therapy exercises. Audio streams are encrypted in transit via TLS 1.3 and analyzed in real-time by our neural speech models. Unless the user explicitly opts in to save audio clips in their personal progress journal, raw audio recordings are automatically purged from active memory immediately after transcript generation and pronunciation assessment.' 
+        heading: '5. Device Permissions & Background Location', 
+        body: 'Certain applications within our ecosystem (such as The Kada delivery app) require location permissions to facilitate real-time order dispatch and delivery tracking. Location data is accessed solely while active orders are being processed. Push notification permissions are requested strictly to deliver urgent operational updates, order statuses, and transaction verifications.' 
       },
       { 
         heading: '6. Data Security Practices', 
@@ -99,7 +98,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
         heading: '2. How to Request Deletion (Two Easy Methods)',
         body: (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <p>We provide two convenient ways to initiate complete data wipe across our ecosystem (`The Kada`, `Kada Dine`, `Kada Stay`, `SellrApp`, `Kada Ledger`, `DevFlow`, `Lunoo`, `Parayu AI`, `WhichOTT`):</p>
+            <p>We provide two convenient ways to initiate complete data wipe across our ecosystem (`The Kada`, `Kada Dine`, `Kada Stay`, `SellrApp`, and `Kada Ledger`):</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
               <div style={{ padding: '1.25rem', borderRadius: 14, background: 'var(--bg-soft)', border: '1px solid var(--border)' }}>
                 <h4 style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--ink)', marginBottom: '0.4rem' }}>Method A: Public Web Portal (No App Required)</h4>
@@ -126,7 +125,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <p>When an account deletion request is verified and executed:</p>
             <ul style={{ paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <li><strong style={{ color: '#EF4444' }}>Deleted within 30 Days:</strong> Your profile credentials (Name, Email, Phone, Photo), authentication tokens, device notification tokens, custom app preferences, saved habits/sleep logs (Lunoo), speech practice records (Parayu AI), watchlists (WhichOTT), and active operational records.</li>
+              <li><strong style={{ color: '#EF4444' }}>Deleted within 30 Days:</strong> Your profile credentials (Name, Email, Phone, Photo), authentication tokens, device notification tokens, custom app preferences, customer profiles, and active operational records.</li>
               <li><strong style={{ color: '#F59E0B' }}>Retained for Statutory Compliance (7 Years):</strong> Invoices, billing receipts, and financial ledger summaries must be preserved in an encrypted, non-personally-identifiable archive to comply with Indian GST and accounting laws.</li>
             </ul>
           </div>
@@ -143,7 +142,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
     updated: 'Last updated: May 2026',
     sections: [
       { heading: '1. Acceptance of Terms', body: 'By accessing or using any product or service offered by The Kada Digital Ventures Pvt Ltd, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.' },
-      { heading: '2. Services Offered', body: 'We provide (a) SaaS products including Kada Dine, Kada Stay, SellrApp, Kada Ledger, DevFlow, Lunoo, and The Kada, and (b) custom software development services. Individual products and engagements may carry additional specific terms.' },
+      { heading: '2. Services Offered', body: 'We provide (a) SaaS products including The Kada, Kada Dine, Kada Stay, SellrApp, and Kada Ledger, and (b) custom software development services. Individual products and engagements may carry additional specific terms.' },
       { heading: '3. Account Registration', body: 'To use most services you must register an account. You agree to provide accurate, current information, maintain the confidentiality of your credentials, and accept responsibility for all activity under your account.' },
       { heading: '4. Acceptable Use', body: 'You agree to use our products and services lawfully; not to misuse, reverse-engineer, or disrupt the platform; to keep your content and data accurate; and to comply with applicable tax, consumer, and data-protection laws.' },
       { heading: '5. Subscriptions & Fees', body: 'Our SaaS products are offered on transparent subscription plans disclosed before purchase. Custom development is quoted per engagement. We may revise subscription pricing with 30 days’ notice. There are no hidden charges.' },

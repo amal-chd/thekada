@@ -115,7 +115,7 @@ const INITIAL_REPORTS = [
     id: 'rep-1',
     internId: 'int-1',
     week: 'Week 4',
-    summary: 'Integrated core authentication routes in devflow project, optimized database indexes on PostgreSQL, and completed code reviews for secondary controllers.',
+    summary: 'Integrated core authentication routes in Kada Ledger platform, optimized database indexes on PostgreSQL, and completed code reviews for secondary controllers.',
     hours: 42,
     date: '2026-06-20'
   }

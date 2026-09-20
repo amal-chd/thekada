@@ -83,20 +83,20 @@ export default function WhatWeBuild() {
                 >
                   <service.icon size={24} />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[var(--bg-soft)] text-[var(--text-secondary)] border border-[var(--border)]">
+                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-50 text-slate-500 border border-slate-200">
                   {service.tag}
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold text-[var(--ink)] mb-2.5 group-hover:text-[var(--blue)] transition-colors">
+              <h3 className="text-xl font-bold text-slate-900 mb-2.5 group-hover:text-blue-600 transition-colors">
                 {service.title}
               </h3>
 
-              <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-grow">
+              <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">
                 {service.description}
               </p>
 
-              <div className="inline-flex items-center text-[var(--blue)] font-semibold text-sm pt-4 border-t border-[var(--border)]">
+              <div className="inline-flex items-center text-blue-600 font-semibold text-sm pt-4 border-t border-slate-200">
                 <span>Explore service</span>
                 <ArrowRight size={15} className="ml-1.5 transform group-hover:translate-x-1.5 transition-transform" />
               </div>

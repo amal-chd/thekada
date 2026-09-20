@@ -25,13 +25,15 @@ export default function CaseStudy() {
         <div className="container-width relative z-10">
           <div className="max-w-3xl">
             <Reveal>
-              <Link 
-                to="/work" 
-                className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors mb-6"
-              >
-                <ArrowLeft size={14} className="mr-1.5" />
-                Back to All Work
-              </Link>
+              <div className="mb-6">
+                <Link 
+                  to="/work" 
+                  className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors"
+                >
+                  <ArrowLeft size={14} className="mr-1.5" />
+                  Back to All Work
+                </Link>
+              </div>
 
               <div className="flex flex-wrap gap-2 mb-4">
                 <span 

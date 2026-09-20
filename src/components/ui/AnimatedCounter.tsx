@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
  */
 export default function AnimatedCounter({
   value,
-  duration = 1800,
+  duration = 900,
   className,
   style,
 }: {
@@ -19,8 +19,10 @@ export default function AnimatedCounter({
   const [display, setDisplay] = useState('0')
   const done = useRef(false)
 
+  // Don't treat ratios or fractions like "24/7" as animated numbers
+  const hasSlash = value.includes('/')
   // Parse "₹50Cr+" -> prefix "₹", number 50, suffix "Cr+"
-  const match = value.match(/^([^\d]*)([\d.,]+)(.*)$/)
+  const match = !hasSlash ? value.match(/^([^\d]*)([\d.,]+)(.*)$/) : null
   const prefix = match ? match[1] : ''
   const numStr = match ? match[2].replace(/,/g, '') : ''
   const suffix = match ? match[3] : ''

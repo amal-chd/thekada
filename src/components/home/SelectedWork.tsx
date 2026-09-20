@@ -12,7 +12,8 @@ const projects = [
     description: 'Cloud-based POS, QR digital ordering, kitchen display routing, and recipe inventory management.', 
     color: '#FF6B2B', 
     categories: ['All', 'SaaS', 'Business Systems', 'Web'], 
-    liveProduct: '/products/kada-dine'
+    liveProduct: '/products/kada-dine',
+    logo: '/products/kada-dine-logo.png',
   },
   { 
     slug: 'sellrapp', 
@@ -22,7 +23,8 @@ const projects = [
     description: 'Zero-commission online storefront builder with instant UPI payments and WhatsApp order notifications.', 
     color: '#F59E0B', 
     categories: ['All', 'SaaS', 'E-commerce', 'Mobile', 'Web'], 
-    liveProduct: '/products/sellrapp'
+    liveProduct: '/products/sellrapp',
+    logo: '/products/sellrapp-logo.svg',
   },
   { 
     slug: 'kada-ledger', 
@@ -32,7 +34,8 @@ const projects = [
     description: 'Digital khata ledger for merchant credit tracking, automated WhatsApp payment reminders, and GST invoicing.', 
     color: '#10B981', 
     categories: ['All', 'SaaS', 'Mobile', 'Business Systems'], 
-    liveProduct: '/products/kada-ledger'
+    liveProduct: '/products/kada-ledger',
+    logo: '/products/kada-ledger-logo.svg',
   },
   { 
     slug: 'the-kada', 
@@ -55,16 +58,6 @@ const projects = [
     categories: ['All', 'SaaS', 'Web', 'Business Systems'],
     liveProduct: '/products/kada-stay',
     logo: '/products/kada-stay-logo.png',
-  },
-  { 
-    slug: 'devflow', 
-    name: 'DevFlow', 
-    industry: 'Agency Tools', 
-    type: 'SaaS · Work Management', 
-    description: 'Interactive client onboarding portals, project timeline milestones, and billable hour invoicing.', 
-    color: '#06B6D4', 
-    categories: ['All', 'SaaS', 'Web', 'Business Systems'], 
-    liveProduct: '/products/devflow'
   }
 ]
 
@@ -92,8 +85,8 @@ export default function SelectedWork() {
             onClick={() => setActiveTab(tab)}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-all ${
               activeTab === tab 
-                ? 'bg-[var(--ink)] text-white shadow-sm' 
-                : 'bg-[var(--bg-soft)] text-[var(--text-secondary)] hover:bg-[var(--bg-softer)] border border-[var(--border)]'
+                ? 'bg-slate-900 text-white shadow-sm' 
+                : 'bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-200'
             }`}
           >
             {tab}
@@ -106,42 +99,42 @@ export default function SelectedWork() {
         {filteredProjects.map((project, index) => (
           <Reveal key={project.name} delay={index * 0.05} className="h-full">
             <div 
-              className="group bg-white rounded-2xl border border-[var(--border)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col"
+              className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col min-h-0"
             >
-              <div className="h-1.5 w-full" style={{ backgroundColor: project.color }} />
+              <div className="h-1.5 w-full shrink-0" style={{ backgroundColor: project.color }} />
               
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-[var(--bg-soft)] text-[var(--text-secondary)] border border-[var(--border)]">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-slate-50 text-slate-500 border border-slate-200">
                     {project.industry}
                   </span>
-                  <span className="text-xs font-semibold text-[var(--text-muted)]">
+                  <span className="text-xs font-semibold text-slate-400">
                     {project.type}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[var(--ink)] mb-2 group-hover:text-[var(--blue)] transition-colors flex items-center gap-2">
+                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors flex items-center gap-2">
                   {'logo' in project && project.logo ? (
                     <img src={project.logo} alt="" className="w-8 h-8 rounded-lg object-cover shadow-sm" />
                   ) : null}
                   {project.name}
                 </h3>
 
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 flex-grow">
+                <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">
                   {project.description}
                 </p>
 
-                <div className="flex items-center justify-between pt-4 border-t border-[var(--border)] mt-auto text-sm">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200 mt-auto text-sm">
                   <Link 
                     to={`/work/${project.slug}`}
-                    className="inline-flex items-center text-[var(--blue)] font-semibold hover:underline"
+                    className="inline-flex items-center text-blue-600 font-semibold hover:underline"
                   >
                     Case study <ArrowRight size={15} className="ml-1 group-hover:translate-x-1 transition-transform" />
                   </Link>
 
                   <Link
                     to={project.liveProduct}
-                    className="inline-flex items-center text-xs font-medium text-[var(--text-muted)] hover:text-[var(--ink)]"
+                    className="inline-flex items-center text-xs font-medium text-slate-400 hover:text-slate-900"
                   >
                     Demo <ArrowUpRight size={13} className="ml-0.5" />
                   </Link>

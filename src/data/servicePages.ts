@@ -47,7 +47,7 @@ export const servicePages: Record<string, ServiceConfig> = {
     ],
     tools: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Expo', 'Firebase', 'Supabase'],
     outcomes: [{ value: 'iOS + Android', label: 'From one build' }, { value: '4.8★+', label: 'Store-quality UX' }],
-    related: [{ name: 'Lunoo', path: '/products/lunoo', color: '#EC4899' }, { name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }],
+    related: [{ name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }, { name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }],
     faqs: [
       { q: 'Native or cross-platform?', a: 'We default to cross-platform (React Native / Flutter) for speed and maintainability, and go fully native when a project needs maximum performance or deep platform features. We’ll recommend the right fit.' },
       { q: 'Do you publish to the App Store and Play Store?', a: 'Yes. We handle the full submission process for both stores, including assets, compliance, and release management.' },
@@ -72,7 +72,7 @@ export const servicePages: Record<string, ServiceConfig> = {
     ],
     tools: ['React', 'Next.js', 'Node.js', 'FastAPI', 'PostgreSQL', 'Supabase', 'Stripe', 'AWS'],
     outcomes: [{ value: 'MVP → scale', label: 'Full lifecycle' }, { value: 'RLS', label: 'Secure multi-tenant' }],
-    related: [{ name: 'DevFlow', path: '/products/devflow', color: '#06B6D4' }, { name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
+    related: [{ name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }, { name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
     faqs: [
       { q: 'Can you take us from idea to MVP?', a: 'Yes — that’s our sweet spot. We help validate, scope an MVP, build it, and then iterate based on real user feedback toward a scalable product.' },
       { q: 'How do you handle billing?', a: 'We integrate Stripe or Razorpay for subscriptions, trials, upgrades, and metered usage, with a clean admin layer to manage it all.' },
@@ -147,7 +147,7 @@ export const servicePages: Record<string, ServiceConfig> = {
     ],
     tools: ['Figma', 'Design tokens', 'Framer', 'Accessibility (WCAG)', 'Usability testing'],
     outcomes: [{ value: 'Research → UI', label: 'End-to-end design' }, { value: 'WCAG AA', label: 'Accessible by default' }],
-    related: [{ name: 'Lunoo', path: '/products/lunoo', color: '#EC4899' }, { name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }],
+    related: [{ name: 'Kada Stay', path: '/products/kada-stay', color: '#247CFF' }, { name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }],
     faqs: [
       { q: 'Do you only design, or build too?', a: 'Both. We can deliver design-only (handoff-ready Figma + specs) or design and build the product end to end — many clients choose the latter for a seamless result.' },
       { q: 'Can you redesign our existing product?', a: 'Yes. We audit your current experience, identify friction, and redesign for clarity, conversion, and consistency — without throwing away what works.' },
@@ -197,7 +197,7 @@ export const servicePages: Record<string, ServiceConfig> = {
     ],
     tools: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes', 'GitHub Actions', 'Terraform', 'Grafana'],
     outcomes: [{ value: '99.9%', label: 'Uptime target' }, { value: 'Push → live', label: 'Automated deploys' }],
-    related: [{ name: 'DevFlow', path: '/products/devflow', color: '#06B6D4' }],
+    related: [{ name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
     faqs: [
       { q: 'Which cloud providers do you use?', a: 'Primarily AWS and Google Cloud. We’ll recommend the right platform and services based on your needs and budget.' },
       { q: 'Can you fix our existing deployment setup?', a: 'Yes. We frequently take over fragile, manual setups and turn them into automated, monitored, reliable pipelines.' },
@@ -233,4 +233,23 @@ export const servicePages: Record<string, ServiceConfig> = {
   },
 }
 
+// Canonical service list (unique items for listings and navigation)
 export const serviceList = Object.values(servicePages)
+
+// URL Aliases to ensure legacy, conversational, and alternate links never 404
+servicePages['mobile-app-development'] = {
+  ...servicePages['mobile-development'],
+  slug: 'mobile-app-development',
+}
+servicePages['custom-software-development'] = {
+  ...servicePages['enterprise-software'],
+  slug: 'custom-software-development',
+  eyebrowLabel: 'Custom business software development',
+  title: { pre: 'Custom software built for', accent: 'how you run.' },
+}
+servicePages['ai-automation'] = {
+  ...servicePages['business-automation'],
+  slug: 'ai-automation',
+  eyebrowLabel: 'AI & intelligent process automation',
+  title: { pre: 'AI automation that', accent: 'removes busywork.' },
+}

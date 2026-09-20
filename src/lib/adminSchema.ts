@@ -45,26 +45,6 @@ export const PRODUCT_REGISTRY = [
     name: 'Kada Stay',
     domainCollections: ['propertyOwners', 'properties', 'bookings', 'guests', 'revenueReports'],
   },
-  {
-    id: 'devflow',
-    name: 'DevFlow',
-    domainCollections: ['freelancers', 'agencies', 'projects', 'clients'],
-  },
-  {
-    id: 'lunoo',
-    name: 'Lunoo',
-    domainCollections: ['users', 'habits', 'goals', 'premiumSubscriptions'],
-  },
-  {
-    id: 'parayu-ai',
-    name: 'Parayu AI',
-    domainCollections: ['users', 'speechSessions', 'aiUsage', 'billing', 'subscriptions'],
-  },
-  {
-    id: 'whichott',
-    name: 'WhichOTT',
-    domainCollections: ['users', 'watchlists', 'apiUsage', 'premiumMemberships'],
-  },
 ] as const
 
 export const DEPARTMENT_REGISTRY = [

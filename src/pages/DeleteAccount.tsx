@@ -11,10 +11,6 @@ const APPS_LIST = [
   { id: 'kada-stay', name: 'Kada Stay' },
   { id: 'sellrapp', name: 'SellrApp' },
   { id: 'kada-ledger', name: 'Kada Ledger' },
-  { id: 'devflow', name: 'DevFlow' },
-  { id: 'lunoo', name: 'Lunoo' },
-  { id: 'parayu-ai', name: 'Parayu AI' },
-  { id: 'whichott', name: 'WhichOTT' },
   { id: 'all-apps', name: 'All Ecosystem Accounts (Global Wipe)' },
 ]
 
@@ -183,7 +179,7 @@ export default function DeleteAccount() {
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   {[
-                    { title: 'Data Permanently Erased', color: '#EF4444', desc: 'Personal identifiers (Name, Email, Phone number, Profile photo), authentication credentials, device notification tokens, and all user-created content (e.g. Lunoo habit logs, Parayu AI speech sessions, Kada Dine order histories) are purged from active production servers within 30 days.' },
+                    { title: 'Data Permanently Erased', color: '#EF4444', desc: 'Personal identifiers (Name, Email, Phone number, Profile photo), authentication credentials, device notification tokens, and all user-created content (e.g. Kada Dine order histories, store catalogs, ledger entries) are purged from active production servers within 30 days.' },
                     { title: 'Statutory Retention Exceptions', color: '#F59E0B', desc: 'Under Indian financial laws (GST regulations) and accounting standards, transaction records, tax invoices, and payment receipts are retained securely in an encrypted, non-personally-identifiable archive for up to 7 years. These records cannot be used for marketing or active profiling.' },
                     { title: 'Anonymized Analytics', color: '#3B82F6', desc: 'Aggregated, fully de-identified statistical telemetry (e.g., total app sessions or generalized crash metrics) may remain in historical charts without any link to your personal identity.' },
                   ].map(item => (

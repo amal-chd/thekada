@@ -7,7 +7,7 @@ const timeline = [
   { year: '2023', title: 'Founded in Kannur, Kerala', desc: 'Started with one core vision: small, mid-sized, and growing businesses deserve the same quality of software that large tech giants take for granted.' },
   { year: '2024', title: 'First SaaS Platforms Ship', desc: 'Kada Dine and Kada Ledger launched — enabling merchants and restaurants to replace manual paper ledgers with automated, cloud-synced software.' },
   { year: '2024', title: 'Custom Software Practice Opens', desc: 'Alongside our internal SaaS products, we began partnering directly with companies on custom web apps, mobile apps, and business automation.' },
-  { year: '2025', title: 'Product Ecosystem Expands', desc: 'SellrApp, DevFlow, Kada Stay, and Lunoo join the lineup — establishing a versatile suite of tools covering retail, hospitality, agency ops, and wellness.' },
+  { year: '2025', title: 'Product Ecosystem Expands', desc: 'SellrApp and Kada Stay join the lineup — expanding our suite of business tools into retail and hospitality operations.' },
 ]
 
 const values = [
@@ -143,7 +143,7 @@ export default function About() {
                     { label: 'Founded', value: '2023 · Kannur, Kerala' },
                     { label: 'Legal Entity', value: 'The Kada Digital Ventures Pvt Ltd' },
                     { label: 'Business Model', value: 'SaaS Platforms & Custom Engineering' },
-                    { label: 'Live Products', value: '7 In-House Products' },
+                    { label: 'Live Products', value: '5 In-House Products' },
                     { label: 'Headquarters', value: 'Kannur, Kerala 670001, India' },
                     { label: 'Contact', value: 'hello@thekada.in' },
                   ].map((item) => (

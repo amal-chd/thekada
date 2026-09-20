@@ -8,8 +8,6 @@
 
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -82,10 +80,6 @@ button { font-family: inherit; }
   --blue-light: #EFF5FF;
   --blue-hover: #1D4ED8;
   --blue-glow: rgba(37, 99, 235, 0.16);
-  --trickly-blue: #2563EB;
-  --trickly-blue-light: #EFF5FF;
-  --trickly-blue-hover: #1D4ED8;
-  --trickly-blue-glow: rgba(37, 99, 235, 0.15);
 
   /* Product accents */
   --orange: #FF6B2B;  --orange-light: #FFF3EC;
@@ -318,12 +312,7 @@ button { font-family: inherit; }
   border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: var(--shadow-md);
 }
-.trickly-card {
-  background: #FFFFFF; border: 1px solid var(--border);
-  box-shadow: var(--shadow-md); border-radius: var(--radius-lg);
-  transition: all 0.3s var(--ease);
-}
-.trickly-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(37, 99, 235, 0.25); }
+
 
 .service-card {
   background: #FFFFFF; border: 1px solid var(--border);
@@ -592,7 +581,7 @@ button { font-family: inherit; }
   /* Prevent lists from going vertical on mobile, keeping them as a 2-column grid */
   .grid-responsive-2col {
     display: grid !important;
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.65rem !important;
   }
   .col-span-2-mobile {

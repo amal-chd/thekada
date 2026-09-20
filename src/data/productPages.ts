@@ -1,9 +1,8 @@
 import {
-  Utensils, BedDouble, Store, BookText, KanbanSquare, Sparkles,
+  Utensils, BedDouble, Store, BookText,
   Receipt, QrCode, MonitorSmartphone, Boxes, MessageSquare, Repeat,
   Workflow, Zap, Wallet, Truck, BarChart3, ShieldCheck, Building2,
-  Users, Calendar, PenTool, Clock, Target, CheckCircle2, Droplets, Moon, Lock,
-  ShoppingBag, Rocket, Palette, Code2, Hotel, Briefcase, Bike, MapPin, Star, Gift,
+  Users, ShoppingBag, Rocket, Hotel, Briefcase, Bike, MapPin, Star, Gift, Clock,
 } from 'lucide-react'
 import type { ProductConfig } from '../components/products/ProductLayout'
 
@@ -11,11 +10,12 @@ export const productPages: Record<string, ProductConfig> = {
   // ─────────────────────────── KADA DINE ───────────────────────────
   'kada-dine': {
     accent: '#FF6B2B', accentSoft: '#FFF3EC', gradientClass: 'gradient-text-orange',
+    logoSrc: '/products/kada-dine-logo.png',
     EyebrowIcon: Utensils, eyebrowLabel: 'Kada Dine · Restaurant POS',
     title: { pre: 'Restaurant POS that just', accent: 'works.' },
     subtitle: 'A cloud restaurant management system for cafés, QSRs, and food outlets — billing, QR table ordering, kitchen displays, and recipe-level inventory in one fast, reliable place.',
     primaryCta: { label: 'Start 7-day free trial', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    secondaryCta: { label: 'See our work', to: '/work' },
     stats: [
       { value: '7 days', label: 'Free trial, no card' },
       { value: '100%', label: 'GST-compliant reports' },
@@ -75,7 +75,7 @@ export const productPages: Record<string, ProductConfig> = {
     title: { pre: 'Guest services & bookings,', accent: 'beautifully digital.' },
     subtitle: 'A digital hospitality platform that replaces printed room books with app-less QR guest services — manage bookings, front-desk dispatch, and in-room ordering from one console.',
     primaryCta: { label: 'Book a demo', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    secondaryCta: { label: 'See our work', to: '/work' },
     stats: [
       { value: 'Instant', label: 'In-room QR setup' },
       { value: '+28%', label: 'Room-service revenue' },
@@ -128,11 +128,12 @@ export const productPages: Record<string, ProductConfig> = {
   // ─────────────────────────── SELLRAPP ───────────────────────────
   sellrapp: {
     accent: '#F59E0B', accentSoft: '#FFF8EA', gradientClass: 'gradient-text-amber',
+    logoSrc: '/products/sellrapp-logo.svg',
     EyebrowIcon: Store, eyebrowLabel: 'SellrApp · Online storefronts',
     title: { pre: 'Your shop,', accent: 'online in minutes.' },
     subtitle: 'Empower retail shops and local brands to launch a professional online storefront, accept UPI payments, and sell directly over WhatsApp — no code, and no order commission.',
     primaryCta: { label: 'Create your store', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    secondaryCta: { label: 'See our work', to: '/work' },
     stats: [
       { value: '2 min', label: 'Store setup speed' },
       { value: '0%', label: 'Order commission' },
@@ -185,11 +186,12 @@ export const productPages: Record<string, ProductConfig> = {
   // ─────────────────────────── KADA LEDGER ───────────────────────────
   'kada-ledger': {
     accent: '#10B981', accentSoft: '#E9FBF4', gradientClass: 'gradient-text-green',
+    logoSrc: '/products/kada-ledger-logo.svg',
     EyebrowIcon: BookText, eyebrowLabel: 'Kada Ledger · Digital khata',
     title: { pre: 'The digital khata that', accent: 'collects for you.' },
     subtitle: 'Replace paper khata books with secure digital records, one-tap GST invoices, and automated WhatsApp reminders that chase your dues so you don’t have to.',
     primaryCta: { label: 'Get started free', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    secondaryCta: { label: 'See our work', to: '/work' },
     stats: [
       { value: '10,000+', label: 'Active merchants' },
       { value: '₹50Cr+', label: 'Transactions tracked' },
@@ -239,119 +241,6 @@ export const productPages: Record<string, ProductConfig> = {
     ctaSub: 'Join 10,000+ merchants tracking credit, managing staff, and collecting dues faster with Kada Ledger.',
   },
 
-  // ─────────────────────────── DEVFLOW ───────────────────────────
-  devflow: {
-    accent: '#06B6D4', accentSoft: '#ECFCFF', gradientClass: 'gradient-text-cyan',
-    EyebrowIcon: KanbanSquare, eyebrowLabel: 'DevFlow · Agency workspace',
-    title: { pre: 'Run your agency from', accent: 'one workspace.' },
-    subtitle: 'Onboard clients, track milestones, log billable hours, and send invoices from a single workspace built for freelancers and creative agencies.',
-    primaryCta: { label: 'Start 14-day trial', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
-    stats: [
-      { value: '14 days', label: 'Risk-free trial' },
-      { value: '20+', label: 'Integrations' },
-      { value: '4.7★', label: 'Average rating' },
-      { value: 'Unlimited', label: 'Clients & tasks' },
-    ],
-    preview: {
-      appLabel: 'DevFlow · Workspace',
-      kpis: [{ label: 'Active projects', value: '14' }, { label: 'Billable this wk', value: '38h', delta: '+5h' }],
-      rows: [
-        { label: 'Brand redesign', sub: 'Milestone 2 of 4', value: '60%', tag: 'On track' },
-        { label: 'Invoice #INV-31', sub: 'Acme Co · due 5d', value: '₹85,000', tag: 'Sent' },
-        { label: 'Contract signed', sub: 'New client onboarded', value: '✓', tag: 'Signed' },
-      ],
-    },
-    featuresHeading: 'From kickoff to paid invoice.',
-    featuresSub: 'Stop juggling five tools. DevFlow brings clients, projects, time, and billing into one calm place.',
-    features: [
-      { Icon: Users, title: 'Client portals', desc: 'White-labeled portals where clients view milestones, sign contracts, upload assets, and review invoices.' },
-      { Icon: Calendar, title: 'Milestones & Gantt', desc: 'Map timelines, set dependencies, and track milestones on beautiful interactive calendars.' },
-      { Icon: PenTool, title: 'Proposals & contracts', desc: 'Draft proposals and binding contracts, and collect digital signatures in a few clicks.' },
-      { Icon: Clock, title: 'Time tracking', desc: 'Log billable hours against tasks and generate timesheets that flow straight into invoices.' },
-      { Icon: Receipt, title: 'Automated invoicing', desc: 'Schedule recurring invoices, apply tax splits, and auto-chase overdue payments.' },
-      { Icon: MessageSquare, title: 'Client chat & comments', desc: 'Keep feedback, revisions, and notes in context, right inside each project space.' },
-    ],
-    audiencesHeading: 'Built for client-services teams.',
-    audiences: [
-      { Icon: Users, label: 'Freelancers', desc: 'Look agency-grade and get paid on time.' },
-      { Icon: Palette, label: 'Design studios', desc: 'Manage creative projects and approvals.' },
-      { Icon: Code2, label: 'Dev agencies', desc: 'Track sprints, scope, and billing in one view.' },
-      { Icon: BarChart3, label: 'Marketing teams', desc: 'Coordinate retainers, deliverables, and reports.' },
-    ],
-    highlight: {
-      heading: 'Look bigger. Get paid faster.',
-      text: 'DevFlow gives small teams an enterprise-grade client experience — polished portals, clear milestones, and invoices that don’t slip through the cracks.',
-      points: ['Professional client portals out of the box', 'Time → invoice in a couple of clicks', 'Automated reminders for overdue payments', 'Everything for a project in one place'],
-    },
-    faqs: [
-      { q: 'What is DevFlow?', a: 'DevFlow is an all-in-one client, project, and workflow management platform for freelancers, creators, and agencies. It organises communication, milestones, time, and billing in one dashboard.' },
-      { q: 'Can clients log in to track progress?', a: 'Yes. DevFlow provides a secure, white-labeled client portal where clients view milestones, sign contracts, upload assets, and review invoices — without seeing your internal workspace.' },
-      { q: 'How does invoicing work?', a: 'Create invoices linked to project milestones. Invoices support multi-currency and tax, and send automated emails with Stripe/UPI payment links.' },
-      { q: 'Is there a trial period?', a: 'Yes. DevFlow offers a 14-day free trial on all plans with no credit card required. Upgrade, downgrade, or cancel anytime.' },
-    ],
-    faqTitle: 'Everything agencies ask.',
-    faqSubtitle: 'Common questions from freelancers and studios using DevFlow.',
-    ctaTitle: 'Bring your whole agency into one flow.',
-    ctaSub: 'Start a 14-day free trial — onboard clients, track work, and get paid, all in one workspace.',
-  },
-
-  // ─────────────────────────── LUNOO ───────────────────────────
-  lunoo: {
-    accent: '#EC4899', accentSoft: '#FDF0F7', gradientClass: 'gradient-text-pink',
-    EyebrowIcon: Sparkles, eyebrowLabel: 'Lunoo · Personal productivity',
-    title: { pre: 'Your day,', accent: 'in balance.' },
-    subtitle: 'An all-in-one personal organizer — habits, budgets, tasks, sleep, and hydration — designed privacy-first to bring calm structure to your daily routine.',
-    primaryCta: { label: 'Get the app', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
-    stats: [
-      { value: '4.9★', label: 'App Store rating' },
-      { value: 'iOS + Android', label: 'Available everywhere' },
-      { value: '100K+', label: 'Active daily users' },
-      { value: '100%', label: 'On-device privacy' },
-    ],
-    preview: {
-      appLabel: 'Lunoo',
-      kpis: [{ label: 'Habits done', value: '6 / 8' }, { label: 'Streak', value: '23 days', delta: 'best yet' }],
-      rows: [
-        { label: 'Water intake', sub: '6 of 8 glasses', value: '75%' },
-        { label: 'Sleep', sub: 'Last night', value: '7h 40m', tag: 'Good' },
-        { label: 'Budget left', sub: 'This month', value: '₹14,200' },
-      ],
-    },
-    featuresHeading: 'One app for a healthier, calmer routine.',
-    featuresSub: 'Habits, money, tasks, sleep, and water — gently tracked in a single, beautiful, private dashboard.',
-    features: [
-      { Icon: Target, title: 'Habit streak tracker', desc: 'Build good routines and break bad ones with heatmaps, calendars, and smart goal metrics.' },
-      { Icon: Wallet, title: 'Finance & budgets', desc: 'Log expenses, categorise spending, set savings goals, and see clear monthly breakdowns.' },
-      { Icon: CheckCircle2, title: 'Tasks & checklists', desc: 'Organise your day with simple tasks, priorities, and recurring reminders.' },
-      { Icon: Droplets, title: 'Hydration alerts', desc: 'Set a daily water target, log intake in a tap, and get gentle lock-screen reminders.' },
-      { Icon: Moon, title: 'Sleep quality log', desc: 'Track sleep duration and consistency, and optimise your wake-up timing over time.' },
-      { Icon: Lock, title: 'Privacy-first by design', desc: 'Offline-first, locally-encrypted storage. No trackers, no ad logs, no data selling — ever.' },
-    ],
-    audiencesHeading: 'For anyone building a better routine.',
-    audiences: [
-      { Icon: BookText, label: 'Students', desc: 'Balance study, habits, and budgets in one place.' },
-      { Icon: Briefcase, label: 'Professionals', desc: 'Stay on top of tasks, money, and wellbeing.' },
-      { Icon: Target, label: 'Habit builders', desc: 'Anyone serious about consistency and balance.' },
-    ],
-    highlight: {
-      heading: 'All your daily tracking, finally in one place.',
-      text: 'No more juggling five apps for habits, money, and health. Lunoo keeps it together — and keeps it private, with everything stored securely on your own device by default.',
-      points: ['Habits, finance, tasks, sleep & water in one app', '100% local, offline-first privacy', 'Optional encrypted multi-device sync', 'Beautiful, distraction-free design'],
-    },
-    faqs: [
-      { q: 'What is Lunoo?', a: 'Lunoo is a personal productivity app that brings balance to your routine. It combines habit tracking, budget logging, daily tasks, water reminders, and sleep analytics in one dashboard.' },
-      { q: 'Does Lunoo store my data on external servers?', a: 'No. By default Lunoo is offline-first and stores your habits, schedules, and expenses locally on your device.' },
-      { q: 'What platforms is Lunoo on?', a: 'Lunoo is available on the iOS App Store and Google Play, and is fully responsive on tablets.' },
-      { q: 'Can I sync across devices?', a: 'Yes. If you choose to enable it, Lunoo offers optional end-to-end encrypted backup to sync data across your devices securely.' },
-    ],
-    faqTitle: 'Frequently asked questions.',
-    faqSubtitle: 'Everything you need to know about the Lunoo app.',
-    ctaTitle: 'Take control of your day.',
-    ctaSub: 'Download Lunoo on iOS or Android and bring balance back to your routine — privately.',
-  },
-
   // ─────────────────────────── THE KADA ───────────────────────────
   'the-kada': {
     accent: '#2563EB', accentSoft: '#EFF5FF', gradientClass: 'gradient-text-blue',
@@ -360,7 +249,7 @@ export const productPages: Record<string, ProductConfig> = {
     title: { pre: 'Your favourite food,', accent: 'delivered fast.' },
     subtitle: 'A hyperlocal food delivery and commerce platform connecting customers with nearby restaurants, cafes, and local food vendors — with real-time tracking, smart recommendations, and seamless payments.',
     primaryCta: { label: 'Download the app', to: '/contact' },
-    secondaryCta: { label: 'See the ecosystem', to: '/ecosystem' },
+    secondaryCta: { label: 'See our work', to: '/work' },
     stats: [
       { value: '<30 min', label: 'Average delivery time' },
       { value: '500+', label: 'Restaurant partners' },

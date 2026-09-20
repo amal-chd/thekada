@@ -71,7 +71,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
               </h1>
               <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem', color: '#9CA3AF' }}>{config.subtitle}</p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Button to="/request-proposal" accent={a} size="lg" className="btn-glow" style={{ '--glow-bg': a } as React.CSSProperties}>Request a proposal <ArrowUpRight size={17} /></Button>
+                <Button to="/start-project" accent={a} size="lg" className="btn-glow" style={{ '--glow-bg': a } as React.CSSProperties}>Request a proposal <ArrowUpRight size={17} /></Button>
                 <Button to="/services" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.2)' }}>All services</Button>
               </div>
             </motion.div>
@@ -275,7 +275,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
         subtitle={config.ctaSub}
         accent={a}
         actions={<>
-          <Button to="/request-proposal" variant="white" size="lg" style={{ background: '#fff', color: a }}>Request a proposal <ArrowUpRight size={17} /></Button>
+          <Button to="/start-project" variant="white" size="lg" style={{ background: '#fff', color: a }}>Request a proposal <ArrowUpRight size={17} /></Button>
           <Button to="/services" variant="secondary" size="lg" style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Explore all services</Button>
         </>}
       />
@@ -380,10 +380,10 @@ function ServiceSandbox({ slug, accent }: { slug: string; accent: string }) {
   // 2. Mobile Development Sandbox
   if (slug === 'mobile-development') {
     const [pushMessage, setPushMessage] = useState<string | null>(null)
-    const [selectedApp, setSelectedApp] = useState<'lunoo' | 'ledger'>('lunoo')
+    const [selectedApp, setSelectedApp] = useState<'kada' | 'ledger'>('kada')
 
     const triggerPush = () => {
-      setPushMessage(selectedApp === 'lunoo' ? 'Lunoo: Your daily sleep tracker audit is complete!' : 'Ledger: Customer Paragon Cafe paid invoice ₹14,500.')
+      setPushMessage(selectedApp === 'kada' ? 'The Kada: Your order from Paragon Cafe is on the way!' : 'Ledger: Customer Paragon Cafe paid invoice ₹14,500.')
       setTimeout(() => setPushMessage(null), 3500)
     }
 
@@ -435,16 +435,16 @@ function ServiceSandbox({ slug, accent }: { slug: string; accent: string }) {
             {/* Screen content */}
             <div style={{ padding: '1.25rem 0.85rem', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem' }}>
-                <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#FFF' }}>{selectedApp === 'lunoo' ? 'Lunoo Tracker' : 'Kada Ledger'}</span>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: selectedApp === 'lunoo' ? '#EC4899' : '#10B981' }} />
+                <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#FFF' }}>{selectedApp === 'kada' ? 'The Kada App' : 'Kada Ledger'}</span>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: selectedApp === 'kada' ? '#2563EB' : '#10B981' }} />
               </div>
 
               <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: '0.65rem', border: '1px solid rgba(255,255,255,0.05)', textAlign: 'center' }}>
-                {selectedApp === 'lunoo' ? (
+                {selectedApp === 'kada' ? (
                   <>
-                    <div style={{ fontSize: '0.45rem', color: '#9CA3AF' }}>Water Goal Hydration</div>
-                    <div style={{ fontSize: '0.98rem', fontWeight: 850, color: '#FFF', margin: '0.2rem 0' }}>1,800 ml</div>
-                    <div style={{ fontSize: '0.42rem', color: '#EC4899' }}>90% of Daily Target</div>
+                    <div style={{ fontSize: '0.45rem', color: '#9CA3AF' }}>Live Delivery Dispatch</div>
+                    <div style={{ fontSize: '0.98rem', fontWeight: 850, color: '#FFF', margin: '0.2rem 0' }}>Order #4128</div>
+                    <div style={{ fontSize: '0.42rem', color: '#38BDF8' }}>Rider arriving in 12 mins</div>
                   </>
                 ) : (
                   <>
@@ -471,8 +471,8 @@ function ServiceSandbox({ slug, accent }: { slug: string; accent: string }) {
             Toggle companion applications and simulate a direct push notification alert trigger. We deploy clean cross-platform React Native code to App & Play Stores.
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-            <button onClick={() => setSelectedApp('lunoo')} style={{ background: selectedApp === 'lunoo' ? '#EC489920' : 'rgba(0,0,0,0.03)', border: `1px solid ${selectedApp === 'lunoo' ? '#EC489950' : 'rgba(0,0,0,0.06)'}`, padding: '0.55rem 0.85rem', borderRadius: 10, fontSize: '0.8rem', fontWeight: 700, color: selectedApp === 'lunoo' ? '#EC4899' : 'inherit', cursor: 'pointer' }}>
-              Load Lunoo UI
+            <button onClick={() => setSelectedApp('kada')} style={{ background: selectedApp === 'kada' ? '#2563EB20' : 'rgba(0,0,0,0.03)', border: `1px solid ${selectedApp === 'kada' ? '#2563EB50' : 'rgba(0,0,0,0.06)'}`, padding: '0.55rem 0.85rem', borderRadius: 10, fontSize: '0.8rem', fontWeight: 700, color: selectedApp === 'kada' ? '#2563EB' : 'inherit', cursor: 'pointer' }}>
+              Load The Kada UI
             </button>
             <button onClick={() => setSelectedApp('ledger')} style={{ background: selectedApp === 'ledger' ? '#10B98120' : 'rgba(0,0,0,0.03)', border: `1px solid ${selectedApp === 'ledger' ? '#10B98150' : 'rgba(0,0,0,0.06)'}`, padding: '0.55rem 0.85rem', borderRadius: 10, fontSize: '0.8rem', fontWeight: 700, color: selectedApp === 'ledger' ? '#10B981' : 'inherit', cursor: 'pointer' }}>
               Load Ledger UI

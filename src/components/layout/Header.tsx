@@ -7,7 +7,6 @@ import Logo from './Logo'
 const navLinks = [
   { label: 'Services', path: '/services' },
   { label: 'Work', path: '/work' },
-  { label: 'Products', path: '/products' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ]
@@ -36,20 +35,27 @@ export default function Header() {
   }, [mobileOpen])
 
   const path = location.pathname.replace(/\/$/, '')
-  // Only /services/:slug has a dark hero section (#030712). /services itself has a white hero.
-  const isDarkHero = path.startsWith('/services/') && path !== '/services' && !scrolled && !mobileOpen
+  // Dark hero on service details, and fully dark theme on internship portal
+  const isDarkPage = path === '/careers/internship'
+  const isDarkHero = ((path.startsWith('/services/') && path !== '/services') || isDarkPage) && !scrolled && !mobileOpen
 
   const headerBg = isDarkHero
     ? 'transparent'
-    : (mobileOpen ? '#FFFFFF' : (scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.85)'))
+    : (mobileOpen 
+        ? (isDarkPage ? '#030712' : '#FFFFFF') 
+        : (isDarkPage 
+            ? (scrolled ? 'rgba(3,7,18,0.92)' : 'rgba(3,7,18,0.85)')
+            : (scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.85)')))
 
   const headerBorder = isDarkHero
     ? 'transparent'
-    : (scrolled || mobileOpen ? 'rgba(15,35,75,0.08)' : 'transparent')
+    : (isDarkPage
+        ? (scrolled || mobileOpen ? 'rgba(255,255,255,0.08)' : 'transparent')
+        : (scrolled || mobileOpen ? 'rgba(15,35,75,0.08)' : 'transparent'))
 
-  const logoVariant = isDarkHero ? 'light' : 'dark'
-  const linkColor = isDarkHero ? 'rgba(255,255,255,0.85)' : '#334155'
-  const linkHoverColor = isDarkHero ? '#FFFFFF' : '#0B1B33'
+  const logoVariant = (isDarkHero || isDarkPage) ? 'light' : 'dark'
+  const linkColor = (isDarkHero || isDarkPage) ? 'rgba(255,255,255,0.85)' : '#334155'
+  const linkHoverColor = (isDarkHero || isDarkPage) ? '#FFFFFF' : '#0B1B33'
 
   return (
     <header
@@ -82,8 +88,7 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav
-          style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
-          className="hidden-mobile"
+          className="hidden md:flex items-center gap-1.5"
         >
           {navLinks.map((item) => {
             const isActive = item.path === '/' 
@@ -143,19 +148,13 @@ export default function Header() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="hidden-desktop"
+          className="flex md:hidden items-center justify-center w-11 h-11 rounded-xl transition-colors"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           style={{
-            width: 44,
-            height: 44,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            color: isDarkHero ? '#FFFFFF' : '#0B1B33',
-            borderRadius: '12px',
+            color: (isDarkHero || isDarkPage) ? '#FFFFFF' : '#0B1B33',
           }}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -172,11 +171,11 @@ export default function Header() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             style={{
               overflow: 'hidden',
-              background: '#FFFFFF',
-              borderTop: '1px solid var(--border)',
+              background: isDarkPage ? '#030712' : '#FFFFFF',
+              borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)',
               boxShadow: '0 12px 30px rgba(11,27,51,0.1)',
             }}
-            className="hidden-desktop"
+            className="md:hidden"
           >
             <nav
               style={{
@@ -202,8 +201,12 @@ export default function Header() {
                       borderRadius: '12px',
                       fontSize: '1rem',
                       fontWeight: isActive ? 700 : 550,
-                      color: isActive ? 'var(--blue)' : 'var(--ink)',
-                      background: isActive ? 'var(--blue-light)' : 'transparent',
+                      color: isActive 
+                        ? (isDarkPage ? '#60A5FA' : 'var(--blue)') 
+                        : (isDarkPage ? 'rgba(255,255,255,0.9)' : 'var(--ink)'),
+                      background: isActive 
+                        ? (isDarkPage ? 'rgba(59,130,246,0.15)' : 'var(--blue-light)') 
+                        : 'transparent',
                       textDecoration: 'none',
                     }}
                   >

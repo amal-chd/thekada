@@ -14,7 +14,8 @@ const WORK_ITEMS = [
     description: 'Cloud POS, QR contactless ordering, kitchen display routing, and recipe inventory management platform.', 
     color: '#FF6B2B', 
     categories: ['All', 'SaaS', 'Business Systems', 'Web'],
-    liveProduct: '/products/kada-dine'
+    liveProduct: '/products/kada-dine',
+    logo: '/products/kada-dine-logo.png',
   },
   { 
     slug: 'sellrapp', 
@@ -24,7 +25,8 @@ const WORK_ITEMS = [
     description: 'Zero-commission online storefront builder with instant UPI payments and WhatsApp order commerce.', 
     color: '#F59E0B', 
     categories: ['All', 'SaaS', 'E-commerce', 'Web', 'Mobile'],
-    liveProduct: '/products/sellrapp'
+    liveProduct: '/products/sellrapp',
+    logo: '/products/sellrapp-logo.svg',
   },
   { 
     slug: 'kada-ledger', 
@@ -34,13 +36,14 @@ const WORK_ITEMS = [
     description: 'Digital khata ledger for merchant credit tracking, automated WhatsApp payment reminders, and GST invoicing.', 
     color: '#10B981', 
     categories: ['All', 'SaaS', 'Mobile', 'Business Systems'],
-    liveProduct: '/products/kada-ledger'
+    liveProduct: '/products/kada-ledger',
+    logo: '/products/kada-ledger-logo.svg',
   },
   { 
     slug: 'the-kada', 
     name: 'The Kada', 
     industry: 'Hyperlocal Commerce', 
-    type: 'Mobile · Web Marketplace', 
+    type: 'Mobile · Web Platform', 
     description: 'Hyperlocal food ordering and merchant delivery platform with live GPS dispatch and digital payments.', 
     color: '#2563EB', 
     categories: ['All', 'Web', 'Mobile'],
@@ -50,33 +53,13 @@ const WORK_ITEMS = [
   { 
     slug: 'kada-stay', 
     name: 'Kada Stay', 
-    industry: 'Hospitality & Hotel PMS', 
-    type: 'SaaS · Guest Management', 
-    description: 'App-less QR guest room service portal, housekeeping task dispatcher, and hotel property operations.', 
+    industry: 'Hospitality', 
+    type: 'SaaS · Guest PMS', 
+    description: 'App-less QR guest room service portal, housekeeping dispatcher, and hotel property operations.', 
     color: '#247CFF', 
     categories: ['All', 'SaaS', 'Web', 'Business Systems'],
     liveProduct: '/products/kada-stay',
     logo: '/products/kada-stay-logo.png',
-  },
-  { 
-    slug: 'devflow', 
-    name: 'DevFlow', 
-    industry: 'Agency & Work Management', 
-    type: 'SaaS · Client Portals', 
-    description: 'Interactive client onboarding portals, project timeline milestones, and billable hour invoicing for teams.', 
-    color: '#06B6D4', 
-    categories: ['All', 'SaaS', 'Web', 'Business Systems'],
-    liveProduct: '/products/devflow'
-  },
-  { 
-    slug: 'lunoo', 
-    name: 'Lunoo', 
-    industry: 'Consumer Apps & Wellness', 
-    type: 'Mobile · Productivity', 
-    description: 'Personal habit streak tracking, expense budgeting, and daily organizer built for iOS and Android.', 
-    color: '#EC4899', 
-    categories: ['All', 'Mobile'],
-    liveProduct: '/products/lunoo'
   }
 ]
 
@@ -120,12 +103,12 @@ export default function Work() {
       <Section bg="soft" size="default" bordered>
         {/* Category Filters */}
         <Reveal>
-          <div className="flex flex-wrap gap-2 mb-10 -mt-2">
+          <div className="flex overflow-x-auto pb-3 gap-2 justify-start sm:justify-center mb-10 -mt-2">
             {CATEGORIES.map(category => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
                   activeCategory === category
                     ? 'bg-[var(--ink)] text-white shadow-sm'
                     : 'bg-white text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--ink)] hover:text-[var(--ink)]'

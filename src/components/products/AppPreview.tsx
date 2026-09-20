@@ -36,8 +36,7 @@ export default function AppPreview({ accent, preview }: { accent: string; previe
   const isDine = preview.appLabel.toLowerCase().includes('dine')
   const isSellr = preview.appLabel.toLowerCase().includes('sellr')
   const isLedger = preview.appLabel.toLowerCase().includes('ledger')
-  const isDevFlow = preview.appLabel.toLowerCase().includes('devflow')
-  const isLunoo = preview.appLabel.toLowerCase().includes('lunoo')
+  const isStay = preview.appLabel.toLowerCase().includes('stay')
   const isTheKada = preview.appLabel.toLowerCase().includes('the kada') || preview.appLabel.toLowerCase().includes('delivery')
 
   const [state, setState] = useState(() => ({
@@ -51,12 +50,7 @@ export default function AppPreview({ accent, preview }: { accent: string; previe
       kurtaInStock: true,
       ledgerCollect: 184500,
       ledgerCustomers: 126,
-      devflowProjects: 14,
-      devflowBillable: 38,
-      devflowProgress: 60,
-      lunooStreak: 23,
-      lunooHabits: 6,
-      lunooWater: 75,
+      stayRequests: 47,
       deliveryStep: 2,
     }
   }))
@@ -74,12 +68,7 @@ export default function AppPreview({ accent, preview }: { accent: string; previe
         kurtaInStock: true,
         ledgerCollect: 184500,
         ledgerCustomers: 126,
-        devflowProjects: 14,
-        devflowBillable: 38,
-        devflowProgress: 60,
-        lunooStreak: 23,
-        lunooHabits: 6,
-        lunooWater: 75,
+        stayRequests: 47,
         deliveryStep: 2,
       }
     })
@@ -322,78 +311,37 @@ export default function AppPreview({ accent, preview }: { accent: string; previe
             </div>
           )}
 
-          {isDevFlow && (
+          {isStay && (
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={buttonStyle(accent)}
                 onClick={() => {
                   setState(prev => {
-                    const newHours = prev.extra.devflowBillable + 4
+                    const newReqs = prev.extra.stayRequests + 1
                     return {
                       ...prev,
                       kpis: [
-                        { label: 'Active projects', value: String(prev.extra.devflowProjects) },
-                        { label: 'Billable this wk', value: `${newHours}h`, delta: '+9h' }
+                        prev.kpis[0],
+                        { label: 'Requests today', value: String(newReqs), delta: '+1' }
                       ],
                       rows: [
-                        { label: 'Consulting call', sub: '4h logged · Client approval', value: '₹8,000', tag: 'Logged' },
+                        { label: 'Room 402 · Housekeeping', sub: 'Extra linen & towels', value: '—', tag: 'Dispatched' },
                         prev.rows[0],
                         prev.rows[1]
                       ],
-                      extra: { ...prev.extra, devflowBillable: newHours }
+                      extra: { ...prev.extra, stayRequests: newReqs }
                     }
                   })
                 }}>
-                Log 4h Billable (₹8,000)
+                + Dispatch Housekeeping
               </motion.button>
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={buttonStyle(accent)}
                 onClick={() => {
-                  setState(prev => {
-                    const newProg = prev.extra.devflowProgress === 100 ? 60 : prev.extra.devflowProgress + 20
-                    return {
-                      ...prev,
-                      rows: prev.rows.map(r => r.label.includes('Brand redesign') ? { ...r, value: `${newProg}%`, tag: newProg === 100 ? 'Complete' : 'On track' } : r),
-                      extra: { ...prev.extra, devflowProgress: newProg }
-                    }
-                  })
+                  setState(prev => ({
+                    ...prev,
+                    rows: prev.rows.map(r => r.label.includes('118') ? { ...r, tag: 'Completed' } : r)
+                  }))
                 }}>
-                {state.extra.devflowProgress === 100 ? 'Reset Progress' : 'Advance Project +20%'}
-              </motion.button>
-            </div>
-          )}
-
-          {isLunoo && (
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={buttonStyle(accent)}
-                onClick={() => {
-                  setState(prev => {
-                    const nextWater = prev.extra.lunooWater >= 100 ? 75 : prev.extra.lunooWater + 12.5
-                    const glasses = Math.round((nextWater / 100) * 8)
-                    return {
-                      ...prev,
-                      rows: prev.rows.map(r => r.label.includes('Water') ? { ...r, sub: `${glasses} of 8 glasses`, value: `${nextWater}%` } : r),
-                      extra: { ...prev.extra, lunooWater: nextWater }
-                    }
-                  })
-                }}>
-                + Log 1 Glass Water
-              </motion.button>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={buttonStyle(accent)}
-                onClick={() => {
-                  setState(prev => {
-                    const isCompleted = prev.extra.lunooHabits === 8
-                    const newHabits = isCompleted ? 6 : 8
-                    const newStreak = isCompleted ? prev.extra.lunooStreak : prev.extra.lunooStreak + 1
-                    return {
-                      ...prev,
-                      kpis: [
-                        { label: 'Habits done', value: `${newHabits} / 8` },
-                        { label: 'Streak', value: `${newStreak} days`, delta: 'best yet' }
-                      ],
-                      extra: { ...prev.extra, lunooHabits: newHabits, lunooStreak: newStreak }
-                    }
-                  })
-                }}>
-                {state.extra.lunooHabits === 8 ? 'Reset Habits' : 'Complete Daily Habits'}
+                Complete Room 118
               </motion.button>
             </div>
           )}

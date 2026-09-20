@@ -5,7 +5,7 @@ import { Button } from '../components/ui'
 
 const quickLinks = [
   { label: 'Home', path: '/', color: '#2563EB' },
-  { label: 'Products', path: '/ecosystem', color: '#7C6AF7' },
+  { label: 'Work', path: '/work', color: '#7C6AF7' },
   { label: 'Services', path: '/services', color: '#10B981' },
   { label: 'About', path: '/about', color: '#F59E0B' },
   { label: 'Contact', path: '/contact', color: '#EC4899' },

@@ -21,8 +21,6 @@ const KadaDine = lazy(() => import('./pages/products/KadaDine'))
 const KadaStay = lazy(() => import('./pages/products/KadaStay'))
 const KadaLedger = lazy(() => import('./pages/products/KadaLedger'))
 const SellrApp = lazy(() => import('./pages/products/SellrApp'))
-const DevFlow = lazy(() => import('./pages/products/DevFlow'))
-const Lunoo = lazy(() => import('./pages/products/Lunoo'))
 const TheKada = lazy(() => import('./pages/products/TheKada'))
 
 // Compliance & Legal
@@ -126,8 +124,6 @@ function AppContent() {
           <Route path="/products/kada-stay" element={<KadaStay />} />
           <Route path="/products/kada-ledger" element={<KadaLedger />} />
           <Route path="/products/sellrapp" element={<SellrApp />} />
-          <Route path="/products/devflow" element={<DevFlow />} />
-          <Route path="/products/lunoo" element={<Lunoo />} />
           <Route path="/products/the-kada" element={<TheKada />} />
 
           {/* Compliance & Legal */}
@@ -144,9 +140,13 @@ function AppContent() {
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/internship" element={<InternshipPortal />} />
 
-          {/* Redirects from old routes */}
-          <Route path="/ecosystem" element={<Navigate to="/products" replace />} />
+          {/* Redirects from old/alternate routes */}
+          <Route path="/ecosystem" element={<Navigate to="/work" replace />} />
           <Route path="/request-proposal" element={<Navigate to="/start-project" replace />} />
+          <Route path="/proposal" element={<Navigate to="/start-project" replace />} />
+          <Route path="/quote" element={<Navigate to="/start-project" replace />} />
+          <Route path="/internship" element={<Navigate to="/careers/internship" replace />} />
+          <Route path="/internships" element={<Navigate to="/careers/internship" replace />} />
           <Route path="/technology" element={<Navigate to="/services" replace />} />
           <Route path="/insights" element={<Navigate to="/" replace />} />
           <Route path="/press" element={<Navigate to="/about" replace />} />
