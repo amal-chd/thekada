@@ -1172,3 +1172,43 @@ main img { height:auto; }
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important; }
 }
+
+
+/* Editorial rhythm for inner pages and shared sections */
+.section-pad > .container-width, .section-pad > .container, .section-pad > .container-wide,
+.section-pad-sm > .container-width, .section-pad-sm > .container, .section-pad-sm > .container-wide { position:relative; }
+main .eyebrow { border-radius:999px; letter-spacing:.1em; }
+main .display-1 { letter-spacing:-.055em; }
+main .display-2 { letter-spacing:-.05em; }
+main .heading { letter-spacing:-.04em; }
+main .tag { border-radius:999px; }
+main .btn-primary, main .btn-secondary, main .btn-dark, main .btn-ghost {
+  border-radius:12px;
+  transition:transform .22s ease, box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
+}
+main .btn-primary:hover, main .btn-secondary:hover, main .btn-dark:hover { transform:translateY(-2px); }
+main .btn-primary { box-shadow:0 8px 20px rgba(37,99,235,.16); }
+main .btn-primary:hover { box-shadow:0 12px 26px rgba(37,99,235,.23); }
+main .rounded-2xl.border, main .rounded-3xl.border { border-color:rgba(15,35,75,.09); }
+main .group.flex.flex-col.h-full { border-radius:22px; padding:clamp(1.25rem,2.4vw,2rem); transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease; }
+main .group.flex.flex-col.h-full:hover { transform:translateY(-5px); box-shadow:0 22px 55px rgba(11,27,51,.09); }
+main form input, main form select, main form textarea {
+  border-radius:12px!important;
+  border-color:#dfe5ef!important;
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+main form input:focus, main form select:focus, main form textarea:focus {
+  border-color:#5577ff!important;
+  box-shadow:0 0 0 4px rgba(36,76,255,.09)!important;
+  outline:none;
+}
+main form label { color:#25334c; }
+@media (max-width:767px) {
+  .section-pad { padding-top:3.4rem; padding-bottom:3.4rem; }
+  .section-pad-sm { padding-top:2.8rem; padding-bottom:2.8rem; }
+  main .display-1 { font-size:clamp(2.65rem,11vw,4rem); }
+  main .display-2 { font-size:clamp(2rem,8.5vw,3rem); }
+  main .grid { min-width:0; }
+  main .overflow-x-auto { scrollbar-width:none; }
+  main .overflow-x-auto::-webkit-scrollbar { display:none; }
+}
