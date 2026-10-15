@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { ShieldCheck, ArrowRight } from 'lucide-react'
+import Seo from '../components/Seo'
 
 const legalContent: Record<string, { title: string; updated: string; sections: { heading: string; body: string | React.ReactNode }[] }> = {
   privacy: {
@@ -194,6 +195,11 @@ export default function Legal() {
 
   return (
     <main style={{ overflowX: 'clip' }}>
+      <Seo
+        title={content.title}
+        description={`${content.title} for The Kada Digital Ventures and the Kada apps. ${content.updated}`}
+        path={`/legal/${key}`}
+      />
       {/* Header */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7rem, 11vw, 8.5rem) 0 clamp(2.5rem, 4vw, 3rem)', borderBottom: '1px solid var(--border)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />

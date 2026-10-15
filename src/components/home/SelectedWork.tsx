@@ -78,12 +78,12 @@ export default function SelectedWork() {
       />
 
       {/* Category Tabs */}
-      <div className="flex overflow-x-auto pb-3 gap-2 justify-start sm:justify-center mb-10 -mt-2">
+      <div className="flex overflow-x-auto pb-3 gap-2 justify-start sm:justify-center mb-8 -mt-2 no-scrollbar touch-pan-x-scroll snap-x -mx-4 px-4 sm:mx-0 sm:px-0">
         {tabs.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-all ${
+            className={`snap-start shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold tracking-wide uppercase transition-all ${
               activeTab === tab 
                 ? 'bg-slate-900 text-white shadow-sm' 
                 : 'bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-200'
@@ -94,10 +94,16 @@ export default function SelectedWork() {
         ))}
       </div>
 
-      {/* Project Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Mobile Swipe Cue */}
+      <div className="flex md:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 px-1">
+        <span>Featured Projects ({filteredProjects.length})</span>
+        <span className="text-blue-600 font-bold">Swipe →</span>
+      </div>
+
+      {/* Project Cards: Mobile Horizontal Snap Rail, Desktop 3-col Grid */}
+      <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 pt-1 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 no-scrollbar touch-pan-x-scroll">
         {filteredProjects.map((project, index) => (
-          <Reveal key={project.name} delay={index * 0.05} className="h-full">
+          <Reveal key={project.name} delay={index * 0.05} className="snap-start shrink-0 w-[84vw] max-w-[340px] md:w-auto h-full">
             <div 
               className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col min-h-0"
             >

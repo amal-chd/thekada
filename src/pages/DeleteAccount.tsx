@@ -4,6 +4,7 @@ import { ShieldCheck, Trash2, CheckCircle2, AlertCircle, Mail, MapPin, Smartphon
 import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { submitPublicForm } from '../lib/publicForms'
+import Seo from '../components/Seo'
 
 const APPS_LIST = [
   { id: 'the-kada', name: 'The Kada App' },
@@ -64,6 +65,12 @@ export default function DeleteAccount() {
   }
 
   return (
+    <>
+      <Seo
+        title="Delete Your Account"
+        description="Request deletion of your account and personal data from any Kada app — Kada Dine, Kada Stay, The Kada, SellrApp or Kada Ledger."
+        path="/delete-account"
+      />
     <main style={{ overflowX: 'clip' }}>
       {/* Hero Section */}
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7rem, 11vw, 9rem) 0 clamp(3rem, 5vw, 4rem)', borderBottom: '1px solid var(--border)' }}>
@@ -226,5 +233,6 @@ export default function DeleteAccount() {
         </Container>
       </section>
     </main>
+    </>
   )
 }

@@ -1,4 +1,19 @@
 {
+  "redirects": [
+    { "source": "/admin", "destination": "https://admin.thekada.in", "permanent": true },
+    { "source": "/admin/(.*)", "destination": "https://admin.thekada.in", "permanent": true },
+    { "source": "/products", "destination": "/work", "permanent": true },
+    { "source": "/ecosystem", "destination": "/work", "permanent": true },
+    { "source": "/request-proposal", "destination": "/start-project", "permanent": true },
+    { "source": "/proposal", "destination": "/start-project", "permanent": true },
+    { "source": "/quote", "destination": "/start-project", "permanent": true },
+    { "source": "/internship", "destination": "/careers/internship", "permanent": true },
+    { "source": "/internships", "destination": "/careers/internship", "permanent": true },
+    { "source": "/technology", "destination": "/services", "permanent": true },
+    { "source": "/insights", "destination": "/", "permanent": true },
+    { "source": "/press", "destination": "/about", "permanent": true },
+    { "source": "/investor-relations", "destination": "/about", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

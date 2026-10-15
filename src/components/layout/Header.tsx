@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
 import Logo from './Logo'
+import JoinUsDropdown, { JOIN_PARTNERS } from './JoinUsDropdown'
 
 const navLinks = [
   { label: 'Services', path: '/services' },
@@ -129,11 +130,15 @@ export default function Header() {
             )
           })}
 
+          <div style={{ marginLeft: '0.5rem' }}>
+            <JoinUsDropdown isDark={isDarkHero || isDarkPage} />
+          </div>
+
           <Link
             to="/start-project"
             className="btn-primary"
             style={{
-              marginLeft: '0.75rem',
+              marginLeft: '0.5rem',
               padding: '0.55rem 1.25rem',
               fontSize: '0.88rem',
               fontWeight: 650,
@@ -215,7 +220,91 @@ export default function Header() {
                 )
               })}
 
-              <div style={{ paddingTop: '0.75rem', marginTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
+              {/* Mobile Join Us Partners Section */}
+              <div style={{ paddingTop: '0.75rem', marginTop: '0.25rem', borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)' }}>
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: isDarkPage ? '#64748B' : '#94A3B8',
+                    display: 'block',
+                    padding: '0.25rem 0.5rem 0.5rem',
+                  }}
+                >
+                  Join Us
+                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  {JOIN_PARTNERS.map((partner) => {
+                    const Icon = partner.icon
+                    const content = (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.6rem 0.75rem',
+                          borderRadius: '12px',
+                          background: isDarkPage ? 'rgba(255,255,255,0.04)' : 'rgba(15,35,75,0.02)',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0 }}>
+                          <div
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '8px',
+                              background: partner.badgeBg,
+                              color: partner.badgeColor,
+                              border: `1px solid ${partner.border}`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Icon size={16} />
+                          </div>
+                          <div style={{ minWidth: 0, textAlign: 'left' }}>
+                            <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: isDarkPage ? '#FFFFFF' : '#0F172A' }}>
+                              {partner.name}
+                            </span>
+                            <span style={{ display: 'block', fontSize: '0.72rem', color: isDarkPage ? '#94A3B8' : '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {partner.desc}
+                            </span>
+                          </div>
+                        </div>
+                        {partner.isExternal && <ArrowUpRight size={14} style={{ color: '#94A3B8', flexShrink: 0, marginLeft: '0.5rem' }} />}
+                      </div>
+                    )
+
+                    return partner.isExternal ? (
+                      <a
+                        key={partner.name}
+                        href={partner.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setMobileOpen(false)}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <Link
+                        key={partner.name}
+                        to={partner.to!}
+                        onClick={() => setMobileOpen(false)}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {content}
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div style={{ paddingTop: '0.75rem', marginTop: '0.5rem', borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)' }}>
                 <Link
                   to="/start-project"
                   className="btn-primary"

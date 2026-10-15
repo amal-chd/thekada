@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "thekada-production"
+  },
+  "targets": {
+    "thekada-production": {
+      "hosting": {
+        "thekada-web": [
+          "thekada-web"
+        ]
+      }
+    }
   }
 }

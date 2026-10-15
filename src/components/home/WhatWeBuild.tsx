@@ -17,7 +17,7 @@ const services = [
     color: '#7C6AF7',
     tag: 'iOS & Android',
     description: "Native and cross-platform mobile apps for iOS and Android built for seamless real-world use.",
-    link: "/services/mobile-app-development"
+    link: "/services/mobile-development"
   },
   {
     title: "SaaS Development",
@@ -33,7 +33,7 @@ const services = [
     color: '#F59E0B',
     tag: 'CRM · ERP · Operations',
     description: "Tailored CRM, ERP, billing, and internal operations tools that eliminate manual spreadsheets.",
-    link: "/services/custom-software-development"
+    link: "/services/enterprise-software"
   },
   {
     title: "AI & Business Automation",
@@ -41,7 +41,7 @@ const services = [
     color: '#10B981',
     tag: 'Workflows & AI',
     description: "Intelligent workflows, WhatsApp business integration, automated document processing, and AI assistants.",
-    link: "/services/ai-automation"
+    link: "/services/business-automation"
   },
   {
     title: "Product Development & MVP",
@@ -49,7 +49,7 @@ const services = [
     color: '#EC4899',
     tag: 'Idea to Launch',
     description: "Complete end-to-end execution from architecture design and clickable prototypes to market launch.",
-    link: "/services/web-development"
+    link: "/services/ui-ux-design"
   }
 ]
 
@@ -63,9 +63,16 @@ export default function WhatWeBuild() {
         align="center"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+      {/* Mobile Swipe Cue */}
+      <div className="flex md:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mt-8 mb-2 px-1">
+        <span>Core Capabilities ({services.length})</span>
+        <span className="text-blue-600 font-bold">Swipe →</span>
+      </div>
+
+      {/* Services Grid: Mobile Horizontal Snap Rail, Desktop 3-col Grid */}
+      <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 pt-1 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 mt-2 md:mt-12 no-scrollbar touch-pan-x-scroll">
         {services.map((service, index) => (
-          <Reveal key={service.title} delay={index * 0.05} className="h-full">
+          <Reveal key={service.title} delay={index * 0.05} className="snap-start shrink-0 w-[84vw] max-w-[340px] md:w-auto h-full">
             <Link 
               to={service.link} 
               className="group flex flex-col h-full bg-white border border-[var(--border)] rounded-2xl p-7 transition-all duration-300 hover:shadow-lg hover:border-[var(--blue-light)] hover:-translate-y-1"

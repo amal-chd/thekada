@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Target, Heart, Zap, Sparkles, Building2 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, CTASection } from '../components/ui'
+import Seo from '../components/Seo'
 
 const timeline = [
   { year: '2023', title: 'Founded in Kannur, Kerala', desc: 'Started with one core vision: small, mid-sized, and growing businesses deserve the same quality of software that large tech giants take for granted.' },
@@ -58,6 +59,12 @@ export default function About() {
   const timelineScaleY = useSpring(timelineScrollProgress, { stiffness: 100, damping: 30 })
 
   return (
+    <>
+      <Seo
+        title="About Us"
+        description="The Kada Digital Ventures is a product and software engineering company in Kannur, Kerala, building the systems local businesses run on every day."
+        path="/about"
+      />
     <main>
       {/* HERO */}
       <section 
@@ -250,5 +257,6 @@ export default function About() {
         }
       />
     </main>
+    </>
   )
 }

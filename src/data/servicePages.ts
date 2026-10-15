@@ -20,7 +20,7 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: Zap, title: 'Progressive web apps', desc: 'App-like experiences that work offline and install without an app store.' },
       { Icon: Gauge, title: 'Performance & SEO', desc: 'Fast load times, Core Web Vitals, and search-ready architecture by default.' },
     ],
-    tools: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Supabase'],
+    tools: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Firebase', 'Supabase'],
     outcomes: [{ value: '4–12 wks', label: 'Typical build time' }, { value: '100%', label: 'Responsive & accessible' }],
     related: [{ name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }, { name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }],
     faqs: [
@@ -46,7 +46,7 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: RefreshCw, title: 'Offline-first sync', desc: 'Apps that keep working without signal and sync the moment they reconnect.' },
     ],
     tools: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Expo', 'Firebase', 'Supabase'],
-    outcomes: [{ value: 'iOS + Android', label: 'From one build' }, { value: '4.8★+', label: 'Store-quality UX' }],
+    outcomes: [{ value: 'iOS + Android', label: 'From one build' }, { value: 'Offline-first', label: 'Syncs when reconnected' }],
     related: [{ name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }, { name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }],
     faqs: [
       { q: 'Native or cross-platform?', a: 'We default to cross-platform (React Native / Flutter) for speed and maintainability, and go fully native when a project needs maximum performance or deep platform features. We’ll recommend the right fit.' },
@@ -70,7 +70,7 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: BarChart3, title: 'Analytics & admin', desc: 'Dashboards, reporting, and internal tools to run the business.' },
       { Icon: ShieldCheck, title: 'Security & compliance', desc: 'Encryption, audit logs, and access controls built in, not bolted on.' },
     ],
-    tools: ['React', 'Next.js', 'Node.js', 'FastAPI', 'PostgreSQL', 'Supabase', 'Stripe', 'AWS'],
+    tools: ['React', 'Next.js', 'Node.js', 'FastAPI', 'PostgreSQL', 'Firebase', 'Supabase', 'Razorpay', 'Stripe'],
     outcomes: [{ value: 'MVP → scale', label: 'Full lifecycle' }, { value: 'RLS', label: 'Secure multi-tenant' }],
     related: [{ name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }, { name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
     faqs: [
@@ -95,8 +95,8 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: MessageSquare, title: 'Automated comms', desc: 'WhatsApp, email, and SMS notifications, reminders, and digests on autopilot.' },
       { Icon: Clock, title: 'Scheduled jobs', desc: 'Recurring reports, reconciliations, and exports that run themselves.' },
     ],
-    tools: ['Node.js', 'Python', 'PostgreSQL', 'Supabase', 'WhatsApp Business API', 'Webhooks', 'Cron'],
-    outcomes: [{ value: '20+ hrs', label: 'Saved per week' }, { value: '0', label: 'Manual re-entry' }],
+    tools: ['Node.js', 'Python', 'Cloud Functions', 'PostgreSQL', 'Firebase', 'WhatsApp Business API', 'Webhooks', 'Cron'],
+    outcomes: [{ value: 'Rules-based', label: 'Repeat work runs itself' }, { value: 'Audit trail', label: 'Every run logged' }],
     related: [{ name: 'Kada Ledger', path: '/products/kada-ledger', color: '#10B981' }, { name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
     faqs: [
       { q: 'What can you automate?', a: 'Data entry, reconciliations, report generation, notifications, approvals, inventory updates — almost any repetitive, rules-based task that currently eats your team’s time.' },
@@ -118,10 +118,10 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: ShieldCheck, title: 'Security & governance', desc: 'SSO, granular roles, audit trails, and compliance-ready controls.' },
       { Icon: Database, title: 'Data at scale', desc: 'Architectures that stay fast under heavy load and large datasets.' },
       { Icon: Users, title: 'Multi-department tooling', desc: 'Systems that coordinate teams, approvals, and handoffs in one place.' },
-      { Icon: Gauge, title: 'Reliability & uptime', desc: 'Monitoring, redundancy, and SLAs that keep critical systems running.' },
+      { Icon: Gauge, title: 'Reliability & recovery', desc: 'Monitoring, redundancy, and tested restores that keep critical systems running.' },
     ],
     tools: ['React', 'Node.js', 'FastAPI', 'PostgreSQL', 'Redis', 'AWS', 'Docker', 'CI/CD'],
-    outcomes: [{ value: '99.9%', label: 'Uptime target' }, { value: 'High-volume', label: 'Transaction ready' }],
+    outcomes: [{ value: 'Monitored', label: 'Alerting & backups' }, { value: 'High-volume', label: 'Transaction ready' }],
     related: [{ name: 'Kada Stay', path: '/products/kada-stay', color: '#247CFF' }],
     faqs: [
       { q: 'Can you integrate with our existing systems?', a: 'Yes. We specialise in connecting new systems to existing ERPs, CRMs, and databases via APIs and secure data exchange.' },
@@ -196,7 +196,7 @@ export const servicePages: Record<string, ServiceConfig> = {
       { Icon: ShieldCheck, title: 'Security & backups', desc: 'Hardened configs, secrets management, and tested backups.' },
     ],
     tools: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes', 'GitHub Actions', 'Terraform', 'Grafana'],
-    outcomes: [{ value: '99.9%', label: 'Uptime target' }, { value: 'Push → live', label: 'Automated deploys' }],
+    outcomes: [{ value: 'Rollback-ready', label: 'Safe, reversible releases' }, { value: 'Push → live', label: 'Automated deploys' }],
     related: [{ name: 'Kada Dine', path: '/products/kada-dine', color: '#FF6B2B' }],
     faqs: [
       { q: 'Which cloud providers do you use?', a: 'Primarily AWS and Google Cloud. We’ll recommend the right platform and services based on your needs and budget.' },
@@ -236,20 +236,19 @@ export const servicePages: Record<string, ServiceConfig> = {
 // Canonical service list (unique items for listings and navigation)
 export const serviceList = Object.values(servicePages)
 
-// URL Aliases to ensure legacy, conversational, and alternate links never 404
-servicePages['mobile-app-development'] = {
-  ...servicePages['mobile-development'],
-  slug: 'mobile-app-development',
-}
-servicePages['custom-software-development'] = {
-  ...servicePages['enterprise-software'],
-  slug: 'custom-software-development',
-  eyebrowLabel: 'Custom business software development',
-  title: { pre: 'Custom software built for', accent: 'how you run.' },
-}
-servicePages['ai-automation'] = {
-  ...servicePages['business-automation'],
-  slug: 'ai-automation',
-  eyebrowLabel: 'AI & intelligent process automation',
-  title: { pre: 'AI automation that', accent: 'removes busywork.' },
+/**
+ * Descriptive URLs that were linked from the nav, footer and sitemap but never
+ * had a page of their own — every one of them rendered the 404. They redirect
+ * to the page that covers that work, so old links and indexed URLs keep
+ * resolving.
+ */
+export const serviceAliases: Record<string, string> = {
+  'mobile-app-development': 'mobile-development',
+  'custom-software-development': 'enterprise-software',
+  'ai-automation': 'business-automation',
+  'ecommerce-development': 'web-development',
+  'crm-development': 'enterprise-software',
+  'product-development': 'ui-ux-design',
+  'devops': 'cloud-devops',
+  'ui-ux': 'ui-ux-design',
 }

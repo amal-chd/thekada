@@ -1,7 +1,23 @@
 {
   "hosting": {
+    "target": "thekada-web",
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      { "source": "/admin", "destination": "https://admin.thekada.in", "type": 301 },
+      { "source": "/admin/**", "destination": "https://admin.thekada.in", "type": 301 },
+      { "source": "/products", "destination": "/work", "type": 301 },
+      { "source": "/ecosystem", "destination": "/work", "type": 301 },
+      { "source": "/request-proposal", "destination": "/start-project", "type": 301 },
+      { "source": "/proposal", "destination": "/start-project", "type": 301 },
+      { "source": "/quote", "destination": "/start-project", "type": 301 },
+      { "source": "/internship", "destination": "/careers/internship", "type": 301 },
+      { "source": "/internships", "destination": "/careers/internship", "type": 301 },
+      { "source": "/technology", "destination": "/services", "type": 301 },
+      { "source": "/insights", "destination": "/", "type": 301 },
+      { "source": "/press", "destination": "/about", "type": 301 },
+      { "source": "/investor-relations", "destination": "/about", "type": 301 }
+    ],
     "rewrites": [
       {
         "source": "**",

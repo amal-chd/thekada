@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, ArrowUpRight, ShieldCheck, Clock, Layers } from 'lucide-react'
 import { Button, Reveal } from '@/components/ui'
 import { submitPublicForm } from '@/lib/publicForms'
+import Seo from '../components/Seo'
 
 const NEEDS_OPTIONS = [
   'Web Application', 'Mobile App (iOS/Android)', 'SaaS Platform', 
@@ -102,6 +103,11 @@ export default function StartProject() {
 
   return (
     <main>
+      <Seo
+        title="Start a Project"
+        description="Tell us about your product, timeline and budget. We will come back with a plan, a timeline and an estimate."
+        path="/start-project"
+      />
       <section 
         className="hero-gradient relative overflow-hidden min-h-screen"
         style={{

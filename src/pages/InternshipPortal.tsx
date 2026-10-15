@@ -7,7 +7,9 @@ import {
 } from 'lucide-react'
 import { SectionHeading, Button, Container, Aurora, TextReveal, TiltCard } from '../components/ui'
 import { isFirebaseConfigured, db as firebaseDb } from '../lib/firebase'
-import { doc, getDoc, collection, onSnapshot, query, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore'
+import Seo from '../components/Seo'
+import { getCompanyAdminUrl } from '../lib/urls'
 
 
 // Seeding Initial Data
@@ -472,181 +474,6 @@ export default function InternshipPortal() {
     setTimeout(() => setLeaveSuccess(false), 4000)
   }
 
-
-  // Admin: Accept Applicant
-  const handleAdminAccept = async (appId: string) => {
-    const app = applications.find(a => a.id === appId)
-    if (!app) return
-
-    // Create new onboarding intern object
-    const newId = 'int-' + Date.now()
-    const newIntern = {
-      id: newId,
-      name: app.name,
-      email: app.email,
-      phone: app.phone,
-      college: app.college,
-      domain: app.domain,
-      duration: app.duration,
-      start: app.start || new Date().toISOString().split('T')[0],
-      end: '',
-      status: 'Onboarding',
-      photoUrl: app.photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=60',
-      cvName: app.cvName || 'Resume.pdf',
-      checklist: [
-        { id: 'c1', task: 'Submit signed offer letter & college NOC', done: false },
-        { id: 'c2', task: 'Complete Git & workspace onboarding', done: false },
-        { id: 'c3', task: 'Review core architecture & style guide', done: false },
-        { id: 'c4', task: 'Submit first Pull Request for review', done: false },
-        { id: 'c5', task: 'Deliver final task presentation', done: false }
-      ]
-    }
-
-    if (isLive) {
-      try {
-        await setDoc(doc(db, 'internships', newId), newIntern)
-        await deleteDoc(doc(db, 'internship_applications', appId))
-      } catch (err) {
-        console.error('Error accepting application in Firestore:', err)
-      }
-      return
-    }
-
-    const updatedInterns = [...interns, newIntern]
-    setInterns(updatedInterns)
-    updateStorage('tkdv_interns', updatedInterns)
-
-    const updatedApps = applications.filter(a => a.id !== appId)
-    setApplications(updatedApps)
-    updateStorage('tkdv_applications', updatedApps)
-  }
-
-  // Admin: Decline Applicant
-  const handleAdminDecline = async (appId: string) => {
-    if (isLive) {
-      try {
-        await deleteDoc(doc(db, 'internship_applications', appId))
-      } catch (err) {
-        console.error('Error declining application in Firestore:', err)
-      }
-      return
-    }
-
-    const updatedApps = applications.filter(a => a.id !== appId)
-    setApplications(updatedApps)
-    updateStorage('tkdv_applications', updatedApps)
-  }
-
-  // Admin: Update Intern Status
-  const handleUpdateStatus = async (internId: string, newStatus: string) => {
-    if (isLive) {
-      try {
-        await updateDoc(doc(db, 'internships', internId), {
-          status: newStatus,
-          end: newStatus === 'Completed' ? new Date().toISOString().split('T')[0] : ''
-        })
-      } catch (err) {
-        console.error('Error updating intern status in Firestore:', err)
-      }
-      return
-    }
-
-    const updatedInterns = interns.map(i => {
-      if (i.id === internId) {
-        return { 
-          ...i, 
-          status: newStatus,
-          end: newStatus === 'Completed' ? new Date().toISOString().split('T')[0] : i.end
-        }
-      }
-      return i
-    })
-    setInterns(updatedInterns)
-    updateStorage('tkdv_interns', updatedInterns)
-    if (loggedInIntern && loggedInIntern.id === internId) {
-      setLoggedInIntern(updatedInterns.find(i => i.id === internId))
-    }
-  }
-
-  // Admin: Leave Approval
-  const handleAdminLeave = async (leaveId: string, approve: boolean) => {
-    if (isLive) {
-      try {
-        await updateDoc(doc(db, 'internship_leaves', leaveId), {
-          status: approve ? 'Approved' : 'Rejected'
-        })
-      } catch (err) {
-        console.error('Error updating leave status in Firestore:', err)
-      }
-      return
-    }
-
-    const updatedLeaves = leaves.map(l => {
-      if (l.id === leaveId) {
-        return { ...l, status: approve ? 'Approved' : 'Rejected' }
-      }
-      return l
-    })
-    setLeaves(updatedLeaves)
-    updateStorage('tkdv_leaves', updatedLeaves)
-  }
-
-  // Admin: Issue Certificate
-  const handleAdminIssueCert = async (internId: string) => {
-    const intern = interns.find(i => i.id === internId)
-    if (!intern) return
-
-    const certId = 'TKDV-INT-2026-' + String(Math.floor(1000 + Math.random() * 9000))
-    const newCert = {
-      id: certId,
-      name: intern.name,
-      role: intern.domain,
-      start: intern.start,
-      end: intern.end || new Date().toISOString().split('T')[0]
-    }
-
-    if (isLive) {
-      try {
-        await setDoc(doc(db, 'internship_certificates', certId), newCert)
-        await updateDoc(doc(db, 'internships', internId), {
-          status: 'Completed',
-          certificateId: certId,
-          end: intern.end || new Date().toISOString().split('T')[0]
-        })
-      } catch (err) {
-        console.error('Error issuing certificate in Firestore:', err)
-      }
-      return
-    }
-
-    const updatedCerts = [...certificates, newCert]
-    setCertificates(updatedCerts)
-    updateStorage('tkdv_certificates', updatedCerts)
-
-    const updatedInterns = interns.map(i => i.id === internId ? { ...i, certificateId: certId, status: 'Completed', end: i.end || new Date().toISOString().split('T')[0] } : i)
-    setInterns(updatedInterns)
-    updateStorage('tkdv_interns', updatedInterns)
-    if (loggedInIntern && loggedInIntern.id === internId) {
-      setLoggedInIntern(updatedInterns.find(i => i.id === internId))
-    }
-  }
-
-  // Reset local state to initial seed
-  const handleResetSystem = () => {
-    if (isLive) {
-      alert('System reset is only available in local simulation mode. Firestore database cannot be reset from this interface.')
-      return
-    }
-    if (window.confirm('Reset local storage internship data to initial seed? All custom updates will be cleared.')) {
-      localStorage.removeItem('tkdv_applications')
-      localStorage.removeItem('tkdv_interns')
-      localStorage.removeItem('tkdv_leaves')
-      localStorage.removeItem('tkdv_reports')
-      localStorage.removeItem('tkdv_certificates')
-      window.location.reload()
-    }
-  }
-
   // Certificate client-side download mockup (canvas screenshot or download fallback)
   const readyCert = certQuery.name.trim().length > 0 && certQuery.id.trim().length > 0
   const handleDownloadCert = async () => {
@@ -723,6 +550,11 @@ export default function InternshipPortal() {
 
   return (
     <main style={{ overflowX: 'clip', minHeight: '100vh', background: '#030712', color: '#FFFFFF', paddingTop: '5.5rem' }}>
+      <Seo
+        title="Internship Programme"
+        description="Apply to The Kada Digital Ventures internship programme — real product work in engineering, design and operations, from Kannur, Kerala."
+        path="/careers/internship"
+      />
       
       {/* Banner */}
       <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(3rem, 6vw, 5rem) 0 2rem' }}>
@@ -1187,246 +1019,106 @@ export default function InternshipPortal() {
             </motion.div>
           )}
 
-          {/* TAB 3: Admin Console */}
+          {/* TAB 3: Admin Console Gateway */}
           {activeTab === 'admin' && (
             <motion.div key="admin" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.25 }}>
-              <div>
-                
-                {/* Stats panel */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }} className="grid-responsive-2col">
-                  {[
-                    { label: 'Total Applications', val: applications.length, color: '#60A5FA', Icon: FileText },
-                    { label: 'Active Interns', val: interns.filter(i => i.status === 'Active').length, color: '#34D399', Icon: User },
-                    { label: 'Onboarding Interns', val: interns.filter(i => i.status === 'Onboarding').length, color: '#F59E0B', Icon: Clock },
-                    { label: 'Issued Certificates', val: certificates.length, color: '#A78BFA', Icon: Award }
-                  ].map(stat => (
-                    <div key={stat.label} className="card-premium" style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, display: 'flex', alignItems: 'center', gap: '1.1rem' }}>
-                      <span style={{ width: 46, height: 46, borderRadius: 12, background: `${stat.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <stat.Icon size={21} color={stat.color} />
-                      </span>
-                      <div>
-                        <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#94A3B8' }}>{stat.label}</div>
-                        <div style={{ fontSize: '1.6rem', fontWeight: 850, color: '#FFFFFF', marginTop: '0.15rem' }}>{stat.val}</div>
+              <div style={{ maxWidth: 760, margin: '0 auto' }}>
+                <div className="card-premium" style={{
+                  padding: 'clamp(2rem, 5vw, 3.5rem)',
+                  background: 'radial-gradient(ellipse at top, rgba(37,99,235,0.12), rgba(11,21,43,0.6) 70%)',
+                  border: '1px solid rgba(59,130,246,0.3)',
+                  borderRadius: 24,
+                  textAlign: 'center',
+                  boxShadow: '0 20px 50px -10px rgba(0,0,0,0.5)'
+                }}>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.4rem 1rem',
+                    borderRadius: 99,
+                    background: 'rgba(59,130,246,0.15)',
+                    border: '1px solid rgba(59,130,246,0.3)',
+                    color: '#60A5FA',
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <Settings size={14} /> Authorized Personnel Only
+                  </div>
+
+                  <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.4rem)', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '1rem' }}>
+                    Corporate Administration Console
+                  </h2>
+
+                  <p style={{ fontSize: '0.95rem', color: '#94A3B8', lineHeight: 1.6, maxWidth: 600, margin: '0 auto 2.5rem' }}>
+                    Candidate application review, interview tracking, mentor assignments, leave request approvals, and official verified certificate generation are centrally managed inside <strong>The Kada Digital Ventures Corporate HQ Portal</strong>.
+                  </p>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '1rem',
+                    marginBottom: '2.5rem',
+                    textAlign: 'left'
+                  }}>
+                    <div style={{ padding: '1.25rem', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div style={{ fontWeight: 750, color: '#FFFFFF', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                        <FileText size={16} color="#60A5FA" /> Application Pipeline
+                      </div>
+                      <div style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.4 }}>
+                        Screen new applicants, evaluate resumes, and issue digital offers.
                       </div>
                     </div>
-                  ))}
-                </div>
 
-                {/* Main Admin Grids */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-                  
-                  {/* PENDING APPLICATIONS */}
-                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
-                      <FileText size={20} color="#60A5FA" /> Pending Applications ({applications.length})
-                    </h3>
-
-                    {applications.length === 0 ? (
-                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem', border: '1px dashed rgba(255,255,255,0.06)', borderRadius: 12 }}>
-                        No pending applications. Submitted applications from candidate form will appear here.
+                    <div style={{ padding: '1.25rem', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div style={{ fontWeight: 750, color: '#FFFFFF', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                        <Clock size={16} color="#34D399" /> Weekly Hours & Checklists
                       </div>
-                    ) : (
-                      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
-                        <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Candidate</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Domain & College</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Applied Date & CV</th>
-                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {applications.map(app => (
-                            <tr key={app.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
-                              <td style={{ padding: '1.1rem 0.5rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                                  <img src={app.photoUrl} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
-                                  <div>
-                                    <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{app.name}</div>
-                                    <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{app.email} · {app.phone}</div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td style={{ padding: '1.1rem 0.5rem' }}>
-                                <div style={{ fontWeight: 700, color: '#FFF' }}>{app.domain}</div>
-                                <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{app.college} · {app.duration}</div>
-                              </td>
-                              <td style={{ padding: '1.1rem 0.5rem' }}>
-                                <div style={{ color: '#9CA3AF', marginBottom: '0.15rem' }}>{fmt(app.appliedDate)}</div>
-                                <a href="#" onClick={e => { e.preventDefault(); alert(`Simulated Resume Open: ${app.cvName}`) }} style={{ fontSize: '0.76rem', color: '#60A5FA', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                                  <FileText size={12} /> {app.cvName}
-                                </a>
-                              </td>
-                              <td style={{ padding: '1.1rem 0.5rem', textAlign: 'right' }}>
-                                <div style={{ display: 'inline-flex', gap: '0.55rem' }}>
-                                  <button onClick={() => handleAdminAccept(app.id)} style={{ background: '#10B981', color: '#FFF', border: 'none', padding: '0.4rem 0.85rem', borderRadius: 8, fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', transition: 'opacity 0.2s ease' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Accept</button>
-                                  <button onClick={() => handleAdminDecline(app.id)} style={{ background: '#EF4444', color: '#FFF', border: 'none', padding: '0.4rem 0.85rem', borderRadius: 8, fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', transition: 'opacity 0.2s ease' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Decline</button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  {/* INTERN DIRECTORY */}
-                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
-                      <User size={20} color="#60A5FA" /> Intern Directory ({interns.length})
-                    </h3>
-
-                    {interns.length === 0 ? (
-                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem' }}>
-                        No registered interns.
+                      <div style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.4 }}>
+                        Track deliverables, PR reviews, and sprint tasks across domains.
                       </div>
-                    ) : (
-                      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 800 }}>
-                        <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Intern</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Domain & Period</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Status & Checklist</th>
-                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {interns.map(intern => {
-                            const doneCheck = intern.checklist.filter((c: any) => c.done).length
-                            const totalCheck = intern.checklist.length
-                            return (
-                              <tr key={intern.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
-                                <td style={{ padding: '1.1rem 0.5rem' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                                    <img src={intern.photoUrl} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
-                                    <div>
-                                      <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{intern.name}</div>
-                                      <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>{intern.email}</div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td style={{ padding: '1.1rem 0.5rem' }}>
-                                  <div style={{ fontWeight: 700, color: '#FFF' }}>{intern.domain}</div>
-                                  <div style={{ fontSize: '0.76rem', color: '#9CA3AF', marginTop: '0.1rem' }}>
-                                    {fmt(intern.start)} {intern.end ? ` — ${fmt(intern.end)}` : ' (Ongoing)'}
-                                  </div>
-                                </td>
-                                <td style={{ padding: '1.1rem 0.5rem' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.25rem' }}>
-                                    <span style={{ 
-                                      fontSize: '0.68rem', 
-                                      fontWeight: 800, 
-                                      padding: '0.15rem 0.5rem', 
-                                      borderRadius: 6,
-                                      background: intern.status === 'Active' ? 'rgba(16,185,129,0.1)' : intern.status === 'Onboarding' ? 'rgba(245,158,11,0.1)' : intern.status === 'Completed' ? 'rgba(59,130,246,0.1)' : 'rgba(255,255,255,0.03)',
-                                      color: intern.status === 'Active' ? '#34D399' : intern.status === 'Onboarding' ? '#F59E0B' : intern.status === 'Completed' ? '#60A5FA' : '#9CA3AF'
-                                    }}>
-                                      {intern.status}
-                                    </span>
-                                  </div>
-                                  <div style={{ fontSize: '0.76rem', color: '#9CA3AF' }}>
-                                    Checklist: {doneCheck}/{totalCheck} ({Math.round(doneCheck/totalCheck*100)}%)
-                                  </div>
-                                </td>
-                                <td style={{ padding: '1.1rem 0.5rem', textAlign: 'right' }}>
-                                  <div style={{ display: 'inline-flex', gap: '0.45rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                                    {intern.status === 'Onboarding' && (
-                                      <button onClick={() => handleUpdateStatus(intern.id, 'Active')} style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>
-                                        Make Active
-                                      </button>
-                                    )}
-                                    {intern.status === 'Active' && (
-                                      <button onClick={() => handleUpdateStatus(intern.id, 'Completed')} style={{ background: 'rgba(16,185,129,0.1)', color: '#34D399', border: '1px solid rgba(16,185,129,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>
-                                        Mark Completed
-                                      </button>
-                                    )}
-                                    {intern.status === 'Completed' && !intern.certificateId && (
-                                      <button onClick={() => handleAdminIssueCert(intern.id)} style={{ background: 'rgba(59,130,246,0.1)', color: '#60A5FA', border: '1px solid rgba(59,130,246,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                                        <Award size={12} /> Issue Certificate
-                                      </button>
-                                    )}
-                                    {intern.certificateId && (
-                                      <span style={{ fontSize: '0.76rem', color: '#34D399', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                                        <BadgeCheck size={14} color="#34D399" /> Verified ID: {intern.certificateId}
-                                      </span>
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            )
-                          })}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  {/* LEAVE APPROVAL BOARD */}
-                  <div className="card-premium" style={{ padding: '2rem 1.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflowX: 'auto' }}>
-                    <h3 style={{ fontSize: '1.20rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '1.25rem', display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
-                      <Calendar size={20} color="#60A5FA" /> Leave Approval Requests ({leaves.filter(l => l.status === 'Pending').length} Pending)
-                    </h3>
-
-                    {leaves.length === 0 ? (
-                      <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.9rem' }}>
-                        No leave records found.
-                      </div>
-                    ) : (
-                      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
-                        <thead>
-                          <tr style={{ textAlign: 'left', borderBottom: '2px solid rgba(255,255,255,0.08)', fontSize: '0.76rem', textTransform: 'uppercase', color: '#94A3B8', fontWeight: 800 }}>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Intern</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Leave Period</th>
-                            <th style={{ padding: '0.75rem 0.5rem' }}>Reason & Date</th>
-                            <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {leaves.map(l => (
-                            <tr key={l.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.86rem' }}>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ fontWeight: 750, color: '#FFFFFF' }}>{l.internName}</div>
-                                <div style={{ fontSize: '0.76rem', color: '#9CA3AF' }}>{l.domain}</div>
-                              </td>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ fontWeight: 700, color: '#FFF' }}>{fmt(l.startDate)} to {fmt(l.endDate)}</div>
-                              </td>
-                              <td style={{ padding: '1rem 0.5rem' }}>
-                                <div style={{ color: '#D1D5DB', fontStyle: 'italic' }}>"{l.reason}"</div>
-                                <div style={{ fontSize: '0.74rem', color: '#9CA3AF', marginTop: '0.15rem' }}>Submitted: {fmt(l.submittedAt)}</div>
-                              </td>
-                              <td style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>
-                                {l.status === 'Pending' ? (
-                                  <div style={{ display: 'inline-flex', gap: '0.45rem' }}>
-                                    <button onClick={() => handleAdminLeave(l.id, true)} style={{ background: 'rgba(16,185,129,0.1)', color: '#34D399', border: '1px solid rgba(16,185,129,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>Approve</button>
-                                    <button onClick={() => handleAdminLeave(l.id, false)} style={{ background: 'rgba(239,68,68,0.1)', color: '#F87171', border: '1px solid rgba(239,68,68,0.3)', padding: '0.35rem 0.65rem', borderRadius: 6, fontWeight: 700, fontSize: '0.72rem', cursor: 'pointer' }}>Reject</button>
-                                  </div>
-                                ) : (
-                                  <span style={{ fontWeight: 800, fontSize: '0.76rem', color: l.status === 'Approved' ? '#34D399' : '#F87171' }}>{l.status}</span>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  {/* RESET SYSTEM */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(225,29,72,0.06)', borderRadius: 16, border: '1px solid rgba(225,29,72,0.25)' }}>
-                    <div style={{ fontSize: '0.84rem', color: '#FDA4AF', fontWeight: 600 }}>
-                      ⚠️ <strong>Developer Control Panel:</strong> Resetting the local state will clear all custom applications and reload mock databases.
                     </div>
-                    <button 
-                      onClick={handleResetSystem} 
-                      style={{ background: '#E11D48', color: '#FFF', border: 'none', padding: '0.55rem 1.1rem', borderRadius: 8, fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', transition: 'background 0.2s ease' }}
-                      onMouseEnter={e => e.currentTarget.style.background = '#BE123C'}
-                      onMouseLeave={e => e.currentTarget.style.background = '#E11D48'}
-                    >
-                      Reset Local Storage Data
-                    </button>
+
+                    <div style={{ padding: '1.25rem', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div style={{ fontWeight: 750, color: '#FFFFFF', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                        <Award size={16} color="#A78BFA" /> Verified Credentials
+                      </div>
+                      <div style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.4 }}>
+                        Issue tamper-proof certificates with unique cryptographic verification IDs.
+                      </div>
+                    </div>
+                  </div>
+
+                  <a
+                    href={getCompanyAdminUrl('/?tab=internships')}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.65rem',
+                      padding: '1rem 2.25rem',
+                      borderRadius: 14,
+                      background: '#2563EB',
+                      color: '#FFFFFF',
+                      fontWeight: 800,
+                      fontSize: '0.95rem',
+                      textDecoration: 'none',
+                      boxShadow: '0 8px 24px rgba(37,99,235,0.4)',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                  >
+                    Open Corporate Admin Console <Settings size={18} />
+                  </a>
+
+                  <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: '1.25rem' }}>
+                    Requires corporate administrator account credentials (e.g. <code>thekada@gmail.com</code>).
                   </div>
                 </div>
-
               </div>
             </motion.div>
           )}

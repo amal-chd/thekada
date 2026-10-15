@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
 import Lenis from '@studio-freight/lenis'
 import Header from './components/layout/Header'
@@ -22,6 +22,8 @@ const KadaStay = lazy(() => import('./pages/products/KadaStay'))
 const KadaLedger = lazy(() => import('./pages/products/KadaLedger'))
 const SellrApp = lazy(() => import('./pages/products/SellrApp'))
 const TheKada = lazy(() => import('./pages/products/TheKada'))
+const KadaDelivery = lazy(() => import('./pages/products/KadaDelivery'))
+const KadaMess = lazy(() => import('./pages/products/KadaMess'))
 
 // Compliance & Legal
 const Legal = lazy(() => import('./pages/Legal'))
@@ -29,7 +31,6 @@ const DeleteAccount = lazy(() => import('./pages/DeleteAccount'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Internal (hidden from public nav)
-const Admin = lazy(() => import('./pages/Admin'))
 const Careers = lazy(() => import('./pages/Careers'))
 const InternshipPortal = lazy(() => import('./pages/InternshipPortal'))
 
@@ -54,8 +55,26 @@ function PageLoader() {
   )
 }
 
+function ExternalRedirect({ to }: { to: string }) {
+  useEffect(() => {
+    let target = to
+    if (typeof window !== 'undefined') {
+      const isLocal =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      if (isLocal && target.startsWith('https://admin.thekada.in')) {
+        target = target.replace('https://admin.thekada.in', 'http://localhost:5179')
+      }
+    }
+    window.location.replace(target)
+  }, [to])
+  return <PageLoader />
+}
+
 export default function App() {
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -72,7 +91,6 @@ export default function App() {
 
     rafId = requestAnimationFrame(raf)
 
-    // Watch the #root element for size changes (dynamic height changes, lazy-loaded page mounting, accordion updates)
     const resizeObserver = new ResizeObserver(() => {
       lenis.resize()
     })
@@ -98,14 +116,13 @@ export default function App() {
 }
 
 function AppContent() {
-  const location = useLocation()
-  const isAdmin = location.pathname.startsWith('/admin')
-
   return (
     <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <CustomCursor />
       <ScrollRestorer />
-      {!isAdmin && <Header />}
+      <Header />
+      <div id="main">
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Core pages */}
@@ -125,6 +142,8 @@ function AppContent() {
           <Route path="/products/kada-ledger" element={<KadaLedger />} />
           <Route path="/products/sellrapp" element={<SellrApp />} />
           <Route path="/products/the-kada" element={<TheKada />} />
+          <Route path="/products/kada-delivery" element={<KadaDelivery />} />
+          <Route path="/products/kada-mess" element={<KadaMess />} />
 
           {/* Compliance & Legal */}
           <Route path="/legal" element={<Legal />} />
@@ -136,7 +155,9 @@ function AppContent() {
           <Route path="/data-deletion" element={<DeleteAccount />} />
 
           {/* Internal / secondary (not in main nav) */}
-          <Route path="/admin" element={<Admin />} />
+          {/* The Admin panel has been moved to its own subdomain (admin.thekada.in) */}
+          <Route path="/admin" element={<ExternalRedirect to="https://admin.thekada.in" />} />
+          <Route path="/admin/*" element={<ExternalRedirect to="https://admin.thekada.in" />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/internship" element={<InternshipPortal />} />
 
@@ -151,12 +172,16 @@ function AppContent() {
           <Route path="/insights" element={<Navigate to="/" replace />} />
           <Route path="/press" element={<Navigate to="/about" replace />} />
           <Route path="/investor-relations" element={<Navigate to="/about" replace />} />
+          <Route path="/add-restaurant" element={<ExternalRedirect to="https://order.thekada.in/add-restaurant" />} />
+          <Route path="/partner" element={<ExternalRedirect to="https://order.thekada.in/add-restaurant" />} />
+          <Route path="/order" element={<ExternalRedirect to="https://order.thekada.in" />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-      {!isAdmin && <Footer />}
+      </div>
+      <Footer />
       <ScrollToTopButton />
     </div>
   )

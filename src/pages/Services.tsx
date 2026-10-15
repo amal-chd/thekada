@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Globe, Smartphone, Rocket, Settings, Zap, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal } from '../components/ui'
+import Seo from '../components/Seo'
 
 const services = [
   {
@@ -13,7 +14,7 @@ const services = [
     features: ['Custom Web Applications', 'Customer & Client Portals', 'Interactive Dashboards', 'Modern Next.js Architecture']
   },
   {
-    id: 'mobile-app-development',
+    id: 'mobile-development',
     title: 'Mobile App Development',
     tagline: 'Native & cross-platform apps for iOS & Android',
     desc: 'From consumer apps to internal field-operations tools, we build smooth, responsive mobile experiences using React Native and Flutter with offline caching and biometric security.',
@@ -31,7 +32,7 @@ const services = [
     features: ['Multi-Tenant Architecture', 'Subscription & Tiered Billing', 'Role-Based Access Control', 'Automated Customer Onboarding']
   },
   {
-    id: 'custom-software-development',
+    id: 'enterprise-software',
     title: 'Custom Business Software & ERP',
     tagline: 'Tailored systems built around your operational workflows',
     desc: 'Replace fragmented spreadsheets and manual WhatsApp messages with custom ERPs, CRMs, inventory managers, and billing engines designed specifically for how your team operates.',
@@ -40,7 +41,7 @@ const services = [
     features: ['Internal Management Systems', 'Automated Invoicing & GST', 'Inventory & Asset Tracking', 'Departmental Access Controls']
   },
   {
-    id: 'ai-automation',
+    id: 'business-automation',
     title: 'AI & Business Process Automation',
     tagline: 'Intelligent workflows, WhatsApp links & automated tasks',
     desc: 'Integrate LLMs, automated document extraction, WhatsApp bots, and webhook-driven event triggers into your business pipeline to save hundreds of human hours every month.',
@@ -52,6 +53,12 @@ const services = [
 
 export default function Services() {
   return (
+    <>
+      <Seo
+        title="Software Development Services"
+        description="Web apps, mobile apps, SaaS platforms, custom business software, AI automation, cloud and DevOps — built and supported by one team in Kerala."
+        path="/services"
+      />
     <main>
       {/* HERO SECTION */}
       <section 
@@ -238,5 +245,6 @@ export default function Services() {
         </div>
       </Section>
     </main>
+    </>
   )
 }

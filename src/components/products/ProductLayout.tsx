@@ -8,6 +8,10 @@ import FAQ, { type FAQItem } from '../shared/FAQ'
 import AppPreview, { type PreviewConfig } from './AppPreview'
 import AppDownload from '../shared/AppDownload'
 import ProductEcosystemBand from './ProductEcosystemBand'
+import ProductPricing, { type PricingConfig } from './ProductPricing'
+import Seo, { SITE_URL } from '../Seo'
+import { breadcrumbLd, faqLd } from '../../lib/schema'
+import { metaDescription } from '../../lib/seoText'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -30,6 +34,7 @@ export type ProductConfig = {
   audiencesHeading?: string
   audiences?: { Icon: IconType; label: string; desc: string }[]
   highlight?: { heading: string; text: string; points: string[] }
+  pricing?: PricingConfig
   faqs: FAQItem[]
   faqTitle: string
   faqSubtitle: string
@@ -37,13 +42,39 @@ export type ProductConfig = {
   ctaSub: string
   appStore?: string
   playStore?: string
+  /** Overrides for the search snippet when the hero copy does not read well as one. */
+  seo?: { title?: string; description?: string }
 }
 
 export default function ProductLayout({ config }: { config: ProductConfig }) {
   const a = config.accent
+  const [name, kind] = config.eyebrowLabel.split('·').map((part) => part.trim())
+  const title = config.seo?.title ?? (kind ? `${name} · ${kind}` : name)
+  const description = config.seo?.description ?? metaDescription(config.subtitle)
 
   return (
     <main>
+      <Seo
+        title={title}
+        description={description}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name,
+            applicationCategory: 'BusinessApplication',
+            description,
+            operatingSystem: 'Web, Android, iOS',
+            publisher: { '@type': 'Organization', name: 'The Kada Digital Ventures', url: SITE_URL },
+          },
+          faqLd(config.faqs),
+          breadcrumbLd([
+            { name: 'Home', path: '/' },
+            { name: 'Products', path: '/work' },
+            { name, path: typeof window === 'undefined' ? '/' : window.location.pathname },
+          ]),
+        ]}
+      />
       {/* ───────────────── HERO (aurora) ───────────────── */}
       <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)', background: `linear-gradient(180deg, ${config.accentSoft} 0%, #FFFFFF 100%)` }}>
         {/* themed aurora */}
@@ -172,6 +203,8 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
       )}
 
       {/* ───────────────── ECOSYSTEM BAND ───────────────── */}
+      {config.pricing && <ProductPricing config={config.pricing} accent={a} />}
+
       <ProductEcosystemBand accent={a} />
 
       {/* ───────────────── FAQ ───────────────── */}

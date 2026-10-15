@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, MapPin, Clock, Globe, TrendingUp, BookText, Heart, Target, GraduationCap, Award } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
+import Seo from '../components/Seo'
 
 const openings = [
   { title: 'Senior Full-Stack Engineer', team: 'Engineering', type: 'Full-time', location: 'Kannur / Remote', color: '#2563EB', desc: 'Build across our SaaS products and client projects — React, Node, and PostgreSQL at scale.' },
@@ -22,6 +23,12 @@ const perks = [
 
 export default function Careers() {
   return (
+    <>
+      <Seo
+        title="Careers & Internships"
+        description="Open roles and internships at The Kada Digital Ventures — engineering, design and operations, based in Kannur, Kerala."
+        path="/careers"
+      />
     <main style={{ overflowX: 'clip' }}>
       <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 10.5rem) 0 clamp(4.5rem, 6vw, 6rem)' }}>
         <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
@@ -47,7 +54,7 @@ export default function Careers() {
               Careers
             </motion.div>
             <motion.h1 initial={{ opacity: 0, filter: 'blur(12px)', y: 30 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }} style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.5rem' }}>
-              Build software that<br /><span className="gradient-text-blue">actually ships.</span>
+              Build software that{' '}<br /><span className="gradient-text-blue">actually ships.</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }} className="lead" style={{ maxWidth: 580, marginBottom: '2.5rem' }}>
               We’re a small, senior team with an outsized mission — building products and custom software that help thousands of businesses run better. Come build with us.
@@ -208,5 +215,6 @@ export default function Careers() {
         actions={<Button to="/contact" variant="white" size="lg">Introduce yourself <ArrowUpRight size={17} /></Button>}
       />
     </main>
+    </>
   )
 }

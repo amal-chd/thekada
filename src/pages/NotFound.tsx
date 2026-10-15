@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Home } from 'lucide-react'
 import { Button } from '../components/ui'
+import Seo from '../components/Seo'
 
 const quickLinks = [
   { label: 'Home', path: '/', color: '#2563EB' },
@@ -14,6 +15,7 @@ const quickLinks = [
 export default function NotFound() {
   return (
     <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
+      <Seo title="Page not found" description="The page you were looking for does not exist." noindex />
       <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.5 }} />
       <div className="glow-orb" style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 640, height: 640, background: 'rgba(37,99,235,0.1)' }} />
 

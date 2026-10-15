@@ -8,6 +8,9 @@ import {
 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard, AnimatedCounter, Aurora } from '../ui'
 import FAQ, { type FAQItem } from '../shared/FAQ'
+import Seo, { SITE_URL } from '../Seo'
+import { breadcrumbLd, faqLd } from '../../lib/schema'
+import { metaDescription } from '../../lib/seoText'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -31,6 +34,8 @@ export type ServiceConfig = {
   faqSubtitle: string
   ctaTitle: string
   ctaSub: string
+  /** Overrides for the search snippet when the hero copy does not read well as one. */
+  seo?: { title?: string; description?: string }
 }
 
 const steps = [
@@ -46,8 +51,34 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
   const { scrollYProgress } = useScroll({ target: processRef, offset: ["start center", "end center"] })
   const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1])
 
+  const serviceName = `${config.title.pre} ${config.title.accent}`.replace(/\s+/g, ' ').trim()
+  const seoTitle = config.seo?.title ?? config.eyebrowLabel
+  const seoDescription = config.seo?.description ?? metaDescription(config.subtitle)
+
   return (
     <main style={{ overflowX: 'clip' }}>
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: config.eyebrowLabel,
+            alternateName: serviceName,
+            description: seoDescription,
+            serviceType: config.eyebrowLabel,
+            provider: { '@type': 'Organization', name: 'The Kada Digital Ventures', url: SITE_URL },
+            areaServed: { '@type': 'Country', name: 'India' },
+          },
+          faqLd(config.faqs),
+          breadcrumbLd([
+            { name: 'Home', path: '/' },
+            { name: 'Services', path: '/services' },
+            { name: config.eyebrowLabel, path: `/services/${config.slug}` },
+          ]),
+        ]}
+      />
       {/* HERO SECTION */}
       <section style={{
         position: 'relative',

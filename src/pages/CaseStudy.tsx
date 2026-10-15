@@ -2,6 +2,8 @@ import { useParams, Navigate, Link } from 'react-router-dom'
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal } from '@/components/ui'
 import { caseStudies } from '@/data/caseStudies'
+import Seo from '@/components/Seo'
+import { breadcrumbLd } from '@/lib/schema'
 
 export default function CaseStudy() {
   const { slug } = useParams<{ slug: string }>()
@@ -14,6 +16,16 @@ export default function CaseStudy() {
 
   return (
     <main>
+      <Seo
+        title={`${study.name} — ${study.type} case study`}
+        description={study.objective}
+        type="article"
+        jsonLd={breadcrumbLd([
+          { name: 'Home', path: '/' },
+          { name: 'Work', path: '/work' },
+          { name: study.name, path: `/work/${study.slug}` },
+        ])}
+      />
       {/* Hero Section */}
       <section 
         className="hero-gradient relative overflow-hidden"

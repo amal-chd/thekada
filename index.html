@@ -3,26 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2563EB" />
+
+    <!-- Defaults for the shell. Each route overwrites these in place (src/components/Seo.tsx). -->
     <title>The Kada Digital Ventures — We Build Software That Runs Businesses</title>
     <meta name="description" content="Websites, mobile apps, SaaS platforms and custom business systems — designed, developed and scaled by one technology partner. The Kada Digital Ventures, Kannur, Kerala." />
-    <meta name="keywords" content="software development, web development, mobile app development, SaaS development, custom software, CRM development, business automation, The Kada, Kannur, Kerala" />
     <link rel="canonical" href="https://thekada.in/" />
+
     <meta property="og:title" content="The Kada Digital Ventures — We Build Software That Runs Businesses" />
     <meta property="og:description" content="Websites, mobile apps, SaaS platforms and custom business systems — designed, developed and scaled by one technology partner." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="The Kada Digital Ventures" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:url" content="https://thekada.in/" />
-    <meta property="og:image" content="https://thekada.in/og-image.svg" />
+    <meta property="og:image" content="https://thekada.in/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Kada Digital Ventures — we build software that runs businesses" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The Kada Digital Ventures — We Build Software That Runs Businesses" />
     <meta name="twitter:description" content="Websites, mobile apps, SaaS platforms and custom business systems — designed, developed and scaled by one technology partner." />
-    <meta name="twitter:image" content="https://thekada.in/og-image.svg" />
+    <meta name="twitter:image" content="https://thekada.in/og-image.png" />
+
+    <!-- Fonts load from the head rather than an @import inside the CSS, so the
+         browser can start fetching them without waiting for the stylesheet. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;450;500;600;700&display=swap" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "The Kada Digital Ventures Pvt Ltd",
+        "alternateName": "The Kada",
+        "url": "https://thekada.in",
+        "logo": "https://thekada.in/logo.svg",
+        "image": "https://thekada.in/og-image.png",
+        "email": "hello@thekada.in",
+        "description": "Software company building websites, mobile apps, SaaS platforms and custom business systems, and the Kada product ecosystem for restaurants, stays and retail.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kannur",
+          "addressRegion": "Kerala",
+          "postalCode": "670001",
+          "addressCountry": "IN"
+        },
+        "areaServed": { "@type": "Country", "name": "India" }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
