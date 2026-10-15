@@ -55,7 +55,7 @@ const services = [
 
 export default function WhatWeBuild() {
   return (
-    <Section bg="white" bordered id="what-we-build">
+    <Section bg="white" bordered id="what-we-build" curvedTop>
       <SectionHeading
         eyebrow="What We Build"
         title="Software built around your business."

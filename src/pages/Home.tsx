@@ -2,6 +2,7 @@ import HeroSection from '../components/home/HeroSection'
 import WhatWeBuild from '../components/home/WhatWeBuild'
 import SelectedWork from '../components/home/SelectedWork'
 import EcosystemSection from '../components/home/EcosystemSection'
+import GetAppSection from '../components/home/GetAppSection'
 import FinalCTA from '../components/home/FinalCTA'
 import Seo from '../components/Seo'
 
@@ -43,6 +44,9 @@ export default function Home() {
 
       {/* 04 — The Kada Ecosystem: Powering India's Changing Lifestyles */}
       <EcosystemSection />
+
+      {/* 04b — Download The Kada App */}
+      <GetAppSection />
 
       {/* 05 — Final CTA: Conversion section */}
       <FinalCTA />

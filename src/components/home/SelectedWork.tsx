@@ -69,7 +69,7 @@ export default function SelectedWork() {
   const filteredProjects = projects.filter(p => p.categories.includes(activeTab))
 
   return (
-    <Section bg="white" bordered id="work">
+    <Section bg="white" bordered id="work" curvedTop>
       <SectionHeading
         eyebrow="Our Work"
         title="Work that proves what we can build."

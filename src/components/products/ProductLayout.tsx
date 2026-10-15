@@ -210,6 +210,69 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
       {/* ───────────────── FAQ ───────────────── */}
       <FAQ items={config.faqs} accentColor={a} title={config.faqTitle} subtitle={config.faqSubtitle} />
 
+      {/* ───────────────── MOBILE DOWNLOAD SECTION (Zomato-Style) ───────────────── */}
+      {(config.appStore || config.playStore) && (
+        <section className="lg:hidden py-10 px-4 bg-gradient-to-b from-white to-rose-50/30">
+          <div className="rounded-[2.5rem] bg-gradient-to-b from-[#FFF0F2] via-[#FFF6F7] to-white border border-[#FFE2E5] p-6 shadow-xl relative overflow-hidden text-center max-w-sm mx-auto">
+            <div className="relative w-full max-w-[280px] mx-auto -mt-2 -mb-2 flex justify-center">
+              <img
+                src="/images/kada_app_phones.png"
+                alt="App preview"
+                className="w-full max-h-[250px] object-contain drop-shadow-xl"
+                loading="eager"
+              />
+            </div>
+            <div className="relative z-10 mt-1">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Download the app now!
+              </h3>
+              <p className="text-slate-600 text-xs font-medium mt-1.5 leading-relaxed">
+                Experience {config.eyebrowLabel.split('·')[0].trim()} on your smartphone
+              </p>
+              <div className="flex items-center justify-center gap-2.5 mt-5">
+                {config.appStore && (
+                  <a
+                    href={config.appStore}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Download on the App Store"
+                    className="flex items-center gap-2 rounded-xl bg-black px-3 py-2 text-white shadow-md active:scale-95 transition-all"
+                  >
+                    <svg className="h-5 w-5 shrink-0 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.93 2.73 1 .08 2.03-.49 2.65-1.23z" />
+                    </svg>
+                    <div className="text-left">
+                      <p className="text-[8px] uppercase font-bold text-slate-400 leading-none">Download on the</p>
+                      <p className="text-xs font-black text-white leading-tight mt-0.5">App Store</p>
+                    </div>
+                  </a>
+                )}
+                {config.playStore && (
+                  <a
+                    href={config.playStore}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Get it on Google Play"
+                    className="flex items-center gap-2 rounded-xl bg-black px-3 py-2 text-white shadow-md active:scale-95 transition-all"
+                  >
+                    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.22-.924V2.738c0-.348.08-.667.22-.924z" />
+                      <path fill="#34A853" d="M15.206 13.412l2.253 2.253-11.45 6.442 9.197-8.695z" />
+                      <path fill="#EA4335" d="M15.206 10.588L6.01 1.892l11.45 6.442-2.254 2.254z" />
+                      <path fill="#FBBC04" d="M16.62 12l3.52-1.98a1.996 1.996 0 0 1 0 3.96L16.62 12z" />
+                    </svg>
+                    <div className="text-left">
+                      <p className="text-[8px] uppercase font-bold text-slate-400 leading-none">GET IT ON</p>
+                      <p className="text-xs font-black text-white leading-tight mt-0.5">Google Play</p>
+                    </div>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ───────────────── CLOSING CTA (aurora) ───────────────── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(120% 110% at 50% 0%, #16294B 0%, #0B1B33 60%)', padding: 'clamp(4.5rem, 9vw, 7rem) 0' }}>
         <div aria-hidden style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: 620, height: 440, background: `radial-gradient(50% 50% at 50% 50%, ${a}40, transparent 70%)`, filter: 'blur(50px)' }} />

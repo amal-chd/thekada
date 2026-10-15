@@ -1,141 +1,274 @@
+import { useState, useEffect, useRef } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
 interface EcosystemProduct {
   id: string
   name: string
   desc: string
   logo: string
-  cardBg: string
-  borderCol: string
-  hoverBorder: string
-  hoverShadow: string
   href: string
-  isExternal: boolean
+  cta: string
+  accent: string
 }
 
 const PRODUCTS: EcosystemProduct[] = [
   {
     id: 'the-kada',
     name: 'the kada',
-    desc: 'Get the app now to start ordering your favorite dishes!',
+    desc: 'Experience lightning-fast hyper-local food delivery, 1-tap table reservations & live GPS tracking.',
     logo: '/ecosystem/the-kada.png',
-    cardBg: 'from-[#FFF0F3] via-[#FFF8F9] to-[#FFEBEF]',
-    borderCol: 'border-[#FED7DC]',
-    hoverBorder: 'hover:border-rose-300',
-    hoverShadow: 'hover:shadow-[0_24px_50px_-15px_rgba(244,63,94,0.22)]',
-    href: 'https://thekada.in/order',
-    isExternal: true,
+    href: 'https://thekada.in',
+    cta: 'Order food',
+    accent: '#1E6EF4',
   },
   {
     id: 'kada-dine',
     name: 'kada dine',
-    desc: 'Complete cloud POS, QR table ordering & operations for your restaurant',
+    desc: 'Complete cloud POS, QR table ordering, kitchen displays & automated billing for modern restaurants.',
     logo: '/ecosystem/kada-dine.png',
-    cardBg: 'from-[#FFFBEA] via-[#FFFDF5] to-[#FEF3C7]',
-    borderCol: 'border-[#FDE68A]',
-    hoverBorder: 'hover:border-amber-300',
-    hoverShadow: 'hover:shadow-[0_24px_50px_-15px_rgba(245,158,11,0.22)]',
     href: 'https://kadadine.thekada.in',
-    isExternal: true,
+    cta: 'Explore dine',
+    accent: '#F59E0B',
   },
   {
     id: 'kada-delivery',
     name: 'kada delivery',
-    desc: 'The best fleet network for lightning-fast deliveries & flexible earnings',
+    desc: 'The best fleet network for lightning-fast deliveries, daily automated payouts & flexible rider shifts.',
     logo: '/ecosystem/kada-delivery.png',
-    cardBg: 'from-[#F5F1FF] via-[#FAF8FF] to-[#EDE5FF]',
-    borderCol: 'border-[#DDD6FE]',
-    hoverBorder: 'hover:border-purple-300',
-    hoverShadow: 'hover:shadow-[0_24px_50px_-15px_rgba(139,92,246,0.22)]',
     href: 'https://rider.thekada.in',
-    isExternal: true,
+    cta: 'Deliver with us',
+    accent: '#10B981',
   },
   {
     id: 'kada-host',
     name: 'kada host',
-    desc: 'Front desk, housekeeping, operations & booking engine for hosts',
+    desc: 'Front desk check-ins, guest QR room service, automated housekeeping boards & direct hotel bookings.',
     logo: '/ecosystem/kada-host.png',
-    cardBg: 'from-[#EFF6FF] via-[#F8FBFF] to-[#DBEAFE]',
-    borderCol: 'border-[#BFDBFE]',
-    hoverBorder: 'hover:border-blue-300',
-    hoverShadow: 'hover:shadow-[0_24px_50px_-15px_rgba(59,130,246,0.22)]',
     href: 'https://host.thekada.in',
-    isExternal: true,
+    cta: 'Host guests',
+    accent: '#6366F1',
   },
 ]
 
 export function EcosystemSection() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const touchStartX = useRef<number | null>(null)
+
+  const count = PRODUCTS.length
+  const prevIndex = (activeIndex - 1 + count) % count
+  const nextIndex = (activeIndex + 1) % count
+
+  const activeProduct = PRODUCTS[activeIndex]
+  const prevProduct = PRODUCTS[prevIndex]
+  const nextProduct = PRODUCTS[nextIndex]
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + count) % count)
+  }
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % count)
+  }
+
+  useEffect(() => {
+    if (isPaused) return
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % count)
+    }, 4500)
+    return () => clearInterval(interval)
+  }, [isPaused, count])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return
+    const diff = e.changedTouches[0].clientX - touchStartX.current
+    if (diff > 45) {
+      handlePrev()
+    } else if (diff < -45) {
+      handleNext()
+    }
+    touchStartX.current = null
+  }
+
   return (
-    <section className="bg-white py-16 sm:py-24 border-b border-slate-100/80">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
+    <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] bg-white border-t border-slate-200/80 shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 pt-14 sm:pt-20 pb-16 sm:pb-24 z-20">
+      {/* Top Side Curves Transition SVG */}
+      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
+        <svg
+          viewBox="0 0 1440 40"
+          fill="none"
+          preserveAspectRatio="none"
+          className="w-full h-6 sm:h-10 text-white fill-current block"
+        >
+          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
+        </svg>
+      </div>
+
+      {/* Top Decorative Ambient Side Curves (Left and Right) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="120" cy="120" r="80" />
+          <circle cx="120" cy="120" r="140" />
+          <circle cx="120" cy="120" r="200" />
+          <circle cx="120" cy="120" r="260" />
+        </svg>
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="280" cy="120" r="80" />
+          <circle cx="280" cy="120" r="140" />
+          <circle cx="280" cy="120" r="200" />
+          <circle cx="280" cy="120" r="260" />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center z-10">
+        {/* Brand Wordmark */}
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
           the kada
         </h2>
 
-        {/* Subtitle with refined divider rules (matching reference image) */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 mb-12 sm:mb-16">
-          <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
-          <div className="text-center">
-            <p className="text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.25em] text-slate-400 uppercase leading-snug">
-              POWERING INDIA&apos;S<br className="sm:hidden" /> CHANGING LIFESTYLES
-            </p>
-          </div>
-          <div className="h-px bg-gradient-to-l from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
+        {/* Subtitle flanked by horizontal lines */}
+        <div className="flex items-center justify-center gap-3 sm:gap-5 mt-3 sm:mt-4 mb-10 sm:mb-14 px-4">
+          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
+          <p className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.22em] text-slate-400 uppercase text-center whitespace-nowrap">
+            POWERING INDIA&apos;S CHANGING LIFESTYLE
+          </p>
+          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
         </div>
 
-        {/* Mobile Swipe Cue */}
-        <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 px-1">
-          <span>Explore Ecosystem</span>
-          <span className="text-blue-600 font-bold">Swipe →</span>
-        </div>
+        {/* Center Stage Card Container matching Reference Design in Kada Style */}
+        <div className="relative mx-auto max-w-xs sm:max-w-[390px]">
+          <div
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="relative bg-white rounded-[32px] sm:rounded-[38px] border border-slate-100/90 shadow-[0_16px_50px_rgba(0,0,0,0.07)] p-6 sm:p-8 pt-8 sm:pt-10 pb-7 sm:pb-9 text-center overflow-hidden transition-all duration-300"
+          >
+            {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
+            <div className="relative h-28 sm:h-32 flex items-center justify-center mb-5 select-none">
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label={`Previous: ${prevProduct.name}`}
+                className="absolute -left-7 sm:-left-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+              >
+                <img
+                  src={prevProduct.logo}
+                  alt={prevProduct.name}
+                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                />
+              </button>
 
-        {/* 4 Cards: Mobile Horizontal Snap Rail, Desktop 4-col Grid */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 lg:gap-8 no-scrollbar touch-pan-x-scroll">
-          {PRODUCTS.map((prod) => (
+              <a
+                href={activeProduct.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white"
+              >
+                <img
+                  key={activeProduct.id}
+                  src={activeProduct.logo}
+                  alt={activeProduct.name}
+                  className="w-full h-full object-cover rounded-[26px] sm:rounded-[30px] animate-in fade-in duration-300"
+                />
+              </a>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label={`Next: ${nextProduct.name}`}
+                className="absolute -right-7 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+              >
+                <img
+                  src={nextProduct.logo}
+                  alt={nextProduct.name}
+                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                />
+              </button>
+            </div>
+
+            {/* App Title */}
             <a
-              key={prod.id}
-              href={prod.href}
+              href={activeProduct.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="block snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-full text-inherit no-underline"
+              className="inline-block font-black text-2xl sm:text-[26px] text-slate-900 tracking-tight lowercase hover:text-primary transition-colors"
             >
-              <div
-                className={`group h-full rounded-[32px] bg-gradient-to-b ${prod.cardBg} border ${prod.borderCol} ${prod.hoverBorder} ${prod.hoverShadow} p-8 sm:p-9 pt-10 pb-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden`}
-              >
-                {/* Subtle top inner sheen */}
-                <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-t-[32px]" />
-
-                {/* App Squircle Logo */}
-                <div className="relative w-[124px] h-[124px] sm:w-[136px] sm:h-[136px] rounded-[28px] overflow-hidden shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_4px_10px_-2px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] bg-white transition-transform duration-500 ease-out group-hover:scale-[1.04]">
-                  <img
-                    src={prod.logo}
-                    alt={prod.name}
-                    className="w-full h-full object-cover rounded-[28px] scale-[1.03]"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="mt-7 flex-1 flex flex-col justify-between w-full">
-                  <div>
-                    <h3 className="text-2xl sm:text-[26px] font-black text-slate-900 tracking-tight lowercase">
-                      {prod.name}
-                    </h3>
-                    <p className="mt-2.5 text-xs sm:text-[13px] font-medium text-slate-500 leading-relaxed max-w-[220px] mx-auto min-h-[44px]">
-                      {prod.desc}
-                    </p>
-                  </div>
-
-                  {/* Refined "Check it out ▶" CTA */}
-                  <div className="mt-8 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 transition-all">
-                    <span>Check it out</span>
-                    <span className="text-[#2563EB] text-[10px] sm:text-xs transition-transform duration-300 group-hover:translate-x-1">
-                      ▶
-                    </span>
-                  </div>
-                </div>
-              </div>
+              {activeProduct.name}
             </a>
-          ))}
+
+            {/* App Description */}
+            <p className="mt-2 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[270px] sm:max-w-[290px] mx-auto leading-relaxed min-h-[38px] sm:min-h-[40px]">
+              {activeProduct.desc}
+            </p>
+
+            {/* Direct Call to Action with Brand Colored Arrow */}
+            <div className="mt-5">
+              <a
+                href={activeProduct.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors"
+              >
+                <span>{activeProduct.cta}</span>
+                <span
+                  className="text-[10px] sm:text-xs transition-transform duration-200 group-hover:translate-x-1"
+                  style={{ color: activeProduct.accent }}
+                >
+                  ▶
+                </span>
+              </a>
+            </div>
+          </div>
+
+          {/* Slider Controls: Arrows and Dots */}
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous ecosystem app"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              {PRODUCTS.map((prod, index) => (
+                <button
+                  key={prod.id}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Go to ${prod.name}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    index === activeIndex
+                      ? 'w-6 bg-slate-900'
+                      : 'w-2 bg-slate-200 hover:bg-slate-300'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next ecosystem app"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
