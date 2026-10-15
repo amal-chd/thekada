@@ -42,6 +42,7 @@ export function GetAppSection() {
     }, 350)
   }
 
+  return (
     <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 z-20 py-12 sm:py-20 bg-gradient-to-b from-white via-rose-50/20 to-slate-50 border-t border-slate-200/80">
       {/* Top Side Curves Transition SVG */}
       <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">

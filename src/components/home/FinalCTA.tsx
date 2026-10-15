@@ -3,7 +3,7 @@ import { ArrowUpRight, MessageSquare } from 'lucide-react'
 
 export default function FinalCTA() {
   return (
-    <Section bg="ink" className="relative overflow-hidden" style={{ padding: 'clamp(5rem, 10vw, 7.5rem) 0' }}>
+    <Section bg="ink" curvedTop className="relative overflow-hidden" style={{ padding: 'clamp(5rem, 10vw, 7.5rem) 0' }}>
       {/* Background glow orb */}
       <div 
         aria-hidden
