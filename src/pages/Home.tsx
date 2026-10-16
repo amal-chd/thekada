@@ -37,27 +37,27 @@ export default function Home() {
       <HeroSection />
 
       {/* ─── CARD 1: WHAT WE BUILD (CORE SERVICE OFFERINGS) ─── */}
-      <div className="sticky top-0 z-10 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.10)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-[72px] z-10 w-full flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.10)] -mt-6 sm:-mt-8 overflow-hidden pt-5 sm:pt-7 pb-6 sm:pb-8">
         <WhatWeBuild />
       </div>
 
       {/* ─── CARD 2: SELECTED WORK (PROJECT SHOWCASE GRID) ─── */}
-      <div className="sticky top-0 z-20 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-[72px] z-20 w-full flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-7 pb-6 sm:pb-8">
         <SelectedWork />
       </div>
 
       {/* ─── CARD 3: THE KADA ECOSYSTEM: POWERING INDIA'S CHANGING LIFESTYLES ─── */}
-      <div className="sticky top-0 z-30 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-[72px] z-30 w-full flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-7 pb-6 sm:pb-8">
         <EcosystemSection />
       </div>
 
       {/* ─── CARD 4: DOWNLOAD THE KADA APP ─── */}
-      <div className="sticky top-0 z-40 min-h-[100svh] w-full flex flex-col justify-center bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-[72px] z-40 w-full flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-7 pb-6 sm:pb-8">
         <GetAppSection />
       </div>
 
       {/* ─── SECTION 5: FINAL CTA (NATURAL FLOW TO FOOTER) ─── */}
-      <div className="relative z-50 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] pt-12 sm:pt-16 pb-24 sm:pb-28">
+      <div className="relative z-50 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] pt-8 sm:pt-12 pb-20 sm:pb-24">
         <FinalCTA />
       </div>
     </main>
