@@ -43,18 +43,7 @@ export function GetAppSection() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 z-20 py-12 sm:py-20 bg-gradient-to-b from-white via-rose-50/20 to-slate-50 border-t border-slate-200/80">
-      {/* Top Side Curves Transition SVG */}
-      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
-        <svg
-          viewBox="0 0 1440 40"
-          fill="none"
-          preserveAspectRatio="none"
-          className="w-full h-6 sm:h-10 text-white fill-current block"
-        >
-          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
-        </svg>
-      </div>
+    <section className="relative overflow-hidden rounded-t-[36px] sm:rounded-t-[52px] lg:rounded-t-[64px] shadow-[0_-16px_40px_rgba(244,63,94,0.08)] -mt-8 sm:-mt-12 z-20 py-12 sm:py-20 bg-gradient-to-b from-[#FFF5F6] via-[#FFF0F2] to-white border-t border-rose-200/80">
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div

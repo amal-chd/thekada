@@ -1,22 +1,38 @@
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { Button, Reveal, Section } from '@/components/ui'
 import { ArrowUpRight, CheckCircle, Globe } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function HeroSection() {
+  const heroRef = useRef<HTMLDivElement>(null)
+  const shouldReduceMotion = useReducedMotion()
+
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const contentY = useTransform(heroScroll, [0, 1], shouldReduceMotion ? [0, 0] : [0, -50])
+  const contentOpacity = useTransform(heroScroll, [0, 0.75], shouldReduceMotion ? [1, 1] : [1, 0.05])
+  const meshScale = useTransform(heroScroll, [0, 1], shouldReduceMotion ? [1, 1] : [1.02, 1.15])
+
   return (
-    <Section 
-      className="hero-gradient relative overflow-hidden" 
-      id="hero" 
-      style={{ 
-        paddingTop: 'clamp(7.5rem, 14vw, 10.5rem)',
-        paddingBottom: 'clamp(4.5rem, 8vw, 6.5rem)',
-        position: 'relative'
-      }}
-    >
-      {/* Background Subtle Mesh / Grid */}
-      <div 
+    <div ref={heroRef} className="relative z-10">
+      <Section 
+        className="hero-gradient relative overflow-hidden select-none" 
+        id="hero" 
+        style={{ 
+          paddingTop: 'clamp(7.5rem, 14vw, 10.5rem)',
+          paddingBottom: 'clamp(4.5rem, 8vw, 6.5rem)',
+          position: 'relative'
+        }}
+      >
+      {/* Background Subtle Mesh / Grid with Scroll Parallax */}
+      <motion.div 
         aria-hidden 
-        className="fine-grid absolute inset-0 opacity-60 pointer-events-none" 
+        style={{ scale: meshScale }}
+        className="fine-grid absolute inset-0 opacity-60 pointer-events-none will-change-transform" 
       />
       <div 
         aria-hidden 
@@ -35,7 +51,10 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <motion.div 
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center will-change-transform"
+      >
         {/* Left column: Value Proposition */}
         <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left z-10">
           <Reveal delay={0.05}>
@@ -150,7 +169,8 @@ export default function HeroSection() {
             </div>
           </Reveal>
         </div>
-      </div>
+      </motion.div>
     </Section>
+  </div>
   )
 }

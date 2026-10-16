@@ -36,20 +36,30 @@ export default function Home() {
       {/* 01 — Hero: We build software that runs businesses */}
       <HeroSection />
 
-      {/* 02 — What We Build: Core service offerings */}
-      <WhatWeBuild />
+      {/* ─── CARD 1: WHAT WE BUILD (CORE SERVICE OFFERINGS) ─── */}
+      <div className="sticky top-0 z-10 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.10)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+        <WhatWeBuild />
+      </div>
 
-      {/* 03 — Selected Work: Project showcase grid */}
-      <SelectedWork />
+      {/* ─── CARD 2: SELECTED WORK (PROJECT SHOWCASE GRID) ─── */}
+      <div className="sticky top-0 z-20 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+        <SelectedWork />
+      </div>
 
-      {/* 04 — The Kada Ecosystem: Powering India's Changing Lifestyles */}
-      <EcosystemSection />
+      {/* ─── CARD 3: THE KADA ECOSYSTEM: POWERING INDIA'S CHANGING LIFESTYLES ─── */}
+      <div className="sticky top-0 z-30 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+        <EcosystemSection />
+      </div>
 
-      {/* 04b — Download The Kada App */}
-      <GetAppSection />
+      {/* ─── CARD 4: DOWNLOAD THE KADA APP ─── */}
+      <div className="sticky top-0 z-40 min-h-[100svh] w-full flex flex-col justify-center bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+        <GetAppSection />
+      </div>
 
-      {/* 05 — Final CTA: Conversion section */}
-      <FinalCTA />
+      {/* ─── SECTION 5: FINAL CTA (NATURAL FLOW TO FOOTER) ─── */}
+      <div className="relative z-50 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] pt-12 sm:pt-16 pb-24 sm:pb-28">
+        <FinalCTA />
+      </div>
     </main>
   )
 }
