@@ -273,27 +273,33 @@ export default function InternshipPortal() {
   useEffect(() => {
     if (!isLive) return
 
+    // Visitors without staff access are refused these reads; that is expected,
+    // so the portal just keeps its empty lists instead of throwing.
+    const ignoreDenied = (err: { code?: string }) => {
+      if (err.code !== 'permission-denied') console.warn('Internship portal listener failed:', err)
+    }
+
     const unsubApps = onSnapshot(collection(db, 'internship_applications'), (snap) => {
       setApplications(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-    })
+    }, ignoreDenied)
 
     const unsubInterns = onSnapshot(collection(db, 'internships'), (snap) => {
       const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any))
       setInterns(list)
       setLoggedInIntern((prev: any) => prev ? (list.find((i: any) => i.id === prev.id) || prev) : null)
-    })
+    }, ignoreDenied)
 
     const unsubLeaves = onSnapshot(collection(db, 'internship_leaves'), (snap) => {
       setLeaves(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-    })
+    }, ignoreDenied)
 
     const unsubReports = onSnapshot(collection(db, 'internship_reports'), (snap) => {
       setReports(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-    })
+    }, ignoreDenied)
 
     const unsubCerts = onSnapshot(collection(db, 'internship_certificates'), (snap) => {
       setCertificates(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any)))
-    })
+    }, ignoreDenied)
 
     return () => {
       unsubApps()

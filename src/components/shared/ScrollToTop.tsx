@@ -4,10 +4,16 @@ import { ChevronUp } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 
 export function ScrollRestorer() {
-  const { pathname } = useLocation()
+  const { pathname, search, hash } = useLocation()
   useEffect(() => {
+    if (hash) return
     const reset = () => {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      document.querySelectorAll<HTMLElement>('main').forEach((el) => {
+        el.scrollTop = 0
+      })
       const win = window as unknown as { lenis?: { scrollTo: (target: number, options?: { immediate: boolean }) => void } }
       if (win.lenis) {
         win.lenis.scrollTo(0, { immediate: true })
@@ -27,7 +33,7 @@ export function ScrollRestorer() {
       clearTimeout(t2)
       clearTimeout(t3)
     }
-  }, [pathname])
+  }, [pathname, search, hash])
   return null
 }
 

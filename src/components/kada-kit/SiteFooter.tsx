@@ -96,7 +96,7 @@ export function SiteFooter({
 
   return (
     <footer
-      className="bg-slate-950 text-slate-400 overflow-hidden relative border-t border-slate-800 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] selection:bg-blue-600/30 selection:text-white"
+      className="bg-slate-950 text-slate-400 overflow-hidden relative border-t border-slate-800 selection:bg-blue-600/30 selection:text-white"
       style={{ zIndex: 60 }}
     >
       {/* Ambient Top Light Beam */}

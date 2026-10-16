@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const isExternal = (to: string) => /^(https?:|mailto:|tel:)/.test(to);
+// In-page anchors ("#contact") need a plain link so the browser scrolls.
+const isAnchor = (to: string) => to.startsWith("#");
 
 export interface PageAction {
   label: ReactNode;
@@ -59,7 +61,11 @@ export function PageHeader({
                   {i === 0 && <ArrowRight className="h-4 w-4" />}
                 </>
               );
-              return isExternal(a.to) ? (
+              return isAnchor(a.to) ? (
+                <a key={i} href={a.to} className={cls}>
+                  {inner}
+                </a>
+              ) : isExternal(a.to) ? (
                 <a key={i} href={a.to} target="_blank" rel="noopener noreferrer" className={cls}>
                   {inner}
                 </a>

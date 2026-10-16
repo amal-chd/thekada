@@ -1,10 +1,19 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 
 const isExternal = (to: string) => /^(https?:|mailto:|tel:)/.test(to);
+// In-page anchors ("#contact") need a plain link so the browser scrolls.
+const isAnchor = (to: string) => to.startsWith("#");
 
 function SmartLink({ to, className, children }: { to: string; className: string; children: ReactNode }) {
+  if (isAnchor(to)) {
+    return (
+      <a href={to} className={className}>
+        {children}
+      </a>
+    );
+  }
   return isExternal(to) ? (
     <a href={to} target="_blank" rel="noopener noreferrer" className={className}>
       {children}
@@ -22,23 +31,30 @@ export interface Tile {
   /** One short line (a few words). */
   desc?: string;
   icon: ReactNode;
-  to: string;
+  /** Where the tile links; without it the tile is not a link. */
+  to?: string;
 }
 
 /**
  * The customer landing's "What's waiting for you" grid: small white tiles in
- * three columns, the middle column lifted. Pass 3, 6 or 9 tiles.
+ * three columns, the middle column lifted. 3, 6 or 9 tiles fill it evenly;
+ * 2, 4 or 8 tiles switch to two even columns so no row is left hanging.
  */
 export function TileGrid({ tiles }: { tiles: Tile[] }) {
-  const columns: Tile[][] = [[], [], []];
-  tiles.forEach((t, i) => columns[i % 3].push(t));
+  const cols = tiles.length % 3 !== 0 && tiles.length % 2 === 0 ? 2 : 3;
+  const columns: Tile[][] = Array.from({ length: cols }, () => []);
+  tiles.forEach((t, i) => columns[i % cols].push(t));
   return (
-    <div className="relative z-10 mx-auto max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl px-4 mt-3 sm:mt-5 w-full">
-      <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 items-start pt-1">
+    <div
+      className={`relative z-10 mx-auto px-4 mt-3 sm:mt-5 w-full ${
+        cols === 3 ? "max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl" : "max-w-xs sm:max-w-md md:max-w-lg"
+      }`}
+    >
+      <div className={`grid ${cols === 3 ? "grid-cols-3" : "grid-cols-2"} gap-2.5 sm:gap-3.5 md:gap-4 items-start pt-1`}>
         {columns.map((column, colIdx) => (
-          <div key={colIdx} className={`flex flex-col gap-2 sm:gap-3 ${colIdx === 1 ? "-translate-y-2 sm:-translate-y-3" : ""}`}>
+          <div key={colIdx} className={`flex flex-col gap-2 sm:gap-3 ${cols === 3 && colIdx === 1 ? "-translate-y-2 sm:-translate-y-3" : ""}`}>
             {column.map((item) => (
-              <SmartLink
+              <TileShell
                 key={item.id}
                 to={item.to}
                 className="group flex flex-col items-center justify-between p-2 sm:p-2.5 md:p-3 rounded-2xl bg-white/95 backdrop-blur-md border border-white shadow-[0_6px_20px_rgba(2,132,199,0.08)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.16)] hover:-translate-y-0.5 transition-all duration-300 text-center min-h-[82px] sm:min-h-[96px] md:min-h-[105px] w-full ring-1 ring-black/5"
@@ -58,12 +74,33 @@ export function TileGrid({ tiles }: { tiles: Tile[] }) {
                     </span>
                   )}
                 </div>
-              </SmartLink>
+              </TileShell>
             ))}
           </div>
         ))}
       </div>
     </div>
+  );
+}
+
+function TileShell({ to, className, children }: { to?: string; className: string; children: ReactNode }) {
+  return to ? <SmartLink to={to} className={className}>{children}</SmartLink> : <div className={className}>{children}</div>;
+}
+
+/** Short checked points as white rows (for the "why" of a page). */
+export function PointList({ points }: { points: ReactNode[] }) {
+  return (
+    <ul className="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 w-full space-y-2.5">
+      {points.map((p, i) => (
+        <li
+          key={i}
+          className="flex items-start gap-3 rounded-2xl bg-white/95 px-4 py-3 text-sm sm:text-base font-semibold text-slate-800 ring-1 ring-black/5 shadow-[0_6px_20px_rgba(2,132,199,0.08)]"
+        >
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" strokeWidth={3} />
+          <span>{p}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 

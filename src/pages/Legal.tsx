@@ -161,7 +161,7 @@ const legalContent: Record<string, { title: string; updated: string; sections: {
     sections: [
       { heading: '1. Overview', body: 'We believe in fair, transparent refunds. This policy outlines how refunds work across our SaaS products and custom software engagements.' },
       { heading: '2. SaaS Subscriptions', body: 'Cancel anytime. If you cancel within 14 days of a new paid subscription, you receive a full refund. After 14 days, monthly plans are not refunded for the current period; annual plans are refunded pro-rata for unused full months.' },
-      { heading: '3. Free Trials', body: 'Most products offer a free trial with no card required. You will not be charged unless you choose to subscribe after the trial ends.' },
+      { heading: '3. No Free Trials', body: 'Our products do not offer free trials. You are only charged when you choose a plan and pay for it.' },
       { heading: '4. Custom Development', body: 'Custom engagements are governed by the statement of work. Deposits secure project scheduling and are typically non-refundable once work begins; milestone payments are due for work completed.' },
       { heading: '5. Refund Processing Time', body: 'Approved refunds are initiated within 24 hours. Time to reach your account depends on the payment method: UPI (instant to 2 hours), cards (5–7 business days), net banking (3–5 business days).' },
       { heading: '6. Refund Disputes', body: 'If a refund is delayed or you disagree with a decision, escalate to refunds@thekada.in. Our team commits to resolution within 7 business days.' },
@@ -256,7 +256,6 @@ export default function Legal() {
                   <strong style={{ color: 'var(--ink)', fontSize: '0.95rem' }}>The Kada Digital Ventures Pvt Ltd</strong><br />
                   Attn: Data Protection Officer (DPO)<br />
                   Kannur, Kerala 670001, India<br />
-                  CIN: U72900KL2023PTC000000 · GST: 32XXXXX0000X1ZX<br />
                   Email: privacy@thekada.in | dpo@thekada.in
                 </div>
               </SpotlightCard>

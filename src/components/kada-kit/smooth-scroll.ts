@@ -17,6 +17,8 @@ export function useSmoothScroll() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       allowNestedScroll: true,
+      // Ease to in-page anchors ("#contact-sales") instead of jumping.
+      anchors: { offset: -72 },
       autoRaf: true,
     });
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
