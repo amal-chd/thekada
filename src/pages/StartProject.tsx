@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, AlertCircle, Loader2, ArrowUpRight, ShieldCheck, Clock, Layers } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Loader2, ArrowUpRight, ShieldCheck, Clock, Layers } from 'lucide-react'
 import { Button, Reveal } from '@/components/ui'
 import { submitPublicForm } from '@/lib/publicForms'
 import Seo from '../components/Seo'
+import { PageHeader } from '../components/kada-kit'
 
 const NEEDS_OPTIONS = [
   'Web Application', 'Mobile App (iOS/Android)', 'SaaS Platform', 
@@ -108,13 +108,13 @@ export default function StartProject() {
         description="Tell us about your product, timeline and budget. We will come back with a plan, a timeline and an estimate."
         path="/start-project"
       />
-      <section 
-        className="hero-gradient relative overflow-hidden min-h-screen"
-        style={{
-          paddingTop: 'clamp(7.5rem, 14vw, 10.5rem)',
-          paddingBottom: 'clamp(4rem, 8vw, 6rem)',
-        }}
-      >
+      <PageHeader
+        topOffset={72}
+        eyebrow="Start a Project"
+        title={<>Let's build your <span className="text-blue-600">software</span></>}
+        subtitle="Tell us your goals. We'll reply with a scoped plan."
+      />
+      <section className="relative overflow-hidden bg-slate-50 pb-16 sm:pb-24">
         <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
         <div className="container-width relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
@@ -122,28 +122,6 @@ export default function StartProject() {
             {/* Left Information Pane */}
             <div className="lg:col-span-5 flex flex-col justify-between">
               <Reveal>
-                <div className="mb-6">
-                  <Link 
-                    to="/" 
-                    className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors"
-                  >
-                    <ArrowLeft size={14} className="mr-1.5" />
-                    Back to Homepage
-                  </Link>
-                </div>
-
-                <div className="eyebrow mb-6">
-                  Start a Project
-                </div>
-
-                <h1 className="display-1 text-[var(--ink)] mb-4 font-extrabold tracking-tight">
-                  Let's engineer your <span className="gradient-text">software.</span>
-                </h1>
-
-                <p className="lead text-[var(--text-secondary)] text-base sm:text-lg mb-8 leading-relaxed">
-                  Fill out this brief intake form to tell us about your goals. You'll receive a detailed milestone breakdown and consultation from our senior developers.
-                </p>
-
                 {/* What Happens Next Steps */}
                 <div className="bg-white rounded-2xl border border-[var(--border)] p-6 shadow-xs space-y-4 mb-8">
                   <div className="text-xs font-bold uppercase tracking-wider text-[var(--ink)] mb-1">

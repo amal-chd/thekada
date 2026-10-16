@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShieldCheck, Trash2, CheckCircle2, AlertCircle, Mail, MapPin, Smartphone, FileText, ArrowRight, HelpCircle } from 'lucide-react'
+import { Trash2, CheckCircle2, AlertCircle, Mail, MapPin, Smartphone, FileText, ArrowRight, HelpCircle } from 'lucide-react'
 import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { submitPublicForm } from '../lib/publicForms'
 import Seo from '../components/Seo'
+import { PageHeader } from "../components/kada-kit";
 
 const APPS_LIST = [
   { id: 'the-kada', name: 'The Kada App' },
@@ -73,22 +74,12 @@ export default function DeleteAccount() {
       />
     <main style={{ overflowX: 'clip' }}>
       {/* Hero Section */}
-      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7rem, 11vw, 9rem) 0 clamp(3rem, 5vw, 4rem)', borderBottom: '1px solid var(--border)' }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ maxWidth: '820px' }}>
-            <div className="eyebrow" style={{ marginBottom: '1.1rem', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
-              <ShieldCheck size={14} /> Google Play &amp; App Store Data Safety Compliance
-            </div>
-            <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', fontWeight: 800, letterSpacing: '-0.035em', lineHeight: 1.12, color: 'var(--ink)', marginBottom: '1rem' }}>
-              Account &amp; Data Deletion Portal
-            </h1>
-            <p style={{ fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', color: 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.65 }}>
-              In strict compliance with Google Play User Data policies and global data protection regulations, you can permanently delete your account and all associated personal data from any application within The Kada ecosystem directly from this public portal or within our mobile apps.
-            </p>
-          </motion.div>
-        </Container>
-      </section>
+      <PageHeader
+        eyebrow="Google Play & App Store Data Safety Compliance"
+        title={<>Account &amp; Data Deletion Portal</>}
+        subtitle={<>In strict compliance with Google Play User Data policies and global data protection regulations, you can permanently delete your account and all associated personal data from any application within The Kada ecosystem directly from this public portal or within our mobile apps.</>}
+        topOffset={72}
+      />
 
       {/* Main Content Grid */}
       <section className="section-white" style={{ padding: 'clamp(2.5rem, 6vw, 5.5rem) 0' }}>

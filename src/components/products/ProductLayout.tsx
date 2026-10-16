@@ -1,17 +1,18 @@
 import type { ComponentType } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Check, ArrowRight } from 'lucide-react'
-import { Section, SectionHeading, Reveal, Container, AnimatedCounter } from '../ui'
+import { Section, SectionHeading, Reveal, Container } from '../ui'
 import MagneticButton from '../ui/MagneticButton'
 import SpotlightCard from '../ui/SpotlightCard'
 import FAQ, { type FAQItem } from '../shared/FAQ'
-import AppPreview, { type PreviewConfig } from './AppPreview'
+import { type PreviewConfig } from './AppPreview'
 import AppDownload from '../shared/AppDownload'
 import ProductEcosystemBand from './ProductEcosystemBand'
 import ProductPricing, { type PricingConfig } from './ProductPricing'
 import Seo, { SITE_URL } from '../Seo'
 import { breadcrumbLd, faqLd } from '../../lib/schema'
 import { metaDescription } from '../../lib/seoText'
+import { PageHeader } from '../kada-kit'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -76,52 +77,21 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
         ]}
       />
       {/* ───────────────── HERO (aurora) ───────────────── */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 9.5rem) 0 clamp(3.5rem, 6vw, 5rem)', background: `linear-gradient(180deg, ${config.accentSoft} 0%, #FFFFFF 100%)` }}>
-        {/* themed aurora */}
-        <div aria-hidden style={{ position: 'absolute', inset: '-20% -10% 0 -10%', background: `radial-gradient(50% 50% at 80% 8%, ${a}26, transparent 60%), radial-gradient(45% 45% at 15% 30%, ${a}1c, transparent 65%)`, filter: 'blur(50px)', zIndex: 0 }} />
-        <div className="mesh-dots" style={{ opacity: 0.6 }} />
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '3.5rem', alignItems: 'center' }} className="grid-2">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
-              <div className="eyebrow" style={{ marginBottom: '1.5rem', background: `${a}14`, color: a, borderColor: `${a}28` }}>
-                {config.logoSrc ? (
-                  <img src={config.logoSrc} alt="" style={{ width: 18, height: 18, borderRadius: 5, objectFit: 'cover' }} />
-                ) : (
-                  <config.EyebrowIcon size={14} />
-                )} {config.eyebrowLabel}
-              </div>
-              <h1 style={{ fontSize: 'clamp(2.5rem, 5.4vw, 4.15rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.4rem' }}>
-                {config.title.pre}{' '}
-                <span className={config.gradientClass}>{config.title.accent}</span>
-                {config.title.post ? <>{' '}{config.title.post}</> : null}
-              </h1>
-              <p className="lead" style={{ maxWidth: 540, marginBottom: '2.25rem' }}>{config.subtitle}</p>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                <MagneticButton to={config.primaryCta.to} href={config.primaryCta.href} glow className="btn-primary btn-lg" style={{ background: a, boxShadow: `0 10px 28px -8px ${a}80`, '--glow-bg': a } as React.CSSProperties}>
-                  {config.primaryCta.label} <ArrowUpRight size={17} />
-                </MagneticButton>
-                <MagneticButton to={config.secondaryCta.to} className="btn-secondary btn-lg">{config.secondaryCta.label}</MagneticButton>
-              </div>
-              {(config.appStore || config.playStore) && (
-                <div style={{ marginBottom: '2.25rem' }}>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-secondary)', marginBottom: '0.7rem' }}>Available on iOS &amp; Android</div>
-                  <AppDownload appStore={config.appStore} playStore={config.playStore} size="sm" />
-                </div>
-              )}
-              {/* animated stat counters */}
-              <div style={{ display: 'flex', gap: 'clamp(1.4rem, 4vw, 2.5rem)', flexWrap: 'wrap' }} className="grid-responsive-2col">
-                {config.stats.map((s, i) => (
-                  <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }} className="product-stat-card">
-                    <AnimatedCounter value={s.value} style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 800, color: a, letterSpacing: '-0.03em', lineHeight: 1, display: 'block', fontFamily: "'Outfit', sans-serif" }} />
-                    <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600, marginTop: '0.35rem', maxWidth: 130 }}>{s.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-            <div className="hero-illustration"><AppPreview accent={a} preview={config.preview} /></div>
-          </div>
-        </Container>
-      </section>
+      <PageHeader
+        topOffset={72}
+        eyebrow={<>{config.logoSrc ? <img src={config.logoSrc} alt="" className="h-4 w-4 rounded object-cover" /> : <config.EyebrowIcon size={14} />} {config.eyebrowLabel}</>}
+        title={<>{config.title.pre} <span className="text-blue-600">{config.title.accent}</span>{config.title.post ? <> {config.title.post}</> : null}</>}
+        subtitle={config.subtitle}
+        actions={[
+          { label: config.primaryCta.label, to: config.primaryCta.href ?? config.primaryCta.to ?? '/contact' },
+          { label: config.secondaryCta.label, to: config.secondaryCta.to },
+        ]}
+      />
+      {(config.appStore || config.playStore) && (
+        <div className="bg-slate-50 pb-8 flex justify-center">
+          <AppDownload appStore={config.appStore} playStore={config.playStore} size="sm" />
+        </div>
+      )}
 
       {/* ───────────────── AUDIENCES (optional) ───────────────── */}
       {config.audiences && (
@@ -158,7 +128,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
               <Reveal key={f.title} delay={i * 0.05} className={`h-full ${isLast && config.features.length % 2 !== 0 ? 'col-span-2-mobile' : ''}`}>
                 <SpotlightCard className="card-premium" style={{ height: '100%' }}>
                   <div style={{ padding: '1.85rem', height: '100%', position: 'relative' }}>
-                    <span aria-hidden style={{ position: 'absolute', top: '1.3rem', right: '1.5rem', fontFamily: "'Outfit', sans-serif", fontSize: '2.2rem', fontWeight: 800, color: `${a}14`, lineHeight: 1 }}>
+                    <span aria-hidden style={{ position: 'absolute', top: '1.3rem', right: '1.5rem', fontFamily: "sans-serif", fontSize: '2.2rem', fontWeight: 800, color: `${a}14`, lineHeight: 1 }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span style={{ width: 48, height: 48, borderRadius: 13, background: `${a}12`, border: `1px solid ${a}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.2rem' }}>

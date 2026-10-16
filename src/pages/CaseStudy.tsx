@@ -1,9 +1,10 @@
-import { useParams, Navigate, Link } from 'react-router-dom'
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu } from 'lucide-react'
+import { useParams, Navigate } from 'react-router-dom'
+import { ArrowUpRight, CheckCircle2, Cpu } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal } from '@/components/ui'
 import { caseStudies } from '@/data/caseStudies'
 import Seo from '@/components/Seo'
 import { breadcrumbLd } from '@/lib/schema'
+import { PageHeader } from "../components/kada-kit";
 
 export default function CaseStudy() {
   const { slug } = useParams<{ slug: string }>()
@@ -27,67 +28,12 @@ export default function CaseStudy() {
         ])}
       />
       {/* Hero Section */}
-      <section 
-        className="hero-gradient relative overflow-hidden"
-        style={{ 
-          padding: 'clamp(7.5rem, 14vw, 10.5rem) 0 clamp(4rem, 8vw, 6rem)',
-        }}
-      >
-        <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
-        <div className="container-width relative z-10">
-          <div className="max-w-3xl">
-            <Reveal>
-              <div className="mb-6">
-                <Link 
-                  to="/work" 
-                  className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--blue)] transition-colors"
-                >
-                  <ArrowLeft size={14} className="mr-1.5" />
-                  Back to All Work
-                </Link>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span 
-                  className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"
-                  style={{ 
-                    color: study.color, 
-                    backgroundColor: `${study.color}15`,
-                    border: `1px solid ${study.color}30`
-                  }}
-                >
-                  {study.industry}
-                </span>
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white text-[var(--text-secondary)] border border-[var(--border)]">
-                  {study.type}
-                </span>
-              </div>
-              
-              <h1 className="display-1 text-[var(--ink)] mb-6 font-extrabold tracking-tight flex items-center gap-4">
-                {study.logo ? (
-                  <img src={study.logo} alt="" className="w-14 h-14 rounded-2xl object-cover shadow-md" />
-                ) : null}
-                {study.name}
-              </h1>
-              
-              <p className="lead text-[var(--text-secondary)] text-lg sm:text-xl mb-8">
-                {study.objective}
-              </p>
-
-              {study.productLink && (
-                <div className="flex flex-wrap gap-3">
-                  <Button to={study.productLink} variant="primary" size="lg">
-                    Launch Interactive Demo <ArrowUpRight size={17} className="ml-1" />
-                  </Button>
-                  <Button to="/start-project" variant="secondary" size="lg">
-                    Build Something Similar
-                  </Button>
-                </div>
-              )}
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        title={<>{study.logo ? ( <img src={study.logo} alt="" className="inline-block align-middle mr-3 w-12 h-12 rounded-2xl object-cover shadow-md" /> ) : null} {study.name}</>}
+        subtitle={<>{study.objective}</>}
+        actions={study.productLink ? [{ label: "See the product", to: study.productLink }, { label: "All work", to: "/work" }] : [{ label: "All work", to: "/work" }]}
+        topOffset={72}
+      />
 
       {/* Challenge & Solution Grid */}
       <Section bg="soft" bordered>

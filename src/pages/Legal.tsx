@@ -4,6 +4,7 @@ import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { ShieldCheck, ArrowRight } from 'lucide-react'
 import Seo from '../components/Seo'
+import { PageHeader } from "../components/kada-kit";
 
 const legalContent: Record<string, { title: string; updated: string; sections: { heading: string; body: string | React.ReactNode }[] }> = {
   privacy: {
@@ -201,18 +202,12 @@ export default function Legal() {
         path={`/legal/${key}`}
       />
       {/* Header */}
-      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7rem, 11vw, 8.5rem) 0 clamp(2.5rem, 4vw, 3rem)', borderBottom: '1px solid var(--border)' }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="eyebrow" style={{ marginBottom: '1.1rem', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
-              <ShieldCheck size={14} /> Legal &amp; Policy Hub
-            </div>
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--ink)', marginBottom: '0.6rem' }}>{content.title}</h1>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{content.updated}</p>
-          </motion.div>
-        </Container>
-      </section>
+      <PageHeader
+        eyebrow="Legal & Policy Hub"
+        title={<>{content.title}</>}
+        subtitle={<>{content.updated}</>}
+        topOffset={72}
+      />
 
       {/* Content */}
       <section className="section-white" style={{ padding: 'clamp(3rem, 6vw, 4.5rem) 0' }}>

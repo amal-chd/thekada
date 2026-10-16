@@ -30,7 +30,7 @@ export default function FAQ({ items, accentColor = '#2563EB', title = 'Frequentl
               return (
                 <div key={i} style={{ background: isOpen ? `${accentColor}07` : '#FFFFFF', border: `1px solid ${isOpen ? `${accentColor}30` : 'var(--border)'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.25s ease' }}>
                   <button onClick={() => setOpen(isOpen ? null : i)}
-                    style={{ width: '100%', padding: '1.2rem 1.4rem', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.25rem', textAlign: 'left', color: 'var(--ink)', fontSize: '0.98rem', fontWeight: 700, fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.01em' }}>
+                    style={{ width: '100%', padding: '1.2rem 1.4rem', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.25rem', textAlign: 'left', color: 'var(--ink)', fontSize: '0.98rem', fontWeight: 700, fontFamily: "sans-serif", letterSpacing: '-0.01em' }}>
                     {item.q}
                     <span style={{ width: 28, height: 28, borderRadius: '50%', background: isOpen ? accentColor : 'var(--bg-softer)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: isOpen ? '#fff' : 'var(--text-secondary)', transition: 'all 0.25s ease' }}>
                       {isOpen ? <Minus size={14} /> : <Plus size={14} />}

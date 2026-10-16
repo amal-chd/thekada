@@ -3,7 +3,7 @@ import { ArrowUpRight, MessageSquare } from 'lucide-react'
 
 export default function FinalCTA() {
   return (
-    <Section bg="ink" curvedTop className="relative overflow-hidden" style={{ padding: 'clamp(5rem, 10vw, 7.5rem) 0' }}>
+    <Section bg="shade" className="relative overflow-hidden" style={{ padding: "clamp(3.5rem, 7vw, 5.5rem) 0" }}>
       {/* Background glow orb */}
       <div 
         aria-hidden
@@ -22,12 +22,12 @@ export default function FinalCTA() {
             Let's Build Together
           </div>
 
-          <h2 className="display-2 font-extrabold mb-5 text-white tracking-tight leading-tight">
+          <h2 className="display-2 font-extrabold mb-5 tracking-tight leading-tight" style={{ color: '#FFFFFF' }}>
             Have a product or system in mind?
           </h2>
           
-          <p className="text-base sm:text-lg leading-relaxed mb-8 text-slate-300 max-w-xl">
-            Tell us about your business requirements. We'll help define the right architecture, estimated scope, and deployment roadmap.
+          <p className="text-base sm:text-lg leading-relaxed mb-8 text-blue-100/90 max-w-xl">
+            Tell us what you need. We'll scope it and build it.
           </p>
           
           <div className="flex flex-wrap gap-3.5 justify-center">

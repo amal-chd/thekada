@@ -15,6 +15,7 @@ export default function SectionHeading({
   maxWidth = 620,
   titleStyle,
   subtitleStyle,
+  onShade = false,
 }: {
   eyebrow?: ReactNode
   title: ReactNode
@@ -25,8 +26,16 @@ export default function SectionHeading({
   maxWidth?: number
   titleStyle?: React.CSSProperties
   subtitleStyle?: React.CSSProperties
+  /** White-on-blue variant for sections on a kada-kit ShadeCard. */
+  onShade?: boolean
 }) {
   const centered = align === 'center'
+  if (onShade) {
+    accent = '#BAE6FD'
+    accentBg = 'rgba(255,255,255,0.10)'
+    titleStyle = { color: '#FFFFFF', ...titleStyle }
+    subtitleStyle = { color: 'rgba(219,234,254,0.9)', ...subtitleStyle }
+  }
   return (
     <Reveal
       style={{

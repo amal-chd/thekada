@@ -3,6 +3,7 @@ import { motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Target, Heart, Zap, Sparkles, Building2 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal, CTASection } from '../components/ui'
 import Seo from '../components/Seo'
+import { PageHeader } from "../components/kada-kit";
 
 const timeline = [
   { year: '2023', title: 'Founded in Kannur, Kerala', desc: 'Started with one core vision: small, mid-sized, and growing businesses deserve the same quality of software that large tech giants take for granted.' },
@@ -67,43 +68,13 @@ export default function About() {
       />
     <main>
       {/* HERO */}
-      <section 
-        className="hero-gradient relative overflow-hidden" 
-        style={{ 
-          padding: 'clamp(7.5rem, 14vw, 10.5rem) 0 clamp(4rem, 8vw, 6rem)',
-        }}
-      >
-        <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
-        <div className="container-width relative z-10">
-          <div className="max-w-3xl">
-            <Reveal>
-              <div className="eyebrow mb-6">
-                About The Kada Digital Ventures
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h1 className="display-1 text-[var(--ink)] mb-6 font-extrabold tracking-tight">
-                We build software that <span className="gradient-text">runs businesses.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p className="lead text-[var(--text-secondary)] mb-8 max-w-2xl text-lg sm:text-xl">
-                The Kada Digital Ventures is a technology company that engineers and operates commercial SaaS platforms — and partners with businesses to build custom software tailored to their exact operational workflows.
-              </p>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="flex flex-wrap gap-3.5">
-                <Button to="/start-project" size="lg">
-                  Start a Project <ArrowUpRight size={17} className="ml-1" />
-                </Button>
-                <Button to="/work" variant="secondary" size="lg">
-                  Explore Portfolio
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="About The Kada Digital Ventures"
+        title={<>We build software that <span className="gradient-text">runs businesses.</span></>}
+        subtitle={<>The Kada Digital Ventures is a technology company that engineers and operates commercial SaaS platforms — and partners with businesses to build custom software tailored to their exact operational workflows.</>}
+        actions={[{ label: "Start a Project", to: "/start-project" }, { label: "Explore Portfolio", to: "/work" }]}
+        topOffset={72}
+      />
 
       {/* MISSION & CORPORATE IDENTITY */}
       <Section bg="white" bordered>

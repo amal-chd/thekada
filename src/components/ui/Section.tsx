@@ -1,7 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react'
 import Container from './Container'
 
-type Bg = 'white' | 'soft' | 'softer' | 'sky' | 'ink' | 'cream' | 'mint'
+// 'shade' is transparent, for sections placed on a kada-kit ShadeCard.
+type Bg = 'white' | 'soft' | 'softer' | 'sky' | 'ink' | 'cream' | 'mint' | 'shade'
 
 const bgClass: Record<Bg, string> = {
   white: 'section-white',
@@ -11,6 +12,7 @@ const bgClass: Record<Bg, string> = {
   ink: 'section-ink',
   cream: 'section-cream',
   mint: 'section-mint',
+  shade: '',
 }
 
 const archColor: Record<Bg, string> = {
@@ -21,6 +23,7 @@ const archColor: Record<Bg, string> = {
   ink: '#0b1120',
   cream: '#fffbeb',
   mint: '#ecfdf5',
+  shade: 'transparent',
 }
 
 export default function Section({

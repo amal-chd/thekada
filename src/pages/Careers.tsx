@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight, MapPin, Clock, Globe, TrendingUp, BookText, Heart, Target, GraduationCap, Award } from 'lucide-react'
-import { Section, SectionHeading, Button, Reveal, Container, CTASection, SpotlightCard } from '../components/ui'
+import { Section, SectionHeading, Button, Reveal, CTASection, SpotlightCard } from '../components/ui'
 import Seo from '../components/Seo'
+import { PageHeader } from "../components/kada-kit";
 
 const openings = [
   { title: 'Senior Full-Stack Engineer', team: 'Engineering', type: 'Full-time', location: 'Kannur / Remote', color: '#2563EB', desc: 'Build across our SaaS products and client projects — React, Node, and PostgreSQL at scale.' },
@@ -30,42 +31,13 @@ export default function Careers() {
         path="/careers"
       />
     <main style={{ overflowX: 'clip' }}>
-      <section className="hero-gradient" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(7.5rem, 12vw, 10.5rem) 0 clamp(4.5rem, 6vw, 6rem)' }}>
-        <div className="fine-grid" style={{ position: 'absolute', inset: 0, opacity: 0.7 }} />
-        
-        {/* Animated background floating element */}
-        <motion.div
-          animate={{
-            y: [-20, 20, -20],
-            rotate: [0, 5, -5, 0],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          style={{ position: 'absolute', top: '5%', right: '5%', width: '50vw', height: '50vw', maxWidth: 600, maxHeight: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0) 70%)', borderRadius: '50%', pointerEvents: 'none', filter: 'blur(40px)' }}
-        />
-        
-        <Container style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ maxWidth: 720 }}>
-            <motion.div initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="eyebrow" style={{ marginBottom: '1.5rem' }}>
-              Careers
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, filter: 'blur(12px)', y: 30 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }} style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--ink)', marginBottom: '1.5rem' }}>
-              Build software that{' '}<br /><span className="gradient-text-blue">actually ships.</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }} className="lead" style={{ maxWidth: 580, marginBottom: '2.5rem' }}>
-              We’re a small, senior team with an outsized mission — building products and custom software that help thousands of businesses run better. Come build with us.
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Button to="/careers/internship"><GraduationCap size={17} /> Apply for an internship</Button>
-              <Button to="/careers/internship#certificate" variant="secondary"><Award size={17} /> Get your certificate</Button>
-            </motion.div>
-          </div>
-        </Container>
-      </section>
+      <PageHeader
+        eyebrow="Careers"
+        title={<>Build software that{' '} <span className="gradient-text-blue">actually ships.</span></>}
+        subtitle={<>We’re a small, senior team with an outsized mission — building products and custom software that help thousands of businesses run better.</>}
+        actions={[{ label: "Apply for an internship", to: "/careers/internship" }, { label: "Get your certificate", to: "/careers/internship#certificate" }]}
+        topOffset={72}
+      />
 
       {/* OPENINGS */}
       <Section bg="white">

@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Section, Reveal, Button } from '@/components/ui'
 import Seo from '@/components/Seo'
 import { caseStudies } from '@/data/caseStudies'
+import { PageHeader } from "../components/kada-kit";
 
 /** Not every product has a written case study yet. */
 const hasCaseStudy = (slug: string) => slug in caseStudies
@@ -111,33 +112,12 @@ export default function Work() {
       />
     <main>
       {/* Hero */}
-      <section 
-        className="hero-gradient relative overflow-hidden"
-        style={{ 
-          padding: 'clamp(7.5rem, 14vw, 10.5rem) 0 clamp(3.5rem, 6vw, 5rem)',
-        }}
-      >
-        <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
-        <div className="container-width relative z-10">
-          <div className="max-w-3xl">
-            <Reveal>
-              <div className="eyebrow mb-6">
-                Our Portfolio & Products
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h1 className="display-1 text-[var(--ink)] mb-6 font-extrabold tracking-tight">
-                Work that proves what <span className="gradient-text">we can build.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p className="lead text-[var(--text-secondary)] mb-0 max-w-2xl text-lg sm:text-xl">
-                Explore our commercial platforms, customer applications, and business systems. Every product is engineered for high performance, reliability, and real-world scale.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Our Portfolio & Products"
+        title={<>Work that proves what <span className="gradient-text">we can build.</span></>}
+        subtitle={<>Explore our commercial platforms, customer applications, and business systems.</>}
+        topOffset={72}
+      />
 
       {/* Projects Grid Section */}
       <Section bg="soft" size="default" bordered>

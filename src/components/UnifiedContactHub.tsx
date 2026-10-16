@@ -68,7 +68,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     heroBadge: "🍽️ 24/7 Diner & Customer Care Desk",
     heroTitlePrefix: "We're here to help make your",
     heroTitleHighlight: "dining experience delightful.",
-    heroSubtitle: "Have questions about an active order, delivery ETA, refund, payment, dietary inquiry, or want to partner your kitchen? Reach our local support desk instantly.",
+    heroSubtitle: "Orders, refunds, payments or partnering — we're here to help.",
     trustBadges: [
       { icon: Zap, text: "Live order help (< 2 min SLA)", color: "text-amber-500" },
       { icon: ShieldCheck, text: "Instant refund & payment support", color: "text-emerald-500" },
@@ -140,7 +140,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     heroBadge: "Direct Restaurant & Merchant Desk",
     heroTitlePrefix: "Let's grow your restaurant &",
     heroTitleHighlight: "take orders faster.",
-    heroSubtitle: "Book a tailored 1-on-1 walkthrough of Kada Dine POS & QR, speak with our onboarding engineers, or get instant support for your food & beverage outlet.",
+    heroSubtitle: "Book a walkthrough or get help with your outlet.",
     trustBadges: [
       { icon: Zap, text: "2-min fast setup", color: "text-amber-500" },
       { icon: ShieldCheck, text: "0% commission on orders", color: "text-emerald-500" },
@@ -208,7 +208,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     heroBadge: "Direct Hotelier & Hospitality Desk",
     heroTitlePrefix: "Let's elevate your hotel &",
     heroTitleHighlight: "guest stay experience.",
-    heroSubtitle: "Book a live 1-on-1 walkthrough of Kada Host PMS & Room QR, talk with our hospitality engineers, or get instant setup assistance for your property.",
+    heroSubtitle: "Book a walkthrough or get help with your property.",
     trustBadges: [
       { icon: Zap, text: "10-minute property rollout", color: "text-amber-500" },
       { icon: ShieldCheck, text: "0% guest surcharge", color: "text-emerald-500" },
@@ -276,7 +276,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     heroBadge: "Direct Solutions & Technology Desk",
     heroTitlePrefix: "Let's build software that",
     heroTitleHighlight: "runs your business.",
-    heroSubtitle: "Talk directly with our system architects and engineers in Kannur, Kerala. Explore custom development, API integrations, or book an executive walkthrough.",
+    heroSubtitle: "Talk to our engineers about your project.",
     trustBadges: [
       { icon: Zap, text: "Engineered in Kannur, Kerala", color: "text-amber-500" },
       { icon: ShieldCheck, text: "Enterprise security & SLA", color: "text-emerald-500" },
@@ -334,7 +334,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
       },
       {
         q: "What support SLA is provided for enterprise deployments?",
-        a: "Enterprise clients receive dedicated Slack/WhatsApp support channels, guaranteed 15-minute response times, and optional on-site engineer deployment during major go-lives.",
+        a: "Enterprise clients receive dedicated Slack/WhatsApp support channels, priority response times, and optional on-site engineer deployment during major go-lives.",
       },
       {
         q: "How do we get started with a consultation?",
@@ -347,9 +347,9 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     tagline: "Hyperlocal Delivery Fleet & Courier Operations",
     sub: "Automated dispatch, weekly payouts, 100% tip pass-through, route optimization, and dedicated rider support.",
     heroBadge: "Direct Rider & Logistics Support Desk",
-    heroTitlePrefix: "Ride with pride &",
-    heroTitleHighlight: "earn flexibly every day.",
-    heroSubtitle: "Have questions about joining our delivery fleet, need help with active shifts, wallet payouts, or vehicle onboarding? Our team is available 24/7.",
+    heroTitlePrefix: "How can we",
+    heroTitleHighlight: "help you ride?",
+    heroSubtitle: "Questions about joining, shifts or payouts? We're here to help.",
     trustBadges: [
       { icon: Zap, text: "Weekly automated bank payout", color: "text-amber-500" },
       { icon: ShieldCheck, text: "100% customer tip pass-through", color: "text-emerald-500" },
@@ -573,12 +573,12 @@ export function UnifiedContactHub({
   return (
     <div className="w-full text-slate-900 font-sans selection:bg-blue-600/20 selection:text-blue-700">
       {/* ─── 1. HERO HEADER ─────────────────────────────────────────────────── */}
-      <section className="relative pt-12 pb-8 sm:pt-16 sm:pb-12 text-center max-w-5xl mx-auto px-4 sm:px-6">
+      <section className="relative pt-12 pb-8 sm:pt-16 sm:pb-10 text-center max-w-4xl mx-auto px-4 sm:px-6">
         <div className="inline-flex items-center gap-2 rounded-full bg-blue-600/10 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-blue-700 border border-blue-600/20 shadow-xs mb-4">
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>{activeConfig.heroBadge}</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.08]">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           {activeConfig.heroTitlePrefix}{" "}
           <span className="text-blue-600 italic">
             {activeConfig.heroTitleHighlight}
@@ -587,22 +587,6 @@ export function UnifiedContactHub({
         <p className="mt-4 text-base sm:text-lg font-semibold text-slate-600 max-w-2xl mx-auto leading-relaxed">
           {activeConfig.heroSubtitle}
         </p>
-
-        {/* 4 Dedicated Trust Badges */}
-        <div className="pt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold text-slate-800">
-          {activeConfig.trustBadges.map((badge, idx) => {
-            const Icon = badge.icon;
-            return (
-              <div
-                key={idx}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border-2 border-slate-200/90 shadow-xs"
-              >
-                <Icon className={`h-4 w-4 ${badge.color}`} />
-                <span className="text-slate-800 font-bold">{badge.text}</span>
-              </div>
-            );
-          })}
-        </div>
       </section>
 
       {/* ─── 2. DEDICATED HEADER & MODE SELECTOR ────────────────────────────── */}
@@ -858,7 +842,7 @@ export function UnifiedContactHub({
                       <p className="text-xs sm:text-sm font-semibold text-slate-600 leading-relaxed">
                         {mode === "demo"
                           ? `Our ${activeConfig.name} team has logged your walkthrough request. A specialist will call/WhatsApp you shortly to confirm your slot.`
-                          : `Thank you for reaching out to ${activeConfig.name}. A representative has been assigned and will reply within 30 minutes.`}
+                          : `Thank you for reaching out to ${activeConfig.name}. Our team will get back to you as soon as possible.`}
                       </p>
                     </div>
 
@@ -1241,7 +1225,7 @@ export function UnifiedContactHub({
 
                     <div className="text-center text-[11px] font-bold text-slate-500 flex items-center justify-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      <span>Zero spam guarantee · Direct team response within 30 minutes</span>
+                      <span>No spam · A real person from our team replies</span>
                     </div>
                   </motion.form>
                 )}

@@ -22,10 +22,10 @@ export default function Logo({
       <img src="/favicon.png" alt="The Kada Digital Ventures Logo" width={size} height={size} style={{ display: 'block', flexShrink: 0 }} />
       {showText && (
         <span className="logo-text-container" style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.32rem', lineHeight: 1 }}>
-          <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: size * 0.46, fontWeight: 800, color: primaryText, letterSpacing: '-0.02em' }}>
+          <span style={{ fontFamily: "sans-serif", fontSize: size * 0.46, fontWeight: 800, color: primaryText, letterSpacing: '-0.02em' }}>
             The&nbsp;Kada
           </span>
-          <span className="logo-vc" style={{ fontFamily: "'Outfit', sans-serif", fontSize: size * 0.42, fontWeight: 500, color: mutedText, letterSpacing: '-0.01em' }}>
+          <span className="logo-vc" style={{ fontFamily: "sans-serif", fontSize: size * 0.42, fontWeight: 500, color: mutedText, letterSpacing: '-0.01em' }}>
             Digital&nbsp;Ventures
           </span>
         </span>

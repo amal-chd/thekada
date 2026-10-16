@@ -36,9 +36,9 @@ export default function Header() {
   }, [mobileOpen])
 
   const path = location.pathname.replace(/\/$/, '')
-  // Dark hero on service details, and fully dark theme on internship portal
+  // Dark hero on the home page, and fully dark theme on internship portal
   const isDarkPage = path === '/careers/internship'
-  const isDarkHero = ((path.startsWith('/services/') && path !== '/services') || isDarkPage) && !scrolled && !mobileOpen
+  const isDarkHero = (path === '' || isDarkPage) && !scrolled && !mobileOpen
 
   const headerBg = isDarkHero
     ? 'transparent'

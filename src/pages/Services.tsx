@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRight, Globe, Smartphone, Rocket, Settings, Zap, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Section, SectionHeading, Button, Reveal } from '../components/ui'
 import Seo from '../components/Seo'
+import { PageHeader } from "../components/kada-kit";
 
 const services = [
   {
@@ -61,43 +62,13 @@ export default function Services() {
       />
     <main>
       {/* HERO SECTION */}
-      <section 
-        className="hero-gradient relative overflow-hidden"
-        style={{ 
-          padding: 'clamp(7.5rem, 14vw, 10.5rem) 0 clamp(4rem, 8vw, 6rem)',
-        }}
-      >
-        <div aria-hidden className="fine-grid absolute inset-0 opacity-60 pointer-events-none" />
-        <div className="container-width relative z-10">
-          <div className="max-w-3xl">
-            <Reveal>
-              <div className="eyebrow mb-6">
-                Our Engineering Capabilities
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h1 className="display-1 text-[var(--ink)] mb-6 font-extrabold tracking-tight">
-                Software engineered for <span className="gradient-text">commercial scale.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p className="lead text-[var(--text-secondary)] mb-8 max-w-2xl text-lg sm:text-xl">
-                From initial prototype to mission-critical business platforms, we design, build, and support software tailored to how your company actually works.
-              </p>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="flex flex-wrap gap-3.5">
-                <Button to="/start-project" size="lg">
-                  Start a Project <ArrowUpRight size={17} className="ml-1" />
-                </Button>
-                <Button to="/work" variant="secondary" size="lg">
-                  View Case Studies
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Our Engineering Capabilities"
+        title={<>Software engineered for <span className="gradient-text">commercial scale.</span></>}
+        subtitle={<>From initial prototype to mission-critical business platforms, we design, build, and support software tailored to how your company actually works.</>}
+        actions={[{ label: "Start a Project", to: "/start-project" }, { label: "View Case Studies", to: "/work" }]}
+        topOffset={72}
+      />
 
       {/* SERVICES BREAKDOWN */}
       <Section bg="soft" bordered>
