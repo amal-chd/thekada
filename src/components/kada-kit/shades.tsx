@@ -161,7 +161,7 @@ export function ShadeCard({
   layer: number;
   id?: string;
   fadeTop?: boolean;
-  /** Bottom padding under the content, as on the customer landing. */
+  /** Bottom padding that clears the next card's 2–2.5rem overlap with room to spare. */
   padded?: boolean;
   headerOffset?: HeaderOffset;
   className?: string;
@@ -171,7 +171,7 @@ export function ShadeCard({
     <StackCard
       id={id}
       headerOffset={headerOffset}
-      className={`${CARD_SHAPE} ${padded ? "pb-8 sm:pb-10" : ""} ${className}`}
+      className={`${CARD_SHAPE} ${padded ? "pb-16 sm:pb-20" : ""} ${className}`}
       style={{ ...shadeBackground(variant), zIndex: layer * 10 }}
     >
       <SectionBackdrop variant={variant} fadeTop={fadeTop} />

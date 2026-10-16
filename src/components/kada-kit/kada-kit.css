@@ -14,3 +14,10 @@
 @media (prefers-reduced-motion: reduce) {
   .kk-fade-in { animation: none; }
 }
+
+/* Lenis smooth scrolling (see smooth-scroll.ts). */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }

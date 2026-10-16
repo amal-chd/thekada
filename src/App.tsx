@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
-import Lenis from '@studio-freight/lenis'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToTop'
 import { CustomCursor } from './components/ui'
 import Home from './pages/Home'
+import { useSmoothScroll } from './components/kada-kit'
 
 // Core pages
 const Services = lazy(() => import('./pages/Services'))
@@ -72,41 +72,7 @@ function ExternalRedirect({ to }: { to: string }) {
 }
 
 export default function App() {
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    })
-
-    ;(window as unknown as { lenis?: Lenis }).lenis = lenis
-
-    let rafId: number
-    function raf(time: number) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-
-    rafId = requestAnimationFrame(raf)
-
-    const resizeObserver = new ResizeObserver(() => {
-      lenis.resize()
-    })
-
-    const rootEl = document.getElementById('root')
-    if (rootEl) {
-      resizeObserver.observe(rootEl)
-    }
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      resizeObserver.disconnect()
-      lenis.destroy()
-      delete (window as unknown as { lenis?: Lenis }).lenis
-    }
-  }, [])
+  useSmoothScroll()
 
   return (
     <BrowserRouter>

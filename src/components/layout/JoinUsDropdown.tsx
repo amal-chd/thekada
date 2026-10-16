@@ -97,7 +97,7 @@ export default function JoinUsDropdown({ isDark = false }: JoinUsDropdownProps) 
         aria-haspopup="true"
         aria-expanded={open}
       >
-        <span>Join Us</span>
+        <span className="whitespace-nowrap">Join Us</span>
         <ChevronDown
           size={14}
           style={{

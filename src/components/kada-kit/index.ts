@@ -5,3 +5,4 @@ export * from "./GetAppSection";
 export * from "./SiteFooter";
 export * from "./tiles";
 export * from "./page";
+export * from "./smooth-scroll";

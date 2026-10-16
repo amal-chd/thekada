@@ -268,7 +268,7 @@ export function EcosystemSection({
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 w-full max-w-xl pb-10">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 w-full max-w-xl">
             {products.map((prod, idx) => {
               const isActive = idx === activeIndex;
               return (
