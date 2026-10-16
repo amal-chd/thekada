@@ -24,7 +24,6 @@ const SECTIONS: FooterSection[] = [
       { label: 'Our Work', to: '/work' },
       { label: 'Products', to: '/products' },
       { label: 'Careers', to: '/careers' },
-      { label: 'Internships', to: '/careers/internship' },
       { label: 'Start a Project', to: '/start-project' },
       { label: 'Contact', to: '/contact' },
     ],

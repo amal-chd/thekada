@@ -28,15 +28,14 @@ export default function Careers() {
   return (
     <main className="bg-slate-50" style={{ overflowX: 'clip' }}>
       <Seo
-        title="Careers & Internships"
-        description="Open roles and internships at The Kada Digital Ventures — engineering, design and operations, based in Kannur, Kerala."
+        title="Careers"
+        description="Open roles at The Kada Digital Ventures — engineering, design and operations, based in Kannur, Kerala."
         path="/careers"
       />
       <PageHeader
         eyebrow="Careers"
         title={<>Build software that{' '} <span className="gradient-text-blue">actually ships.</span></>}
         subtitle={<>We’re a small, senior team with an outsized mission — building products and custom software that help businesses run better.</>}
-        actions={[{ label: "Apply for an internship", to: "/careers/internship" }, { label: "Get your certificate", to: "/careers/internship#certificate" }]}
         topOffset={72}
       />
       <ShadeStack headerOffset={HEADER_OFFSET} cards={[
@@ -46,8 +45,7 @@ export default function Careers() {
           title: "Don't see your",
           highlight: 'role?',
           actions: [
-            { label: 'Internships', to: '/careers/internship', primary: true },
-            { label: 'Get in touch', to: '/contact' },
+            { label: 'Get in touch', to: '/contact', primary: true },
           ],
         },
       ]} />

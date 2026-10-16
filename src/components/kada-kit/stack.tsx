@@ -17,6 +17,8 @@ export interface StackCardSpec {
   actions?: { label: string; to: string; primary?: boolean }[];
   /** Anything else (a form, a table) on the card, below the heading. */
   children?: ReactNode;
+  /** false: the card scrolls away normally instead of pinning (use for forms). */
+  pin?: boolean;
 }
 
 const ORDER: BackdropVariant[] = ["navy", "royal", "vivid", "azure"];
@@ -47,6 +49,7 @@ export function ShadeStack({
           layer={startLayer + i}
           fadeTop={i === 0}
           headerOffset={headerOffset}
+          pin={c.pin}
         >
           <section id={c.id} className="pt-7 sm:pt-11">
             <ShadeHeading title={c.title} highlight={c.highlight} subtitle={c.subtitle} />

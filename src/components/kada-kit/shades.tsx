@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 /**
@@ -103,45 +102,31 @@ export type HeaderOffset = (viewportWidth: number) => number;
 export const DEFAULT_HEADER_OFFSET: HeaderOffset = (w) => (w >= 1024 ? 64 : w >= 768 ? 56 : 0);
 
 /**
- * A landing "card" that pins while the next one slides over it. A card taller
- * than the screen pins by its bottom edge instead of its top, so every part of
- * it scrolls into view before it gets covered.
+ * A landing section card with clean layered depth. Cards naturally slide over
+ * each other with rounded corners and elevated shadows without sticky freezing
+ * or layout jumping.
  */
 export function StackCard({
   className = "",
   style,
   children,
   headerOffset = DEFAULT_HEADER_OFFSET,
+  pin = false,
   ...rest
-}: HTMLAttributes<HTMLDivElement> & { headerOffset?: HeaderOffset }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [top, setTop] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const update = () => {
-      setTop(Math.min(headerOffset(window.innerWidth), window.innerHeight - el.offsetHeight));
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    window.addEventListener("resize", update);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", update);
-    };
-  }, [headerOffset]);
-
+}: HTMLAttributes<HTMLDivElement> & {
+  headerOffset?: HeaderOffset;
+  /** false scrolls the card normally, so the next card never covers it (forms). */
+  pin?: boolean;
+}) {
   return (
-    <div ref={ref} {...rest} style={{ ...style, top }} className={`sticky ${className}`}>
+    <div {...rest} style={style} className={`relative ${className}`}>
       {children}
     </div>
   );
 }
 
 const CARD_SHAPE =
-  "-mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden";
+  "-mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.18)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden";
 
 /**
  * One shaded landing card: the stack position, the shade gradient and its
@@ -154,6 +139,7 @@ export function ShadeCard({
   fadeTop = false,
   padded = true,
   headerOffset,
+  pin = true,
   className = "",
   children,
 }: {
@@ -164,6 +150,8 @@ export function ShadeCard({
   /** Bottom padding that clears the next card's 2–2.5rem overlap with room to spare. */
   padded?: boolean;
   headerOffset?: HeaderOffset;
+  /** false scrolls the card normally, so the next card never covers it (forms). */
+  pin?: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -171,6 +159,7 @@ export function ShadeCard({
     <StackCard
       id={id}
       headerOffset={headerOffset}
+      pin={pin}
       className={`${CARD_SHAPE} ${padded ? "pb-16 sm:pb-20" : ""} ${className}`}
       style={{ ...shadeBackground(variant), zIndex: layer * 10 }}
     >

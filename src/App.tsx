@@ -32,7 +32,6 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Internal (hidden from public nav)
 const Careers = lazy(() => import('./pages/Careers'))
-const InternshipPortal = lazy(() => import('./pages/InternshipPortal'))
 
 function PageLoader() {
   return (
@@ -125,15 +124,15 @@ function AppContent() {
           <Route path="/admin" element={<ExternalRedirect to="https://admin.thekada.in" />} />
           <Route path="/admin/*" element={<ExternalRedirect to="https://admin.thekada.in" />} />
           <Route path="/careers" element={<Careers />} />
-          <Route path="/careers/internship" element={<InternshipPortal />} />
+          <Route path="/careers/internship" element={<Navigate to="/careers" replace />} />
 
           {/* Redirects from old/alternate routes */}
           <Route path="/ecosystem" element={<Navigate to="/work" replace />} />
           <Route path="/request-proposal" element={<Navigate to="/start-project" replace />} />
           <Route path="/proposal" element={<Navigate to="/start-project" replace />} />
           <Route path="/quote" element={<Navigate to="/start-project" replace />} />
-          <Route path="/internship" element={<Navigate to="/careers/internship" replace />} />
-          <Route path="/internships" element={<Navigate to="/careers/internship" replace />} />
+          <Route path="/internship" element={<Navigate to="/careers" replace />} />
+          <Route path="/internships" element={<Navigate to="/careers" replace />} />
           <Route path="/technology" element={<Navigate to="/services" replace />} />
           <Route path="/insights" element={<Navigate to="/" replace />} />
           <Route path="/press" element={<Navigate to="/about" replace />} />

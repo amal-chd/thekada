@@ -126,19 +126,11 @@ service cloud.firestore {
       ];
     }
 
-    // ── Internship portal ──────────────────────────────────────────────
-    // Anyone may SUBMIT an application (public form), but the payload is
-    // shape-checked, and applications can only be read or managed by staff.
-    function isInternshipApplication(data) {
-      return data.keys().hasAll(['name', 'email'])
-        && data.name is string && data.name.size() >= 2 && data.name.size() <= 120
-        && data.email is string
-        && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
-    }
-
+    // ── Internships ────────────────────────────────────────────────────
+    // The public internship portal was removed from thekada.in, so nothing
+    // outside the staff admin console reads or writes these collections.
     match /internship_applications/{id} {
-      allow create: if isInternshipApplication(request.resource.data);
-      allow read, update, delete: if isStaff();
+      allow read, write: if isStaff();
     }
 
     // Intern records, leave requests and weekly reports are staff-managed.
@@ -146,8 +138,7 @@ service cloud.firestore {
     match /internship_leaves/{id}  { allow read, write: if isStaff(); }
     match /internship_reports/{id} { allow read, write: if isStaff(); }
 
-    // Certificates: staff issue/manage. Public verification should go through a
-    // Cloud Function that looks up a single certificate by ID — not open reads.
+    // Certificates: staff issue/manage only.
     match /internship_certificates/{id} {
       allow read, write: if isStaff();
     }

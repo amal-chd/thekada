@@ -36,27 +36,22 @@ export default function Header() {
   }, [mobileOpen])
 
   const path = location.pathname.replace(/\/$/, '')
-  // Dark hero on the home page, and fully dark theme on internship portal
-  const isDarkPage = path === '/careers/internship'
-  const isDarkHero = (path === '' || isDarkPage) && !scrolled && !mobileOpen
+  // Dark hero on the home page
+  const isDarkHero = path === '' && !scrolled && !mobileOpen
 
   const headerBg = isDarkHero
     ? 'transparent'
-    : (mobileOpen 
-        ? (isDarkPage ? '#030712' : '#FFFFFF') 
-        : (isDarkPage 
-            ? (scrolled ? 'rgba(3,7,18,0.92)' : 'rgba(3,7,18,0.85)')
-            : (scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.85)')))
+    : (mobileOpen
+        ? '#FFFFFF'
+        : (scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.85)'))
 
   const headerBorder = isDarkHero
     ? 'transparent'
-    : (isDarkPage
-        ? (scrolled || mobileOpen ? 'rgba(255,255,255,0.08)' : 'transparent')
-        : (scrolled || mobileOpen ? 'rgba(15,35,75,0.08)' : 'transparent'))
+    : (scrolled || mobileOpen ? 'rgba(15,35,75,0.08)' : 'transparent')
 
-  const logoVariant = (isDarkHero || isDarkPage) ? 'light' : 'dark'
-  const linkColor = (isDarkHero || isDarkPage) ? 'rgba(255,255,255,0.85)' : '#334155'
-  const linkHoverColor = (isDarkHero || isDarkPage) ? '#FFFFFF' : '#0B1B33'
+  const logoVariant = isDarkHero ? 'light' : 'dark'
+  const linkColor = isDarkHero ? 'rgba(255,255,255,0.85)' : '#334155'
+  const linkHoverColor = isDarkHero ? '#FFFFFF' : '#0B1B33'
 
   return (
     <header
@@ -131,7 +126,7 @@ export default function Header() {
           })}
 
           <div style={{ marginLeft: '0.5rem' }}>
-            <JoinUsDropdown isDark={isDarkHero || isDarkPage} />
+            <JoinUsDropdown isDark={isDarkHero} />
           </div>
 
           <Link
@@ -159,7 +154,7 @@ export default function Header() {
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            color: (isDarkHero || isDarkPage) ? '#FFFFFF' : '#0B1B33',
+            color: isDarkHero ? '#FFFFFF' : '#0B1B33',
           }}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -176,8 +171,8 @@ export default function Header() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             style={{
               overflow: 'hidden',
-              background: isDarkPage ? '#030712' : '#FFFFFF',
-              borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)',
+              background: '#FFFFFF',
+              borderTop: '1px solid var(--border)',
               boxShadow: '0 12px 30px rgba(11,27,51,0.1)',
             }}
             className="md:hidden"
@@ -207,10 +202,10 @@ export default function Header() {
                       fontSize: '1rem',
                       fontWeight: isActive ? 700 : 550,
                       color: isActive 
-                        ? (isDarkPage ? '#60A5FA' : 'var(--blue)') 
-                        : (isDarkPage ? 'rgba(255,255,255,0.9)' : 'var(--ink)'),
+                        ? 'var(--blue)' 
+                        : 'var(--ink)',
                       background: isActive 
-                        ? (isDarkPage ? 'rgba(59,130,246,0.15)' : 'var(--blue-light)') 
+                        ? 'var(--blue-light)' 
                         : 'transparent',
                       textDecoration: 'none',
                     }}
@@ -221,14 +216,14 @@ export default function Header() {
               })}
 
               {/* Mobile Join Us Partners Section */}
-              <div style={{ paddingTop: '0.75rem', marginTop: '0.25rem', borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)' }}>
+              <div style={{ paddingTop: '0.75rem', marginTop: '0.25rem', borderTop: '1px solid var(--border)' }}>
                 <span
                   style={{
                     fontSize: '0.7rem',
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    color: isDarkPage ? '#64748B' : '#94A3B8',
+                    color: '#94A3B8',
                     display: 'block',
                     padding: '0.25rem 0.5rem 0.5rem',
                   }}
@@ -246,7 +241,7 @@ export default function Header() {
                           justifyContent: 'space-between',
                           padding: '0.6rem 0.75rem',
                           borderRadius: '12px',
-                          background: isDarkPage ? 'rgba(255,255,255,0.04)' : 'rgba(15,35,75,0.02)',
+                          background: 'rgba(15,35,75,0.02)',
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0 }}>
@@ -267,10 +262,10 @@ export default function Header() {
                             <Icon size={16} />
                           </div>
                           <div style={{ minWidth: 0, textAlign: 'left' }}>
-                            <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: isDarkPage ? '#FFFFFF' : '#0F172A' }}>
+                            <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#0F172A' }}>
                               {partner.name}
                             </span>
-                            <span style={{ display: 'block', fontSize: '0.72rem', color: isDarkPage ? '#94A3B8' : '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <span style={{ display: 'block', fontSize: '0.72rem', color: '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {partner.desc}
                             </span>
                           </div>
@@ -304,7 +299,7 @@ export default function Header() {
                 </div>
               </div>
 
-              <div style={{ paddingTop: '0.75rem', marginTop: '0.5rem', borderTop: isDarkPage ? '1px solid rgba(255,255,255,0.08)' : '1px solid var(--border)' }}>
+              <div style={{ paddingTop: '0.75rem', marginTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
                 <Link
                   to="/start-project"
                   className="btn-primary"
