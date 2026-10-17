@@ -307,7 +307,11 @@ export function SiteFooter({
             </div>
             <button
               type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                const lenis = (window as unknown as { lenis?: { scrollTo: (y: number) => void } }).lenis;
+                if (lenis) lenis.scrollTo(0);
+                else window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
               className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
             >
               <span>Back to top</span>

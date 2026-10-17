@@ -61,14 +61,14 @@ export default function Home() {
 
       {/* Same stacked shades as the customer landing: navy → royal → vivid → azure → ice */}
       <ShadeCard variant="navy" layer={1} fadeTop headerOffset={HEADER_OFFSET}>
-        <section id="what-we-build" className="pt-7 sm:pt-11">
+        <section id="what-we-build" className="py-6 sm:py-8">
           <ShadeHeading title="What we" highlight="build" subtitle="Software shaped around how your business runs" />
           <TileGrid tiles={SERVICES} />
         </section>
       </ShadeCard>
 
       <ShadeCard variant="royal" layer={2} headerOffset={HEADER_OFFSET}>
-        <section id="work" className="pt-7 sm:pt-11">
+        <section id="work" className="py-6 sm:py-8">
           <ShadeHeading title="Products we" highlight="run" subtitle="Built, launched and operated by our team" />
           <TileGrid tiles={PRODUCTS} />
         </section>
@@ -82,7 +82,7 @@ export default function Home() {
         <EcosystemSection />
       </ShadeCard>
 
-      <ShadeCard variant="ice" layer={5} padded={false} headerOffset={HEADER_OFFSET}>
+      <ShadeCard variant="ice" layer={5} padded={false} fullPage={false} headerOffset={HEADER_OFFSET}>
         <GetAppSection />
       </ShadeCard>
     </main>

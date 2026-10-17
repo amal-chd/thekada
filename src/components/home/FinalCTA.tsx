@@ -12,7 +12,6 @@ export default function FinalCTA() {
           width: '600px',
           height: '600px',
           background: 'radial-gradient(circle, rgba(37,99,235,0.22) 0%, transparent 70%)',
-          filter: 'blur(60px)',
         }} 
       />
       

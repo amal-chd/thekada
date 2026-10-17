@@ -13,8 +13,10 @@ export function useSmoothScroll() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // Follow-the-wheel smoothing (lerp) rather than a fixed 1.1s glide: still
+      // eased, but the page settles within ~0.5s of the last wheel tick
+      // instead of drifting on for well over a second.
+      lerp: 0.14,
       smoothWheel: true,
       allowNestedScroll: true,
       // Ease to in-page anchors ("#contact-sales") instead of jumping.

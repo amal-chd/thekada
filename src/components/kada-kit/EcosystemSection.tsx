@@ -157,11 +157,11 @@ export function EcosystemSection({
       {/* Central Cyan Ambient Spotlight */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-sky-300/20 rounded-full blur-[130px]"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[620px]" style={{ backgroundImage: "radial-gradient(closest-side, rgba(125,211,252,0.2), transparent)" }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center z-10 w-full flex flex-col items-center">
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight lowercase">
+      <div className="relative mx-auto max-w-6xl [@media(min-width:1280px)_and_(min-height:860px)]:max-w-7xl px-4 sm:px-6 lg:px-8 text-center z-10 w-full flex flex-col items-center">
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl [@media(min-width:1280px)_and_(min-height:860px)]:text-7xl font-black text-white tracking-tight lowercase">
           the <span className="text-cyan-200">kada</span>
         </h2>
 
@@ -175,18 +175,18 @@ export function EcosystemSection({
         </div>
 
         {/* ── DESKTOP VIEW: all four products ── */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 w-full mt-2 mb-6">
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 [@media(min-width:1280px)_and_(min-height:860px)]:gap-7 w-full mt-2 [@media(min-width:1280px)_and_(min-height:860px)]:mt-6 mb-6">
           {products.map((prod) =>
             productLink(
               prod,
-              <div className="group h-full bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35)] p-5 lg:p-6 text-center flex flex-col items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_25px_60px_rgba(0,0,0,0.5)]">
-                <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl lg:rounded-3xl shadow-md overflow-hidden flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+              <div className="group h-full bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35)] p-5 lg:p-6 [@media(min-width:1280px)_and_(min-height:860px)]:p-8 [@media(min-width:1280px)_and_(min-height:860px)]:min-h-[340px] text-center flex flex-col items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_25px_60px_rgba(0,0,0,0.5)]">
+                <div className="w-20 h-20 lg:w-24 lg:h-24 [@media(min-width:1280px)_and_(min-height:860px)]:w-28 [@media(min-width:1280px)_and_(min-height:860px)]:h-28 rounded-2xl lg:rounded-3xl shadow-md overflow-hidden flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
                   {renderAppIcon(prod)}
                 </div>
 
                 <div className="my-3 flex-1 flex flex-col items-center justify-center">
-                  <h3 className="text-base lg:text-lg font-black text-slate-900 tracking-tight lowercase">{prod.name}</h3>
-                  <p className="mt-1.5 text-xs text-slate-600 font-medium leading-relaxed max-w-[220px]">{prod.desc}</p>
+                  <h3 className="text-base lg:text-lg [@media(min-width:1280px)_and_(min-height:860px)]:text-2xl font-black text-slate-900 tracking-tight lowercase">{prod.name}</h3>
+                  <p className="mt-1.5 text-xs [@media(min-width:1280px)_and_(min-height:860px)]:text-sm text-slate-600 font-medium leading-relaxed max-w-[220px]">{prod.desc}</p>
                 </div>
 
                 <div className="pt-2 border-t border-slate-100 w-full">
@@ -247,7 +247,7 @@ export function EcosystemSection({
                 </button>
               </div>
 
-              <p className="mt-3 text-xs sm:text-[13px] font-semibold text-slate-600 max-w-[260px] mx-auto leading-relaxed">
+              <p className="mt-3 min-h-[3.75rem] sm:min-h-[4rem] flex items-center justify-center text-xs sm:text-[13px] font-semibold text-slate-600 max-w-[260px] mx-auto leading-relaxed">
                 {activeProduct.desc}
               </p>
 
@@ -276,10 +276,12 @@ export function EcosystemSection({
                   key={prod.id}
                   type="button"
                   onClick={() => setActiveIndex(idx)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-black lowercase tracking-tight transition-all cursor-pointer ${
+                  // Same height and border in both states: a pill that grew 1px when
+                  // active changed the pinned card's height on every auto-advance.
+                  className={`inline-flex h-8 items-center px-3.5 rounded-full border text-xs font-black lowercase tracking-tight transition-all cursor-pointer ${
                     isActive
-                      ? "bg-white text-blue-900 shadow-md shadow-blue-900/25 scale-105"
-                      : "bg-blue-950/30 text-white hover:bg-blue-950/45 border border-white/20"
+                      ? "bg-white border-white text-blue-900 shadow-md shadow-blue-900/25 scale-105"
+                      : "bg-blue-950/30 border-white/20 text-white hover:bg-blue-950/45"
                   }`}
                 >
                   {prod.name}

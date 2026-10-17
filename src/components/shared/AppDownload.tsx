@@ -33,8 +33,9 @@ export default function AppDownload({
     boxShadow: theme === 'dark' ? '0 8px 20px -8px rgba(11,27,51,0.4)' : 'var(--shadow-sm)',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
   }
-  const top: CSSProperties = { fontSize: size === 'sm' ? '0.56rem' : '0.62rem', color: sub, fontWeight: 600, letterSpacing: '0.02em', lineHeight: 1, marginBottom: 2 }
-  const bottom: CSSProperties = { fontSize: size === 'sm' ? '0.92rem' : '1.02rem', color: fg, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'inherit' }
+  // Block spans: the label sits above the store name, as on the official badges.
+  const top: CSSProperties = { display: 'block', fontSize: size === 'sm' ? '0.56rem' : '0.62rem', color: sub, fontWeight: 600, letterSpacing: '0.02em', lineHeight: 1, marginBottom: 2 }
+  const bottom: CSSProperties = { display: 'block', fontSize: size === 'sm' ? '0.92rem' : '1.02rem', color: fg, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'inherit' }
 
   const onEnter = (e: React.MouseEvent) => { const el = e.currentTarget as HTMLElement; el.style.transform = 'translateY(-2px)'; el.style.boxShadow = theme === 'dark' ? '0 12px 26px -8px rgba(11,27,51,0.5)' : 'var(--shadow-md)' }
   const onLeave = (e: React.MouseEvent) => { const el = e.currentTarget as HTMLElement; el.style.transform = 'none'; el.style.boxShadow = theme === 'dark' ? '0 8px 20px -8px rgba(11,27,51,0.4)' : 'var(--shadow-sm)' }
