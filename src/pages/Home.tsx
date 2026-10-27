@@ -2,7 +2,7 @@ import HeroSection from '../components/home/HeroSection'
 import EcosystemSection from '../components/home/EcosystemSection'
 import GetAppSection from '../components/home/GetAppSection'
 import FinalCTA from '../components/home/FinalCTA'
-import Seo from '../components/Seo'
+import Seo, { SITE_URL } from '../components/Seo'
 import { Globe, Smartphone, Cloud, Settings, Zap, Rocket, LayoutGrid } from 'lucide-react'
 import { ShadeCard, ShadeHeading, TileGrid } from '../components/kada-kit'
 import type { HeaderOffset, Tile } from '../components/kada-kit'
@@ -45,8 +45,8 @@ export default function Home() {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: 'The Kada Digital Ventures Pvt Ltd',
-          url: 'https://thekada.in',
-          logo: 'https://thekada.in/logo.svg',
+          url: SITE_URL,
+          logo: `${SITE_URL}/logo.svg`,
           email: 'hello@thekada.in',
           address: {
             '@type': 'PostalAddress',

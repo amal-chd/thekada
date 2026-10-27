@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-export const SITE_URL = 'https://thekada.in'
+export const SITE_URL = 'https://www.thekada.in'
 export const BRAND = 'The Kada Digital Ventures'
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
 

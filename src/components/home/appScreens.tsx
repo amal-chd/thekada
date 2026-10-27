@@ -56,7 +56,7 @@ export const APP_SCREENS: PhoneScreen[] = [
             </div>
             <div>
               <p className="text-xs font-bold text-white">Rider Anoop K.</p>
-              <p className="text-[10px] text-slate-400">⭐ 4.9 · 1,420 deliveries</p>
+              <p className="text-[10px] text-slate-400">Order picked up</p>
             </div>
           </div>
           <div className="px-2 py-1 rounded-lg bg-blue-600/20 text-blue-400 text-[10px] font-black border border-blue-600/30">
@@ -92,10 +92,7 @@ export const APP_SCREENS: PhoneScreen[] = [
               className="h-full w-full object-cover"
             />
             <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-rose-600 text-white text-[9px] font-black">
-              BESTSELLER
-            </div>
-            <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white text-[9px] font-bold">
-              ⭐ 4.9 (420+)
+              CHICKEN BIRYANI
             </div>
           </div>
 

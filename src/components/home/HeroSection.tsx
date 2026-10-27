@@ -22,6 +22,9 @@ export default function HeroSection() {
         <img
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=70"
           alt=""
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover opacity-70"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/85" />
