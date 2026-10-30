@@ -3,8 +3,8 @@ import { APP_SCREENS } from './appScreens'
 
 /** The Kada customer app — the same listing the customer site links to. */
 export const CUSTOMER_APP_URLS = {
-  playStore: 'https://play.google.com/store/apps/details?id=com.thekada.customer',
-  appStore: 'https://apps.apple.com/app/the-kada/id6741480000',
+  playStore: 'https://play.google.com/store/apps/details?id=com.thekada.app',
+  appStore: 'https://apps.apple.com/in/app/the-kada/id6754100479',
   smartDownload: 'https://thekada.in/download',
 }
 

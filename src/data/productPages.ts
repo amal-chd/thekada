@@ -25,8 +25,8 @@ export const productPages: Record<string, ProductConfig> = {
     subtitle: 'A cloud restaurant management system for cafés, QSRs, and food outlets — billing, QR table ordering, kitchen displays, and recipe-level inventory in one fast, reliable place.',
     primaryCta: { label: 'See plans & sign up', href: 'https://kadadine.thekada.in' },
     secondaryCta: { label: 'See our work', to: '/work' },
-    appStore: 'https://apps.apple.com/app/kada-dine/id6741480002',
-    playStore: 'https://play.google.com/store/apps/details?id=in.thekada.vendor',
+    appStore: 'https://apps.apple.com/in/app/kada-dine-pos-qr/id6761130503',
+    playStore: 'https://play.google.com/store/apps/details?id=com.kada.restaurant_os.vendor',
     stats: [
       { value: 'GST-ready', label: 'Invoices & filing reports' },
       { value: 'Offline', label: 'Billing keeps working' },
@@ -400,8 +400,8 @@ export const productPages: Record<string, ProductConfig> = {
     subtitle: 'A hyperlocal food delivery and commerce platform connecting customers with nearby restaurants, cafes, and local food vendors — with live tracking, smart recommendations, and seamless payments.',
     primaryCta: { label: 'Get the app', to: '/contact' },
     secondaryCta: { label: 'See our work', to: '/work' },
-    appStore: 'https://apps.apple.com/app/the-kada/id6741480000',
-    playStore: 'https://play.google.com/store/apps/details?id=in.thekada.customer',
+    appStore: 'https://apps.apple.com/in/app/the-kada/id6754100479',
+    playStore: 'https://play.google.com/store/apps/details?id=com.thekada.app',
     stats: [
       { value: 'Live tracking', label: 'Kitchen to doorstep' },
       { value: 'UPI & cards', label: 'Or cash on delivery' },

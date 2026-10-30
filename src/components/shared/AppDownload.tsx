@@ -6,8 +6,8 @@ import type { CSSProperties } from 'react'
  * Theme: "dark" badges (default, for light backgrounds) or "light" (for dark backgrounds).
  */
 export default function AppDownload({
-  appStore = 'https://apps.apple.com/app/the-kada-digital-ventures/id000000000',
-  playStore = 'https://play.google.com/store/apps/details?id=in.thekada.app',
+  appStore = 'https://apps.apple.com/in/app/the-kada/id6754100479',
+  playStore = 'https://play.google.com/store/apps/details?id=com.thekada.app',
   theme = 'dark',
   size = 'md',
   align = 'left',

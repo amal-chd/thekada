@@ -29,6 +29,7 @@ const KadaMess = lazy(() => import('./pages/products/KadaMess'))
 const Legal = lazy(() => import('./pages/Legal'))
 const DeleteAccount = lazy(() => import('./pages/DeleteAccount'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const GiftClaim = lazy(() => import('./pages/GiftClaim'))
 
 // Internal (hidden from public nav)
 const Careers = lazy(() => import('./pages/Careers'))
@@ -118,6 +119,15 @@ function AppContent() {
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/account-deletion" element={<DeleteAccount />} />
           <Route path="/data-deletion" element={<DeleteAccount />} />
+          {/* Paths the shipped apps link to. Without these they landed on the
+              404 page — including the account-deletion link Play requires. */}
+          <Route path="/terms" element={<Navigate to="/legal/terms" replace />} />
+          <Route path="/terms.html" element={<Navigate to="/legal/terms" replace />} />
+          <Route path="/refund" element={<Navigate to="/legal/refunds" replace />} />
+          <Route path="/refunds" element={<Navigate to="/legal/refunds" replace />} />
+          <Route path="/privacy.html" element={<Navigate to="/privacy" replace />} />
+          <Route path="/delete-account.html" element={<Navigate to="/delete-account" replace />} />
+          <Route path="/gift/:token" element={<GiftClaim />} />
 
           {/* Internal / secondary (not in main nav) */}
           {/* The Admin panel has been moved to its own subdomain (admin.thekada.in) */}
