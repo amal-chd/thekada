@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- The one-time code is in the URL: never send it on to another site. -->
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1E40AF">
+<title>Your Kada account</title>
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* Kada account actions (password reset, email verification, email-change
+     recovery). Firebase Auth emails link here instead of its default page;
+     it talks to the Identity Toolkit REST API directly, no SDK. Styled to
+     match the sign-in screen in the Kada apps. */
+  :root {
+    --accent: #2563EB;
+    --accent-deep: #0F2A6B;
+    --ink: #0F172A;
+    --sub: #64748B;
+    --field: #F4F6FA;
+    --line: #E3E8EF;
+    --card: #FFFFFF;
+    --bg: #F6F8FC;
+    --danger: #DC2626;
+    --ok: #16A34A;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #FFFFFF;
+      --sub: #9AA4B2;
+      --field: #161A22;
+      --line: #262C38;
+      --card: #12151C;
+      --bg: #0B0D12;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    height: 230px;
+    padding: max(20px, env(safe-area-inset-top)) 20px 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: #fff;
+  }
+  .ring { position: absolute; border-radius: 50%; border: 1.2px solid rgba(255,255,255,.14); }
+  .r1 { width: 300px; height: 300px; right: -90px; top: -60px; }
+  .r2 { width: 180px; height: 180px; right: -20px; top: 10px; border-color: rgba(255,255,255,.18); }
+  .r3 { width: 260px; height: 260px; left: -90px; bottom: -150px; border-color: rgba(255,255,255,.08); }
+  .brand { position: relative; display: flex; align-items: center; gap: 10px; max-width: 440px; margin: 0 auto; text-decoration: none; color: #fff; }
+  .brand img { width: 38px; height: 38px; border-radius: 11px; background: #fff; padding: 4px; }
+  .brand span { font-size: 18px; font-weight: 800; letter-spacing: -.2px; }
+  main { position: relative; max-width: 440px; margin: -120px auto 0; padding: 0 16px 40px; }
+  .card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 28px 22px 24px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, .12), 0 2px 6px rgba(15, 23, 42, .06);
+  }
+  .badge {
+    width: 56px; height: 56px; border-radius: 18px;
+    display: grid; place-items: center; margin-bottom: 16px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+  }
+  .badge.ok { background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok); }
+  .badge.bad { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+  h1 { margin: 0 0 6px; font-size: 24px; font-weight: 900; letter-spacing: -.5px; }
+  p.sub { margin: 0 0 20px; color: var(--sub); font-size: 14.5px; font-weight: 500; line-height: 1.5; }
+  p.sub b { display: block; color: var(--ink); font-weight: 700; overflow-wrap: anywhere; }
+  label { display: block; font-size: 13px; font-weight: 700; color: var(--sub); margin: 0 0 8px; }
+  .field { position: relative; margin-bottom: 14px; }
+  input {
+    width: 100%; height: 54px; padding: 0 52px 0 16px;
+    border-radius: 16px; border: 1px solid var(--line);
+    background: var(--field); color: var(--ink);
+    font: 600 15.5px "Plus Jakarta Sans", sans-serif; outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .eye {
+    position: absolute; right: 6px; top: 7px; width: 40px; height: 40px;
+    border: 0; background: none; color: var(--sub); cursor: pointer; border-radius: 12px;
+  }
+  .rules { display: flex; gap: 6px; margin: -4px 0 18px; }
+  .rules i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); transition: background .2s; }
+  .hint { font-size: 12.5px; color: var(--sub); margin: -10px 0 18px; font-weight: 500; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; height: 54px; border: 0; border-radius: 16px;
+    background: var(--accent); color: #fff; text-decoration: none;
+    font: 800 16px "Plus Jakarta Sans", sans-serif; cursor: pointer;
+    transition: transform .1s, opacity .15s;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  .btn.ghost { background: transparent; color: var(--sub); height: 44px; font-weight: 700; font-size: 14px; margin-top: 6px; }
+  .banner {
+    display: none; gap: 8px; align-items: flex-start;
+    padding: 11px 12px; margin-bottom: 14px; border-radius: 12px;
+    font-size: 13.5px; font-weight: 600; line-height: 1.4;
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+  }
+  .banner.show { display: flex; }
+  .spin {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2.4px solid rgba(255,255,255,.35); border-top-color: #fff;
+    animation: s .8s linear infinite;
+  }
+  .loading { display: grid; place-items: center; padding: 36px 0; }
+  .loading .spin { border-color: color-mix(in srgb, var(--accent) 25%, transparent); border-top-color: var(--accent); width: 30px; height: 30px; }
+  @keyframes s { to { transform: rotate(360deg); } }
+  .apps { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--sub); line-height: 1.5; text-align: center; font-weight: 500; }
+  footer { text-align: center; color: var(--sub); font-size: 12px; margin-top: 22px; font-weight: 500; }
+  footer a { color: var(--sub); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <a class="brand" href="https://www.thekada.in/">
+      <img src="/email/kada-icon.png" alt="">
+      <span>The Kada</span>
+    </a>
+  </header>
+
+  <main>
+    <div class="card" id="card">
+      <div class="loading" id="loading"><div class="spin"></div></div>
+
+      <!-- Choose a new password -->
+      <section id="reset" hidden>
+        <div class="badge"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg></div>
+        <h1>Choose a new password</h1>
+        <p class="sub">For your Kada account <b id="resetEmail"></b></p>
+        <div class="banner" id="resetError"></div>
+        <form id="resetForm" novalidate>
+          <input type="text" name="username" autocomplete="username" id="userField" hidden>
+          <label for="pw1">New password</label>
+          <div class="field">
+            <input id="pw1" type="password" autocomplete="new-password" minlength="6" required placeholder="At least 6 characters">
+            <button class="eye" type="button" aria-label="Show password" data-for="pw1">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="rules" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <label for="pw2">Confirm new password</label>
+          <div class="field">
+            <input id="pw2" type="password" autocomplete="new-password" required placeholder="Type it again">
+          </div>
+          <p class="hint">Tip: a short phrase is easier to remember and harder to guess.</p>
+          <button class="btn" id="resetBtn" type="submit">Save new password</button>
+        </form>
+      </section>
+
+      <!-- Success -->
+      <section id="done" hidden>
+        <div class="badge ok"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h1 id="doneTitle">Password updated</h1>
+        <p class="sub" id="doneText">You can now log in with your new password.</p>
+        <a class="btn" href="https://www.thekada.in/">Go to thekada.in</a>
+        <div class="apps">The same login works in every Kada app — Kada, Kada Dine, Kada Rider and Kada Stay Host. Open the app and log in with email.</div>
+      </section>
+
+      <!-- Expired / used / broken link -->
+      <section id="fail" hidden>
+        <div class="badge bad"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></div>
+        <h1 id="failTitle">This link has expired</h1>
+        <p class="sub" id="failText">Links work once and for one hour. Open the Kada app, tap “Continue with email”, then “Forgot password?” to get a fresh one.</p>
+        <a class="btn" href="https://www.thekada.in/">Go to thekada.in</a>
+      </section>
+    </div>
+    <footer>© The Kada Digital Ventures · <a href="https://www.thekada.in/privacy">Privacy</a> · <a href="https://www.thekada.in/terms">Terms</a></footer>
+  </main>
+
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var mode = q.get('mode');
+  var code = q.get('oobCode');
+  // Firebase puts the project's web key in the link; fall back to it so an
+  // edited or truncated link still gets a clear answer.
+  var key = q.get('apiKey') || 'AIzaSyCzf11xD7EmXbzlEpucU-fOJefi8Zt33aU';
+  var api = 'https://identitytoolkit.googleapis.com/v1/';
+  var $ = function (id) { return document.getElementById(id); };
+
+  // Drop the code from the address bar and history once read.
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+
+  function show(id) {
+    ['loading', 'reset', 'done', 'fail'].forEach(function (s) { $(s).hidden = s !== id; });
+  }
+
+  function call(path, body) {
+    return fetch(api + path + '?key=' + encodeURIComponent(key), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().then(function (d) {
+        if (!r.ok || d.error) throw new Error((d.error && d.error.message) || 'UNKNOWN');
+        return d;
+      });
+    });
+  }
+
+  function fail(err) {
+    var m = String(err && err.message || err);
+    if (/INVALID_OOB_CODE|EXPIRED_OOB_CODE/.test(m)) {
+      $('failTitle').textContent = mode === 'resetPassword' ? 'This link has expired' : 'This link no longer works';
+      $('failText').textContent = mode === 'resetPassword'
+        ? 'Reset links work once and for one hour. Open the Kada app, tap “Continue with email”, then “Forgot password?” to get a fresh one.'
+        : 'It was already used or has expired. Open the Kada app and try again from there.';
+    } else if (/USER_DISABLED/.test(m)) {
+      $('failTitle').textContent = 'Account disabled';
+      $('failText').textContent = 'This account has been disabled. Contact Kada support at support@thekada.in.';
+    } else if (/Failed to fetch|NetworkError|Load failed/i.test(m)) {
+      $('failTitle').textContent = "You're offline";
+      $('failText').textContent = 'Check your connection and open the link from your email again.';
+    } else {
+      $('failTitle').textContent = 'Something went wrong';
+      $('failText').textContent = 'Please open the link from your email again. If it keeps happening, request a new one from the Kada app.';
+    }
+    show('fail');
+  }
+
+  if (!code || !mode) {
+    $('failTitle').textContent = 'Link incomplete';
+    $('failText').textContent = 'Open the full link from your Kada email. If your email app split it across lines, use the button in the email instead.';
+    show('fail');
+    return;
+  }
+
+  // ── Reset password ──────────────────────────────────────────────────────
+  if (mode === 'resetPassword') {
+    call('accounts:resetPassword', { oobCode: code }).then(function (d) {
+      $('resetEmail').textContent = d.email || '';
+      $('userField').value = d.email || '';
+      show('reset');
+      $('pw1').focus();
+    }).catch(fail);
+
+    var bars = document.querySelectorAll('.rules i');
+    function strength(p) {
+      var s = 0;
+      if (p.length >= 6) s++;
+      if (p.length >= 10) s++;
+      if (/[A-Z]/.test(p) && /[a-z]/.test(p)) s++;
+      if (/\d/.test(p) || /[^A-Za-z0-9]/.test(p)) s++;
+      return p.length < 6 ? Math.min(s, 1) : s;
+    }
+    $('pw1').addEventListener('input', function () {
+      var s = strength(this.value);
+      var color = s <= 1 ? '#DC2626' : s === 2 ? '#F59E0B' : '#16A34A';
+      bars.forEach(function (b, i) { b.style.background = i < s ? color : ''; });
+      $('resetError').classList.remove('show');
+    });
+    $('pw2').addEventListener('input', function () { $('resetError').classList.remove('show'); });
+    document.querySelectorAll('.eye').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var f = $(b.dataset.for), g = $('pw2');
+        var t = f.type === 'password' ? 'text' : 'password';
+        f.type = t; g.type = t;
+        b.setAttribute('aria-label', t === 'text' ? 'Hide password' : 'Show password');
+      });
+    });
+
+    function error(msg) { var e = $('resetError'); e.textContent = msg; e.classList.add('show'); }
+
+    $('resetForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var p1 = $('pw1').value, p2 = $('pw2').value;
+      if (p1.length < 6) return error('Your password needs at least 6 characters.');
+      if (p1 !== p2) return error("The two passwords don't match.");
+      var btn = $('resetBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spin"></div>';
+      call('accounts:resetPassword', { oobCode: code, newPassword: p1 }).then(function () {
+        $('doneTitle').textContent = 'Password updated';
+        $('doneText').textContent = 'You can now log in with your new password.';
+        show('done');
+      }).catch(function (e) {
+        btn.disabled = false;
+        btn.textContent = 'Save new password';
+        var m = String(e.message);
+        if (/WEAK_PASSWORD/.test(m)) error('Choose a stronger password (at least 6 characters).');
+        else if (/Failed to fetch|NetworkError|Load failed/i.test(m)) error("You're offline. Check your connection and try again.");
+        else fail(e);
+      });
+    });
+    return;
+  }
+
+  // ── Verify email ────────────────────────────────────────────────────────
+  if (mode === 'verifyEmail') {
+    call('accounts:update', { oobCode: code }).then(function (d) {
+      $('doneTitle').textContent = 'Email verified';
+      $('doneText').textContent = (d.email ? d.email + ' is' : 'Your email is') + ' confirmed. You can go back to the app.';
+      show('done');
+    }).catch(fail);
+    return;
+  }
+
+  // ── Undo an email change ────────────────────────────────────────────────
+  if (mode === 'recoverEmail') {
+    call('accounts:update', { oobCode: code }).then(function (d) {
+      $('doneTitle').textContent = 'Email restored';
+      $('doneText').textContent = 'Your sign-in email is back to ' + (d.email || 'what it was') +
+        '. If you didn’t make that change, reset your password from the Kada app now.';
+      show('done');
+    }).catch(fail);
+    return;
+  }
+
+  $('failTitle').textContent = 'Link not recognised';
+  $('failText').textContent = 'Open the link from your Kada email again.';
+  show('fail');
+})();
+</script>
+</body>
+</html>
