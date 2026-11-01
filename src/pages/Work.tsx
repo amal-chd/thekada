@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
-import { Section, Reveal, Button } from '@/components/ui'
-import Seo from '@/components/Seo'
-import { caseStudies } from '@/data/caseStudies'
-import { PageHeader } from "../components/kada-kit";
+import { ChevronRight, ArrowUpRight, Sparkles } from 'lucide-react'
+import Seo from '../components/Seo'
+import { breadcrumbLd } from '../lib/schema'
+import { caseStudies } from '../data/caseStudies'
+import { PageHeader, ShadeCard, ShadeHeading, StepRow, ShadeActions } from '../components/kada-kit'
+import type { HeaderOffset } from '../components/kada-kit'
+
+// The fixed site header is 72px tall at every width.
+const HEADER_OFFSET: HeaderOffset = () => 72
 
 /** Not every product has a written case study yet. */
 const hasCaseStudy = (slug: string) => slug in caseStudies
@@ -104,145 +108,190 @@ export default function Work() {
   const filteredProjects = WORK_ITEMS.filter(item => item.categories.includes(activeCategory))
 
   return (
-    <>
+    <main className="bg-slate-50" style={{ overflowX: 'clip' }}>
       <Seo
         title="Our Work & Products"
-        description="Case studies from the products we have designed, built and run — restaurant POS, hyperlocal delivery, stays, digital storefronts and merchant ledgers."
+        description="Case studies from the commercial platforms we have designed, built and run — restaurant POS, hyperlocal delivery, stays, digital storefronts and merchant ledgers."
         path="/work"
+        jsonLd={breadcrumbLd([
+          { name: 'Home', path: '/' },
+          { name: 'Work', path: '/work' },
+        ])}
       />
-    <main>
+
       {/* Hero */}
       <PageHeader
-        eyebrow="Our Portfolio & Products"
+        eyebrow={<><Sparkles size={13} /> Our Portfolio & Products</>}
         title={<>Work that proves what <span className="gradient-text">we can build.</span></>}
-        subtitle={<>Explore our commercial platforms, customer applications, and business systems.</>}
+        subtitle={<>Commercial SaaS platforms, customer mobile apps, and business management systems engineered and operated by our team.</>}
+        actions={[
+          { label: "Start a project", to: "/start-project" },
+          { label: "Explore services", to: "/services" },
+        ]}
         topOffset={72}
       />
 
-      {/* Projects Grid Section */}
-      <Section bg="soft" size="default" bordered>
-        {/* Category Filters */}
-        <Reveal>
-          <div className="flex overflow-x-auto pb-3 gap-2 justify-start sm:justify-center mb-8 -mt-2 no-scrollbar touch-pan-x-scroll snap-x -mx-4 px-4 sm:mx-0 sm:px-0">
-            {CATEGORIES.map(category => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`snap-start shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
-                  activeCategory === category
-                    ? 'bg-[var(--ink)] text-white shadow-sm'
-                    : 'bg-white text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--ink)] hover:text-[var(--ink)]'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </Reveal>
+      {/* Overlap strip between header and first card */}
+      <div aria-hidden="true" className="h-8 sm:h-10 bg-slate-50" />
 
-        {/* Mobile Swipe Cue */}
-        {filteredProjects.length > 0 && (
-          <div className="flex md:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 px-1">
-            <span>Projects ({filteredProjects.length})</span>
-            <span className="text-blue-600 font-bold">Swipe →</span>
-          </div>
-        )}
+      {/* 1. Projects Showcase Card (Navy) */}
+      <ShadeCard variant="navy" layer={1} fadeTop pin={false} fullPage={false} headerOffset={HEADER_OFFSET}>
+        <section id="portfolio" className="py-8 sm:py-12">
+          <ShadeHeading
+            title="Platforms we"
+            highlight="built & operate"
+            subtitle="Filter by practice or explore our deep case studies and live products"
+          />
 
-        {/* Grid: Mobile Horizontal Snap Rail, Desktop 3-col Grid */}
-        {filteredProjects.length > 0 ? (
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 pt-1 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 no-scrollbar touch-pan-x-scroll">
-            {filteredProjects.map((project, idx) => (
-              <Reveal key={project.name} delay={idx * 0.05} className="snap-start shrink-0 w-[84vw] max-w-[340px] md:w-auto h-full">
-                <div 
-                  className="group bg-white rounded-2xl border border-[var(--border)] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col justify-between"
+          {/* Category Filter Pills */}
+          <div className="relative z-10 flex flex-wrap items-center justify-center gap-2 mb-8 sm:mb-12 px-4 max-w-4xl mx-auto">
+            {CATEGORIES.map(category => {
+              const active = activeCategory === category
+              return (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${
+                    active
+                      ? 'bg-white text-blue-700 shadow-lg shadow-black/20 scale-105'
+                      : 'bg-white/10 hover:bg-white/20 text-white/90 border border-white/20 backdrop-blur-sm'
+                  }`}
                 >
-                  <div>
-                    <div className="h-1.5 w-full" style={{ backgroundColor: project.color }} />
-                    <div className="p-6">
-                      <div className="flex items-center justify-between gap-2 mb-4">
-                        <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-[var(--bg-soft)] text-[var(--text-secondary)] border border-[var(--border)]">
+                  {category}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Projects Grid */}
+          <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 w-full">
+            {filteredProjects.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                {filteredProjects.map((project) => (
+                  <div
+                    key={project.slug}
+                    className="group relative flex flex-col justify-between rounded-2xl sm:rounded-3xl bg-white/95 backdrop-blur-sm p-6 sm:p-7 border border-white shadow-[0_8px_24px_rgba(2,32,92,0.12)] hover:shadow-[0_16px_36px_rgba(37,99,235,0.2)] hover:-translate-y-1 transition-all duration-300 ring-1 ring-black/5"
+                  >
+                    <div>
+                      {/* Top bar: Logo/Avatar + Industry pill */}
+                      <div className="flex items-center justify-between gap-3 mb-4">
+                        {project.logo ? (
+                          <div className="h-11 w-11 shrink-0 rounded-xl bg-slate-50 border border-slate-100 p-1.5 shadow-sm flex items-center justify-center">
+                            <img src={project.logo} alt={project.name} className="h-full w-full object-contain" />
+                          </div>
+                        ) : (
+                          <div
+                            className="h-11 w-11 shrink-0 rounded-xl flex items-center justify-center font-black text-white text-base shadow-sm"
+                            style={{ backgroundColor: project.color }}
+                          >
+                            {project.name.charAt(0)}
+                          </div>
+                        )}
+                        <span className="inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200/60">
                           {project.industry}
-                        </span>
-                        <span className="text-xs font-semibold text-[var(--text-muted)]">
-                          {project.type}
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-[var(--ink)] mb-2 group-hover:text-[var(--blue)] transition-colors flex items-center gap-2">
-                        {'logo' in project && project.logo ? (
-                          <img src={project.logo} alt="" className="w-8 h-8 rounded-lg object-cover shadow-sm" />
-                        ) : null}
+                      {/* Type */}
+                      <span className="block text-xs font-bold text-slate-400 mb-1">
+                        {project.type}
+                      </span>
+
+                      {/* Name */}
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">
                         {project.name}
                       </h3>
 
-                      <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-4">
+                      {/* Description */}
+                      <p className="mt-2.5 text-sm font-medium text-slate-600 leading-relaxed">
                         {project.description}
                       </p>
                     </div>
-                  </div>
 
-                  <div className="px-6 pb-6 pt-3 border-t border-[var(--border)] flex items-center justify-between text-sm mt-auto">
-                    {hasCaseStudy(project.slug) ? (
-                      <>
+                    {/* Bottom Actions */}
+                    <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-2 text-sm">
+                      {hasCaseStudy(project.slug) ? (
                         <Link
                           to={`/work/${project.slug}`}
-                          className="inline-flex items-center text-[var(--blue)] font-semibold hover:underline"
+                          className="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-all"
                         >
-                          Case study <ArrowRight size={15} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                          <span>Case study</span>
+                          <ChevronRight className="h-4 w-4" />
                         </Link>
+                      ) : project.liveProduct ? (
+                        <Link
+                          to={project.liveProduct}
+                          className="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-all"
+                        >
+                          <span>Explore product</span>
+                          <ChevronRight className="h-4 w-4" />
+                        </Link>
+                      ) : (
+                        <span className="text-xs font-semibold text-slate-400">Production system</span>
+                      )}
 
-                        {project.liveProduct && (
-                          <Link
-                            to={project.liveProduct}
-                            className="inline-flex items-center text-xs font-medium text-[var(--text-muted)] hover:text-[var(--ink)]"
-                          >
-                            Interactive demo <ArrowUpRight size={13} className="ml-0.5" />
-                          </Link>
-                        )}
-                      </>
-                    ) : project.liveProduct ? (
-                      <Link
-                        to={project.liveProduct}
-                        className="inline-flex items-center text-[var(--blue)] font-semibold hover:underline"
-                      >
-                        Explore product <ArrowRight size={15} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    ) : null}
+                      {project.liveProduct && hasCaseStudy(project.slug) && (
+                        <Link
+                          to={project.liveProduct}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2.5 py-1 rounded-lg border border-slate-200 transition-colors"
+                        >
+                          <span>Product</span>
+                          <ArrowUpRight className="h-3 w-3" />
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 px-6 bg-white/95 rounded-2xl sm:rounded-3xl max-w-md mx-auto shadow-sm ring-1 ring-black/5">
+                <p className="text-slate-600 font-medium">No projects under this filter yet.</p>
+                <button 
+                  onClick={() => setActiveCategory('All')}
+                  className="mt-3 text-sm font-bold text-blue-600 hover:underline"
+                >
+                  View all projects
+                </button>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="text-center py-16 bg-white rounded-2xl border border-[var(--border)]">
-            <p className="text-[var(--text-secondary)] text-base">No projects in this category yet.</p>
-            <button 
-              onClick={() => setActiveCategory('All')}
-              className="mt-3 text-[var(--blue)] font-semibold hover:underline text-sm"
-            >
-              View all projects
-            </button>
-          </div>
-        )}
-      </Section>
+        </section>
+      </ShadeCard>
 
-      {/* CTA */}
-      <Section bg="white" bordered>
-        <div className="text-center max-w-2xl mx-auto py-6">
-          <Reveal>
-            <h2 className="display-2 font-extrabold text-[var(--ink)] mb-4">
-              Have a project you want to build?
-            </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] mb-8">
-              Whether you need an MVP, a custom enterprise system, or a high-throughput mobile app — we're ready to engineer it.
-            </p>
-            <Button to="/start-project" variant="primary" size="lg">
-              Start a Project <ArrowUpRight size={17} className="ml-1" />
-            </Button>
-          </Reveal>
-        </div>
-      </Section>
+      {/* 2. Engineering Approach (Royal) */}
+      <ShadeCard variant="royal" layer={2} headerOffset={HEADER_OFFSET}>
+        <section id="approach" className="py-8 sm:py-12">
+          <ShadeHeading
+            title="How we"
+            highlight="engineer & ship"
+            subtitle="No black boxes — from day zero architecture to live production telemetry"
+          />
+          <StepRow
+            steps={[
+              { title: 'Architecture & schema', desc: 'Scope, database schema, APIs and UI workflows agreed before writing code.' },
+              { title: 'Weekly shipped sprints', desc: 'Working demos deployed to live staging environments every single week.' },
+              { title: 'Production scale & SLAs', desc: 'Monitored with error alerts, daily backups, and SLAs for ongoing reliability.' },
+            ]}
+          />
+        </section>
+      </ShadeCard>
+
+      {/* 3. Final CTA (Vivid) */}
+      <ShadeCard variant="vivid" layer={3} headerOffset={HEADER_OFFSET}>
+        <section id="cta" className="py-8 sm:py-12">
+          <ShadeHeading
+            title="Have a platform"
+            highlight="you want to build?"
+            subtitle="Whether you need an MVP, a custom enterprise system, or a high-throughput mobile app — we're ready to engineer it."
+          />
+          <ShadeActions
+            actions={[
+              { label: 'Start a project', to: '/start-project', primary: true },
+              { label: 'Browse our services', to: '/services' },
+            ]}
+          />
+        </section>
+      </ShadeCard>
     </main>
-    </>
   )
 }
