@@ -35,7 +35,7 @@ export default function HeroSection() {
           to="/"
           className="inline-block text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-white drop-shadow-md"
         >
-          The <span className="text-blue-500">Kada</span>
+          Kada<span className="text-blue-500">Verse</span>
         </Link>
 
         <h1 className="mt-4 text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight drop-shadow-sm" style={{ color: '#FFFFFF' }}>

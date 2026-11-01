@@ -56,7 +56,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
             alternateName: serviceName,
             description: seoDescription,
             serviceType: config.eyebrowLabel,
-            provider: { '@type': 'Organization', name: 'The Kada Digital Ventures', url: SITE_URL },
+            provider: { '@type': 'Organization', name: 'KadaVerse', url: SITE_URL },
             areaServed: { '@type': 'Country', name: 'India' },
           },
           faqLd(config.faqs),

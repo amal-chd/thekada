@@ -27,7 +27,7 @@ export function kadaverseSection(current: "the-kada" | "kada-dine" | "kada-rider
     { id: "kada-dine", label: "Kada Dine", to: "https://kadadine.thekada.in" },
     { id: "kada-rider", label: "Kada Rider", to: "https://rider.thekada.in" },
     { id: "kada-host", label: "Kada Host", to: "https://host.thekada.in" },
-    { id: "corp", label: "The Kada Corp", to: "https://thekada.in" },
+    { id: "corp", label: "KadaVerse", to: "https://thekada.in" },
   ];
   return {
     id: "ecosystem",
@@ -114,10 +114,10 @@ export function SiteFooter({
           <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-md shadow-black/10 flex items-center justify-center shrink-0">
-                <img src={logoSrc} alt={`${wordmark.join(" ")} logo`} className="w-full h-full object-contain" />
+                <img src={logoSrc} alt={`${wordmark.join("")} logo`} className="w-full h-full object-contain" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-black italic tracking-tighter text-white">
-                {wordmark[0]} <span className="text-blue-500">{wordmark[1]}</span>
+                {wordmark[0]}<span className="text-blue-500">{wordmark[1]}</span>
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">{blurb}</p>

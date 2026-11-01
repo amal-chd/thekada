@@ -20,13 +20,13 @@ export default function About() {
     <main className="bg-slate-50" style={{ overflowX: 'clip' }}>
       <Seo
         title="About Us"
-        description="The Kada Digital Ventures is a product and software engineering company in Kannur, Kerala, building the systems local businesses run on every day."
+        description="KadaVerse is a product and software engineering company in Kannur, Kerala, building the systems local businesses run on every day."
         path="/about"
       />
       <PageHeader
-        eyebrow="About The Kada Digital Ventures"
+        eyebrow="About KadaVerse"
         title={<>We build software that <span className="gradient-text">runs businesses.</span></>}
-        subtitle={<>The Kada Digital Ventures is a technology company that engineers and operates commercial SaaS platforms — and partners with businesses to build custom software tailored to their exact operational workflows.</>}
+        subtitle={<>KadaVerse is a technology company that engineers and operates commercial SaaS platforms — and partners with businesses to build custom software tailored to their exact operational workflows.</>}
         actions={[{ label: "Start a Project", to: "/start-project" }, { label: "Explore Portfolio", to: "/work" }]}
         topOffset={72}
       />

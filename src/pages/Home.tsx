@@ -38,13 +38,14 @@ export default function Home() {
   return (
     <main>
       <Seo
-        title="The Kada Digital Ventures — We Build Software That Runs Businesses"
+        title="KadaVerse — We Build Software That Runs Businesses"
         description="Software and digital growth company in Kannur, Kerala building websites, mobile apps, SaaS platforms, digital marketing, and custom business systems — and the Kada product ecosystem."
         path="/"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Organization',
-          name: 'The Kada Digital Ventures Pvt Ltd',
+          name: 'KadaVerse',
+          alternateName: 'The Kada Digital Ventures Pvt Ltd',
           url: SITE_URL,
           logo: `${SITE_URL}/logo.svg`,
           email: 'hello@thekada.in',

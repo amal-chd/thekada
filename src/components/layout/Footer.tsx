@@ -46,9 +46,9 @@ const SECTIONS: FooterSection[] = [
 export default function Footer() {
   return (
     <SiteFooter
-      wordmark={['The Kada', 'Corp']}
+      wordmark={['Kada', 'Verse']}
       logoSrc="/favicon.png"
-      blurb="The Kada Digital Ventures builds software that runs businesses — websites, mobile apps, SaaS platforms and custom systems — and the Kada product ecosystem."
+      blurb="KadaVerse builds software that runs businesses — websites, mobile apps, SaaS platforms and custom systems — and the Kada product ecosystem."
       sections={SECTIONS}
       appStoreUrl={CUSTOMER_APP_URLS.appStore}
       playStoreUrl={CUSTOMER_APP_URLS.playStore}

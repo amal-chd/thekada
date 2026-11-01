@@ -29,7 +29,7 @@ export default function Careers() {
     <main className="bg-slate-50" style={{ overflowX: 'clip' }}>
       <Seo
         title="Careers"
-        description="Open roles at The Kada Digital Ventures — engineering, design and operations, based in Kannur, Kerala."
+        description="Open roles at KadaVerse — engineering, design and operations, based in Kannur, Kerala."
         path="/careers"
       />
       <PageHeader

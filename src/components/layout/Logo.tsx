@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 
 /**
- * The Kada Digital Ventures brand mark + wordmark.
- * The mark lives at /public/logo.svg — replace that single file to swap in the
- * exact original artwork (SVG or rename a PNG to logo.svg) and it updates everywhere.
+ * KadaVerse brand mark + wordmark.
  */
 export default function Logo({
   size = 36,
@@ -15,18 +13,49 @@ export default function Logo({
   variant?: 'dark' | 'light'
 }) {
   const primaryText = variant === 'light' ? '#FFFFFF' : '#0B1B33'
-  const mutedText = variant === 'light' ? 'rgba(255,255,255,0.6)' : '#64748B'
+  const accentColor = variant === 'light' ? '#60A5FA' : '#2563EB'
 
   return (
-    <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem', textDecoration: 'none' }} aria-label="The Kada Digital Ventures — home">
-      <img src="/favicon.png" alt="The Kada Digital Ventures Logo" width={size} height={size} style={{ display: 'block', flexShrink: 0 }} />
+    <Link
+      to="/"
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem', textDecoration: 'none' }}
+      aria-label="KadaVerse — home"
+    >
+      <img
+        src="/favicon.png"
+        alt="KadaVerse Logo"
+        width={size}
+        height={size}
+        style={{ display: 'block', flexShrink: 0 }}
+      />
       {showText && (
-        <span className="logo-text-container" style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.32rem', lineHeight: 1 }}>
-          <span style={{ fontFamily: 'inherit', fontSize: size * 0.46, fontWeight: 800, color: primaryText, letterSpacing: '-0.02em' }}>
-            The&nbsp;Kada
+        <span
+          className="logo-text-container"
+          style={{ display: 'inline-flex', alignItems: 'baseline', lineHeight: 1 }}
+        >
+          <span
+            style={{
+              fontFamily: 'inherit',
+              fontSize: size * 0.52,
+              fontWeight: 900,
+              fontStyle: 'italic',
+              color: primaryText,
+              letterSpacing: '-0.03em',
+            }}
+          >
+            Kada
           </span>
-          <span className="logo-vc" style={{ fontFamily: 'inherit', fontSize: size * 0.42, fontWeight: 500, color: mutedText, letterSpacing: '-0.01em' }}>
-            Digital&nbsp;Ventures
+          <span
+            style={{
+              fontFamily: 'inherit',
+              fontSize: size * 0.52,
+              fontWeight: 900,
+              fontStyle: 'italic',
+              color: accentColor,
+              letterSpacing: '-0.03em',
+            }}
+          >
+            Verse
           </span>
         </span>
       )}

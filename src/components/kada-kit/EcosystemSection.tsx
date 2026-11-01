@@ -161,8 +161,8 @@ export function EcosystemSection({
       />
 
       <div className="relative mx-auto max-w-6xl [@media(min-width:1280px)_and_(min-height:860px)]:max-w-7xl px-4 sm:px-6 lg:px-8 text-center z-10 w-full flex flex-col items-center">
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl [@media(min-width:1280px)_and_(min-height:860px)]:text-7xl font-black text-white tracking-tight lowercase">
-          the <span className="text-cyan-200">kada</span>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl [@media(min-width:1280px)_and_(min-height:860px)]:text-7xl font-black text-white tracking-tight">
+          Kada<span className="text-cyan-200">Verse</span>
         </h2>
 
         {/* Subtitle flanked by glowing gradient lines */}

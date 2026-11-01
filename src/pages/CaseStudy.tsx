@@ -33,7 +33,7 @@ export default function CaseStudy() {
             description: study.objective,
             publisher: {
               '@type': 'Organization',
-              name: 'The Kada Digital Ventures',
+              name: 'KadaVerse',
               url: SITE_URL,
             },
           },

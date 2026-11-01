@@ -198,7 +198,7 @@ export default function Legal() {
     <main style={{ overflowX: 'clip' }}>
       <Seo
         title={content.title}
-        description={`${content.title} for The Kada Digital Ventures and the Kada apps. ${content.updated}`}
+        description={`${content.title} for KadaVerse and the Kada apps. ${content.updated}`}
         path={`/legal/${key}`}
       />
       {/* Header */}

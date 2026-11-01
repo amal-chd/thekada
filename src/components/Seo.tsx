@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 export const SITE_URL = 'https://www.thekada.in'
-export const BRAND = 'The Kada Digital Ventures'
+export const BRAND = 'KadaVerse'
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
 
 type Props = {

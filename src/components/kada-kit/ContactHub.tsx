@@ -218,7 +218,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     ],
   },
   corp: {
-    name: "The Kada Digital Ventures",
+    name: "KadaVerse",
     eyebrow: "Contact",
     titlePrefix: "Let's build software that",
     titleHighlight: "runs your business",
@@ -254,7 +254,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     ],
     faqs: [
       {
-        q: "Where is The Kada Digital Ventures based?",
+        q: "Where is KadaVerse based?",
         a: "We are headquartered in Kannur, Kerala, India, where our engineering and product teams work.",
       },
       {

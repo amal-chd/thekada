@@ -67,7 +67,7 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
             applicationCategory: 'BusinessApplication',
             description,
             operatingSystem: 'Web, Android, iOS',
-            publisher: { '@type': 'Organization', name: 'The Kada Digital Ventures', url: SITE_URL },
+            publisher: { '@type': 'Organization', name: 'KadaVerse', url: SITE_URL },
           },
           faqLd(config.faqs),
           breadcrumbLd([
