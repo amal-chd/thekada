@@ -2,7 +2,7 @@ import {
   Globe, Smartphone, Rocket, Workflow, Building2, Palette, Plug, Cloud, LineChart,
   MonitorSmartphone, Zap, Gauge, ShoppingBag, RefreshCw, MessageSquare, Users, Wallet,
   BarChart3, ShieldCheck, Database, Clock, Repeat, PenTool, Search, Layers, Server,
-  GitBranch, TrendingUp,
+  GitBranch, TrendingUp, Megaphone, Target, Share2,
 } from 'lucide-react'
 import type { ServiceConfig } from '../components/services/ServiceLayout'
 
@@ -231,6 +231,34 @@ export const servicePages: Record<string, ServiceConfig> = {
     faqTitle: 'Transformation, answered.', faqSubtitle: 'Common questions about digitising your business.',
     ctaTitle: 'Modernise with a partner.', ctaSub: 'Let’s map your path from manual to digital — pragmatically, and at your pace.',
   },
+
+  'digital-marketing': {
+    slug: 'digital-marketing', accent: '#7C3AED', accentSoft: '#F5F3FF', gradientClass: 'gradient-text-violet',
+    EyebrowIcon: Megaphone, eyebrowLabel: 'Digital marketing & performance growth',
+    title: { pre: 'Marketing that drives', accent: 'real revenue.' },
+    subtitle: 'Data-backed SEO, performance ads, content strategy, and conversion optimization — built to acquire high-value customers and generate measurable ROI.',
+    intro: 'Effective digital marketing isn’t about impressions or vanity metrics — it’s about qualified pipeline, customer acquisition, and profitable revenue. We blend technical SEO, precision performance advertising, high-converting landing pages, and multi-channel content to help your brand stand out, attract high-intent buyers, and convert them consistently.',
+    highlights: ['Technical & local SEO that ranks', 'High-ROAS Google & Meta ad campaigns', 'Landing page conversion rate optimization (CRO)', 'Transparent attribution & zero vanity metrics'],
+    offerings: [
+      { Icon: Search, title: 'Search Engine Optimization (SEO)', desc: 'Technical audits, high-intent keyword targeting, on-page optimization, and authority building to win organic rankings.' },
+      { Icon: Target, title: 'Performance advertising (PPC)', desc: 'High-conversion Google Ads, Meta (Instagram/Facebook) campaigns, and retargeting funnels with strict CAC controls.' },
+      { Icon: Share2, title: 'Social media & content strategy', desc: 'Strategic content production, brand storytelling, and targeted engagement that build trust and loyal followings.' },
+      { Icon: TrendingUp, title: 'Conversion Rate Optimization (CRO)', desc: 'Auditing user funnels, high-converting landing pages, and split testing to convert existing traffic into customers.' },
+      { Icon: BarChart3, title: 'Analytics & attribution', desc: 'Custom GA4, conversion tracking, pixel setups, and clear weekly reporting with transparent ROI metrics.' },
+      { Icon: MessageSquare, title: 'Retention & email marketing', desc: 'Lifecycle campaigns, automated email sequences, and WhatsApp workflows that drive repeat purchases.' },
+    ],
+    tools: ['Google Ads', 'Meta Ads Manager', 'Google Search Console', 'GA4', 'Semrush', 'Ahrefs', 'Meta Pixel', 'HubSpot', 'WhatsApp Business'],
+    outcomes: [{ value: 'ROI-focused', label: 'Measured by revenue, not clicks' }, { value: 'Full-funnel', label: 'Discovery to retention' }],
+    related: [{ name: 'SellrApp', path: '/products/sellrapp', color: '#F59E0B' }, { name: 'The Kada', path: '/products/the-kada', color: '#2563EB' }],
+    faqs: [
+      { q: 'How do you measure marketing ROI?', a: 'We track every rupee spent against customer acquisition cost (CAC), return on ad spend (ROAS), and actual business conversions — not impressions or vanity clicks. You receive transparent weekly performance reports with actionable insights.' },
+      { q: 'Do you manage organic SEO as well as paid advertising?', a: 'Yes. We run full-funnel strategies: technical and local SEO for compounding long-term organic traffic, paired with targeted performance ads for immediate pipeline and customer acquisition.' },
+      { q: 'Do you create the ad creatives and landing pages?', a: 'Yes. Because our engineering and design teams build web applications and landing pages in-house, we design, write, test, and deploy both the creatives and the landing pages for maximum conversion.' },
+      { q: 'Can you work with our existing brand guidelines?', a: 'Absolutely. We align closely with your visual identity, tone of voice, and brand positioning, while introducing data-backed iterations that improve campaign performance.' },
+    ],
+    faqTitle: 'Digital marketing, answered.', faqSubtitle: 'Common questions about our growth and performance marketing services.',
+    ctaTitle: 'Ready to scale your customer base?', ctaSub: 'Tell us your target audience and growth goals — we’ll audit your digital presence and build a custom acquisition roadmap.',
+  },
 }
 
 // Canonical service list (unique items for listings and navigation)
@@ -251,4 +279,12 @@ export const serviceAliases: Record<string, string> = {
   'product-development': 'ui-ux-design',
   'devops': 'cloud-devops',
   'ui-ux': 'ui-ux-design',
+  'digital-marketing-agency': 'digital-marketing',
+  'digital-marketing-services': 'digital-marketing',
+  'seo-services': 'digital-marketing',
+  'seo': 'digital-marketing',
+  'performance-marketing': 'digital-marketing',
+  'social-media-marketing': 'digital-marketing',
+  'growth-marketing': 'digital-marketing',
+  'content-marketing': 'digital-marketing',
 }

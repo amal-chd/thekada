@@ -3,7 +3,7 @@ import EcosystemSection from '../components/home/EcosystemSection'
 import GetAppSection from '../components/home/GetAppSection'
 import FinalCTA from '../components/home/FinalCTA'
 import Seo, { SITE_URL } from '../components/Seo'
-import { Globe, Smartphone, Cloud, Settings, Zap, Rocket, LayoutGrid } from 'lucide-react'
+import { Globe, Smartphone, Cloud, Settings, Zap, LayoutGrid, Megaphone } from 'lucide-react'
 import { ShadeCard, ShadeHeading, TileGrid } from '../components/kada-kit'
 import type { HeaderOffset, Tile } from '../components/kada-kit'
 
@@ -14,9 +14,9 @@ const SERVICES: Tile[] = [
   { id: 'web', title: 'Web apps', desc: 'Sites, portals, dashboards', icon: <Globe />, to: '/services/web-development' },
   { id: 'mobile', title: 'Mobile apps', desc: 'iOS & Android', icon: <Smartphone />, to: '/services/mobile-development' },
   { id: 'saas', title: 'SaaS', desc: 'Subscription platforms', icon: <Cloud />, to: '/services/saas-development' },
+  { id: 'marketing', title: 'Digital marketing', desc: 'SEO, ads & growth', icon: <Megaphone />, to: '/services/digital-marketing' },
   { id: 'custom', title: 'Business software', desc: 'CRM, ERP, operations', icon: <Settings />, to: '/services/enterprise-software' },
   { id: 'ai', title: 'Automation & AI', desc: 'Workflows & assistants', icon: <Zap />, to: '/services/business-automation' },
-  { id: 'mvp', title: 'MVPs', desc: 'Idea to launch', icon: <Rocket />, to: '/services/ui-ux-design' },
 ]
 
 const logo = (src: string, alt: string) => <img src={src} alt={alt} className="h-full w-full object-contain p-1" />
@@ -39,7 +39,7 @@ export default function Home() {
     <main>
       <Seo
         title="The Kada Digital Ventures — We Build Software That Runs Businesses"
-        description="Software company in Kannur, Kerala building websites, mobile apps, SaaS platforms and custom business systems — and the Kada product ecosystem for restaurants, stays and retail."
+        description="Software and digital growth company in Kannur, Kerala building websites, mobile apps, SaaS platforms, digital marketing, and custom business systems — and the Kada product ecosystem."
         path="/"
         jsonLd={{
           '@context': 'https://schema.org',

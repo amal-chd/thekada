@@ -10,6 +10,7 @@ const SECTIONS: FooterSection[] = [
       { label: 'Web Development', to: '/services/web-development' },
       { label: 'Mobile Apps', to: '/services/mobile-development' },
       { label: 'SaaS Platforms', to: '/services/saas-development' },
+      { label: 'Digital Marketing', to: '/services/digital-marketing' },
       { label: 'Enterprise Software', to: '/services/enterprise-software' },
       { label: 'Business Automation', to: '/services/business-automation' },
       { label: 'All Services', to: '/services' },

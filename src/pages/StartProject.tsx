@@ -7,7 +7,7 @@ import { PageHeader } from '../components/kada-kit'
 
 const NEEDS_OPTIONS = [
   'Web Application', 'Mobile App (iOS/Android)', 'SaaS Platform', 
-  'Custom Business Software / ERP', 'CRM / HRM System', 
+  'Digital Marketing & Growth', 'Custom Business Software / ERP', 'CRM / HRM System', 
   'AI & Automation', 'API & Payments Integration', 'Modernize Existing App'
 ]
 
