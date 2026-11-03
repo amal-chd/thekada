@@ -88,13 +88,13 @@ export const PROVEN_CAPABILITIES = [
   'Real-time order flow',
   'Subscription billing',
   'AI document reading',
-  'Multi-language AI support chat',
+  'AI support assistant',
   'Restaurant POS & KOT',
-  'Push, SMS & email at scale',
+  'Push, SMS & email',
 ]
 
 /** Projects shown on the homepage, in order. Slugs match data/caseStudies. */
-export const FEATURED_WORK = ['the-kada', 'kada-dine', 'kada-stay', 'task-pilot']
+export const FEATURED_WORK = ['task-pilot', 'raman-caterings', 'the-kada', 'nexstep-europe']
 
 export const WHY_US = [
   {
@@ -203,15 +203,15 @@ export const PRODUCTS: ProductLink[] = [
   { name: 'Kada Dine', desc: 'Restaurant POS & QR ordering', logo: '/products/kada-dine-logo.png', to: '/products/kada-dine' },
   { name: 'Kada Stay', desc: 'Stays & guest services', logo: '/products/kada-stay-logo.png', to: '/products/kada-stay' },
   { name: 'Kada Delivery', desc: 'Rider app & dispatch', logo: '/ecosystem/kada-delivery.webp', to: '/products/kada-delivery' },
-  { name: 'Kada Mess', desc: 'Monthly meal plans', logo: '', to: '/products/kada-mess' },
+  { name: 'Kada Mess', desc: 'Monthly meal plans · launching', logo: '', to: '/products/kada-mess' },
   { name: 'SellrApp', desc: 'Online storefronts', logo: '/products/sellrapp-logo.svg', to: '/products/sellrapp' },
-  { name: 'Kada Ledger', desc: 'Digital khata', logo: '/products/kada-ledger-logo.svg', to: '/products/kada-ledger' },
+  { name: 'Kada Ledger', desc: 'Digital khata · early access', logo: '/products/kada-ledger-logo.svg', to: '/products/kada-ledger' },
 ]
 
 export const PARTNER_LINKS = [
   { name: 'List your restaurant', desc: 'POS, QR ordering & delivery', href: 'https://order.thekada.in/add-restaurant' },
   { name: 'List your property', desc: 'Hotels, homestays & hostels', href: 'https://host.thekada.in/register' },
-  { name: 'Ride with Kada', desc: 'Flexible delivery earnings', href: 'https://rider.thekada.in/join' },
+  { name: 'Ride with Kada', desc: 'Flexible delivery earnings', href: 'https://thekadapartner.vercel.app' },
 ]
 
 /** Real screenshots from our shipped products (public/shots). */

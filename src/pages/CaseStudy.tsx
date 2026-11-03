@@ -4,14 +4,23 @@ import { caseStudies } from '../data/caseStudies'
 import Seo, { SITE_URL } from '../components/Seo'
 import { breadcrumbLd } from '../lib/schema'
 import { PageIntro, Band, Container, Eyebrow, SerifTitle, CardGrid, DarkCTA, FadeIn, SectionHead } from '../components/site/kit'
-import { ProductShot } from '../components/site/media'
+import { ProductShot, SiteShot, WebShot } from '../components/site/media'
 
 export default function CaseStudy() {
   const { slug } = useParams<{ slug: string }>()
   if (!slug || !caseStudies[slug]) return <Navigate to="/work" replace />
 
   const study = caseStudies[slug]
-  const others = Object.values(caseStudies).filter((c) => c.slug !== slug).slice(0, 3)
+  // Client work first, then our own products.
+  const others = Object.values(caseStudies)
+    .filter((c) => c.slug !== slug)
+    .sort((a, b) => Number(!!b.client) - Number(!!a.client))
+    .slice(0, 3)
+  const host = (study.liveUrl ?? '').replace(/^https?:\/\//, '').replace(/\/$/, '')
+  const heroShot = study.shots?.web?.[0]
+    ? <SiteShot web={study.shots.web[0]} mobile={study.shots.mobile} url={host} alt={`${study.name} — real screenshot`} className="aspect-[4/3] sm:aspect-[16/9]" />
+    : <ProductShot slug={study.slug} name={study.name} logo={study.logo} points={study.features.map((f) => f.title)} className="aspect-[4/3] sm:aspect-[16/9]" />
+  const gallery = study.shots?.web?.slice(1) ?? []
 
   return (
     <main className="bg-[var(--kv-canvas)]">
@@ -36,16 +45,16 @@ export default function CaseStudy() {
         ]}
       />
       <PageIntro
-        eyebrow={<>Case study · {study.industry}</>}
+        eyebrow={<>{study.client ? `Client: ${study.client}` : 'Case study'} · {study.industry}</>}
         title={study.name}
         subtitle={study.objective}
         actions={[
           { label: 'Start a similar project', to: '/start-project' },
-          ...(study.productLink ? [{ label: 'View the product', to: study.productLink }] : []),
+          ...(study.liveUrl ? [{ label: 'Visit live site', to: study.liveUrl }] : study.productLink ? [{ label: 'View the product', to: study.productLink }] : []),
         ]}
       >
         <FadeIn delay={0.1} className="mx-auto mt-12 max-w-[1040px]">
-          <ProductShot slug={study.slug} name={study.name} logo={study.logo} points={study.features.map((f) => f.title)} className="aspect-[4/3] sm:aspect-[16/9]" />
+          {heroShot}
         </FadeIn>
       </PageIntro>
 
@@ -53,8 +62,8 @@ export default function CaseStudy() {
       <section className="border-b border-[var(--kv-line)] bg-white">
         <Container className="grid grid-cols-1 divide-y divide-[var(--kv-line)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {[
-            { k: 'Industry', v: study.industry },
-            { k: 'What we built', v: study.type },
+            { k: study.client ? 'Client' : 'Industry', v: study.client ?? study.industry },
+            { k: 'What we built', v: study.type.replace(/^Client project · /, '') },
             { k: 'Stack', v: study.technology.slice(0, 3).join(' · ') },
           ].map((f) => (
             <div key={f.k} className="py-6 sm:px-6 first:sm:pl-0">
@@ -83,6 +92,23 @@ export default function CaseStudy() {
         </div>
       </Band>
 
+      {gallery.length > 0 && (
+        <Band tone="white">
+          <SectionHead eyebrow="Screens" title="A closer look" />
+          <div className={`grid gap-6 ${gallery.length + (study.productLink ? 1 : 0) > 1 ? 'md:grid-cols-2' : 'mx-auto max-w-3xl'}`}>
+            {gallery.map((g) => (
+              <WebShot key={g} src={g} url={host} alt={`${study.name} — another screen`} shade="sky" />
+            ))}
+            {study.productLink && (
+              <Link to={study.productLink} className="group flex flex-col justify-center border border-[var(--kv-line)] bg-[var(--kv-band)] p-8">
+                <p className="font-serif-display text-3xl text-[var(--kv-ink)]">See {study.name} as a product</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600">Product page <ArrowRight className="h-4 w-4" /></span>
+              </Link>
+            )}
+          </div>
+        </Band>
+      )}
+
       <Band tone="band">
         <SectionHead eyebrow="Inside the product" title="Key capabilities" />
         <CardGrid cards={study.features.map((f) => ({ title: f.title, desc: f.description }))} />
@@ -100,9 +126,11 @@ export default function CaseStudy() {
             {others.map((c) => (
               <Link key={c.slug} to={`/work/${c.slug}`} className="group min-w-0">
                 <div className="transition-transform duration-300 group-hover:-translate-y-1">
-                  <ProductShot slug={c.slug} name={c.name} logo={c.logo} points={c.features.map((f) => f.title)} className="aspect-[4/3]" />
+                  {c.shots?.web?.[0]
+                    ? <WebShot src={c.shots.web[0]} url={(c.liveUrl ?? '').replace(/^https?:\/\//, '')} alt={c.name} className="aspect-[4/3]" />
+                    : <ProductShot slug={c.slug} name={c.name} logo={c.logo} points={c.features.map((f) => f.title)} className="aspect-[4/3]" />}
                 </div>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{c.industry}</p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{c.client ?? c.industry}</p>
                 <p className="mt-1 text-lg font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">{c.name}</p>
               </Link>
             ))}

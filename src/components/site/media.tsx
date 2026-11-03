@@ -65,9 +65,36 @@ export function ProductShot({ slug, name, logo, points, className }: { slug: str
       return <WebShot src={SHOTS.webOrder} url="order.thekada.in" alt="The Kada ordering website" className={className} />
     case 'kada-stay':
       return <PhoneShots shots={[{ src: SHOTS.hostToday, alt: 'Kada Stay Host — today' }, { src: SHOTS.hostRooms, alt: 'Kada Stay Host — rooms' }, { src: SHOTS.hostRent, alt: 'Kada Stay Host — rent' }]} shade="sky" className={className} />
+    case 'kada-dine':
+      return <WebShot src="/shots/work/kadadine-web.webp" url="kadadine.thekada.in" alt="Kada Dine website" className={className} />
+    case 'sellrapp':
+      return <WebShot src="/shots/work/sellrapp.webp" url="sellrapp.vercel.app" alt="SellrApp website" shade="sky" className={className} />
     case 'kada-delivery':
       return <PhoneShots shots={[{ src: SHOTS.riderLogin, alt: 'Kada Rider app' }, { src: SHOTS.customerHome, alt: 'The Kada customer app' }]} shade="dusk" className={className} />
     default:
       return <LogoShot logo={logo} name={name} points={points} className={className} />
   }
+}
+
+/** A browser screenshot with an optional phone screenshot overlapping it. */
+export function SiteShot({ web, mobile, url, alt, shade = 'ocean', className = 'aspect-[16/11]' }: { web: string; mobile?: string; url: string; alt: string; shade?: Shade; className?: string }) {
+  return (
+    <MediaPanel shade={shade} className={className}>
+      <div className={`absolute top-[9%] ${mobile ? 'left-[5%] w-[74%]' : 'inset-x-[6%]'}`}>
+        <BrowserFrame src={web} alt={alt} url={url} />
+      </div>
+      {mobile && (
+        <PhoneFrame src={mobile} alt={`${alt} on a phone`} className="absolute bottom-[-12%] right-[5%] w-[24%]" />
+      )}
+    </MediaPanel>
+  )
+}
+
+/** The right visual for any work item: its real screenshot, or the Kada product shot. */
+export function WorkShot({ item, className }: { item: { slug: string; name: string; image?: string; liveUrl?: string; displayUrl?: string; logo?: string; points?: string[] }; className?: string }) {
+  if (item.image) {
+    const url = item.displayUrl ?? (item.liveUrl ?? '').replace(/^https?:\/\//, '').replace(/\/$/, '')
+    return <WebShot src={item.image} url={url} alt={`${item.name} — screenshot`} className={className} />
+  }
+  return <ProductShot slug={item.slug} name={item.name} logo={item.logo} points={item.points} className={className} />
 }

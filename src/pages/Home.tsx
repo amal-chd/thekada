@@ -102,7 +102,7 @@ export default function Home() {
                 { title: 'Money you can trust', body: 'Billing, part-payments and dues tracked per person and per month, with reports your accountant will accept.' },
                 { title: 'Automations that save hours', body: 'Reminders, monthly bills and status updates that run on their own instead of on someone’s memory.' },
               ]}
-              actions={[{ label: 'Business software', to: '/services/enterprise-software' }, { label: 'See the Kada Stay case study', to: '/work/kada-stay' }]}
+              actions={[{ label: 'Business software', to: '/services/enterprise-software' }, { label: 'See the Task Pilot case study', to: '/work/task-pilot' }]}
               media={
                 <MediaPanel shade="sky" className="aspect-[4/3] sm:aspect-[16/11]">
                   <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[8%]">

@@ -5,7 +5,7 @@ import {
   Container, Eyebrow, SerifTitle, Btn, TextLink, MediaPanel, BrowserFrame, PhoneFrame, FadeIn,
 } from '../site/kit'
 import { PRODUCTS, PROCESS, SHOTS } from '../../data/agency'
-import { LogoShot } from '../site/media'
+import { ProductShot, SiteShot, WebShot } from '../site/media'
 import { caseStudies } from '../../data/caseStudies'
 
 /* ─────────────── Hero ─────────────── */
@@ -171,11 +171,11 @@ export function ProcessSlider() {
 
 /* ─────────────── Case study carousel ─────────────── */
 
-const CASES: { slug: string; media: 'web' | 'phones' | 'logo'; shots?: string[] }[] = [
-  { slug: 'the-kada', media: 'web', shots: [SHOTS.webRestaurant] },
-  { slug: 'kada-stay', media: 'phones', shots: [SHOTS.hostRooms, SHOTS.hostRent] },
-  { slug: 'kada-dine', media: 'logo' },
-  { slug: 'task-pilot', media: 'logo' },
+const CASES: { slug: string; url?: string }[] = [
+  { slug: 'task-pilot', url: 'kurickaldevelopers.vercel.app' },
+  { slug: 'raman-caterings', url: 'ramancatering.vercel.app' },
+  { slug: 'the-kada', url: 'order.thekada.in/restaurant' },
+  { slug: 'kada-stay' },
 ]
 
 export function CaseCarousel() {
@@ -184,7 +184,7 @@ export function CaseCarousel() {
   const c = caseStudies[item.slug]
   if (!c) return null
   const facts = [
-    { k: 'Industry', v: c.industry },
+    { k: c.client ? 'Client' : 'Industry', v: c.client ?? c.industry },
     { k: 'Built', v: c.type },
   ]
   return (
@@ -192,9 +192,9 @@ export function CaseCarousel() {
       <Container>
         <FadeIn className="text-center">
           <h2 className="mx-auto max-w-3xl text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-[var(--kv-ink)] sm:text-[2.75rem] text-balance">
-            <span className="text-blue-600">Built for real businesses,</span> from first-time founders to busy restaurants
+            <span className="text-blue-600">Built for real businesses,</span> from construction firms to caterers
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] text-slate-700">Every product below is designed, engineered and operated by our team.</p>
+          <p className="mx-auto mt-4 max-w-xl text-[15px] text-slate-700">Client systems and our own products — designed and engineered by our team.</p>
         </FadeIn>
 
         <AnimatePresence mode="wait">
@@ -233,23 +233,13 @@ export function CaseCarousel() {
               </div>
             </div>
 
-            <MediaPanel shade={i % 2 ? 'dusk' : 'ocean'} className="min-h-[340px]">
-              {item.media === 'web' && item.shots && (
-                <div className="absolute inset-x-[7%] top-[12%]">
-                  <BrowserFrame src={item.shots[0]} alt={`${c.name} — real product screenshot`} url="order.thekada.in" />
-                </div>
-              )}
-              {item.media === 'phones' && item.shots && (
-                <div className="absolute inset-0 flex items-start justify-center gap-[5%] pt-[10%]">
-                  {item.shots.map((s, k) => (
-                    <PhoneFrame key={s} src={s} alt={`${c.name} — real app screenshot`} className={`w-[36%] max-w-[210px] ${k ? 'mt-[10%]' : ''}`} />
-                  ))}
-                </div>
-              )}
-              {item.media === 'logo' && (
-                <LogoShot logo={c.logo} name={c.name} points={c.features.map((f) => f.title)} shade={i % 2 ? 'dusk' : 'ocean'} className="absolute inset-0 !rounded-none" />
-              )}
-            </MediaPanel>
+            <div className="min-h-[340px] min-w-0">
+              {item.slug === 'the-kada'
+                ? <WebShot src={SHOTS.webRestaurant} url={item.url ?? ''} alt="The Kada — restaurant page" className="h-full min-h-[340px]" />
+                : c.shots?.web?.[0]
+                  ? <SiteShot web={c.shots.web[0]} mobile={c.shots.mobile} url={item.url ?? ''} alt={`${c.name} — real screenshot`} shade={i % 2 ? 'dusk' : 'ocean'} className="h-full min-h-[340px]" />
+                  : <ProductShot slug={c.slug} name={c.name} logo={c.logo} points={c.features.map((f) => f.title)} className="h-full min-h-[340px]" />}
+            </div>
           </motion.div>
         </AnimatePresence>
 
