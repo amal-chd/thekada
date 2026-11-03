@@ -62,15 +62,15 @@ export function LogoShot({ logo, name, points = [], shade = 'ocean', className =
 export function ProductShot({ slug, name, logo, points, className }: { slug: string; name: string; logo?: string; points?: string[]; className?: string }) {
   switch (slug) {
     case 'the-kada':
-      return <WebShot src={SHOTS.webOrder} url="order.thekada.in" alt="The Kada ordering website" className={className} />
+      return <SiteShot web={SHOTS.webOrder} mobile={SHOTS.mOrderRest} url="order.thekada.in" alt="The Kada ordering website" className={className} />
     case 'kada-stay':
       return <PhoneShots shots={[{ src: SHOTS.hostToday, alt: 'Kada Stay Host — today' }, { src: SHOTS.hostRooms, alt: 'Kada Stay Host — rooms' }, { src: SHOTS.hostRent, alt: 'Kada Stay Host — rent' }]} shade="sky" className={className} />
     case 'kada-dine':
-      return <WebShot src="/shots/work/kadadine-web.webp" url="kadadine.thekada.in" alt="Kada Dine website" className={className} />
+      return <SiteShot web="/shots/work/kadadine-web.webp" mobile={SHOTS.mDine} url="kadadine.thekada.in" alt="Kada Dine website" className={className} />
     case 'sellrapp':
-      return <WebShot src="/shots/work/sellrapp.webp" url="sellrapp.vercel.app" alt="SellrApp website" shade="sky" className={className} />
+      return <SiteShot web="/shots/work/sellr-preview.webp" mobile={SHOTS.mSellr} url="sellrapp.vercel.app" alt="SellrApp storefront" shade="sky" className={className} />
     case 'kada-delivery':
-      return <PhoneShots shots={[{ src: SHOTS.riderLogin, alt: 'Kada Rider app' }, { src: SHOTS.customerHome, alt: 'The Kada customer app' }]} shade="dusk" className={className} />
+      return <SiteShot web="/shots/work/partner-d.webp" mobile={SHOTS.riderLogin} url="partner.thekada.in" alt="Kada Rider sign-up site and app" shade="dusk" className={className} />
     default:
       return <LogoShot logo={logo} name={name} points={points} className={className} />
   }
@@ -97,4 +97,26 @@ export function WorkShot({ item, className }: { item: { slug: string; name: stri
     return <WebShot src={item.image} url={url} alt={`${item.name} — screenshot`} className={className} />
   }
   return <ProductShot slug={item.slug} name={item.name} logo={item.logo} points={item.points} className={className} />
+}
+
+/** A grid of real screens: browser shots take two columns, phones one. */
+export function ScreenGallery({ screens }: { screens: { src: string; label: string; kind: 'web' | 'phone'; url?: string }[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      {screens.map((s) => (
+        <figure key={s.src} className={`min-w-0 ${s.kind === 'web' ? 'col-span-2' : 'col-span-1'}`}>
+          {s.kind === 'web' ? (
+            <WebShot src={s.src} url={s.url ?? ''} alt={s.label} className="aspect-[16/11]" />
+          ) : (
+            <MediaPanel shade="sky" className="aspect-[8/11]">
+              <div className="flex h-full items-start justify-center pt-[9%]">
+                <PhoneFrame src={s.src} alt={s.label} className="w-[62%]" />
+              </div>
+            </MediaPanel>
+          )}
+          <figcaption className="mt-2 text-sm font-medium text-slate-600">{s.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+  )
 }

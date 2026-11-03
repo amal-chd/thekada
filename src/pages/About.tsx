@@ -3,6 +3,7 @@ import Seo from '../components/Seo'
 import { PageIntro, Band, SectionHead, CardGrid, SplitFeature, DarkCTA, Container, Eyebrow, SerifTitle, FadeIn } from '../components/site/kit'
 import { WebShot, PhoneShots } from '../components/site/media'
 import { SHOTS, WHY_US } from '../data/agency'
+import LaunchStrip from '../components/site/LaunchStrip'
 
 const STORY = [
   { year: '2023', text: 'Founded in Kannur, Kerala' },
@@ -95,6 +96,8 @@ export default function About() {
           media={<PhoneShots shots={[{ src: SHOTS.customerHome, alt: 'The Kada app' }, { src: SHOTS.hostToday, alt: 'Kada Stay Host' }, { src: SHOTS.riderLogin, alt: 'Kada Rider' }]} />}
         />
       </Band>
+
+      <LaunchStrip title="What we’ve shipped" />
 
       <DarkCTA title={<>Build software <span className="text-blue-400">with us</span></>} subtitle="Tell us what you’re building. A sentence is enough to start." />
     </main>

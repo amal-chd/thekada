@@ -227,6 +227,66 @@ export const SHOTS = {
   hostDark: '/shots/app-host-dark.webp',
   hostLogin: '/shots/app-host-login.webp',
   riderLogin: '/shots/app-rider-login.webp',
+  // Phone-size captures of live sites (order.thekada.in etc.)
+  mOrderHome: '/shots/m-order-home.webp',
+  mOrderBrowse: '/shots/m-order-browse.webp',
+  mOrderRest: '/shots/m-order-rest.webp',
+  mOrderSearch: '/shots/m-order-search.webp',
+  mDine: '/shots/m-dine.webp',
+  mHost: '/shots/m-host.webp',
+  mPartner: '/shots/m-partner.webp',
+  mSellr: '/shots/m-sellr.webp',
+  mInspiro: '/shots/m-inspiro.webp',
+}
+
+export type Screen = { src: string; label: string; kind: 'web' | 'phone'; url?: string }
+
+/** Real screens per product, for galleries on product pages. */
+export const PRODUCT_SCREENS: Record<string, Screen[]> = {
+  'the-kada': [
+    { src: '/shots/web-order.webp', label: 'Browse restaurants', kind: 'web', url: 'order.thekada.in' },
+    { src: '/shots/m-order-rest.webp', label: 'Menu & cart on a phone', kind: 'phone' },
+    { src: '/shots/app-customer-home.webp', label: 'Customer app home', kind: 'phone' },
+    { src: '/shots/m-order-search.webp', label: 'Search', kind: 'phone' },
+    { src: '/shots/web-restaurant.webp', label: 'Restaurant page', kind: 'web', url: 'order.thekada.in/restaurant' },
+    { src: '/shots/m-order-browse.webp', label: 'Offers & categories', kind: 'phone' },
+  ],
+  'kada-dine': [
+    { src: '/shots/work/kadadine-web.webp', label: 'Kada Dine website', kind: 'web', url: 'kadadine.thekada.in' },
+    { src: '/shots/m-dine.webp', label: 'On a phone', kind: 'phone' },
+  ],
+  'kada-stay': [
+    { src: '/shots/app-host-today.webp', label: 'Host app — today', kind: 'phone' },
+    { src: '/shots/app-host-rooms.webp', label: 'Rooms & beds', kind: 'phone' },
+    { src: '/shots/app-host-residents.webp', label: 'Residents', kind: 'phone' },
+    { src: '/shots/app-host-rent.webp', label: 'Monthly rent', kind: 'phone' },
+    { src: '/shots/app-host-dark.webp', label: 'Dark mode', kind: 'phone' },
+    { src: '/shots/work/kadahost-web.webp', label: 'Host website', kind: 'web', url: 'host.thekada.in' },
+  ],
+  'kada-delivery': [
+    { src: '/shots/work/partner-d.webp', label: 'Rider sign-up site', kind: 'web', url: 'partner.thekada.in' },
+    { src: '/shots/app-rider-login.webp', label: 'Rider app', kind: 'phone' },
+    { src: '/shots/m-partner.webp', label: 'Apply from a phone', kind: 'phone' },
+  ],
+  sellrapp: [
+    { src: '/shots/work/sellr-preview.webp', label: 'A storefront template', kind: 'web', url: 'sellrapp.vercel.app/preview' },
+    { src: '/shots/m-sellr.webp', label: 'On a phone', kind: 'phone' },
+    { src: '/shots/work/sellr-pricing.webp', label: 'Plans', kind: 'web', url: 'sellrapp.vercel.app/pricing' },
+  ],
+}
+
+/** Which work best shows each service (slugs from data/work). */
+export const SERVICE_WORK: Record<string, string[]> = {
+  'web-development': ['the-kada', 'raman-caterings', 'nexstep-europe'],
+  'mobile-development': ['the-kada', 'kada-stay', 'task-pilot'],
+  'saas-development': ['sellrapp', 'kada-dine', 'kada-stay'],
+  'enterprise-software': ['task-pilot', 'kada-stay', 'raman-caterings'],
+  'business-automation': ['raman-caterings', 'task-pilot', 'inspiro-26'],
+  'ui-ux-design': ['whichott', 'prana-roots', 'achu-vijayan'],
+  'cloud-devops': ['the-kada', 'kada-dine', 'task-pilot'],
+  'api-integrations': ['the-kada', 'whichott', 'raman-caterings'],
+  'digital-transformation': ['task-pilot', 'kada-dine', 'raman-caterings'],
+  'digital-marketing': ['nexstep-europe', 'dandeli', 'prana-roots'],
 }
 
 /** Every project, whatever the size. */

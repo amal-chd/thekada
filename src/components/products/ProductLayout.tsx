@@ -9,7 +9,8 @@ import Seo, { SITE_URL } from '../Seo'
 import { breadcrumbLd, faqLd } from '../../lib/schema'
 import { metaDescription } from '../../lib/seoText'
 import { PageIntro, Band, Container, Eyebrow, SectionHead, CardGrid, SplitFeature, FaqList, DarkCTA, FadeIn, Btn } from '../site/kit'
-import { ProductShot } from '../site/media'
+import { ProductShot, ScreenGallery } from '../site/media'
+import { PRODUCT_SCREENS } from '../../data/agency'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -160,6 +161,13 @@ export default function ProductLayout({ config }: { config: ProductConfig }) {
           </Container>
         </section>
       )}
+
+      {PRODUCT_SCREENS[slug]?.length ? (
+        <Band tone="band">
+          <SectionHead eyebrow="Real screens" title={`${name}, as it runs today`} subtitle="Screenshots from the live product — nothing mocked up." />
+          <ScreenGallery screens={PRODUCT_SCREENS[slug]} />
+        </Band>
+      ) : null}
 
       <Band tone="canvas">
         <SectionHead eyebrow="Features" title={config.featuresHeading.replace(/\.\s*$/, '')} subtitle={config.featuresSub} />

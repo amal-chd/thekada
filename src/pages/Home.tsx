@@ -7,6 +7,7 @@ import {
 } from '../components/site/kit'
 import { AGENCY_FAQ, INCLUDED, BUILDING_BLOCKS, SHOTS } from '../data/agency'
 import { faqLd } from '../lib/schema'
+import LaunchStrip from '../components/site/LaunchStrip'
 
 const INCLUDED_ICONS = [<FileCheck2 key="a" />, <MonitorPlay key="b" />, <KeyRound key="c" />, <ShieldCheck key="d" />, <LifeBuoy key="e" />]
 
@@ -144,6 +145,7 @@ export default function Home() {
 
       <ProcessSlider />
       <CaseCarousel />
+      <LaunchStrip />
 
       <Band tone="canvas">
         <FadeIn className="text-center">

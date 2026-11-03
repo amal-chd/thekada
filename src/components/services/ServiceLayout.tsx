@@ -4,9 +4,12 @@ import Seo, { SITE_URL } from '../Seo'
 import { breadcrumbLd, faqLd } from '../../lib/schema'
 import { metaDescription } from '../../lib/seoText'
 import { PageIntro, Band, SectionHead, CardGrid, SplitFeature, FaqList, DarkCTA, Eyebrow, FadeIn, Container } from '../site/kit'
-import { WebShot, PhoneShots } from '../site/media'
+import { WebShot, PhoneShots, WorkShot } from '../site/media'
+import { Link } from 'react-router-dom'
+import { WORK } from '../../data/work'
+import { caseStudies } from '../../data/caseStudies'
 import { ProcessSlider } from '../home/HomeSections'
-import { SHOTS } from '../../data/agency'
+import { SHOTS, SERVICE_WORK } from '../../data/agency'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -46,7 +49,9 @@ function serviceMedia(slug: string): ReactNode {
     case 'ui-ux-design':
       return <PhoneShots shade="sky" shots={[{ src: SHOTS.hostToday, alt: 'Light mode design' }, { src: SHOTS.hostDark, alt: 'Dark mode design' }, { src: SHOTS.hostLogin, alt: 'Sign-in design' }]} />
     case 'digital-marketing':
-      return <WebShot src={SHOTS.webHome} url="order.thekada.in" alt="The Kada landing page" />
+      return <WebShot src="/shots/work/nexstep-dest.webp" url="nexstep-gilt.vercel.app/destinations" alt="NexStep Europe — a content page built to rank and convert" />
+    case 'web-development':
+      return <WebShot src="/shots/work/raman-quote.webp" url="ramancatering.vercel.app/request-quote" alt="Raman Caterings — quotation request" />
     default:
       return <WebShot src={SHOTS.webRestaurant} url="order.thekada.in/restaurant" alt="The Kada restaurant page" />
   }
@@ -127,6 +132,30 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
           </Container>
         </section>
       )}
+
+      {(() => {
+        const related = (SERVICE_WORK[config.slug] ?? []).map((s) => WORK.find((w) => w.slug === s)).filter((w): w is NonNullable<typeof w> => !!w)
+        if (!related.length) return null
+        return (
+          <Band tone="white">
+            <SectionHead eyebrow="Related work" title="Built by us with this service" />
+            <div className="grid gap-6 md:grid-cols-3">
+              {related.map((w) => {
+                const to = w.slug in caseStudies ? `/work/${w.slug}` : w.productPage ?? '/work'
+                return (
+                  <Link key={w.slug} to={to} className="group min-w-0">
+                    <div className="transition-transform duration-300 group-hover:-translate-y-1">
+                      <WorkShot item={{ ...w, points: (caseStudies[w.slug]?.features ?? []).map((f) => f.title) }} className="aspect-[4/3]" />
+                    </div>
+                    <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{w.client ?? w.type}</p>
+                    <p className="mt-1 text-lg font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">{w.name}</p>
+                  </Link>
+                )
+              })}
+            </div>
+          </Band>
+        )
+      })()}
 
       <ProcessSlider />
 

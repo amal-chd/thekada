@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import {
   Container, Eyebrow, SerifTitle, Btn, TextLink, MediaPanel, BrowserFrame, PhoneFrame, FadeIn,
@@ -10,45 +11,181 @@ import { caseStudies } from '../../data/caseStudies'
 
 /* ─────────────── Hero ─────────────── */
 
+type HeroSlide = {
+  key: string
+  tab: string
+  caption: string
+  href: string
+  linkLabel: string
+  render: () => ReactNode
+}
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    key: 'web',
+    tab: 'Web platforms',
+    caption: 'The Kada — food ordering we built and run',
+    href: 'https://order.thekada.in',
+    linkLabel: 'order.thekada.in',
+    render: () => (
+      <>
+        <div className="absolute left-[5%] top-[8%] w-[72%]">
+          <BrowserFrame src={SHOTS.webOrder} alt="order.thekada.in — browse restaurants" url="order.thekada.in" />
+        </div>
+        <PhoneFrame src={SHOTS.mOrderRest} alt="order.thekada.in on a phone — menu and cart" className="absolute bottom-[-14%] right-[6%] w-[22%]" />
+      </>
+    ),
+  },
+  {
+    key: 'mobile',
+    tab: 'Mobile apps',
+    caption: 'Customer, host and rider apps on iOS & Android',
+    href: '/products/the-kada',
+    linkLabel: 'The Kada apps',
+    render: () => (
+      <div className="absolute inset-0 flex items-start justify-center gap-[3.5%] pt-[6%]">
+        <PhoneFrame src={SHOTS.customerHome} alt="The Kada customer app" className="w-[21%]" />
+        <PhoneFrame src={SHOTS.hostToday} alt="Kada Stay host app" className="mt-[5%] w-[21%]" />
+        <PhoneFrame src={SHOTS.hostDark} alt="Kada Stay host app in dark mode" className="mt-[10%] w-[21%]" />
+        <PhoneFrame src={SHOTS.riderLogin} alt="Kada Rider app" className="mt-[15%] w-[21%]" />
+      </div>
+    ),
+  },
+  {
+    key: 'business',
+    tab: 'Business software',
+    caption: 'Task Pilot — construction management for Kurickal Developers',
+    href: '/work/task-pilot',
+    linkLabel: 'Read the case study',
+    render: () => (
+      <>
+        <div className="absolute left-[5%] top-[8%] w-[66%]">
+          <BrowserFrame src="/shots/work/task-pilot.webp" alt="Task Pilot for Kurickal Developers" url="kurickaldevelopers.vercel.app" />
+        </div>
+        <PhoneFrame src={SHOTS.hostRooms} alt="Hostel manager — rooms and beds" className="absolute bottom-[-16%] right-[22%] w-[19%]" />
+        <PhoneFrame src={SHOTS.hostRent} alt="Hostel manager — monthly rent" className="absolute bottom-[-8%] right-[4%] w-[19%]" />
+      </>
+    ),
+  },
+  {
+    key: 'sites',
+    tab: 'Client websites',
+    caption: 'Raman Caterings — website with online quotations',
+    href: '/work/raman-caterings',
+    linkLabel: 'Read the case study',
+    render: () => (
+      <>
+        <div className="absolute left-[4%] top-[14%] w-[44%] rotate-[-2deg]">
+          <BrowserFrame src="/shots/work/nexstep.webp" alt="NexStep Europe website" url="nexstep-gilt.vercel.app" />
+        </div>
+        <div className="absolute left-[28%] top-[7%] w-[56%]">
+          <BrowserFrame src="/shots/work/raman.webp" alt="Raman Caterings website" url="ramancatering.vercel.app" />
+        </div>
+        <PhoneFrame src="/shots/work/raman-m.webp" alt="Raman Caterings on a phone" className="absolute bottom-[-14%] right-[4%] w-[20%]" />
+      </>
+    ),
+  },
+]
+
+const SLIDE_MS = 6000
+
 export function Hero() {
+  const reduce = useReducedMotion()
+  const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const slide = HERO_SLIDES[i]
+
+  useEffect(() => {
+    if (reduce || paused) return
+    const t = window.setTimeout(() => setI((x) => (x + 1) % HERO_SLIDES.length), SLIDE_MS)
+    return () => window.clearTimeout(t)
+  }, [i, paused, reduce])
+
+  const external = slide.href.startsWith('http')
+
   return (
-    <section className="bg-[var(--kv-canvas)] pb-14 pt-[128px] sm:pb-20 sm:pt-[150px]">
-      <Container className="text-center">
-        <Eyebrow className="justify-center">KadaVerse · Software studio in Kerala</Eyebrow>
-        <h1 className="mx-auto mt-5 max-w-4xl text-[2.6rem] font-semibold leading-[1.04] tracking-[-0.04em] text-[var(--kv-ink)] sm:text-6xl lg:text-[4.25rem] text-balance">
-          Build the software your business <span className="text-blue-600">runs on</span>
+    <section className="relative overflow-hidden bg-[var(--kv-canvas)] pb-16 pt-[108px] sm:pb-24 sm:pt-[124px]">
+      <div aria-hidden className="kv-dots pointer-events-none absolute inset-x-0 top-0 h-[560px] opacity-60 [mask-image:radial-gradient(ellipse_60%_70%_at_50%_0%,#000_30%,transparent_75%)]" />
+      <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[1000px] -translate-x-1/2 rounded-full opacity-50" style={{ background: 'radial-gradient(ellipse, rgba(37,99,235,0.18) 0%, transparent 65%)' }} />
+      <Container className="relative text-center">
+        <a
+          href="#work-showcase"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-3 py-1.5 text-[13px] font-medium text-slate-600 shadow-sm hover:border-blue-300"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          </span>
+          Software studio in Kannur, Kerala · apps live on the App Store & Google Play
+        </a>
+        <h1 className="mx-auto mt-5 max-w-4xl text-[2.5rem] font-semibold leading-[1.03] tracking-[-0.04em] text-[var(--kv-ink)] sm:text-[3.5rem] lg:text-[4rem] text-balance">
+          Software your business <span className="text-blue-600">runs on</span>, built and run by us
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-          Web apps, mobile apps, SaaS and digital marketing — designed, built and run by the team behind the Kada platform.
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          Web apps, mobile apps, business systems and websites — from the team behind the Kada platform, with a fixed quote before you pay.
         </p>
-        <div className="mt-9 flex flex-wrap justify-center gap-3">
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Btn to="/start-project" variant="primary" size="lg">Start a project</Btn>
           <Btn to="/work" variant="outline" size="lg">See our work</Btn>
         </div>
 
-        <FadeIn delay={0.1} className="mx-auto mt-14 max-w-[1040px]">
+        <div
+          id="work-showcase"
+          className="mx-auto mt-10 max-w-[1080px]"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <div role="tablist" aria-label="What we build" className="mx-auto mb-4 flex max-w-full gap-1 overflow-x-auto rounded-[10px] border border-[var(--kv-line)] bg-white p-1 [scrollbar-width:none] sm:inline-flex">
+            {HERO_SLIDES.map((s, k) => (
+              <button
+                key={s.key}
+                type="button"
+                role="tab"
+                aria-selected={k === i}
+                onClick={() => setI(k)}
+                className={`relative shrink-0 overflow-hidden rounded-[7px] px-4 py-2 text-sm font-semibold transition-colors ${k === i ? 'bg-[var(--kv-ink)] text-white' : 'text-slate-600 hover:text-[var(--kv-ink)]'}`}
+              >
+                {s.tab}
+                {k === i && !reduce && !paused && (
+                  <motion.span
+                    key={`bar-${i}`}
+                    className="absolute bottom-0 left-0 h-[2px] bg-blue-400"
+                    initial={{ width: 0 }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: SLIDE_MS / 1000, ease: 'linear' }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+
           <MediaPanel shade="ocean" className="aspect-[4/3] sm:aspect-[16/9]">
-            <div className="absolute left-[5%] top-[9%] w-[74%] sm:left-[6%] sm:w-[66%]">
-              <BrowserFrame src={SHOTS.webOrder} alt="The Kada ordering website, built by KadaVerse" url="order.thekada.in" />
-            </div>
-            <PhoneFrame
-              src={SHOTS.customerHome}
-              alt="The Kada customer app home screen"
-              className="absolute bottom-[-18%] right-[22%] w-[26%] sm:right-[19%] sm:w-[19%]"
-            />
-            <PhoneFrame
-              src={SHOTS.hostToday}
-              alt="Kada Stay Host app — today's reservations"
-              className="absolute bottom-[-10%] right-[3%] w-[26%] sm:right-[4%] sm:w-[19%]"
-            />
-            <div className="absolute left-1/2 top-[64%] hidden -translate-x-1/2 items-center gap-4 rounded-[12px] border border-white/70 bg-white/95 px-5 py-3.5 shadow-xl sm:left-[30%] sm:flex">
-              <span className="text-[17px] font-medium text-[var(--kv-ink)]">Live in production</span>
-              <span className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600">
-                <span className="absolute right-1 h-4 w-4 rounded-full bg-white" />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slide.key}
+                className="absolute inset-0"
+                initial={reduce ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                {slide.render()}
+              </motion.div>
+            </AnimatePresence>
+            <div className="absolute bottom-3 left-3 right-3 flex sm:bottom-5 sm:left-5 sm:right-auto">
+              <span className="inline-flex min-w-0 items-center gap-3 rounded-[10px] border border-white/70 bg-white/95 px-3.5 py-2.5 text-left shadow-xl backdrop-blur">
+                <span className="min-w-0">
+                  <span className="block truncate text-[13px] font-semibold text-[var(--kv-ink)] sm:text-sm">{slide.caption}</span>
+                  {external ? (
+                    <a href={slide.href} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue-600 hover:underline">{slide.linkLabel} ↗</a>
+                  ) : (
+                    <Link to={slide.href} className="text-xs font-semibold text-blue-600 hover:underline">{slide.linkLabel} →</Link>
+                  )}
+                </span>
               </span>
             </div>
           </MediaPanel>
-        </FadeIn>
+        </div>
       </Container>
     </section>
   )

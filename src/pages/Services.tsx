@@ -4,6 +4,7 @@ import Seo from '../components/Seo'
 import { PageIntro, Band, SectionHead, CardGrid, SplitFeature, FaqList, DarkCTA, FadeIn } from '../components/site/kit'
 import { WebShot, PhoneShots } from '../components/site/media'
 import { ProcessSlider } from '../components/home/HomeSections'
+import LaunchStrip from '../components/site/LaunchStrip'
 import { SERVICES, AGENCY_FAQ, ENGAGEMENTS, SHOTS, type ServiceSummary } from '../data/agency'
 
 const ICONS: Record<ServiceSummary['icon'], ReactNode> = {
@@ -32,6 +33,8 @@ export default function Services() {
           cards={SERVICES.map((s) => ({ title: s.title, desc: s.outcome, icon: ICONS[s.icon], points: s.deliverables, to: `/services/${s.slug}` }))}
         />
       </Band>
+
+      <LaunchStrip title="Built with these services" />
 
       <Band tone="band">
         <div className="space-y-24">
