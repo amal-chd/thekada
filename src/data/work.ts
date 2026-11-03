@@ -90,7 +90,7 @@ export const WORK: WorkItem[] = [
     image: '/shots/web-order.webp',
     liveUrl: 'https://order.thekada.in',
     productPage: '/products/the-kada',
-    logo: '/products/the-kada-logo.png',
+    logo: '/products/the-kada-mark.svg',
   },
   {
     slug: 'kada-dine',

@@ -199,7 +199,7 @@ export type ProductLink = { name: string; desc: string; logo: string; to: string
 
 /** Products we built and run — used in the nav, marquee and footer. */
 export const PRODUCTS: ProductLink[] = [
-  { name: 'The Kada', desc: 'Food ordering & delivery', logo: '/products/the-kada-logo.png', to: '/products/the-kada' },
+  { name: 'The Kada', desc: 'Food ordering & delivery', logo: '/products/the-kada-mark.svg', to: '/products/the-kada' },
   { name: 'Kada Dine', desc: 'Restaurant POS & QR ordering', logo: '/products/kada-dine-logo.png', to: '/products/kada-dine' },
   { name: 'Kada Stay', desc: 'Stays & guest services', logo: '/products/kada-stay-logo.png', to: '/products/kada-stay' },
   { name: 'Kada Delivery', desc: 'Rider app & dispatch', logo: '/ecosystem/kada-delivery.webp', to: '/products/kada-delivery' },
@@ -211,7 +211,7 @@ export const PRODUCTS: ProductLink[] = [
 export const PARTNER_LINKS = [
   { name: 'List your restaurant', desc: 'POS, QR ordering & delivery', href: 'https://order.thekada.in/add-restaurant' },
   { name: 'List your property', desc: 'Hotels, homestays & hostels', href: 'https://host.thekada.in/register' },
-  { name: 'Ride with Kada', desc: 'Flexible delivery earnings', href: 'https://thekadapartner.vercel.app' },
+  { name: 'Ride with Kada', desc: 'Flexible delivery earnings', href: 'https://partner.thekada.in/join' },
 ]
 
 /** Real screenshots from our shipped products (public/shots). */

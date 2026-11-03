@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight } from 'lucide-react'
-import { submitPublicForm } from '@/lib/publicForms'
+import { submitProjectEnquiry } from '@/lib/publicForms'
 import { CONTACT } from '../../data/agency'
 import { Btn } from './kit'
 
@@ -23,8 +23,8 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; 
 }
 
 /**
- * The one client intake form (Start a project + Contact). Writes to the
- * `proposal_requests` intake collection that staff work from in the admin console.
+ * The one client intake form (Start a project + Contact). Sent to
+ * `contact_requests`; staff work it from the admin panel and the Kada Verse app.
  */
 export default function ProjectForm({ page }: { page: string }) {
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', needs: [] as string[], budget: '', timeline: '', description: '' })
@@ -40,10 +40,11 @@ export default function ProjectForm({ page }: { page: string }) {
     setError(null)
     if (!form.name.trim()) return setError('Please enter your name.')
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return setError('Please enter a valid email address.')
+    if (form.phone.replace(/\D/g, '').length < 10) return setError('Please add a phone or WhatsApp number so we can reach you.')
     if (form.description.trim().length < 10) return setError('Tell us a little about the project (at least a sentence).')
     setBusy(true)
     try {
-      await submitPublicForm('proposal_requests', { ...form, source: 'website', page, submittedAt: new Date().toISOString() }, 'LEAD')
+      await submitProjectEnquiry({ ...form, page })
       setDone(true)
     } catch (err) {
       console.error('Failed to submit proposal request', err)
@@ -80,7 +81,7 @@ export default function ProjectForm({ page }: { page: string }) {
         <Field label="Your name *" htmlFor="pf-name"><input id="pf-name" className={INPUT} value={form.name} onChange={set('name')} autoComplete="name" placeholder="Your full name" /></Field>
         <Field label="Company" htmlFor="pf-company"><input id="pf-company" className={INPUT} value={form.company} onChange={set('company')} autoComplete="organization" placeholder="Optional" /></Field>
         <Field label="Email *" htmlFor="pf-email"><input id="pf-email" type="email" className={INPUT} value={form.email} onChange={set('email')} autoComplete="email" placeholder="you@company.com" /></Field>
-        <Field label="Phone / WhatsApp" htmlFor="pf-phone"><input id="pf-phone" type="tel" inputMode="tel" className={INPUT} value={form.phone} onChange={set('phone')} autoComplete="tel" placeholder="+91" /></Field>
+        <Field label="Phone / WhatsApp *" htmlFor="pf-phone"><input id="pf-phone" type="tel" inputMode="tel" className={INPUT} value={form.phone} onChange={set('phone')} autoComplete="tel" placeholder="+91" /></Field>
       </div>
 
       <fieldset className="mt-6">

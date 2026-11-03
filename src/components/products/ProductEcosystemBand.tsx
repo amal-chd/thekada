@@ -6,7 +6,7 @@ import { Section, SectionHeading, Reveal } from '../ui'
 type Sib = { id: string; name: string; sub: string; color: string; path: string; Icon: React.ComponentType<{ size?: number; color?: string }>; logo?: string }
 
 const ALL: Sib[] = [
-  { id: 'the-kada', name: 'The Kada', sub: 'Food delivery platform', color: '#2563EB', path: '/products/the-kada', Icon: Bike, logo: '/products/the-kada-logo.png' },
+  { id: 'the-kada', name: 'The Kada', sub: 'Food delivery platform', color: '#2563EB', path: '/products/the-kada', Icon: Bike, logo: '/products/the-kada-mark.svg' },
   { id: 'kada-dine', name: 'Kada Dine', sub: 'Restaurant POS', color: '#FF6B2B', path: '/products/kada-dine', Icon: Utensils, logo: '/products/kada-dine-logo.png' },
   { id: 'kada-delivery', name: 'Kada Delivery', sub: 'Rider platform', color: '#0EA5E9', path: '/products/kada-delivery', Icon: Bike },
   { id: 'kada-stay', name: 'Kada Stay', sub: 'Stays & guest services', color: '#247CFF', path: '/products/kada-stay', Icon: BedDouble, logo: '/products/kada-stay-logo.png' },

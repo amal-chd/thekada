@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight, Store, Building2, Bike, Briefcase } from 'lucide-react'
 import Logo from './Logo'
 import { SERVICES, PRODUCTS, PARTNER_LINKS, FEATURED_WORK } from '../../data/agency'
 import { caseStudies } from '../../data/caseStudies'
@@ -109,11 +109,74 @@ const MENUS: Record<MenuId, { label: string; render: () => ReactNode }> = {
   work: { label: 'Work', render: WorkMenu },
 }
 
+const JOIN_ICONS = [<Store key="s" />, <Building2 key="b" />, <Bike key="r" />]
+
+/** Partner sign-ups and careers — the old "Join us" menu, restored. */
+function JoinUsMenu() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const location = useLocation()
+  useEffect(() => setOpen(false), [location])
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false) }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('mousedown', onDown)
+    window.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
+  }, [open])
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className={`inline-flex items-center gap-1 rounded-[6px] border px-3 py-2 text-[15px] font-medium transition-colors ${open ? 'border-[var(--kv-ink)] text-[var(--kv-ink)]' : 'border-[var(--kv-line)] text-[var(--kv-ink)] hover:border-[var(--kv-ink)]'}`}
+      >
+        Join us <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="menu"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.12 }}
+            className="absolute right-0 top-[calc(100%+10px)] w-[320px] rounded-[8px] border border-[var(--kv-line)] bg-white p-2 shadow-[0_24px_40px_-20px_rgba(11,27,51,0.35)]"
+          >
+            <p className="px-2.5 pb-1 pt-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500">Partner with Kada</p>
+            {PARTNER_LINKS.map((p, i) => (
+              <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" role="menuitem" className="group flex items-start gap-3 rounded-[6px] p-2.5 hover:bg-[var(--kv-band)]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-blue-50 text-blue-600 [&>svg]:h-[18px] [&>svg]:w-[18px]">{JOIN_ICONS[i]}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">{p.name}</span>
+                  <span className="block text-[13px] text-slate-500">{p.desc}</span>
+                </span>
+                <ArrowUpRight className="mt-1 h-4 w-4 text-slate-300 group-hover:text-blue-600" />
+              </a>
+            ))}
+            <div className="my-1 border-t border-[var(--kv-line)]" />
+            <Link to="/careers" role="menuitem" className="group flex items-start gap-3 rounded-[6px] p-2.5 hover:bg-[var(--kv-band)]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-slate-100 text-[var(--kv-ink)]"><Briefcase className="h-[18px] w-[18px]" /></span>
+              <span className="min-w-0">
+                <span className="block text-[15px] font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">Work at KadaVerse</span>
+                <span className="block text-[13px] text-slate-500">Engineering, design & growth roles</span>
+              </span>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 const MOBILE_GROUPS: { label: string; links: { label: string; to: string }[] }[] = [
   { label: 'Services', links: [...SERVICES.map((s) => ({ label: s.title, to: `/services/${s.slug}` })), { label: 'All services', to: '/services' }] },
   { label: 'Products', links: PRODUCTS.map((p) => ({ label: p.name, to: p.to })) },
   { label: 'Work', links: [...FEATURED_WORK.filter((s) => caseStudies[s]).map((s) => ({ label: caseStudies[s].name, to: `/work/${s}` })), { label: 'All work', to: '/work' }] },
-  { label: 'Partner with Kada', links: PARTNER_LINKS.map((p) => ({ label: p.name, to: p.href })) },
+  { label: 'Join us', links: [...PARTNER_LINKS.map((p) => ({ label: p.name, to: p.href })), { label: 'Work at KadaVerse', to: '/careers' }] },
 ]
 
 export default function Header() {
@@ -186,19 +249,13 @@ export default function Header() {
           >
             About
           </Link>
-          <Link
-            to="/careers"
-            onMouseEnter={() => setOpen(null)}
-            className={`rounded-[6px] px-3 py-2 text-[15px] font-medium ${active('/careers') ? 'text-blue-600' : 'text-[var(--kv-ink)] hover:text-blue-600'}`}
-          >
-            Careers
-          </Link>
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 lg:flex" onMouseEnter={() => setOpen(null)}>
           <Link to="/contact" className="rounded-[6px] px-3 py-2 text-[15px] font-medium text-[var(--kv-ink)] hover:text-blue-600">
             Contact
           </Link>
+          <JoinUsMenu />
           <Link
             to="/start-project"
             className="inline-flex items-center gap-1.5 rounded-[6px] bg-blue-600 px-4 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-blue-700"
@@ -277,7 +334,7 @@ export default function Header() {
                   </div>
                 )
               })}
-              {[{ label: 'About', to: '/about' }, { label: 'Careers', to: '/careers' }, { label: 'Contact', to: '/contact' }].map((l) => (
+              {[{ label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }].map((l) => (
                 <Link key={l.to} to={l.to} className="block border-b border-[var(--kv-line)] py-4 text-lg font-semibold text-[var(--kv-ink)]">{l.label}</Link>
               ))}
               <Link to="/start-project" className="mt-6 flex w-full items-center justify-center rounded-[6px] bg-blue-600 py-3.5 text-base font-semibold text-white">

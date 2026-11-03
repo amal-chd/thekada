@@ -47,7 +47,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     technology: ['Flutter', 'React', 'TypeScript', 'Firebase', 'Cloud Functions', 'Google Maps Platform', 'Razorpay', 'Gemini'],
     liveUrl: 'https://order.thekada.in',
     productLink: '/products/the-kada',
-    logo: '/products/the-kada-logo.png',
+    logo: '/products/the-kada-mark.svg',
   },
   'kada-dine': {
     slug: 'kada-dine',

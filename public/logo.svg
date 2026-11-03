@@ -1,24 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="The Kada">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="KadaVerse">
   <defs>
-    <linearGradient id="kadaGrad" x1="256" y1="84" x2="256" y2="430" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#5C97D1"/>
-      <stop offset="1" stop-color="#2A6CAB"/>
+    <linearGradient id="kvTile" x1="64" y1="40" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="0.55" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
     </linearGradient>
+    <radialGradient id="kvGlow" cx="150" cy="110" r="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <g stroke="url(#kadaGrad)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <!-- hood / dome -->
-    <path d="M172 190 A86 86 0 0 1 340 190"/>
-    <!-- head (bump nesting under the dome's notch) -->
-    <path d="M216 252 A40 40 0 0 1 296 252"/>
-    <!-- left shoulder + arm sweeping out wide -->
-    <path d="M216 254 C168 264 120 270 116 322"/>
-    <!-- left hand: closed ring -->
-    <path d="M116 322 a26 26 0 1 0 42 10"/>
-    <!-- right shoulder + arm sweeping out wide -->
-    <path d="M296 254 C344 264 392 270 396 322"/>
-    <!-- right hand: scroll curl -->
-    <path d="M396 322 q42 4 32 48 q-11 30 -48 14"/>
-    <!-- wide shallow base / cradle -->
-    <path d="M120 380 C134 424 198 430 256 430 C314 430 378 424 392 380"/>
-  </g>
+  <rect width="512" height="512" rx="116" fill="url(#kvTile)"/>
+  <rect width="512" height="512" rx="116" fill="url(#kvGlow)"/>
+  <!-- orbit, far side (behind the V) -->
+  <path d="M 67.6 340.0 A 196 64 -16 0 1 444.4 232.0" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- the V of Verse -->
+  <path d="M 158 150 L 256 366 L 354 150" stroke="#FFFFFF" stroke-width="60" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- orbit, near side (in front of the V) -->
+  <path d="M 67.6 340.0 A 196 64 -16 0 0 444.4 232.0" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- the planet -->
+  <circle cx="434.5" cy="218.7" r="27" fill="#93C5FD" stroke="#FFFFFF" stroke-width="9"/>
 </svg>

@@ -168,7 +168,7 @@ export const productPages: Record<string, ProductConfig> = {
     EyebrowIcon: Bike, eyebrowLabel: 'Kada Delivery · Rider platform',
     title: { pre: 'The fleet side of', accent: 'every order.' },
     subtitle: 'The rider app and dispatch engine behind The Kada — zone-based offers, turn-by-turn pickup and drop, verified handover, and earnings a rider can actually check.',
-    primaryCta: { label: 'Apply to ride', href: 'https://thekadapartner.vercel.app' },
+    primaryCta: { label: 'Apply to ride', href: 'https://partner.thekada.in/join' },
     secondaryCta: { label: 'See The Kada', to: '/products/the-kada' },
     stats: [
       { value: 'Zone-based', label: 'Offers matched to riders' },
@@ -396,7 +396,7 @@ export const productPages: Record<string, ProductConfig> = {
   // ─────────────────────────── THE KADA ───────────────────────────
   'the-kada': {
     accent: '#2563EB', accentSoft: '#EFF5FF', gradientClass: 'gradient-text-blue',
-    logoSrc: '/products/the-kada-logo.png',
+    logoSrc: '/products/the-kada-mark.svg',
     EyebrowIcon: Bike, eyebrowLabel: 'The Kada · Delivery, dining & stays',
     title: { pre: 'Order, dine and stay —', accent: 'one app.' },
     subtitle: 'The Kada connects people with local restaurants, cafés and stays — order food with live tracking, book a table, find a room or a monthly mess plan, from the app or order.thekada.in.',
