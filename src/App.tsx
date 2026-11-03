@@ -3,7 +3,6 @@ import { useEffect, lazy, Suspense } from 'react'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToTop'
-import { CustomCursor } from './components/ui'
 import Home from './pages/Home'
 import { useSmoothScroll } from './components/kada-kit'
 
@@ -85,7 +84,6 @@ function AppContent() {
   return (
     <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
       <a href="#main" className="skip-link">Skip to content</a>
-      <CustomCursor />
       <ScrollRestorer />
       <Header />
       <div id="main">
