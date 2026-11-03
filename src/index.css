@@ -1068,3 +1068,28 @@ button:focus-visible, a:focus-visible {
   }
 }
 
+
+/* ═══════════════════════════════════════
+   KADAVERSE SITE SYSTEM (2026-11)
+   Zapier-style structure in Kada colours: calm canvas, hairline borders,
+   serif section titles, product shots in shade-gradient panels.
+   ═══════════════════════════════════════ */
+:root {
+  --kv-canvas: #FCFCFA;
+  --kv-band: #F3F6FB;
+  --kv-band-2: #EAF0F9;
+  --kv-ink: #0B1B33;
+  --kv-line: #DCE3EE;
+}
+.font-serif-display { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -0.01em; }
+.kv-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.kv-dots {
+  background-image: radial-gradient(rgba(37,99,235,0.18) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+@keyframes kv-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.kv-marquee { animation: kv-marquee 40s linear infinite; }
+.kv-marquee:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .kv-marquee { animation: none; } }

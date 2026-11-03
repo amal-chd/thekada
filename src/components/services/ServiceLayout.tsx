@@ -1,12 +1,12 @@
-import type { ComponentType } from 'react'
-import { Link } from 'react-router-dom'
-import { Check, ArrowRight } from 'lucide-react'
-import FAQ, { type FAQItem } from '../shared/FAQ'
+import type { ComponentType, ReactNode } from 'react'
+import { type FAQItem } from '../shared/FAQ'
 import Seo, { SITE_URL } from '../Seo'
 import { breadcrumbLd, faqLd } from '../../lib/schema'
 import { metaDescription } from '../../lib/seoText'
-import { PageHeader } from '../kada-kit'
-import { Section, SectionIntro, ProcessSteps, ContactCTA, FadeIn } from '../site/sections'
+import { PageIntro, Band, SectionHead, CardGrid, SplitFeature, FaqList, DarkCTA, Eyebrow, FadeIn, Container } from '../site/kit'
+import { WebShot, PhoneShots } from '../site/media'
+import { ProcessSlider } from '../home/HomeSections'
+import { SHOTS } from '../../data/agency'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -34,16 +34,31 @@ export type ServiceConfig = {
   seo?: { title?: string; description?: string }
 }
 
+/** The real product shot that best shows each practice. */
+function serviceMedia(slug: string): ReactNode {
+  switch (slug) {
+    case 'mobile-development':
+      return <PhoneShots shots={[{ src: SHOTS.customerHome, alt: 'The Kada customer app' }, { src: SHOTS.riderLogin, alt: 'Kada Rider app' }, { src: SHOTS.hostDark, alt: 'Kada Stay Host, dark mode' }]} />
+    case 'enterprise-software':
+    case 'business-automation':
+    case 'saas-development':
+      return <PhoneShots shade="sky" shots={[{ src: SHOTS.hostRooms, alt: 'Rooms and beds' }, { src: SHOTS.hostResidents, alt: 'Residents' }, { src: SHOTS.hostRent, alt: 'Monthly rent' }]} />
+    case 'ui-ux-design':
+      return <PhoneShots shade="sky" shots={[{ src: SHOTS.hostToday, alt: 'Light mode design' }, { src: SHOTS.hostDark, alt: 'Dark mode design' }, { src: SHOTS.hostLogin, alt: 'Sign-in design' }]} />
+    case 'digital-marketing':
+      return <WebShot src={SHOTS.webHome} url="order.thekada.in" alt="The Kada landing page" />
+    default:
+      return <WebShot src={SHOTS.webRestaurant} url="order.thekada.in/restaurant" alt="The Kada restaurant page" />
+  }
+}
 
 export default function ServiceLayout({ config }: { config: ServiceConfig }) {
-  const a = config.accent
-
   const serviceName = `${config.title.pre} ${config.title.accent}`.replace(/\s+/g, ' ').trim()
   const seoTitle = config.seo?.title ?? config.eyebrowLabel
   const seoDescription = config.seo?.description ?? metaDescription(config.subtitle)
 
   return (
-    <main style={{ overflowX: 'clip' }}>
+    <main className="bg-[var(--kv-canvas)]">
       <Seo
         title={seoTitle}
         description={seoDescription}
@@ -66,97 +81,60 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
           ]),
         ]}
       />
-      <PageHeader
-        topOffset={72}
+      <PageIntro
         eyebrow={<><config.EyebrowIcon size={13} /> {config.eyebrowLabel}</>}
         title={<>{config.title.pre} <span className="text-blue-600">{config.title.accent}</span>{config.title.post ? <> {config.title.post}</> : null}</>}
         subtitle={config.subtitle}
-        actions={[
-          { label: 'Get a free estimate', to: '/start-project' },
-          { label: 'All services', to: '/services' },
-        ]}
+        actions={[{ label: 'Get a free estimate', to: '/start-project' }, { label: 'All services', to: '/services' }]}
       />
 
-      {/* Intro + what's included */}
-      <Section className="bg-white">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
-          <FadeIn className="min-w-0">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-600">Overview</p>
-            <p className="mt-4 text-lg sm:text-xl leading-relaxed text-slate-700 text-pretty">{config.intro}</p>
-            {config.related?.length ? (
-              <div className="mt-8">
-                <p className="text-sm font-semibold text-slate-500">See it in our own products</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {config.related.map((r) => (
-                    <Link
-                      key={r.path}
-                      to={r.path}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3.5 py-1.5 text-sm font-bold text-slate-800 transition-colors hover:border-blue-300 hover:text-blue-700"
-                    >
-                      <span className="h-2 w-2 rounded-full" style={{ background: r.color }} />
-                      {r.name}
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+      <Band tone="band">
+        <SplitFeature
+          eyebrow="Overview"
+          title="What this looks like when we build it"
+          body={config.intro}
+          features={config.offerings.slice(0, 4).map((o) => ({ title: o.title, body: o.desc }))}
+          actions={[
+            { label: 'Request a proposal', to: '/start-project' },
+            ...(config.related?.[0] ? [{ label: `See it in ${config.related[0].name}`, to: config.related[0].path }] : []),
+          ]}
+          media={serviceMedia(config.slug)}
+        />
+      </Band>
+
+      <Band tone="canvas">
+        <SectionHead eyebrow="What you get" title="Included in this service" />
+        <CardGrid
+          cols={config.offerings.length === 4 ? 2 : 3}
+          cards={config.offerings.map((o) => ({ title: o.title, desc: o.desc, icon: <o.Icon size={20} /> }))}
+        />
+        {config.highlights.length > 0 && (
+          <FadeIn className="mt-10 flex flex-wrap justify-center gap-2">
+            {config.highlights.map((h) => (
+              <span key={h} className="border border-[var(--kv-ink)]/70 bg-white px-3 py-1.5 text-sm text-[var(--kv-ink)]">{h}</span>
+            ))}
           </FadeIn>
-          {config.highlights.length > 0 && (
-            <FadeIn delay={0.08} className="min-w-0">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-                <p className="text-base font-bold text-slate-900">What’s included</p>
-                <ul className="mt-5 space-y-3.5">
-                  {config.highlights.map((h) => (
-                    <li key={h} className="flex items-start gap-3 text-[15px] text-slate-700">
-                      <Check className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-blue-600 p-1 text-white" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </FadeIn>
-          )}
-        </div>
-      </Section>
-
-      {/* Offerings with their descriptions */}
-      <Section className="bg-slate-50">
-        <SectionIntro eyebrow="What we deliver" title="What you get from this service." />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {config.offerings.map((o, i) => (
-            <FadeIn key={o.title} delay={(i % 3) * 0.06} className="min-w-0">
-              <div className="h-full rounded-2xl border border-slate-200 bg-white p-6">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl" style={{ background: config.accentSoft, color: a }}>
-                  <o.Icon size={20} />
-                </span>
-                <h3 className="mt-5 text-lg font-bold text-slate-900">{o.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{o.desc}</p>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-        {config.tools.length > 0 && (
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-            <p className="shrink-0 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Tools we use</p>
-            <div className="flex flex-wrap gap-2">
-              {config.tools.map((t) => (
-                <span key={t} className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">{t}</span>
-              ))}
-            </div>
-          </div>
         )}
-      </Section>
+      </Band>
 
-      <Section className="bg-white">
-        <SectionIntro eyebrow="How we work" title="From first call to launch." align="center" />
-        <ProcessSteps />
-      </Section>
+      {config.tools.length > 0 && (
+        <section className="border-y border-[var(--kv-line)] bg-white py-10">
+          <Container className="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
+            <Eyebrow className="shrink-0">Tools we use</Eyebrow>
+            <div className="flex flex-wrap gap-x-7 gap-y-2">
+              {config.tools.map((t) => <span key={t} className="text-lg font-semibold tracking-tight text-slate-500">{t}</span>)}
+            </div>
+          </Container>
+        </section>
+      )}
 
-      {/* FAQ stays: the page's structured data lists it. */}
-      <FAQ items={config.faqs} accentColor={a} title={config.faqTitle} subtitle={config.faqSubtitle} />
+      <ProcessSlider />
 
-      <ContactCTA title={config.ctaTitle} subtitle={config.ctaSub} />
+      <Band tone="canvas">
+        <FaqList items={config.faqs} title={config.faqTitle} />
+      </Band>
+
+      <DarkCTA title={config.ctaTitle} subtitle={config.ctaSub} />
     </main>
   )
 }

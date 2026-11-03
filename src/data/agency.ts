@@ -194,3 +194,51 @@ export const CONTACT = {
   phone: '+91 94964 91654',
   whatsapp: '919496491654',
 }
+
+export type ProductLink = { name: string; desc: string; logo: string; to: string }
+
+/** Products we built and run — used in the nav, marquee and footer. */
+export const PRODUCTS: ProductLink[] = [
+  { name: 'The Kada', desc: 'Food ordering & delivery', logo: '/products/the-kada-logo.png', to: '/products/the-kada' },
+  { name: 'Kada Dine', desc: 'Restaurant POS & QR ordering', logo: '/products/kada-dine-logo.png', to: '/products/kada-dine' },
+  { name: 'Kada Stay', desc: 'Stays & guest services', logo: '/products/kada-stay-logo.png', to: '/products/kada-stay' },
+  { name: 'Kada Delivery', desc: 'Rider app & dispatch', logo: '/ecosystem/kada-delivery.webp', to: '/products/kada-delivery' },
+  { name: 'Kada Mess', desc: 'Monthly meal plans', logo: '', to: '/products/kada-mess' },
+  { name: 'SellrApp', desc: 'Online storefronts', logo: '/products/sellrapp-logo.svg', to: '/products/sellrapp' },
+  { name: 'Kada Ledger', desc: 'Digital khata', logo: '/products/kada-ledger-logo.svg', to: '/products/kada-ledger' },
+]
+
+export const PARTNER_LINKS = [
+  { name: 'List your restaurant', desc: 'POS, QR ordering & delivery', href: 'https://order.thekada.in/add-restaurant' },
+  { name: 'List your property', desc: 'Hotels, homestays & hostels', href: 'https://host.thekada.in/register' },
+  { name: 'Ride with Kada', desc: 'Flexible delivery earnings', href: 'https://rider.thekada.in/join' },
+]
+
+/** Real screenshots from our shipped products (public/shots). */
+export const SHOTS = {
+  webOrder: '/shots/web-order.webp',
+  webRestaurant: '/shots/web-restaurant.webp',
+  webHome: '/shots/web-home.webp',
+  customerHome: '/shots/app-customer-home.webp',
+  hostToday: '/shots/app-host-today.webp',
+  hostRooms: '/shots/app-host-rooms.webp',
+  hostResidents: '/shots/app-host-residents.webp',
+  hostRent: '/shots/app-host-rent.webp',
+  hostDark: '/shots/app-host-dark.webp',
+  hostLogin: '/shots/app-host-login.webp',
+  riderLogin: '/shots/app-rider-login.webp',
+}
+
+/** Every project, whatever the size. */
+export const INCLUDED = [
+  { title: 'Fixed quote', desc: 'Written scope and price first' },
+  { title: 'Weekly demos', desc: 'A staging link you can click' },
+  { title: 'You own the code', desc: 'Repos and accounts in your name' },
+  { title: 'NDA on request', desc: 'Before the first call if you like' },
+  { title: 'Support after launch', desc: 'Fixes, updates and monitoring' },
+]
+
+export const BUILDING_BLOCKS = [
+  'Razorpay payments & payouts', 'Live maps & tracking', 'Push, SMS & email', 'WhatsApp messaging',
+  'AI assistants', 'Role-based access', 'Analytics & reports', 'Offline mode',
+]

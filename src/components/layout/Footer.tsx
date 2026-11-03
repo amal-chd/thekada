@@ -1,58 +1,75 @@
-import { SiteFooter, kadaverseSection } from '../kada-kit'
-import type { FooterSection } from '../kada-kit'
-import { CUSTOMER_APP_URLS } from '../home/GetAppSection'
+import { Link } from 'react-router-dom'
+import Logo from './Logo'
+import { SERVICES, PRODUCTS, PARTNER_LINKS, FEATURED_WORK, CONTACT } from '../../data/agency'
+import { caseStudies } from '../../data/caseStudies'
 
-const SECTIONS: FooterSection[] = [
+type FooterLink = { label: string; to: string }
+
+const COLUMNS: { title: string; links: FooterLink[] }[] = [
+  { title: 'Services', links: [...SERVICES.slice(0, 6).map((s) => ({ label: s.title, to: `/services/${s.slug}` })), { label: 'All services', to: '/services' }] },
+  { title: 'Products', links: PRODUCTS.map((p) => ({ label: p.name, to: p.to })) },
+  { title: 'Work', links: [...FEATURED_WORK.filter((s) => caseStudies[s]).map((s) => ({ label: caseStudies[s].name, to: `/work/${s}` })), { label: 'All work', to: '/work' }] },
+  { title: 'Partner with Kada', links: PARTNER_LINKS.map((p) => ({ label: p.name, to: p.href })) },
   {
-    id: 'about',
-    title: 'Services',
-    links: [
-      { label: 'Web Development', to: '/services/web-development' },
-      { label: 'Mobile Apps', to: '/services/mobile-development' },
-      { label: 'SaaS Platforms', to: '/services/saas-development' },
-      { label: 'Digital Marketing', to: '/services/digital-marketing' },
-      { label: 'Enterprise Software', to: '/services/enterprise-software' },
-      { label: 'Business Automation', to: '/services/business-automation' },
-      { label: 'All Services', to: '/services' },
-    ],
-  },
-  kadaverseSection('corp'),
-  {
-    id: 'company',
     title: 'Company',
     links: [
-      { label: 'About Us', to: '/about' },
-      { label: 'Our Work', to: '/work' },
-      { label: 'Products', to: '/products' },
+      { label: 'About', to: '/about' },
       { label: 'Careers', to: '/careers' },
-      { label: 'Start a Project', to: '/start-project' },
       { label: 'Contact', to: '/contact' },
-    ],
-  },
-  {
-    id: 'legal',
-    title: 'Trust & Legal',
-    links: [
-      { label: 'Privacy Policy', to: '/legal/privacy' },
-      { label: 'Terms of Service', to: '/legal/terms' },
-      { label: 'Refund Policy', to: '/legal/refunds' },
-      { label: 'Cookie Policy', to: '/legal/cookies' },
-      { label: 'Delete Account', to: '/delete-account' },
+      { label: 'Start a project', to: '/start-project' },
     ],
   },
 ]
 
-/** The shared Kada footer for the corporate site. */
+const LEGAL: FooterLink[] = [
+  { label: 'Privacy', to: '/legal/privacy' },
+  { label: 'Terms', to: '/legal/terms' },
+  { label: 'Refunds', to: '/legal/refunds' },
+  { label: 'Cookies', to: '/legal/cookies' },
+  { label: 'Delete account', to: '/delete-account' },
+]
+
+function FLink({ to, children, className = '' }: { to: string; children: string; className?: string }) {
+  const cls = `text-[15px] text-slate-600 hover:text-blue-600 hover:underline underline-offset-4 ${className}`
+  return to.startsWith('http') || to.startsWith('mailto:') || to.startsWith('tel:')
+    ? <a href={to} className={cls} target={to.startsWith('http') ? '_blank' : undefined} rel={to.startsWith('http') ? 'noopener noreferrer' : undefined}>{children}</a>
+    : <Link to={to} className={cls}>{children}</Link>
+}
+
+/** Directory-style footer, as on zapier.com. */
 export default function Footer() {
   return (
-    <SiteFooter
-      wordmark={['Kada', 'Verse']}
-      logoSrc="/favicon.png"
-      blurb="KadaVerse builds software that runs businesses — websites, mobile apps, SaaS platforms and custom systems — and the Kada product ecosystem."
-      sections={SECTIONS}
-      appStoreUrl={CUSTOMER_APP_URLS.appStore}
-      playStoreUrl={CUSTOMER_APP_URLS.playStore}
-      builtFor="local businesses & the people they serve"
-    />
+    <footer className="border-t border-[var(--kv-line)] bg-[var(--kv-canvas)]">
+      <div className="mx-auto w-full max-w-[1200px] px-5 pb-10 pt-16 sm:px-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
+          {COLUMNS.map((c) => (
+            <div key={c.title} className="min-w-0">
+              <p className="text-[15px] font-semibold text-[var(--kv-ink)]">{c.title}</p>
+              <ul className="mt-4 space-y-2.5">
+                {c.links.map((l) => <li key={l.label}><FLink to={l.to}>{l.label}</FLink></li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-14 flex flex-col gap-4 border-t border-[var(--kv-line)] pt-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px]">
+            <span className="text-slate-500">Talk to us</span>
+            <FLink to={`mailto:${CONTACT.email}`} className="font-semibold !text-[var(--kv-ink)]">{CONTACT.email}</FLink>
+            <FLink to={`tel:${CONTACT.phone.replace(/\s/g, '')}`} className="font-semibold !text-[var(--kv-ink)]">{CONTACT.phone}</FLink>
+            <FLink to={`https://wa.me/${CONTACT.whatsapp}`} className="font-semibold !text-[var(--kv-ink)]">WhatsApp</FLink>
+          </div>
+          <p className="text-sm text-slate-500">Kannur, Kerala 670001 · India</p>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <Logo size={28} />
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+            <span>© {new Date().getFullYear()} The Kada Digital Ventures Pvt Ltd</span>
+            {LEGAL.map((l) => <Link key={l.to} to={l.to} className="hover:text-blue-600">{l.label}</Link>)}
+          </div>
+        </div>
+      </div>
+    </footer>
   )
 }
