@@ -1,54 +1,48 @@
 import { Code2, Smartphone, PenTool, Server, Briefcase, TrendingUp, Globe, BookText, Heart, Target, Clock } from 'lucide-react'
 import Seo from '../components/Seo'
-import { PageHeader, ShadeStack } from '../components/kada-kit'
-import type { HeaderOffset, Tile } from '../components/kada-kit'
+import { PageIntro, Band, SectionHead, CardGrid, DarkCTA } from '../components/site/kit'
 
-// The fixed site header is 72px tall at every width.
-const HEADER_OFFSET: HeaderOffset = () => 72
-
-const ROLES: Tile[] = [
-  { id: 'fullstack', title: 'Full-stack engineer', desc: 'Kannur / Remote', icon: <Code2 />, to: '/contact' },
-  { id: 'mobile', title: 'Mobile engineer', desc: 'Remote', icon: <Smartphone />, to: '/contact' },
-  { id: 'design', title: 'Product designer', desc: 'Kannur / Remote', icon: <PenTool />, to: '/contact' },
-  { id: 'backend', title: 'Platform engineer', desc: 'Remote', icon: <Server />, to: '/contact' },
-  { id: 'solutions', title: 'Solutions consultant', desc: 'Kerala / Remote', icon: <Briefcase />, to: '/contact' },
-  { id: 'growth', title: 'Growth & partnerships', desc: 'Kerala', icon: <TrendingUp />, to: '/contact' },
+const ROLES = [
+  { title: 'Full-stack engineer', meta: 'Kannur / Remote', icon: <Code2 />, cta: 'Get in touch', to: '/contact' },
+  { title: 'Mobile engineer', meta: 'Remote', icon: <Smartphone />, cta: 'Get in touch', to: '/contact' },
+  { title: 'Product designer', meta: 'Kannur / Remote', icon: <PenTool />, cta: 'Get in touch', to: '/contact' },
+  { title: 'Platform engineer', meta: 'Remote', icon: <Server />, cta: 'Get in touch', to: '/contact' },
+  { title: 'Solutions consultant', meta: 'Kerala / Remote', icon: <Briefcase />, cta: 'Get in touch', to: '/contact' },
+  { title: 'Growth & partnerships', meta: 'Kerala', icon: <TrendingUp />, cta: 'Get in touch', to: '/contact' },
 ]
 
-const PERKS: Tile[] = [
-  { id: 'remote', title: 'Remote-first', icon: <Globe /> },
-  { id: 'equity', title: 'Equity', icon: <TrendingUp /> },
-  { id: 'learning', title: 'Learning budget', icon: <BookText /> },
-  { id: 'health', title: 'Health cover', icon: <Heart /> },
-  { id: 'ownership', title: 'Real ownership', icon: <Target /> },
-  { id: 'hours', title: 'Flexible hours', icon: <Clock /> },
+const PERKS = [
+  { title: 'Remote-first', icon: <Globe /> },
+  { title: 'Equity', icon: <TrendingUp /> },
+  { title: 'Learning budget', icon: <BookText /> },
+  { title: 'Health cover', icon: <Heart /> },
+  { title: 'Real ownership', icon: <Target /> },
+  { title: 'Flexible hours', icon: <Clock /> },
 ]
 
 export default function Careers() {
   return (
-    <main className="bg-slate-50" style={{ overflowX: 'clip' }}>
+    <main className="bg-[var(--kv-canvas)]">
       <Seo
         title="Careers"
         description="Open roles at KadaVerse — engineering, design and operations, based in Kannur, Kerala."
         path="/careers"
       />
-      <PageHeader
+      <PageIntro
         eyebrow="Careers"
-        title={<>Build software that{' '} <span className="gradient-text-blue">actually ships.</span></>}
-        subtitle={<>We’re a small, senior team with an outsized mission — building products and custom software that help businesses run better.</>}
-        topOffset={72}
+        title={<>Build software that <span className="text-blue-600">actually ships</span></>}
+        subtitle="We’re a small, senior team building products and custom software that help businesses run better."
+        actions={[{ label: 'Get in touch', to: '/contact' }]}
       />
-      <ShadeStack headerOffset={HEADER_OFFSET} cards={[
-        { title: 'Open', highlight: 'roles', subtitle: 'Tap a role to get in touch', tiles: ROLES },
-        { title: 'Why work', highlight: 'with us', tiles: PERKS },
-        {
-          title: "Don't see your",
-          highlight: 'role?',
-          actions: [
-            { label: 'Get in touch', to: '/contact', primary: true },
-          ],
-        },
-      ]} />
+      <Band tone="canvas">
+        <SectionHead eyebrow="Open roles" title="Join the team" subtitle="Tap a role to get in touch." />
+        <CardGrid cards={ROLES} />
+      </Band>
+      <Band tone="band">
+        <SectionHead eyebrow="Why work with us" title="What you get here" />
+        <CardGrid cards={PERKS} />
+      </Band>
+      <DarkCTA title={<>Don’t see your role? <span className="text-blue-400">Write to us.</span></>} primary={{ label: 'Get in touch', to: '/contact' }} secondary={{ label: 'About us', to: '/about' }} />
     </main>
   )
 }

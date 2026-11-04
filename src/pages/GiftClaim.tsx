@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Seo from '../components/Seo'
-import { PageHeader } from '../components/kada-kit'
+import { PageIntro as PageHeader } from '../components/site/kit'
 
 const APP_STORE = 'https://apps.apple.com/in/app/the-kada/id6754100479'
 const PLAY_STORE = 'https://play.google.com/store/apps/details?id=com.thekada.app'

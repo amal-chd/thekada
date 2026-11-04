@@ -22,7 +22,7 @@ export default function Logo({
       aria-label="KadaVerse — home"
     >
       <img
-        src="/favicon.png"
+        src="/kadaverse-mark.svg"
         alt="KadaVerse Logo"
         width={size}
         height={size}
@@ -37,8 +37,8 @@ export default function Logo({
             style={{
               fontFamily: 'inherit',
               fontSize: size * 0.52,
-              fontWeight: 900,
-              fontStyle: 'italic',
+              fontWeight: 800,
+              fontStyle: 'normal',
               color: primaryText,
               letterSpacing: '-0.03em',
             }}
@@ -49,8 +49,8 @@ export default function Logo({
             style={{
               fontFamily: 'inherit',
               fontSize: size * 0.52,
-              fontWeight: 900,
-              fontStyle: 'italic',
+              fontWeight: 800,
+              fontStyle: 'normal',
               color: accentColor,
               letterSpacing: '-0.03em',
             }}

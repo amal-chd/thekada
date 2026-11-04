@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -80,7 +80,13 @@ export default function App() {
   )
 }
 
+// Partner onboarding pages are task pages linked from "Partner with The Kada": no footer.
+const NO_FOOTER_ROUTES = ['/products/kada-mess']
+
 function AppContent() {
+  const { pathname } = useLocation()
+  const hideFooter = NO_FOOTER_ROUTES.includes(pathname.replace(/\/+$/, ''))
+
   return (
     <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
       <a href="#main" className="skip-link">Skip to content</a>
@@ -154,7 +160,7 @@ function AppContent() {
         </Routes>
       </Suspense>
       </div>
-      <Footer />
+      {!hideFooter && <Footer />}
       <ScrollToTopButton />
     </div>
   )

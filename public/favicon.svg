@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="KadaVerse">
+  <defs>
+    <linearGradient id="kvTile" x1="64" y1="40" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="0.55" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <radialGradient id="kvGlow" cx="150" cy="110" r="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#kvTile)"/>
+  <rect width="512" height="512" rx="116" fill="url(#kvGlow)"/>
+  <!-- orbit, far side (behind the V) -->
+  <path d="M 67.6 340.0 A 196 64 -16 0 1 444.4 232.0" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- the V of Verse -->
+  <path d="M 158 150 L 256 366 L 354 150" stroke="#FFFFFF" stroke-width="60" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- orbit, near side (in front of the V) -->
+  <path d="M 67.6 340.0 A 196 64 -16 0 0 444.4 232.0" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- the planet -->
+  <circle cx="434.5" cy="218.7" r="27" fill="#93C5FD" stroke="#FFFFFF" stroke-width="9"/>
+</svg>

@@ -4,7 +4,7 @@ import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { ShieldCheck, ArrowRight } from 'lucide-react'
 import Seo from '../components/Seo'
-import { PageHeader } from "../components/kada-kit";
+import { PageIntro as PageHeader } from "../components/site/kit"
 
 const legalContent: Record<string, { title: string; updated: string; sections: { heading: string; body: string | React.ReactNode }[] }> = {
   privacy: {

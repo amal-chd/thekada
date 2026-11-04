@@ -5,7 +5,7 @@ import Container from '../components/ui/Container'
 import { SpotlightCard } from '../components/ui'
 import { submitPublicForm } from '../lib/publicForms'
 import Seo from '../components/Seo'
-import { PageHeader } from "../components/kada-kit";
+import { PageIntro as PageHeader } from "../components/site/kit"
 
 const APPS_LIST = [
   { id: 'the-kada', name: 'The Kada App' },
