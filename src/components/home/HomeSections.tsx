@@ -110,7 +110,7 @@ export function Hero() {
       <Container className="relative text-center">
         <a
           href="#work-showcase"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-3 py-1.5 text-[13px] font-medium text-slate-600 shadow-sm hover:border-blue-300"
+          className="hidden sm:inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-3 py-1.5 text-[13px] font-medium text-slate-600 shadow-sm hover:border-blue-300"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -118,7 +118,7 @@ export function Hero() {
           </span>
           India-based software studio · remote projects welcome worldwide
         </a>
-        <h1 className="mx-auto mt-5 max-w-4xl text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--kv-ink)] sm:text-[3.2rem] lg:text-[4rem] text-balance break-words">
+        <h1 className="mx-auto mt-2 sm:mt-5 max-w-4xl text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--kv-ink)] sm:text-[3.2rem] lg:text-[4rem] text-balance break-words">
           Software your business <span className="text-blue-600">runs on</span>, built and run by us
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
