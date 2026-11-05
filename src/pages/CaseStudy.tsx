@@ -116,9 +116,9 @@ export default function CaseStudy() {
 
       {others.length > 0 && (
         <Band tone="canvas">
-          <div className="mb-8 flex items-end justify-between gap-4">
+          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <SerifTitle>More of our work</SerifTitle>
-            <Link to="/work" className="hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-[var(--kv-ink)] hover:text-blue-600 sm:inline-flex">
+            <Link to="/work" className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-blue-600 hover:underline sm:text-[var(--kv-ink)] sm:hover:text-blue-600">
               All work <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

@@ -63,9 +63,9 @@ export function Eyebrow({ children, block = false, dark = false, className = '' 
 
 /** Sans display heading, centred or left; `highlight` renders in Kada blue. */
 export function Display({ children, as: Tag = 'h2', className = '', dark = false }: { children: ReactNode; as?: 'h1' | 'h2'; className?: string; dark?: boolean }) {
-  const size = Tag === 'h1' ? 'text-[2.6rem] sm:text-6xl lg:text-[4rem]' : 'text-3xl sm:text-[2.75rem]'
+  const size = Tag === 'h1' ? 'text-[2.2rem] sm:text-5xl lg:text-[4rem]' : 'text-2xl sm:text-3xl lg:text-[2.75rem]'
   return (
-    <Tag className={`${size} font-semibold leading-[1.05] tracking-[-0.035em] text-balance ${dark ? 'text-white' : 'text-[var(--kv-ink)]'} ${className}`}>
+    <Tag className={`${size} font-semibold leading-[1.08] tracking-[-0.035em] text-balance break-words ${dark ? 'text-white' : 'text-[var(--kv-ink)]'} ${className}`}>
       {children}
     </Tag>
   )
@@ -76,7 +76,7 @@ export const Hl = ({ children }: { children: ReactNode }) => <span className="te
 /** Serif section title, Zapier-style. */
 export function SerifTitle({ children, className = '', dark = false, as: Tag = 'h2' }: { children: ReactNode; className?: string; dark?: boolean; as?: 'h2' | 'h3' }) {
   return (
-    <Tag className={`font-serif-display text-[2rem] sm:text-[2.6rem] leading-[1.08] text-balance ${dark ? 'text-white' : 'text-[var(--kv-ink)]'} ${className}`}>
+    <Tag className={`font-serif-display text-[1.85rem] sm:text-[2.4rem] lg:text-[2.6rem] leading-[1.1] text-balance break-words ${dark ? 'text-white' : 'text-[var(--kv-ink)]'} ${className}`}>
       {children}
     </Tag>
   )
@@ -96,8 +96,8 @@ const BTN: Record<BtnVariant, string> = {
 export function Btn({
   to, children, variant = 'primary', size = 'md', block = false, className = '',
 }: { to: string; children: ReactNode; variant?: BtnVariant; size?: 'sm' | 'md' | 'lg'; block?: boolean; className?: string }) {
-  const sz = size === 'lg' ? 'px-6 py-3.5 text-base' : size === 'sm' ? 'px-3.5 py-2 text-sm' : 'px-5 py-3 text-[15px]'
-  const cls = `inline-flex items-center justify-center gap-2 rounded-[6px] font-semibold transition-colors ${sz} ${BTN[variant]} ${block ? 'w-full' : ''} ${className}`
+  const sz = size === 'lg' ? 'min-h-[48px] px-6 py-3.5 text-base' : size === 'sm' ? 'min-h-[40px] px-3.5 py-2 text-sm' : 'min-h-[44px] px-5 py-2.5 text-[15px]'
+  const cls = `inline-flex items-center justify-center gap-2 rounded-[6px] font-semibold transition-colors touch-manipulation active:scale-[0.98] ${sz} ${BTN[variant]} ${block ? 'w-full' : ''} ${className}`
   if (isExternal(to)) {
     const ext = to.startsWith('http')
     return <a href={to} className={cls} target={ext ? '_blank' : undefined} rel={ext ? 'noopener noreferrer' : undefined}>{children}</a>
@@ -261,7 +261,7 @@ export function PageIntro({
             <Eyebrow className="[&>svg]:h-3.5 [&>svg]:w-3.5 [&_img]:h-4 [&_img]:w-4">{eyebrow}</Eyebrow>
           </div>
         )}
-        <h1 className="mx-auto mt-5 max-w-4xl text-[2.4rem] font-semibold leading-[1.06] tracking-[-0.035em] text-[var(--kv-ink)] sm:text-[3.4rem] text-balance">
+        <h1 className="mx-auto mt-5 max-w-4xl text-[2rem] sm:text-[2.6rem] lg:text-[3.4rem] font-semibold leading-[1.08] tracking-[-0.035em] text-[var(--kv-ink)] text-balance break-words">
           {title}
         </h1>
         {subtitle && <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg text-pretty">{subtitle}</p>}

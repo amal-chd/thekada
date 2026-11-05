@@ -8,7 +8,7 @@ export default function StartProject() {
     <main className="bg-[var(--kv-canvas)]">
       <Seo
         title="Start a Project"
-        description="Tell us about your product, timeline and budget. We will come back with a plan, a timeline and an estimate."
+        description="Tell KadaVerse what you want to build, your timeline and budget in your currency. Remote project enquiries are welcome worldwide."
         path="/start-project"
       />
       <PageIntro

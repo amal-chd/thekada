@@ -1,13 +1,14 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, SlidersHorizontal } from 'lucide-react'
 import {
   Container, Eyebrow, SerifTitle, Btn, TextLink, MediaPanel, BrowserFrame, PhoneFrame, FadeIn,
 } from '../site/kit'
-import { PRODUCTS, PROCESS, SHOTS } from '../../data/agency'
+import { PROCESS, SHOTS } from '../../data/agency'
 import { ProductShot, SiteShot, WebShot } from '../site/media'
 import { caseStudies } from '../../data/caseStudies'
+import { WORK, type WorkCategory, type WorkItem } from '../../data/work'
 
 /* ─────────────── Hero ─────────────── */
 
@@ -116,13 +117,13 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
-          Software studio in Kannur, Kerala · apps live on the App Store & Google Play
+          India-based software studio · remote projects welcome worldwide
         </a>
-        <h1 className="mx-auto mt-5 max-w-4xl text-[2.5rem] font-semibold leading-[1.03] tracking-[-0.04em] text-[var(--kv-ink)] sm:text-[3.5rem] lg:text-[4rem] text-balance">
+        <h1 className="mx-auto mt-5 max-w-4xl text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--kv-ink)] sm:text-[3.2rem] lg:text-[4rem] text-balance break-words">
           Software your business <span className="text-blue-600">runs on</span>, built and run by us
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-          Web apps, mobile apps, business systems and websites — from the team behind the Kada platform, with a fixed quote before you pay.
+          Web apps, mobile apps, business systems and websites — built by the team behind the Kada platform, open to remote projects worldwide, with a fixed quote before you pay.
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Btn to="/start-project" variant="primary" size="lg">Start a project</Btn>
@@ -191,29 +192,366 @@ export function Hero() {
   )
 }
 
-/* ─────────────── Product marquee ─────────────── */
+/* ─────────────── Products and works we built and run ─────────────── */
+
+const SHOWCASE_TABS: { id: 'All' | WorkCategory; label: string }[] = [
+  { id: 'All', label: 'All systems' },
+  { id: 'Client software', label: 'Client software' },
+  { id: 'Kada platform', label: 'Kada platform' },
+  { id: 'Products', label: 'Products & SaaS' },
+  { id: 'Websites', label: 'Websites' },
+]
+
+const FEATURED_SLUGS = [
+  'task-pilot',
+  'the-kada',
+  'kada-dine',
+  'raman-caterings',
+  'kada-stay',
+  'sellrapp',
+  'nexstep-europe',
+  'inspiro-26',
+  'whichott',
+]
+
+function getStatusBadge(item: WorkItem) {
+  if (item.slug === 'the-kada' || item.slug === 'kada-dine') return 'App Store & Play'
+  if (item.slug === 'kada-delivery') return 'Google Play'
+  if (item.slug === 'kada-mess') return 'Launching in app'
+  if (item.slug === 'kada-ledger') return 'Early access'
+  if (item.category === 'Client software') return 'Client project'
+  if (item.category === 'Products') return 'Product build'
+  if (item.category === 'Websites') return 'Website project'
+  return 'Kada product'
+}
+
+function ShowcaseCard({ item }: { item: WorkItem }) {
+  const hasCase = item.slug in caseStudies
+  const caseStudyUrl = hasCase ? `/work/${item.slug}` : undefined
+  const primaryUrl = caseStudyUrl ?? item.productPage ?? item.liveUrl
+  const isExternal = !caseStudyUrl && !item.productPage && !!item.liveUrl
+  const status = getStatusBadge(item)
+  const isUpcoming = item.slug === 'kada-mess' || item.slug === 'kada-ledger'
+
+  return (
+    <article className="group flex flex-col justify-between rounded-[14px] border border-[var(--kv-line)] bg-white p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-md sm:p-6">
+      <div>
+        {/* Card Header */}
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            {item.logo ? (
+              <img src={item.logo} alt="" className="h-6 w-6 shrink-0 rounded-[6px] object-contain p-0.5 bg-slate-50 border border-slate-200/60" />
+            ) : (
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[6px] bg-blue-50 text-[10px] font-bold text-blue-700 border border-blue-200/60">
+                {item.name.slice(0, 2).toUpperCase()}
+              </span>
+            )}
+            <span className="truncate text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">
+              {item.client ? `${item.client} · ` : ''}{item.category}
+            </span>
+          </div>
+          <span
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${
+              isUpcoming
+                ? 'bg-amber-50 text-amber-800 border-amber-200/60'
+                : 'bg-emerald-50 text-emerald-800 border-emerald-200/60'
+            }`}
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                isUpcoming ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'
+              }`}
+            />
+            {status}
+          </span>
+        </div>
+
+        {/* Visual Preview */}
+        <div className="mb-5 overflow-hidden rounded-[10px] border border-[var(--kv-line)] bg-slate-50 shadow-inner">
+          <div className="flex items-center justify-between border-b border-[var(--kv-line)] bg-slate-100/80 px-3 py-1.5">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-rose-400/80" />
+              <span className="h-2 w-2 rounded-full bg-amber-400/80" />
+              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+            </div>
+            <span className="truncate max-w-[200px] font-mono text-[10px] text-slate-500">
+              {item.displayUrl ?? (item.liveUrl ? item.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : `${item.slug}.thekada.in`)}
+            </span>
+            <span className="w-8" />
+          </div>
+          {item.image ? (
+            <div className="relative aspect-[16/10] overflow-hidden bg-slate-200">
+              <img
+                src={item.image}
+                alt={`${item.name} screenshot`}
+                loading="lazy"
+                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+          ) : (
+            <div className="flex aspect-[16/10] flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-blue-50/70 via-white to-slate-100/70 p-6 text-center">
+              {item.logo ? (
+                <img src={item.logo} alt="" className="h-12 w-12 rounded-xl object-contain drop-shadow" />
+              ) : (
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-base font-bold text-white shadow-sm">
+                  {item.name.slice(0, 2).toUpperCase()}
+                </span>
+              )}
+              <p className="text-xs font-semibold text-slate-700">{item.name}</p>
+              <p className="text-[11px] text-slate-500">{item.type}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div>
+          <h3 className="text-xl font-bold tracking-tight text-[var(--kv-ink)] group-hover:text-blue-600 transition-colors">
+            {primaryUrl && !isExternal ? (
+              <Link to={primaryUrl}>{item.name}</Link>
+            ) : primaryUrl ? (
+              <a href={primaryUrl} target="_blank" rel="noopener noreferrer">{item.name}</a>
+            ) : (
+              item.name
+            )}
+          </h3>
+          <p className="mt-1 text-xs font-medium text-blue-600">
+            {item.industry} · {item.type}
+          </p>
+          <p className="mt-2.5 text-[14px] leading-relaxed text-slate-600 line-clamp-3">
+            {item.description}
+          </p>
+          <div className="mt-3.5 flex flex-wrap gap-1.5">
+            {item.stack.map((tech) => (
+              <span key={tech} className="rounded-[4px] border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Links */}
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--kv-line)] pt-3 text-xs font-semibold">
+        <div className="flex items-center gap-3">
+          {caseStudyUrl && (
+            <Link to={caseStudyUrl} className="inline-flex min-h-[38px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
+              Case study <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+          {item.productPage && (
+            <Link to={item.productPage} className="inline-flex min-h-[38px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
+              Product page <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+        </div>
+        {item.liveUrl && (
+          <a
+            href={item.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[38px] items-center gap-1 text-slate-500 hover:text-blue-600 touch-manipulation"
+          >
+            Live site <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+        )}
+      </div>
+    </article>
+  )
+}
 
 export function ProductMarquee() {
-  const row = [...PRODUCTS, ...PRODUCTS]
+  const [filter, setFilter] = useState<'All' | WorkCategory>('All')
+  const [showAll, setShowAll] = useState(false)
+
+  const tickerRow = [...WORK, ...WORK]
+
+  const itemsForCategory = filter === 'All' ? WORK : WORK.filter((w) => w.category === filter)
+  const displayedItems = filter === 'All' && !showAll
+    ? WORK.filter((w) => FEATURED_SLUGS.includes(w.slug))
+    : itemsForCategory
+
   return (
-    <section className="border-t border-[var(--kv-line)] bg-[var(--kv-canvas)] py-12">
+    <section id="products-and-works" className="border-t border-[var(--kv-line)] bg-[var(--kv-canvas)] py-16 sm:py-24">
       <Container>
-        <Eyebrow className="justify-center">Products we built and run</Eyebrow>
+        <FadeIn className="text-center">
+          <div className="flex items-center justify-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+          <Eyebrow className="justify-center">Selected work</Eyebrow>
+          </div>
+          <SerifTitle className="mt-4 max-w-3xl mx-auto text-3xl sm:text-[2.6rem] text-balance">
+            Client projects and <span className="text-blue-600">products we build and run</span>
+          </SerifTitle>
+          <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-slate-700">
+            We build and run our own food ordering, restaurant POS, stays and delivery products. On client work, the same team takes projects from discovery through launch and support.
+          </p>
+        </FadeIn>
       </Container>
-      <div className="relative mt-7 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_10%,#000_90%,transparent)]">
-        <ul className="kv-marquee flex w-max items-center gap-14">
-          {row.map((p, i) => (
-            <li key={`${p.name}-${i}`} aria-hidden={i >= PRODUCTS.length} className="flex shrink-0 items-center gap-3 text-slate-500">
-              {p.logo ? (
-                <img src={p.logo} alt="" className="h-8 w-8 rounded-[8px] object-contain opacity-80 grayscale" />
-              ) : (
-                <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-slate-300 text-[11px] font-bold text-white">KM</span>
-              )}
-              <span className="text-lg font-semibold tracking-tight">{p.name}</span>
-            </li>
-          ))}
+
+      {/* Continuous marquee of selected work and products */}
+      <div className="relative mt-10 overflow-hidden border-y border-[var(--kv-line)] bg-white/60 py-3.5 [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+        <ul className="kv-marquee flex w-max items-center gap-4" style={{ animationDuration: '65s' }}>
+          {tickerRow.map((w, i) => {
+            const isUp = w.slug === 'kada-mess' || w.slug === 'kada-ledger'
+            return (
+              <li key={`${w.slug}-${i}`} aria-hidden={i >= WORK.length} className="flex shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFilter(w.category)
+                    setShowAll(true)
+                  }}
+                  className="flex items-center gap-2.5 rounded-full border border-[var(--kv-line)] bg-white px-3.5 py-1.5 text-left text-xs transition-colors hover:border-blue-400 hover:bg-blue-50/40"
+                >
+                  {w.logo ? (
+                    <img src={w.logo} alt="" className="h-4 w-4 shrink-0 rounded-[3px] object-contain" />
+                  ) : (
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] bg-slate-200 text-[9px] font-bold text-slate-700">
+                      {w.name.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                  <span className="font-semibold text-[var(--kv-ink)]">{w.name}</span>
+                  <span className="text-slate-400">·</span>
+                  <span className="text-slate-500">{w.client ?? w.category}</span>
+                  <span className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${isUp ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${isUp ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'}`} />
+                    {isUp ? 'Upcoming' : 'Live'}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
         </ul>
       </div>
+
+      <Container className="mt-12 sm:mt-16">
+        {/* Interactive Filter Bar */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* Category Tabs */}
+          <div className="flex flex-wrap items-center gap-2">
+            {SHOWCASE_TABS.map((tab) => {
+              const active = filter === tab.id
+              const count = tab.id === 'All' ? WORK.length : WORK.filter((w) => w.category === tab.id).length
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setFilter(tab.id)}
+                  aria-pressed={active}
+                  className={`inline-flex min-h-[40px] items-center gap-2 rounded-[8px] px-3.5 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
+                    active
+                      ? 'border border-[var(--kv-ink)] bg-[var(--kv-ink)] text-white shadow-xs'
+                      : 'border border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-slate-400 hover:bg-slate-50'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                      active ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* All On / View Toggle */}
+          {filter === 'All' && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowAll(!showAll)}
+                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-[8px] border border-[var(--kv-line)] bg-white px-3.5 py-2 text-xs font-semibold text-[var(--kv-ink)] hover:border-blue-500 hover:text-blue-600 transition-colors touch-manipulation active:scale-[0.98]"
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5" />
+                  <span>{showAll ? `All ${WORK.length} items shown (Click for featured)` : `Show all ${WORK.length} items`}</span>
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Status Line */}
+        <div className="mt-4 flex items-center justify-between border-t border-[var(--kv-line)] pt-3 text-xs text-slate-500">
+          <p>
+            Showing <strong className="text-[var(--kv-ink)]">{displayedItems.length}</strong> {filter === 'All' ? 'selected work items' : `in ${filter}`}
+          </p>
+          <span className="hidden sm:inline-flex items-center gap-1.5 font-medium text-emerald-700">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            Client work and Kada products, shown separately
+          </span>
+        </div>
+
+        {/* Card Grid */}
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {displayedItems.map((item) => (
+            <ShowcaseCard key={item.slug} item={item} />
+          ))}
+        </div>
+
+        {/* Expand / Collapse Button when in All filter */}
+        {filter === 'All' && (
+          <div className="mt-10 flex justify-center">
+            {showAll ? (
+              <button
+                type="button"
+                onClick={() => setShowAll(false)}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-5 py-2.5 text-xs font-semibold text-slate-600 shadow-xs hover:border-slate-400 hover:bg-slate-50 transition-all"
+              >
+                <span>Collapse to 9 featured systems</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowAll(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-[var(--kv-ink)] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all"
+              >
+                <span>Show all {WORK.length} projects and products</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Bottom Trust & Capability Strip */}
+        <div className="mt-16 sm:mt-20 rounded-[14px] border border-[var(--kv-line)] bg-white p-6 sm:p-10 shadow-xs">
+          <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+            <div className="border-[var(--kv-line)] pr-4 lg:border-r lg:pr-6">
+              <p className="font-serif-display text-3xl font-bold text-blue-600 sm:text-4xl">{WORK.length}</p>
+              <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-[var(--kv-ink)]">Portfolio items</p>
+              <p className="mt-1 text-xs text-slate-600">Client work, our products and websites</p>
+            </div>
+            <div className="border-[var(--kv-line)] pr-4 lg:border-r lg:px-6">
+              <p className="font-serif-display text-3xl font-bold text-blue-600 sm:text-4xl">{WORK.filter((item) => item.category === 'Kada platform').length}</p>
+              <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-[var(--kv-ink)]">Kada product builds</p>
+              <p className="mt-1 text-xs text-slate-600">Ordering, POS, stays, delivery, meal plans and ledger</p>
+            </div>
+            <div className="border-[var(--kv-line)] pr-4 lg:border-r lg:px-6">
+              <p className="font-serif-display text-3xl font-bold text-blue-600 sm:text-4xl">{WORK.filter((item) => item.category === 'Client software').length}</p>
+              <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-[var(--kv-ink)]">Client case studies</p>
+              <p className="mt-1 text-xs text-slate-600">Construction, catering, recruitment and events</p>
+            </div>
+            <div className="lg:pl-6">
+              <p className="font-serif-display text-2xl font-bold text-blue-600 sm:text-3xl">Yours</p>
+              <p className="mt-1.5 text-xs font-bold uppercase tracking-wider text-[var(--kv-ink)]">Code ownership</p>
+              <p className="mt-1 text-xs text-slate-600">Source, design files and handover are covered in the written scope</p>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-[var(--kv-line)] pt-6 sm:flex-row">
+            <p className="text-sm font-medium text-slate-700 text-center sm:text-left">
+              Have an idea for a custom web system, mobile app, or SaaS product?
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Btn to="/work" variant="outline">Browse all case studies</Btn>
+              <Btn to="/start-project" variant="dark">Start your project with us</Btn>
+            </div>
+          </div>
+        </div>
+      </Container>
     </section>
   )
 }
@@ -243,13 +581,13 @@ export function ProcessSlider() {
         </FadeIn>
 
         <div className="mt-10 flex items-center gap-4">
-          <button type="button" aria-label="Previous step" onClick={() => setI((i - 1 + n) % n)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--kv-line)] text-slate-500 hover:border-[var(--kv-ink)] hover:text-[var(--kv-ink)]">
+          <button type="button" aria-label="Previous step" onClick={() => setI((i - 1 + n) % n)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--kv-line)] text-slate-500 hover:border-[var(--kv-ink)] hover:text-[var(--kv-ink)] active:bg-slate-100 transition-colors sm:h-9 sm:w-9">
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div className="relative h-1.5 flex-1 rounded-full bg-slate-200">
             <motion.div className="absolute inset-y-0 left-0 rounded-full bg-blue-600" animate={{ width: `${((i + 1) / n) * 100}%` }} transition={{ duration: 0.35 }} />
           </div>
-          <button type="button" aria-label="Next step" onClick={() => setI((i + 1) % n)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--kv-line)] text-slate-500 hover:border-[var(--kv-ink)] hover:text-[var(--kv-ink)]">
+          <button type="button" aria-label="Next step" onClick={() => setI((i + 1) % n)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--kv-line)] text-slate-500 hover:border-[var(--kv-ink)] hover:text-[var(--kv-ink)] active:bg-slate-100 transition-colors sm:h-9 sm:w-9">
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
@@ -381,20 +719,22 @@ export function CaseCarousel() {
         </AnimatePresence>
 
         <div className="mt-6 flex items-center justify-between gap-4">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-1">
             {CASES.map((x, k) => (
               <button
                 key={x.slug}
                 type="button"
                 aria-label={`Show ${caseStudies[x.slug]?.name}`}
                 onClick={() => setI(k)}
-                className={`h-2 rounded-full transition-all ${k === i ? 'w-8 bg-blue-600' : 'w-2 bg-slate-300 hover:bg-slate-400'}`}
-              />
+                className="flex h-11 items-center px-1.5 touch-manipulation"
+              >
+                <span className={`h-2 rounded-full transition-all ${k === i ? 'w-8 bg-blue-600' : 'w-2 bg-slate-300 hover:bg-slate-400'}`} />
+              </button>
             ))}
           </div>
           <div className="flex gap-2">
-            <button type="button" aria-label="Previous project" onClick={() => setI((i - 1 + CASES.length) % CASES.length)} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:text-[var(--kv-ink)]"><ArrowLeft className="h-5 w-5" /></button>
-            <button type="button" aria-label="Next project" onClick={() => setI((i + 1) % CASES.length)} className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--kv-ink)] hover:text-blue-600"><ArrowRight className="h-5 w-5" /></button>
+            <button type="button" aria-label="Previous project" onClick={() => setI((i - 1 + CASES.length) % CASES.length)} className="flex h-11 w-11 items-center justify-center rounded-full text-slate-500 hover:text-[var(--kv-ink)] active:bg-slate-200 transition-colors"><ArrowLeft className="h-5 w-5" /></button>
+            <button type="button" aria-label="Next project" onClick={() => setI((i + 1) % CASES.length)} className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--kv-ink)] hover:text-blue-600 active:bg-slate-200 transition-colors"><ArrowRight className="h-5 w-5" /></button>
           </div>
         </div>
 

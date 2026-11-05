@@ -17,7 +17,7 @@ export default function Services() {
     <main className="bg-[var(--kv-canvas)]">
       <Seo
         title="Software & Digital Marketing Services"
-        description="Web apps, mobile apps, SaaS platforms, custom business software, digital marketing & SEO, AI automation, cloud and DevOps — built and supported by one team in Kerala."
+        description="Web apps, mobile apps, SaaS platforms, custom business software, digital marketing, AI automation and cloud engineering. Remote projects welcome worldwide."
         path="/services"
       />
       <PageIntro

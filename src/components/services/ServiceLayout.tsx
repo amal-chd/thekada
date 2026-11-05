@@ -76,7 +76,7 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
             description: seoDescription,
             serviceType: config.eyebrowLabel,
             provider: { '@type': 'Organization', name: 'KadaVerse', url: SITE_URL },
-            areaServed: { '@type': 'Country', name: 'India' },
+            areaServed: { '@type': 'Place', name: 'Worldwide (remote projects)' },
           },
           faqLd(config.faqs),
           breadcrumbLd([

@@ -8,10 +8,9 @@ const NEEDS = [
   'Web application', 'Mobile app (iOS/Android)', 'SaaS platform', 'Digital marketing & growth',
   'Business software / ERP', 'CRM / HRM system', 'AI & automation', 'API & payments integration', 'Fix or modernise an existing app',
 ]
-const BUDGETS = ['₹2L – ₹5L', '₹5L – ₹15L', '₹15L – ₹30L', '₹30L – ₹50L', '₹50L+', 'Not sure yet']
 const TIMELINES = ['As soon as possible', '1–2 months', '3–6 months', 'Flexible / not sure']
 
-const INPUT = 'w-full rounded-[6px] border border-[var(--kv-line)] bg-white px-3.5 py-3 text-[15px] text-[var(--kv-ink)] placeholder:text-slate-400 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15'
+const INPUT = 'w-full rounded-[6px] border border-[var(--kv-line)] bg-white px-3.5 py-3 text-base sm:text-[15px] text-[var(--kv-ink)] placeholder:text-slate-400 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 min-h-[48px]'
 
 function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; children: ReactNode }) {
   return (
@@ -24,7 +23,7 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; 
 
 /**
  * The one client intake form (Start a project + Contact). Sent to
- * `contact_requests`; staff work it from the admin panel and the Kada Verse app.
+ * `contact_requests`; Firestore allows public create and staff read for review.
  */
 export default function ProjectForm({ page }: { page: string }) {
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', needs: [] as string[], budget: '', timeline: '', description: '' })
@@ -40,7 +39,7 @@ export default function ProjectForm({ page }: { page: string }) {
     setError(null)
     if (!form.name.trim()) return setError('Please enter your name.')
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return setError('Please enter a valid email address.')
-    if (form.phone.replace(/\D/g, '').length < 10) return setError('Please add a phone or WhatsApp number so we can reach you.')
+    if (form.phone && form.phone.replace(/\D/g, '').length < 7) return setError('Please enter a valid phone or WhatsApp number, or leave it blank.')
     if (form.description.trim().length < 10) return setError('Tell us a little about the project (at least a sentence).')
     setBusy(true)
     try {
@@ -60,7 +59,7 @@ export default function ProjectForm({ page }: { page: string }) {
         <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600" />
         <p className="font-serif-display mt-5 text-3xl text-[var(--kv-ink)]">Thanks — we’ve got it.</p>
         <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-slate-600">
-          We reply within one working day with questions, a call slot or a first estimate. If it’s urgent, WhatsApp us on {CONTACT.phone}.
+          We reply within one working day with questions, a call slot or a first estimate. For international projects, we agree on call times that work across time zones.
         </p>
         <div className="mt-8 flex justify-center gap-3">
           <Btn to="/work" variant="dark">See our work</Btn>
@@ -81,7 +80,7 @@ export default function ProjectForm({ page }: { page: string }) {
         <Field label="Your name *" htmlFor="pf-name"><input id="pf-name" className={INPUT} value={form.name} onChange={set('name')} autoComplete="name" placeholder="Your full name" /></Field>
         <Field label="Company" htmlFor="pf-company"><input id="pf-company" className={INPUT} value={form.company} onChange={set('company')} autoComplete="organization" placeholder="Optional" /></Field>
         <Field label="Email *" htmlFor="pf-email"><input id="pf-email" type="email" className={INPUT} value={form.email} onChange={set('email')} autoComplete="email" placeholder="you@company.com" /></Field>
-        <Field label="Phone / WhatsApp *" htmlFor="pf-phone"><input id="pf-phone" type="tel" inputMode="tel" className={INPUT} value={form.phone} onChange={set('phone')} autoComplete="tel" placeholder="+91" /></Field>
+        <Field label="Phone / WhatsApp (optional)" htmlFor="pf-phone"><input id="pf-phone" type="tel" inputMode="tel" className={INPUT} value={form.phone} onChange={set('phone')} autoComplete="tel" placeholder="Include country code, if provided" /></Field>
       </div>
 
       <fieldset className="mt-6">
@@ -95,7 +94,7 @@ export default function ProjectForm({ page }: { page: string }) {
                 type="button"
                 onClick={() => toggle(n)}
                 aria-pressed={on}
-                className={`rounded-[6px] border px-3 py-2 text-sm transition-colors ${on ? 'border-blue-600 bg-blue-600 text-white' : 'border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-[var(--kv-ink)]'}`}
+                className={`min-h-[42px] rounded-[6px] border px-3.5 py-2 text-xs sm:text-sm font-medium transition-colors ${on ? 'border-blue-600 bg-blue-600 text-white' : 'border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-[var(--kv-ink)]'}`}
               >
                 {n}
               </button>
@@ -105,11 +104,8 @@ export default function ProjectForm({ page }: { page: string }) {
       </fieldset>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field label="Budget" htmlFor="pf-budget">
-          <select id="pf-budget" className={INPUT} value={form.budget} onChange={set('budget')}>
-            <option value="">Select a range</option>
-            {BUDGETS.map((b) => <option key={b}>{b}</option>)}
-          </select>
+        <Field label="Budget (your currency)" htmlFor="pf-budget">
+          <input id="pf-budget" type="text" maxLength={100} className={INPUT} value={form.budget} onChange={set('budget')} placeholder="e.g. USD 5,000 · GBP 4,000 · INR 5 lakh · Not sure" />
         </Field>
         <Field label="Timeline" htmlFor="pf-timeline">
           <select id="pf-timeline" className={INPUT} value={form.timeline} onChange={set('timeline')}>

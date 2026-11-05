@@ -1,6 +1,4 @@
-import { initializeApp, getApp, getApps, type FirebaseApp } from 'firebase/app'
 import { getAnalytics, isSupported as isAnalyticsSupported, type Analytics } from 'firebase/analytics'
-import { initializeAppCheck, ReCaptchaEnterpriseProvider, type AppCheck } from 'firebase/app-check'
 import { getAuth, browserLocalPersistence, setPersistence, type Auth } from 'firebase/auth'
 import {
   initializeFirestore,
@@ -13,35 +11,21 @@ import { getMessaging, isSupported as isMessagingSupported, type Messaging } fro
 import { getPerformance, type FirebasePerformance } from 'firebase/performance'
 import { getRemoteConfig, type RemoteConfig } from 'firebase/remote-config'
 import { getStorage, type FirebaseStorage } from 'firebase/storage'
+import { firebaseApp, firebaseConfig, firebaseProjectId, firebaseRegion, isFirebaseConfigured } from './firebaseApp'
+import { getAppCheckInstance } from './firebaseAppCheck'
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+export { firebaseApp, firebaseConfig, firebaseProjectId, firebaseRegion, isFirebaseConfigured }
+export { getAppCheckInstance }
+
+// Set up App Check when a Firebase-using page is loaded, before creating its
+// Auth/Firestore/Functions clients. The marketing-site entry stays Firebase-free.
+if (firebaseApp && typeof window !== 'undefined') {
+  try {
+    getAppCheckInstance()
+  } catch (error) {
+    console.warn('App Check could not be initialised.', error)
+  }
 }
-
-const requiredConfigKeys = [
-  firebaseConfig.apiKey,
-  firebaseConfig.authDomain,
-  firebaseConfig.projectId,
-  firebaseConfig.storageBucket,
-  firebaseConfig.messagingSenderId,
-  firebaseConfig.appId,
-]
-
-export const isFirebaseConfigured = requiredConfigKeys.every(Boolean)
-export const firebaseProjectId = firebaseConfig.projectId || null
-export const firebaseRegion = import.meta.env.VITE_FIREBASE_FUNCTIONS_REGION || 'asia-south1'
-
-export const firebaseApp: FirebaseApp | null = isFirebaseConfigured
-  ? getApps().length > 0
-    ? getApp()
-    : initializeApp(firebaseConfig)
-  : null
 
 export const auth: Auth | null = firebaseApp ? getAuth(firebaseApp) : null
 export const db: Firestore | null = firebaseApp
@@ -68,23 +52,6 @@ if (remoteConfig) {
     support_escalation_minutes: 30,
     finance_report_timezone: 'Asia/Kolkata',
   }
-}
-
-let appCheckInstance: AppCheck | null = null
-
-export function getAppCheckInstance(): AppCheck | null {
-  if (!firebaseApp || typeof window === 'undefined') return null
-  if (appCheckInstance) return appCheckInstance
-
-  const siteKey = import.meta.env.VITE_FIREBASE_APPCHECK_RECAPTCHA_ENTERPRISE_KEY
-  if (!siteKey) return null
-
-  appCheckInstance = initializeAppCheck(firebaseApp, {
-    provider: new ReCaptchaEnterpriseProvider(siteKey),
-    isTokenAutoRefreshEnabled: true,
-  })
-
-  return appCheckInstance
 }
 
 export async function getAnalyticsInstance(): Promise<Analytics | null> {

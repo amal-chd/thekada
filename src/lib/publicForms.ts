@@ -1,14 +1,10 @@
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { db, isFirebaseConfigured } from './firebase'
+import { isFirebaseConfigured } from './firebaseConfig'
 
 /**
  * Public intake collections written by the marketing-site forms.
  *
- * NOTE (checked against the live ruleset on 2026-11-03): there is no
- * `allow create` rule for `account_deletion_requests` in production, so this
- * write is rejected and the page falls back to the privacy@ email. It needs a
- * validated create rule (no public read) deployed before it can work.
- * Project enquiries do NOT use this — see submitProjectEnquiry below.
+ * Account-deletion requests have a validated public-create rule and no public
+ * read access. Project enquiries use their own validated collection rule.
  */
 export type IntakeCollection = 'account_deletion_requests'
 
@@ -31,18 +27,19 @@ export async function submitPublicForm(
 ): Promise<SubmitResult> {
   const id = referenceId(idPrefix)
 
-  if (!isFirebaseConfigured || !db) {
+  if (!isFirebaseConfigured) {
     await new Promise((r) => setTimeout(r, 900))
     return { ok: true, mode: 'demo', id }
   }
 
-  await addDoc(collection(db, name), {
+  const firestore = await import('./publicFirestore')
+  await firestore.addPublicRequest(name, {
     ...data,
     referenceId: id,
     status: 'new',
     source: 'website',
     userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
-    createdAt: serverTimestamp(),
+    createdAt: firestore.serverTime(),
   })
 
   return { ok: true, mode: 'live', id }
@@ -65,19 +62,18 @@ export type ProjectEnquiry = {
 }
 
 /**
- * Website project enquiries go to `contact_requests` — the collection the live
- * Firestore rules accept from the public — tagged `source: 'kadaverse-website'`.
- * The web admin panel (Growth › Website enquiries) and the Kada Verse app
- * (Clients › Enquiries) both work from these documents. The rule requires
- * name, email, phone, topic (≤40), message (5–2000), createdAtIso and source.
+ * Website project enquiries go to `contact_requests`, tagged
+ * `source: 'kadaverse-website'`. Firestore rules validate this shape and allow
+ * public create only; staff can read submissions to review incoming leads.
  */
 export async function submitProjectEnquiry(e: ProjectEnquiry): Promise<SubmitResult> {
   const id = referenceId('LEAD')
-  if (!isFirebaseConfigured || !db) {
+  if (!isFirebaseConfigured) {
     await new Promise((r) => setTimeout(r, 900))
     return { ok: true, mode: 'demo', id }
   }
-  await addDoc(collection(db, 'contact_requests'), {
+  const firestore = await import('./publicFirestore')
+  await firestore.addPublicRequest('contact_requests', {
     status: 'new',
     name: e.name.trim().slice(0, 120),
     email: e.email.trim().slice(0, 254),
@@ -93,7 +89,7 @@ export async function submitProjectEnquiry(e: ProjectEnquiry): Promise<SubmitRes
     page: e.page,
     referenceId: id,
     userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.slice(0, 300) : null,
-    createdAt: serverTimestamp(),
+    createdAt: firestore.serverTime(),
   })
   return { ok: true, mode: 'live', id }
 }

@@ -9,7 +9,7 @@ export default function Contact() {
     <main className="bg-[var(--kv-canvas)]">
       <Seo
         title="Contact"
-        description="Tell us what you want to build. Reach the KadaVerse team in Kannur, Kerala by WhatsApp, phone, email or the project form."
+        description="Tell us what you want to build. KadaVerse welcomes remote project enquiries worldwide. Contact our team in Kannur, India by email or project form."
         path="/contact"
       />
       <PageIntro

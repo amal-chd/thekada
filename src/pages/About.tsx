@@ -24,7 +24,7 @@ export default function About() {
     <main className="bg-[var(--kv-canvas)]">
       <Seo
         title="About Us"
-        description="KadaVerse is a product and software engineering company in Kannur, Kerala, building the systems local businesses run on every day."
+        description="KadaVerse is a product and software engineering team in Kannur, India, open to remote client projects worldwide."
         path="/about"
       />
       <PageIntro
@@ -90,8 +90,8 @@ export default function About() {
         <SplitFeature
           reverse
           eyebrow="Where we work"
-          title="Kannur-based, working with businesses across India"
-          body="Our team works from Kannur, Kerala, in Indian business hours. Calls, WhatsApp and email reach the people building your product — not an account manager in between."
+          title="Built in Kannur. Open to projects worldwide."
+          body="We take on remote projects with businesses wherever they are. You work directly with the people building your product, get clear written updates and weekly demos, and agree on useful meeting times across time zones at kickoff."
           actions={[{ label: 'Contact us', to: '/contact' }, { label: 'Careers', to: '/careers' }]}
           media={<PhoneShots shots={[{ src: SHOTS.customerHome, alt: 'The Kada app' }, { src: SHOTS.hostToday, alt: 'Kada Stay Host' }, { src: SHOTS.riderLogin, alt: 'Kada Rider' }]} />}
         />

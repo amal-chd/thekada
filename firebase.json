@@ -3,6 +3,8 @@
     "target": "thekada-web",
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true,
+    "trailingSlash": false,
     "redirects": [
       { "source": "/admin", "destination": "https://admin.thekada.in", "type": 301 },
       { "source": "/admin/**", "destination": "https://admin.thekada.in", "type": 301 },

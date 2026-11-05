@@ -60,7 +60,7 @@ function Plans({ pricing }: { pricing: PricingConfig }) {
               type="button"
               onClick={() => setAnnual(o.k)}
               aria-pressed={annual === o.k}
-              className={`rounded-[4px] px-4 py-1.5 text-sm font-semibold ${annual === o.k ? 'bg-[var(--kv-ink)] text-white' : 'text-[var(--kv-ink)]'}`}
+              className={`min-h-[40px] rounded-[4px] px-5 py-2 text-sm font-semibold transition-colors touch-manipulation ${annual === o.k ? 'bg-[var(--kv-ink)] text-white shadow-xs' : 'text-[var(--kv-ink)] hover:text-blue-600'}`}
             >
               {o.l}
             </button>

@@ -1,5 +1,5 @@
 import { FileCheck2, MonitorPlay, KeyRound, ShieldCheck, LifeBuoy } from 'lucide-react'
-import Seo, { SITE_URL } from '../components/Seo'
+import Seo from '../components/Seo'
 import { Hero, ProductMarquee, ProcessSlider, CaseCarousel } from '../components/home/HomeSections'
 import {
   Band, Container, Display, Hl, Btn, SplitFeature, MediaPanel, BrowserFrame, PhoneFrame,
@@ -20,23 +20,10 @@ export default function Home() {
   return (
     <main className="bg-[var(--kv-canvas)]">
       <Seo
-        title="KadaVerse — Web, App & SaaS Development Company in Kerala"
-        description="KadaVerse designs, builds and grows web apps, mobile apps, SaaS products and business software for companies across India — from the Kannur team that builds and runs the Kada platform."
+        title="Software Development Studio in India | Remote Projects Worldwide"
+        description="KadaVerse is open to remote web, mobile, SaaS and business software projects worldwide. Work directly with our Kannur, India team, with clear scopes and weekly demos."
         path="/"
-        jsonLd={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            name: 'KadaVerse',
-            alternateName: 'The Kada Digital Ventures Pvt Ltd',
-            url: SITE_URL,
-            logo: `${SITE_URL}/logo.svg`,
-            email: 'hello@thekada.in',
-            telephone: '+91-94964-91654',
-            address: { '@type': 'PostalAddress', addressLocality: 'Kannur', addressRegion: 'Kerala', postalCode: '670001', addressCountry: 'IN' },
-          },
-          faqLd(AGENCY_FAQ),
-        ]}
+        jsonLd={faqLd(AGENCY_FAQ)}
       />
 
       <Hero />

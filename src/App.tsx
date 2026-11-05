@@ -3,10 +3,10 @@ import { useEffect, lazy, Suspense } from 'react'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToTop'
-import Home from './pages/Home'
-import { useSmoothScroll } from './components/kada-kit'
+import { useSmoothScroll } from './components/kada-kit/smooth-scroll'
 
 // Core pages
+const Home = lazy(() => import('./pages/Home'))
 const Services = lazy(() => import('./pages/Services'))
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
 const Work = lazy(() => import('./pages/Work'))
@@ -83,7 +83,7 @@ export default function App() {
 // Partner onboarding pages are task pages linked from "Partner with The Kada": no footer.
 const NO_FOOTER_ROUTES = ['/products/kada-mess']
 
-function AppContent() {
+export function AppContent() {
   const { pathname } = useLocation()
   const hideFooter = NO_FOOTER_ROUTES.includes(pathname.replace(/\/+$/, ''))
 

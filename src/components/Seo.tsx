@@ -18,15 +18,27 @@ type Props = {
   jsonLd?: object | object[]
 }
 
+export type SeoMetadata = {
+  title: string
+  description: string
+  url: string
+  image: string
+  type: 'website' | 'article'
+  noindex: boolean
+  jsonLd?: object | object[]
+}
+
+let seoMetadataCollector: ((metadata: SeoMetadata) => void) | null = null
+
+/** Used by the build-time renderer so crawlers receive each route's real head. */
+export function setSeoMetadataCollector(collector: ((metadata: SeoMetadata) => void) | null) {
+  seoMetadataCollector = collector
+}
+
 /**
- * Per-route document head.
- *
- * This is a single-page app, so without this every route served the index.html
- * head — the same title, description and canonical on all 30+ URLs, which is
- * the one SEO mistake that actually costs rankings. Rather than appending new
- * tags (React 19 hoisting would leave the static ones behind as duplicates),
- * we update the tags already in index.html in place, so there is exactly one of
- * each in the document at all times.
+ * Per-route document head. The build-time renderer records these values into
+ * each static route; this effect keeps metadata correct during client-side
+ * navigation without creating duplicate tags.
  */
 export default function Seo({ title, description, path, image, type = 'website', noindex, jsonLd }: Props) {
   const { pathname } = useLocation()
@@ -35,6 +47,10 @@ export default function Seo({ title, description, path, image, type = 'website',
   const fullTitle = title.includes(BRAND) ? title : `${title} — ${BRAND}`
   const img = image ?? DEFAULT_IMAGE
   const ld = jsonLd ? JSON.stringify(jsonLd) : ''
+
+  if (typeof window === 'undefined') {
+    seoMetadataCollector?.({ title: fullTitle, description, url, image: img, type, noindex: !!noindex, jsonLd })
+  }
 
   useEffect(() => {
     document.title = fullTitle

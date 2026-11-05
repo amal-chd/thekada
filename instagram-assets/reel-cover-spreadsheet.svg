@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FCFCFA"/><stop offset="1" stop-color="#EAF2FF"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#0B1B33" flood-opacity=".14"/></filter>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/><circle cx="950" cy="245" r="300" fill="#93B8FF" opacity=".14"/>
+  <g transform="translate(82 115)"><rect width="58" height="58" rx="18" fill="url(#blue)"/><path d="M18 15 29 43 40 15" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/><text x="76" y="40" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="800" fill="#0B1B33">Kada<tspan fill="#2563EB">Verse</tspan></text></g>
+  <text x="82" y="390" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800" letter-spacing="4" fill="#2563EB">OPERATIONS CHECK</text>
+  <text x="82" y="585" font-family="'Plus Jakarta Sans',Inter,Arial,sans-serif" font-size="100" font-weight="800" fill="#0B1B33">Is the</text>
+  <text x="82" y="700" font-family="'Plus Jakarta Sans',Inter,Arial,sans-serif" font-size="100" font-weight="800" fill="#0B1B33">spreadsheet</text>
+  <text x="82" y="815" font-family="'Plus Jakarta Sans',Inter,Arial,sans-serif" font-size="100" font-weight="800" fill="#2563EB">slowing you?</text>
+  <text x="88" y="895" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="600" fill="#64748B">3 signs your team may have outgrown it</text>
+  <g transform="translate(82 1030)" filter="url(#shadow)">
+    <rect width="916" height="520" rx="34" fill="#0B1B33"/>
+    <text x="48" y="74" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="800" letter-spacing="3" fill="#93B8FF">LOOK FOR THE WORKFLOW</text>
+    <g font-family="Inter,Arial,sans-serif" font-size="29" font-weight="700" fill="#fff">
+      <circle cx="78" cy="160" r="24" fill="#2563EB"/><text x="78" y="170" text-anchor="middle" font-size="22">1</text><text x="126" y="170">The same info gets entered twice</text>
+      <circle cx="78" cy="255" r="24" fill="#2563EB"/><text x="78" y="265" text-anchor="middle" font-size="22">2</text><text x="126" y="265">Nobody owns the next step</text>
+      <circle cx="78" cy="350" r="24" fill="#2563EB"/><text x="78" y="360" text-anchor="middle" font-size="22">3</text><text x="126" y="360">Issues surface after a customer asks</text>
+    </g>
+    <rect x="48" y="420" width="355" height="60" rx="18" fill="url(#blue)"/>
+    <text x="76" y="459" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800" fill="#fff">Save this checklist →</text>
+  </g>
+  <text x="82" y="1785" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="2" fill="#64748B">KADAVERSE · BUILT IN KANNUR</text>
+</svg>

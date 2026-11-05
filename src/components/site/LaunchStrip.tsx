@@ -8,19 +8,19 @@ export default function LaunchStrip({ title = 'Recently shipped' }: { title?: st
   const row = [...items, ...items]
   return (
     <section className="overflow-hidden border-y border-[var(--kv-line)] bg-white py-12 sm:py-16">
-      <div className="mx-auto mb-8 flex w-full max-w-[1200px] items-end justify-between gap-4 px-5 sm:px-8">
+      <div className="mx-auto mb-8 flex flex-col gap-3 px-5 sm:flex-row sm:items-end sm:justify-between sm:px-8">
         <div>
           <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500"><span className="inline-block h-2.5 w-4 bg-blue-600" aria-hidden />{title}</p>
-          <p className="font-serif-display mt-3 text-3xl text-[var(--kv-ink)] sm:text-[2.4rem]">Real sites and apps, live today</p>
+          <p className="font-serif-display mt-3 text-2xl text-[var(--kv-ink)] sm:text-[2.4rem]">Real sites and apps, live today</p>
         </div>
-        <Link to="/work" className="hidden shrink-0 text-sm font-semibold text-[var(--kv-ink)] hover:text-blue-600 sm:inline">See all work →</Link>
+        <Link to="/work" className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline sm:text-[var(--kv-ink)] sm:hover:text-blue-600">See all work →</Link>
       </div>
       <div className="[mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]">
         <ul className="kv-marquee flex w-max gap-5" style={{ animationDuration: '70s' }}>
           {row.map((w, i) => {
             const to = w.slug in caseStudies ? `/work/${w.slug}` : w.productPage ?? '/work'
             return (
-              <li key={`${w.slug}-${i}`} aria-hidden={i >= items.length} className="w-[300px] shrink-0 sm:w-[360px]">
+              <li key={`${w.slug}-${i}`} aria-hidden={i >= items.length} className="w-[260px] shrink-0 sm:w-[360px]">
                 <Link to={to} tabIndex={i >= items.length ? -1 : undefined} className="group block">
                   <div className="overflow-hidden rounded-[8px] border border-[var(--kv-line)] bg-slate-50 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
                     <div className="flex items-center gap-1.5 border-b border-[var(--kv-line)] px-3 py-1.5">

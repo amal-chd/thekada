@@ -30,7 +30,7 @@ const LEGAL: FooterLink[] = [
 ]
 
 function FLink({ to, children, className = '' }: { to: string; children: string; className?: string }) {
-  const cls = `text-[15px] text-slate-600 hover:text-blue-600 hover:underline underline-offset-4 ${className}`
+  const cls = `inline-block py-1 text-[15px] text-slate-600 hover:text-blue-600 hover:underline underline-offset-4 transition-colors ${className}`
   return to.startsWith('http') || to.startsWith('mailto:') || to.startsWith('tel:')
     ? <a href={to} className={cls} target={to.startsWith('http') ? '_blank' : undefined} rel={to.startsWith('http') ? 'noopener noreferrer' : undefined}>{children}</a>
     : <Link to={to} className={cls}>{children}</Link>
@@ -40,12 +40,12 @@ function FLink({ to, children, className = '' }: { to: string; children: string;
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--kv-line)] bg-[var(--kv-canvas)]">
-      <div className="mx-auto w-full max-w-[1200px] px-5 pb-10 pt-16 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-5 pb-12 pt-14 sm:px-8 sm:pt-16" style={{ paddingBottom: 'max(3rem, env(safe-area-inset-bottom))' }}>
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {COLUMNS.map((c) => (
             <div key={c.title} className="min-w-0">
               <p className="text-[15px] font-semibold text-[var(--kv-ink)]">{c.title}</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3.5 space-y-1.5">
                 {c.links.map((l) => <li key={l.label}><FLink to={l.to}>{l.label}</FLink></li>)}
               </ul>
             </div>
@@ -66,7 +66,7 @@ export default function Footer() {
           <Logo size={28} />
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
             <span>© {new Date().getFullYear()} The Kada Digital Ventures Pvt Ltd</span>
-            {LEGAL.map((l) => <Link key={l.to} to={l.to} className="hover:text-blue-600">{l.label}</Link>)}
+            {LEGAL.map((l) => <Link key={l.to} to={l.to} className="inline-block py-1 hover:text-blue-600">{l.label}</Link>)}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight, Store, Building2, Bike, Briefcase } from 'lucide-react'
 import Logo from './Logo'
-import { SERVICES, PRODUCTS, PARTNER_LINKS, FEATURED_WORK } from '../../data/agency'
+import { SERVICES, PRODUCTS, PARTNER_LINKS, FEATURED_WORK, CONTACT } from '../../data/agency'
 import { caseStudies } from '../../data/caseStudies'
 
 type MenuId = 'services' | 'products' | 'work'
@@ -266,7 +266,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="ml-auto flex h-10 w-10 items-center justify-center rounded-[6px] text-[var(--kv-ink)] lg:hidden"
+          className="ml-auto flex h-11 w-11 items-center justify-center rounded-[8px] text-[var(--kv-ink)] hover:bg-slate-100 active:bg-slate-200 transition-colors lg:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
@@ -300,7 +300,8 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto border-t border-[var(--kv-line)] bg-[var(--kv-canvas)] lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto border-t border-[var(--kv-line)] bg-[var(--kv-canvas)] overscroll-contain lg:hidden"
+            style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom))' }}
           >
             <div className="px-5 pb-10 pt-2">
               {MOBILE_GROUPS.map((g) => {
@@ -311,21 +312,33 @@ export default function Header() {
                       type="button"
                       onClick={() => setMobileGroup(isOpen ? null : g.label)}
                       aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between py-4 text-lg font-semibold text-[var(--kv-ink)]"
+                      className="flex min-h-[48px] w-full items-center justify-between py-3.5 text-lg font-semibold text-[var(--kv-ink)]"
                     >
                       {g.label}
                       <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isOpen && (
-                      <ul className="pb-4">
+                      <ul className="space-y-1 pb-4">
                         {g.links.map((l) => (
                           <li key={l.label}>
                             {l.to.startsWith('http') ? (
-                              <a href={l.to} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between py-2.5 text-[15px] text-slate-700">
+                              <a
+                                href={l.to}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setMobileOpen(false)}
+                                className="flex min-h-[44px] items-center justify-between rounded-[8px] px-2.5 py-2.5 text-[15px] font-medium text-slate-700 active:bg-blue-50 active:text-blue-600 transition-colors"
+                              >
                                 {l.label} <ArrowUpRight className="h-4 w-4 text-slate-400" />
                               </a>
                             ) : (
-                              <Link to={l.to} className="block py-2.5 text-[15px] text-slate-700">{l.label}</Link>
+                              <Link
+                                to={l.to}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex min-h-[44px] items-center rounded-[8px] px-2.5 py-2.5 text-[15px] font-medium text-slate-700 active:bg-blue-50 active:text-blue-600 transition-colors"
+                              >
+                                {l.label}
+                              </Link>
                             )}
                           </li>
                         ))}
@@ -335,11 +348,27 @@ export default function Header() {
                 )
               })}
               {[{ label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }].map((l) => (
-                <Link key={l.to} to={l.to} className="block border-b border-[var(--kv-line)] py-4 text-lg font-semibold text-[var(--kv-ink)]">{l.label}</Link>
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-[48px] items-center border-b border-[var(--kv-line)] py-3 text-lg font-semibold text-[var(--kv-ink)]"
+                >
+                  {l.label}
+                </Link>
               ))}
-              <Link to="/start-project" className="mt-6 flex w-full items-center justify-center rounded-[6px] bg-blue-600 py-3.5 text-base font-semibold text-white">
+              <Link
+                to="/start-project"
+                onClick={() => setMobileOpen(false)}
+                className="mt-6 flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-blue-600 py-3 text-base font-semibold text-white shadow-sm active:bg-blue-700"
+              >
                 Start a project
               </Link>
+              <div className="mt-6 flex items-center justify-center gap-6 text-sm text-slate-500">
+                <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`} className="font-medium hover:text-blue-600">{CONTACT.phone}</a>
+                <span>·</span>
+                <a href={`https://wa.me/${CONTACT.whatsapp}`} target="_blank" rel="noopener noreferrer" className="font-medium hover:text-blue-600">WhatsApp</a>
+              </div>
             </div>
           </motion.div>
         )}

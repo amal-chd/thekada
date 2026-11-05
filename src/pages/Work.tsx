@@ -99,7 +99,7 @@ export default function Work() {
       )}
 
       <section className="sticky top-[72px] z-30 border-y border-[var(--kv-line)] bg-[var(--kv-canvas)]/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-[1200px] gap-2 overflow-x-auto px-5 py-3 sm:px-8 [scrollbar-width:none]">
+        <div className="mx-auto flex w-full max-w-[1200px] gap-2 overflow-x-auto px-5 py-3 sm:px-8 [scrollbar-width:none] touch-pan-x-scroll">
           {(['All', ...WORK_CATEGORIES] as const).map((c) => {
             const active = filter === c
             const count = c === 'All' ? WORK.length : WORK.filter((w) => w.category === c).length
@@ -109,8 +109,8 @@ export default function Work() {
                 type="button"
                 onClick={() => setFilter(c)}
                 aria-pressed={active}
-                className={`shrink-0 rounded-[6px] border px-4 py-2 text-sm font-semibold transition-colors ${
-                  active ? 'border-[var(--kv-ink)] bg-[var(--kv-ink)] text-white' : 'border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-[var(--kv-ink)]'
+                className={`min-h-[42px] shrink-0 rounded-[6px] border px-4 py-2 text-sm font-semibold transition-colors touch-manipulation active:scale-[0.98] ${
+                  active ? 'border-[var(--kv-ink)] bg-[var(--kv-ink)] text-white shadow-xs' : 'border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-[var(--kv-ink)]'
                 }`}
               >
                 {c} <span className={active ? 'text-white/60' : 'text-slate-400'}>{count}</span>
