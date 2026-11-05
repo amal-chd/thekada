@@ -1112,3 +1112,129 @@ button:focus-visible, a:focus-visible {
 .kv-marquee { animation: kv-marquee 40s linear infinite; }
 .kv-marquee:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .kv-marquee { animation: none; } }
+
+/* Screenshot showcases: clear, dimensional device frames on a playful stage. */
+.kv-media-panel {
+  border: 1px solid rgba(255,255,255,.76);
+  box-shadow: 0 24px 60px -34px rgba(11,27,51,.58), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.kv-media-panel::before,
+.kv-media-panel::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.kv-media-panel::before {
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.52) 0 1px, transparent 2px),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.13), transparent 23%),
+    radial-gradient(ellipse at 6% 100%, rgba(255,255,255,.16), transparent 38%),
+    linear-gradient(145deg, rgba(255,255,255,.12), transparent 42%);
+  background-size: 18px 18px, auto, auto, auto;
+  opacity: .72;
+}
+.kv-media-panel::after {
+  top: 7%;
+  right: 7%;
+  width: clamp(72px, 15%, 180px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,.32);
+  border-radius: 50%;
+  box-shadow: 0 0 0 12px rgba(255,255,255,.035), inset 0 0 24px rgba(255,255,255,.10);
+  transform: rotateX(64deg) rotateZ(-24deg);
+}
+.kv-media-panel--sky::before { opacity: .5; }
+.kv-media-panel--sky::after { border-color: rgba(37,99,235,.22); box-shadow: 0 0 0 12px rgba(37,99,235,.045), inset 0 0 24px rgba(37,99,235,.10); }
+.kv-media-panel--night::after { border-color: rgba(96,165,250,.4); }
+
+.kv-browser-shell {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+.kv-browser-backplate {
+  position: absolute;
+  z-index: -1;
+  inset: 4px 2px -9px;
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 13px;
+  background: linear-gradient(135deg, #34527b, #13294a 55%, #0b1b33);
+  box-shadow: 0 17px 24px -16px rgba(3,14,35,.75);
+  transform: rotateX(-2deg) translateZ(-8px);
+}
+.kv-browser-window {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.94);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 22px 42px -26px rgba(3,14,35,.72), 0 4px 12px rgba(3,14,35,.12);
+  transform: perspective(1400px) rotateX(1.2deg) rotateY(-1.4deg) translateZ(7px);
+  transform-origin: center;
+  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+}
+.kv-browser-shell:hover .kv-browser-window {
+  transform: perspective(1400px) rotateX(0deg) rotateY(0deg) translate3d(0,-3px,12px);
+  box-shadow: 0 28px 48px -25px rgba(3,14,35,.68), 0 6px 14px rgba(3,14,35,.14);
+}
+.kv-browser-toolbar {
+  min-height: 35px;
+  border-bottom: 1px solid #e6eaf1;
+  background: linear-gradient(180deg, #fff 0%, #f5f7fb 100%);
+}
+.kv-browser-address {
+  display: block;
+  max-width: min(58%, 340px);
+  border: 1px solid #e5eaf2;
+  background: rgba(255,255,255,.85);
+  box-shadow: inset 0 1px 2px rgba(11,27,51,.035);
+}
+
+.kv-phone-shell {
+  z-index: 2;
+  isolation: isolate;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 2rem;
+  background: linear-gradient(138deg, #72819a 0%, #26354d 18%, #0b1423 52%, #40536f 100%);
+  box-shadow: 0 30px 48px -23px rgba(3,14,35,.78), 0 10px 18px -12px rgba(3,14,35,.8), inset 0 1px 1px rgba(255,255,255,.5);
+  transform: perspective(900px) rotateY(-4deg) rotateX(1.5deg) translateZ(8px);
+  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+}
+.kv-phone-shell::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  top: 24%;
+  right: -3px;
+  width: 3px;
+  height: 15%;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, #b4c0d0, #31425c 45%, #111c2e);
+  box-shadow: 1px 0 2px rgba(0,0,0,.22);
+}
+.kv-phone-shell:hover {
+  transform: perspective(900px) rotateY(-1deg) rotateX(0deg) translateY(-4px) translateZ(12px);
+  box-shadow: 0 34px 54px -22px rgba(3,14,35,.82), 0 12px 20px -12px rgba(3,14,35,.78), inset 0 1px 1px rgba(255,255,255,.55);
+}
+.kv-phone-screen {
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 1.68rem;
+  background: #0b1423;
+}
+
+@media (max-width: 640px) {
+  .kv-media-panel { border-radius: 20px; }
+  .kv-browser-toolbar { min-height: 29px; }
+  .kv-browser-window { transform: perspective(1400px) rotateX(.8deg) rotateY(-.8deg) translateZ(3px); }
+  .kv-phone-shell { padding: 4px; border-radius: 1.65rem; transform: perspective(900px) rotateY(-2deg) translateZ(4px); }
+  .kv-phone-screen { border-radius: 1.4rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kv-browser-window, .kv-phone-shell { transition: none; }
+}

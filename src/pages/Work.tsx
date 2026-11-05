@@ -7,7 +7,7 @@ import { caseStudies } from '../data/caseStudies'
 import { productPages } from '../data/productPages'
 import { WORK, WORK_CATEGORIES, type WorkCategory, type WorkItem } from '../data/work'
 import { PageIntro, Band, SplitFeature, DarkCTA, FadeIn, Eyebrow } from '../components/site/kit'
-import { SiteShot, WorkShot } from '../components/site/media'
+import { SiteShot, WorkShot, workShowcaseShade } from '../components/site/media'
 
 const hasCaseStudy = (slug: string) => slug in caseStudies
 
@@ -93,7 +93,7 @@ export default function Work() {
             body={featured.solution}
             features={featured.features.slice(0, 3).map((f) => ({ title: f.title, body: f.description }))}
             actions={[{ label: 'Read the case study', to: `/work/${featured.slug}` }, { label: 'Start a similar project', to: '/start-project' }]}
-            media={<SiteShot web={featured.shots.web[0]} mobile={featured.shots.mobile} url="kurickaldevelopers.vercel.app" alt="Task Pilot for Kurickal Developers" />}
+            media={<SiteShot web={featured.shots.web[0]} mobile={featured.shots.mobile} url="kurickaldevelopers.vercel.app" alt="Task Pilot for Kurickal Developers" shade={workShowcaseShade(featured.slug)} />}
           />
         </Band>
       )}

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ArrowUpRight, SlidersHorizontal } from 'lucide-react'
@@ -6,7 +6,7 @@ import {
   Container, Eyebrow, SerifTitle, Btn, TextLink, MediaPanel, BrowserFrame, PhoneFrame, FadeIn,
 } from '../site/kit'
 import { PROCESS, SHOTS } from '../../data/agency'
-import { ProductShot, SiteShot, WebShot } from '../site/media'
+import { ProductShot, SiteShot, WebShot, WorkShot } from '../site/media'
 import { caseStudies } from '../../data/caseStudies'
 import { WORK, type WorkCategory, type WorkItem } from '../../data/work'
 
@@ -33,7 +33,7 @@ const HERO_SLIDES: HeroSlide[] = [
         <div className="absolute left-[5%] top-[8%] w-[72%]">
           <BrowserFrame src={SHOTS.webOrder} alt="order.thekada.in — browse restaurants" url="order.thekada.in" />
         </div>
-        <PhoneFrame src={SHOTS.mOrderRest} alt="order.thekada.in on a phone — menu and cart" className="absolute bottom-[-14%] right-[6%] w-[22%]" />
+        <PhoneFrame src={SHOTS.mOrderRest} alt="order.thekada.in on a phone — menu and cart" className="absolute bottom-[4%] right-[6%] w-[21%]" />
       </>
     ),
   },
@@ -45,10 +45,10 @@ const HERO_SLIDES: HeroSlide[] = [
     linkLabel: 'The Kada apps',
     render: () => (
       <div className="absolute inset-0 flex items-start justify-center gap-[3.5%] pt-[6%]">
-        <PhoneFrame src={SHOTS.customerHome} alt="The Kada customer app" className="w-[21%]" />
-        <PhoneFrame src={SHOTS.hostToday} alt="Kada Stay host app" className="mt-[5%] w-[21%]" />
-        <PhoneFrame src={SHOTS.hostDark} alt="Kada Stay host app in dark mode" className="mt-[10%] w-[21%]" />
-        <PhoneFrame src={SHOTS.riderLogin} alt="Kada Rider app" className="mt-[15%] w-[21%]" />
+        <PhoneFrame src={SHOTS.customerHome} alt="The Kada customer app" className="w-[19%] max-w-[190px]" />
+        <PhoneFrame src={SHOTS.hostToday} alt="Kada Stay host app" className="mt-[3%] w-[19%] max-w-[190px]" />
+        <PhoneFrame src={SHOTS.hostDark} alt="Kada Stay host app in dark mode" className="mt-[6%] w-[19%] max-w-[190px]" />
+        <PhoneFrame src={SHOTS.riderLogin} alt="Kada Rider app" className="mt-[9%] w-[19%] max-w-[190px]" />
       </div>
     ),
   },
@@ -63,8 +63,7 @@ const HERO_SLIDES: HeroSlide[] = [
         <div className="absolute left-[5%] top-[8%] w-[66%]">
           <BrowserFrame src="/shots/work/task-pilot.webp" alt="Task Pilot for Kurickal Developers" url="kurickaldevelopers.vercel.app" />
         </div>
-        <PhoneFrame src={SHOTS.hostRooms} alt="Hostel manager — rooms and beds" className="absolute bottom-[-16%] right-[22%] w-[19%]" />
-        <PhoneFrame src={SHOTS.hostRent} alt="Hostel manager — monthly rent" className="absolute bottom-[-8%] right-[4%] w-[19%]" />
+        <PhoneFrame src="/shots/work/task-pilot-m.webp" alt="Task Pilot mobile app for site teams" className="absolute bottom-[4%] right-[7%] w-[20%]" />
       </>
     ),
   },
@@ -82,7 +81,7 @@ const HERO_SLIDES: HeroSlide[] = [
         <div className="absolute left-[28%] top-[7%] w-[56%]">
           <BrowserFrame src="/shots/work/raman.webp" alt="Raman Caterings website" url="ramancatering.vercel.app" />
         </div>
-        <PhoneFrame src="/shots/work/raman-m.webp" alt="Raman Caterings on a phone" className="absolute bottom-[-14%] right-[4%] w-[20%]" />
+        <PhoneFrame src="/shots/work/raman-m.webp" alt="Raman Caterings on a phone" className="absolute bottom-[4%] right-[4%] w-[19%]" />
       </>
     ),
   },
@@ -234,10 +233,10 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
   const isUpcoming = item.slug === 'kada-mess' || item.slug === 'kada-ledger'
 
   return (
-    <article className="group flex flex-col justify-between rounded-[14px] border border-[var(--kv-line)] bg-white p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-md sm:p-6">
-      <div>
+    <article className="group flex h-full flex-col justify-between rounded-[14px] border border-[var(--kv-line)] bg-white p-4.5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-md sm:p-6">
+      <div className="flex-1 flex flex-col">
         {/* Card Header */}
-        <div className="mb-4 flex items-center justify-between gap-2">
+        <div className="mb-3.5 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             {item.logo ? (
               <img src={item.logo} alt="" className="h-6 w-6 shrink-0 rounded-[6px] object-contain p-0.5 bg-slate-50 border border-slate-200/60" />
@@ -251,7 +250,7 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
             </span>
           </div>
           <span
-            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold border ${
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] sm:text-[11px] font-semibold border ${
               isUpcoming
                 ? 'bg-amber-50 text-amber-800 border-amber-200/60'
                 : 'bg-emerald-50 text-emerald-800 border-emerald-200/60'
@@ -267,33 +266,15 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
         </div>
 
         {/* Visual Preview */}
-        <div className="mb-5 overflow-hidden rounded-[10px] border border-[var(--kv-line)] bg-slate-50 shadow-inner">
-          <div className="flex items-center justify-between border-b border-[var(--kv-line)] bg-slate-100/80 px-3 py-1.5">
-            <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-rose-400/80" />
-              <span className="h-2 w-2 rounded-full bg-amber-400/80" />
-              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
-            </div>
-            <span className="truncate max-w-[200px] font-mono text-[10px] text-slate-500">
-              {item.displayUrl ?? (item.liveUrl ? item.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : `${item.slug}.thekada.in`)}
-            </span>
-            <span className="w-8" />
-          </div>
+        <div className="mb-4">
           {item.image ? (
-            <div className="relative aspect-[16/10] overflow-hidden bg-slate-200">
-              <img
-                src={item.image}
-                alt={`${item.name} screenshot`}
-                loading="lazy"
-                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
+            <WorkShot item={item} className="aspect-[16/10]" />
           ) : (
-            <div className="flex aspect-[16/10] flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-blue-50/70 via-white to-slate-100/70 p-6 text-center">
+            <div className="flex aspect-[16/10] flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[18px] border border-blue-100 bg-[radial-gradient(circle_at_75%_15%,#fff_0%,transparent_35%),linear-gradient(145deg,#dbeafe,#eef2ff_48%,#d9f2ff)] p-4 text-center shadow-xs">
               {item.logo ? (
-                <img src={item.logo} alt="" className="h-12 w-12 rounded-xl object-contain drop-shadow" />
+                <img src={item.logo} alt="" className="h-11 w-11 rounded-xl object-contain drop-shadow" />
               ) : (
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-base font-bold text-white shadow-sm">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-base font-bold text-white shadow-sm">
                   {item.name.slice(0, 2).toUpperCase()}
                 </span>
               )}
@@ -304,8 +285,8 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
         </div>
 
         {/* Content */}
-        <div>
-          <h3 className="text-xl font-bold tracking-tight text-[var(--kv-ink)] group-hover:text-blue-600 transition-colors">
+        <div className="flex-1 flex flex-col">
+          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[var(--kv-ink)] group-hover:text-blue-600 transition-colors">
             {primaryUrl && !isExternal ? (
               <Link to={primaryUrl}>{item.name}</Link>
             ) : primaryUrl ? (
@@ -317,12 +298,12 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
           <p className="mt-1 text-xs font-medium text-blue-600">
             {item.industry} · {item.type}
           </p>
-          <p className="mt-2.5 text-[14px] leading-relaxed text-slate-600 line-clamp-3">
+          <p className="mt-2 text-[13px] sm:text-[14px] leading-relaxed text-slate-600 line-clamp-3">
             {item.description}
           </p>
-          <div className="mt-3.5 flex flex-wrap gap-1.5">
+          <div className="mt-auto pt-3 flex flex-wrap gap-1.5">
             {item.stack.map((tech) => (
-              <span key={tech} className="rounded-[4px] border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+              <span key={tech} className="rounded-[4px] border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] sm:text-[11px] font-medium text-slate-600">
                 {tech}
               </span>
             ))}
@@ -331,15 +312,15 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
       </div>
 
       {/* Footer Links */}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--kv-line)] pt-3 text-xs font-semibold">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--kv-line)] pt-3 text-xs font-semibold">
         <div className="flex items-center gap-3">
           {caseStudyUrl && (
-            <Link to={caseStudyUrl} className="inline-flex min-h-[38px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
+            <Link to={caseStudyUrl} className="inline-flex min-h-[44px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
               Case study <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           )}
           {item.productPage && (
-            <Link to={item.productPage} className="inline-flex min-h-[38px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
+            <Link to={item.productPage} className="inline-flex min-h-[44px] items-center gap-1 text-[var(--kv-ink)] hover:text-blue-600 touch-manipulation">
               Product page <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           )}
@@ -349,7 +330,7 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
             href={item.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-[38px] items-center gap-1 text-slate-500 hover:text-blue-600 touch-manipulation"
+            className="inline-flex min-h-[44px] items-center gap-1 text-slate-500 hover:text-blue-600 touch-manipulation"
           >
             Live site <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
@@ -362,6 +343,11 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
 export function ProductMarquee() {
   const [filter, setFilter] = useState<'All' | WorkCategory>('All')
   const [showAll, setShowAll] = useState(false)
+  const [desktopView, setDesktopView] = useState<'grid' | 'rail'>('grid')
+  const railRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   const tickerRow = [...WORK, ...WORK]
 
@@ -369,6 +355,43 @@ export function ProductMarquee() {
   const displayedItems = filter === 'All' && !showAll
     ? WORK.filter((w) => FEATURED_SLUGS.includes(w.slug))
     : itemsForCategory
+
+  const updateScrollState = () => {
+    const el = railRef.current
+    if (!el) return
+    const { scrollLeft, scrollWidth, clientWidth } = el
+    setCanScrollLeft(scrollLeft > 10)
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    const maxScroll = scrollWidth - clientWidth
+    setScrollProgress(maxScroll > 0 ? scrollLeft / maxScroll : 0)
+  }
+
+  useEffect(() => {
+    updateScrollState()
+    const el = railRef.current
+    if (!el) return
+    el.addEventListener('scroll', updateScrollState, { passive: true })
+    window.addEventListener('resize', updateScrollState)
+    return () => {
+      el.removeEventListener('scroll', updateScrollState)
+      window.removeEventListener('resize', updateScrollState)
+    }
+  }, [displayedItems, desktopView])
+
+  const scrollRail = (direction: 'left' | 'right') => {
+    if (!railRef.current) return
+    const card = railRef.current.querySelector<HTMLElement>('[data-showcase-card]')
+    const step = card ? card.offsetWidth + 16 : 320
+    railRef.current.scrollBy({
+      left: direction === 'left' ? -step : step,
+      behavior: 'smooth',
+    })
+  }
+
+  const handleFilterChange = (newFilter: 'All' | WorkCategory) => {
+    setFilter(newFilter)
+    railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+  }
 
   return (
     <section id="products-and-works" className="border-t border-[var(--kv-line)] bg-[var(--kv-canvas)] py-16 sm:py-24">
@@ -400,10 +423,10 @@ export function ProductMarquee() {
                 <button
                   type="button"
                   onClick={() => {
-                    setFilter(w.category)
+                    handleFilterChange(w.category)
                     setShowAll(true)
                   }}
-                  className="flex items-center gap-2.5 rounded-full border border-[var(--kv-line)] bg-white px-3.5 py-1.5 text-left text-xs transition-colors hover:border-blue-400 hover:bg-blue-50/40"
+                  className="flex items-center gap-2.5 rounded-full border border-[var(--kv-line)] bg-white px-3.5 py-1.5 text-left text-xs transition-colors hover:border-blue-400 hover:bg-blue-50/40 touch-manipulation"
                 >
                   {w.logo ? (
                     <img src={w.logo} alt="" className="h-4 w-4 shrink-0 rounded-[3px] object-contain" />
@@ -428,9 +451,9 @@ export function ProductMarquee() {
 
       <Container className="mt-12 sm:mt-16">
         {/* Interactive Filter Bar */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Category Tabs: Horizontally scrollable on mobile with snap and touch momentum */}
+          <div className="flex overflow-x-auto gap-2 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap no-scrollbar touch-pan-x-scroll snap-x">
             {SHOWCASE_TABS.map((tab) => {
               const active = filter === tab.id
               const count = tab.id === 'All' ? WORK.length : WORK.filter((w) => w.category === tab.id).length
@@ -438,9 +461,9 @@ export function ProductMarquee() {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setFilter(tab.id)}
+                  onClick={() => handleFilterChange(tab.id)}
                   aria-pressed={active}
-                  className={`inline-flex min-h-[40px] items-center gap-2 rounded-[8px] px-3.5 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
+                  className={`snap-start shrink-0 whitespace-nowrap inline-flex min-h-[42px] items-center gap-2 rounded-[8px] px-3.5 py-2 text-xs font-semibold transition-all touch-manipulation active:scale-[0.98] ${
                     active
                       ? 'border border-[var(--kv-ink)] bg-[var(--kv-ink)] text-white shadow-xs'
                       : 'border border-[var(--kv-line)] bg-white text-[var(--kv-ink)] hover:border-slate-400 hover:bg-slate-50'
@@ -459,37 +482,147 @@ export function ProductMarquee() {
             })}
           </div>
 
-          {/* All On / View Toggle */}
-          {filter === 'All' && (
-            <div className="flex items-center gap-2">
+          {/* Desktop & Mobile Actions (View toggle & show all toggle) */}
+          <div className="flex items-center gap-2">
+            {filter === 'All' && (
               <button
                 type="button"
-                onClick={() => setShowAll(!showAll)}
-                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-[8px] border border-[var(--kv-line)] bg-white px-3.5 py-2 text-xs font-semibold text-[var(--kv-ink)] hover:border-blue-500 hover:text-blue-600 transition-colors touch-manipulation active:scale-[0.98]"
+                onClick={() => {
+                  setShowAll(!showAll)
+                  railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+                }}
+                className="inline-flex min-h-[42px] items-center gap-1.5 rounded-[8px] border border-[var(--kv-line)] bg-white px-3.5 py-2 text-xs font-semibold text-[var(--kv-ink)] hover:border-blue-500 hover:text-blue-600 transition-colors touch-manipulation active:scale-[0.98]"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" />
-                  <span>{showAll ? `All ${WORK.length} items shown (Click for featured)` : `Show all ${WORK.length} items`}</span>
+                <span>{showAll ? `All ${WORK.length} (Show 9 featured)` : `Show all ${WORK.length} items`}</span>
+              </button>
+            )}
+
+            {/* Desktop View Switch: Rail vs Grid */}
+            <div className="hidden md:inline-flex items-center rounded-[8px] border border-[var(--kv-line)] bg-white p-1">
+              <button
+                type="button"
+                onClick={() => setDesktopView('grid')}
+                className={`rounded-[5px] px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  desktopView === 'grid' ? 'bg-[var(--kv-ink)] text-white' : 'text-slate-600 hover:text-[var(--kv-ink)]'
+                }`}
+              >
+                Grid
+              </button>
+              <button
+                type="button"
+                onClick={() => setDesktopView('rail')}
+                className={`rounded-[5px] px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  desktopView === 'rail' ? 'bg-[var(--kv-ink)] text-white' : 'text-slate-600 hover:text-[var(--kv-ink)]'
+                }`}
+              >
+                Horizontal Rail
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Mobile Swipe Cue & Navigation Bar */}
+        <div className="mt-4 flex items-center justify-between border-t border-[var(--kv-line)] pt-3 text-xs text-slate-500">
+          <p>
+            Showing <strong className="text-[var(--kv-ink)]">{displayedItems.length}</strong> {filter === 'All' ? 'selected systems' : `in ${filter}`}
+          </p>
+
+          {/* Mobile Swipe Cue and Arrow Buttons */}
+          <div className="flex md:hidden items-center gap-2">
+            <span className="inline-flex items-center gap-1 font-bold text-blue-600 text-[11px] uppercase tracking-wider">
+              Swipe →
+            </span>
+            <div className="flex items-center gap-1 ml-0.5">
+              <button
+                type="button"
+                aria-label="Scroll cards left"
+                onClick={() => scrollRail('left')}
+                disabled={!canScrollLeft}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none active:bg-slate-100 touch-manipulation shadow-xs"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                aria-label="Scroll cards right"
+                onClick={() => scrollRail('right')}
+                disabled={!canScrollRight}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none active:bg-slate-100 touch-manipulation shadow-xs"
+              >
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Arrow Controls (Visible when in Rail view on Desktop) */}
+          {desktopView === 'rail' && (
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-xs text-slate-500">Use arrows or scroll</span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  aria-label="Scroll left"
+                  onClick={() => scrollRail('left')}
+                  disabled={!canScrollLeft}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Scroll right"
+                  onClick={() => scrollRail('right')}
+                  disabled={!canScrollRight}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
+                >
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {desktopView === 'grid' && (
+            <span className="hidden sm:inline-flex items-center gap-1.5 font-medium text-emerald-700">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              Client software, Kada platform & SaaS products
+            </span>
           )}
         </div>
 
-        {/* Status Line */}
-        <div className="mt-4 flex items-center justify-between border-t border-[var(--kv-line)] pt-3 text-xs text-slate-500">
-          <p>
-            Showing <strong className="text-[var(--kv-ink)]">{displayedItems.length}</strong> {filter === 'All' ? 'selected work items' : `in ${filter}`}
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1.5 font-medium text-emerald-700">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            Client work and Kada products, shown separately
-          </span>
+        {/* Project Cards: Mobile Horizontal Snap Rail, Desktop Configurable Grid / Rail */}
+        <div
+          ref={railRef}
+          className={`mt-6 gap-4 pb-4 pt-1 touch-pan-x-scroll no-scrollbar scroll-smooth ${
+            desktopView === 'grid'
+              ? 'flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0'
+              : 'flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 md:gap-6'
+          }`}
+        >
+          {displayedItems.map((item) => (
+            <div
+              key={item.slug}
+              data-showcase-card
+              className={`snap-start shrink-0 w-[84vw] max-w-[340px] sm:w-[360px] ${
+                desktopView === 'grid' ? 'md:w-auto md:shrink' : 'md:w-[380px] md:shrink-0'
+              } h-full flex flex-col`}
+            >
+              <ShowcaseCard item={item} />
+            </div>
+          ))}
         </div>
 
-        {/* Card Grid */}
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {displayedItems.map((item) => (
-            <ShowcaseCard key={item.slug} item={item} />
-          ))}
+        {/* Mobile Scroll Progress Indicator Bar */}
+        <div className="mt-1 flex md:hidden items-center justify-between px-1 text-[11px] font-medium text-slate-500">
+          <span>Scroll to explore {displayedItems.length} systems</span>
+          <div className="flex items-center gap-2">
+            <div className="relative h-1.5 w-24 overflow-hidden rounded-full bg-slate-200">
+              <div
+                className="absolute top-0 bottom-0 left-0 rounded-full bg-blue-600 transition-all duration-150"
+                style={{ width: `${Math.max(12, Math.min(100, (scrollProgress || 0) * 100))}%` }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Expand / Collapse Button when in All filter */}
@@ -498,16 +631,22 @@ export function ProductMarquee() {
             {showAll ? (
               <button
                 type="button"
-                onClick={() => setShowAll(false)}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-5 py-2.5 text-xs font-semibold text-slate-600 shadow-xs hover:border-slate-400 hover:bg-slate-50 transition-all"
+                onClick={() => {
+                  setShowAll(false)
+                  railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+                }}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-white px-5 py-2.5 text-xs font-semibold text-slate-600 shadow-xs hover:border-slate-400 hover:bg-slate-50 transition-all touch-manipulation active:scale-[0.98]"
               >
                 <span>Collapse to 9 featured systems</span>
               </button>
             ) : (
               <button
                 type="button"
-                onClick={() => setShowAll(true)}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-[var(--kv-ink)] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all"
+                onClick={() => {
+                  setShowAll(true)
+                  railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+                }}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--kv-line)] bg-[var(--kv-ink)] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-all touch-manipulation active:scale-[0.98]"
               >
                 <span>Show all {WORK.length} projects and products</span>
                 <ArrowRight className="h-4 w-4" />

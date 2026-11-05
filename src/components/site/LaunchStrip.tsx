@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { WORK } from '../../data/work'
 import { caseStudies } from '../../data/caseStudies'
+import { WorkShot } from './media'
 
 /** Auto-scrolling strip of real screenshots from shipped work. */
 export default function LaunchStrip({ title = 'Recently shipped' }: { title?: string }) {
@@ -22,11 +23,8 @@ export default function LaunchStrip({ title = 'Recently shipped' }: { title?: st
             return (
               <li key={`${w.slug}-${i}`} aria-hidden={i >= items.length} className="w-[260px] shrink-0 sm:w-[360px]">
                 <Link to={to} tabIndex={i >= items.length ? -1 : undefined} className="group block">
-                  <div className="overflow-hidden rounded-[8px] border border-[var(--kv-line)] bg-slate-50 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
-                    <div className="flex items-center gap-1.5 border-b border-[var(--kv-line)] px-3 py-1.5">
-                      <span className="h-2 w-2 rounded-full bg-slate-300" /><span className="h-2 w-2 rounded-full bg-slate-300" /><span className="h-2 w-2 rounded-full bg-slate-300" />
-                    </div>
-                    <img src={w.image} alt={`${w.name} — screenshot`} loading="lazy" className="block aspect-[16/10] w-full object-cover object-top" />
+                  <div className="transition-transform duration-300 group-hover:-translate-y-1">
+                    <WorkShot item={w} className="aspect-[16/11]" />
                   </div>
                   <p className="mt-3 text-[15px] font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">{w.name}</p>
                   <p className="text-xs text-slate-500">{w.client ?? w.type}</p>

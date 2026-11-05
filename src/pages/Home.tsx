@@ -72,10 +72,10 @@ export default function Home() {
               actions={[{ label: 'Mobile app development', to: '/services/mobile-development' }, { label: 'Get an estimate', to: '/start-project' }]}
               media={
                 <MediaPanel shade="dusk" className="aspect-[4/3] sm:aspect-[16/11]">
-                  <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[8%]">
-                    <PhoneFrame src={SHOTS.customerHome} alt="The Kada customer app" className="w-[27%] max-w-[200px]" />
-                    <PhoneFrame src={SHOTS.riderLogin} alt="Kada Rider app sign-in" className="mt-[7%] w-[27%] max-w-[200px]" />
-                    <PhoneFrame src={SHOTS.hostDark} alt="Kada Stay Host app in dark mode" className="mt-[14%] w-[27%] max-w-[200px]" />
+                  <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[5%]">
+                    <PhoneFrame src={SHOTS.customerHome} alt="The Kada customer app" className="w-[26%] max-w-[190px]" />
+                    <PhoneFrame src={SHOTS.riderLogin} alt="Kada Rider app sign-in" className="mt-[3%] w-[26%] max-w-[190px]" />
+                    <PhoneFrame src={SHOTS.hostDark} alt="Kada Stay Host app in dark mode" className="mt-[6%] w-[26%] max-w-[190px]" />
                   </div>
                 </MediaPanel>
               }
@@ -93,10 +93,10 @@ export default function Home() {
               actions={[{ label: 'Business software', to: '/services/enterprise-software' }, { label: 'See the Task Pilot case study', to: '/work/task-pilot' }]}
               media={
                 <MediaPanel shade="sky" className="aspect-[4/3] sm:aspect-[16/11]">
-                  <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[8%]">
-                    <PhoneFrame src={SHOTS.hostRooms} alt="Hostel manager — rooms and beds" className="w-[27%] max-w-[200px]" />
-                    <PhoneFrame src={SHOTS.hostResidents} alt="Hostel manager — residents" className="mt-[7%] w-[27%] max-w-[200px]" />
-                    <PhoneFrame src={SHOTS.hostRent} alt="Hostel manager — monthly rent" className="mt-[14%] w-[27%] max-w-[200px]" />
+                  <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[5%]">
+                    <PhoneFrame src={SHOTS.hostRooms} alt="Hostel manager — rooms and beds" className="w-[26%] max-w-[190px]" />
+                    <PhoneFrame src={SHOTS.hostResidents} alt="Hostel manager — residents" className="mt-[3%] w-[26%] max-w-[190px]" />
+                    <PhoneFrame src={SHOTS.hostRent} alt="Hostel manager — monthly rent" className="mt-[6%] w-[26%] max-w-[190px]" />
                   </div>
                 </MediaPanel>
               }

@@ -4,7 +4,7 @@ import { caseStudies } from '../data/caseStudies'
 import Seo, { SITE_URL } from '../components/Seo'
 import { breadcrumbLd } from '../lib/schema'
 import { PageIntro, Band, Container, Eyebrow, SerifTitle, CardGrid, DarkCTA, FadeIn, SectionHead } from '../components/site/kit'
-import { ProductShot, SiteShot, WebShot } from '../components/site/media'
+import { ProductShot, SiteShot, WebShot, workShowcaseShade } from '../components/site/media'
 
 export default function CaseStudy() {
   const { slug } = useParams<{ slug: string }>()
@@ -18,7 +18,7 @@ export default function CaseStudy() {
     .slice(0, 3)
   const host = (study.liveUrl ?? '').replace(/^https?:\/\//, '').replace(/\/$/, '')
   const heroShot = study.shots?.web?.[0]
-    ? <SiteShot web={study.shots.web[0]} mobile={study.shots.mobile} url={host} alt={`${study.name} — real screenshot`} className="aspect-[4/3] sm:aspect-[16/9]" />
+    ? <SiteShot web={study.shots.web[0]} mobile={study.shots.mobile} url={host} alt={`${study.name} — real screenshot`} shade={workShowcaseShade(study.slug)} className="aspect-[4/3] sm:aspect-[16/9]" />
     : <ProductShot slug={study.slug} name={study.name} logo={study.logo} points={study.features.map((f) => f.title)} className="aspect-[4/3] sm:aspect-[16/9]" />
   const gallery = study.shots?.web?.slice(1) ?? []
 
@@ -127,7 +127,7 @@ export default function CaseStudy() {
               <Link key={c.slug} to={`/work/${c.slug}`} className="group min-w-0">
                 <div className="transition-transform duration-300 group-hover:-translate-y-1">
                   {c.shots?.web?.[0]
-                    ? <WebShot src={c.shots.web[0]} url={(c.liveUrl ?? '').replace(/^https?:\/\//, '')} alt={c.name} className="aspect-[4/3]" />
+                    ? <WebShot src={c.shots.web[0]} url={(c.liveUrl ?? '').replace(/^https?:\/\//, '')} alt={c.name} shade={workShowcaseShade(c.slug)} className="aspect-[4/3]" />
                     : <ProductShot slug={c.slug} name={c.name} logo={c.logo} points={c.features.map((f) => f.title)} className="aspect-[4/3]" />}
                 </div>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{c.client ?? c.industry}</p>

@@ -2,6 +2,19 @@ import { MediaPanel, BrowserFrame, PhoneFrame } from './kit'
 import { SHOTS } from '../../data/agency'
 
 type Shade = 'ocean' | 'dusk' | 'sky' | 'night'
+const WORK_SHADES: Record<string, Shade> = {
+  'task-pilot': 'dusk',
+  'raman-caterings': 'sky',
+  'nexstep-europe': 'ocean',
+  'inspiro-26': 'dusk',
+  whichott: 'night',
+  sellrapp: 'sky',
+  'detailx-car-care': 'night',
+  'prana-roots': 'sky',
+  'dandeli-adventure-resorts': 'ocean',
+}
+
+export const workShowcaseShade = (slug: string): Shade => WORK_SHADES[slug] ?? 'ocean'
 
 /** A browser screenshot in a shade panel. */
 export function WebShot({ src, url, alt, shade = 'ocean', className = 'aspect-[16/11]' }: { src: string; url: string; alt: string; shade?: Shade; className?: string }) {
@@ -16,12 +29,12 @@ export function WebShot({ src, url, alt, shade = 'ocean', className = 'aspect-[1
 
 /** Up to three staggered phone screenshots in a shade panel. */
 export function PhoneShots({ shots, shade = 'dusk', className = 'aspect-[16/11]' }: { shots: { src: string; alt: string }[]; shade?: Shade; className?: string }) {
-  const offsets = ['', 'mt-[7%]', 'mt-[14%]']
+  const offsets = ['', 'mt-[3%]', 'mt-[6%]']
   return (
     <MediaPanel shade={shade} className={className}>
-      <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[8%]">
+      <div className="absolute inset-0 flex items-start justify-center gap-[4%] pt-[5%]">
         {shots.slice(0, 3).map((s, i) => (
-          <PhoneFrame key={s.src} src={s.src} alt={s.alt} className={`w-[27%] max-w-[200px] ${offsets[i]}`} />
+          <PhoneFrame key={s.src} src={s.src} alt={s.alt} className={`w-[26%] max-w-[185px] ${offsets[i]}`} />
         ))}
       </div>
     </MediaPanel>
@@ -84,7 +97,7 @@ export function SiteShot({ web, mobile, url, alt, shade = 'ocean', className = '
         <BrowserFrame src={web} alt={alt} url={url} />
       </div>
       {mobile && (
-        <PhoneFrame src={mobile} alt={`${alt} on a phone`} className="absolute bottom-[-12%] right-[5%] w-[24%]" />
+        <PhoneFrame src={mobile} alt={`${alt} on a phone`} className="absolute bottom-[4%] right-[4%] w-[22%]" />
       )}
     </MediaPanel>
   )
@@ -94,7 +107,7 @@ export function SiteShot({ web, mobile, url, alt, shade = 'ocean', className = '
 export function WorkShot({ item, className }: { item: { slug: string; name: string; image?: string; liveUrl?: string; displayUrl?: string; logo?: string; points?: string[] }; className?: string }) {
   if (item.image) {
     const url = item.displayUrl ?? (item.liveUrl ?? '').replace(/^https?:\/\//, '').replace(/\/$/, '')
-    return <WebShot src={item.image} url={url} alt={`${item.name} — screenshot`} className={className} />
+    return <WebShot src={item.image} url={url} alt={`${item.name} — screenshot`} shade={workShowcaseShade(item.slug)} className={className} />
   }
   return <ProductShot slug={item.slug} name={item.name} logo={item.logo} points={item.points} className={className} />
 }
@@ -103,14 +116,14 @@ export function WorkShot({ item, className }: { item: { slug: string; name: stri
 export function ScreenGallery({ screens }: { screens: { src: string; label: string; kind: 'web' | 'phone'; url?: string }[] }) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-      {screens.map((s) => (
+      {screens.map((s, i) => (
         <figure key={s.src} className={`min-w-0 ${s.kind === 'web' ? 'col-span-2' : 'col-span-1'}`}>
           {s.kind === 'web' ? (
-            <WebShot src={s.src} url={s.url ?? ''} alt={s.label} className="aspect-[16/11]" />
+            <WebShot src={s.src} url={s.url ?? ''} alt={s.label} shade={(['ocean', 'dusk', 'sky', 'night'] as const)[i % 4]} className="aspect-[16/11]" />
           ) : (
-            <MediaPanel shade="sky" className="aspect-[8/11]">
-              <div className="flex h-full items-start justify-center pt-[9%]">
-                <PhoneFrame src={s.src} alt={s.label} className="w-[62%]" />
+            <MediaPanel shade={(['sky', 'dusk', 'ocean', 'night'] as const)[i % 4]} className="aspect-[8/11]">
+              <div className="flex h-full items-start justify-center pt-[5%]">
+                <PhoneFrame src={s.src} alt={s.label} className="w-[56%]" />
               </div>
             </MediaPanel>
           )}

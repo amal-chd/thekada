@@ -129,31 +129,37 @@ const SHADES: Record<Shade, string> = {
 /** The framed panel product shots sit in — Kada shade gradient with soft grain. */
 export function MediaPanel({ children, shade = 'ocean', className = '', style }: { children: ReactNode; shade?: Shade; className?: string; style?: CSSProperties }) {
   return (
-    <div className={`relative overflow-hidden rounded-[12px] ${className}`} style={{ background: SHADES[shade], ...style }}>
-      <div aria-hidden className="kv-grain pointer-events-none absolute inset-0 opacity-70" />
-      <div className="relative h-full w-full">{children}</div>
+    <div className={`kv-media-panel kv-media-panel--${shade} relative isolate overflow-hidden rounded-[24px] ${className}`} style={{ background: SHADES[shade], ...style }}>
+      <div aria-hidden className="kv-grain pointer-events-none absolute inset-0 z-[1] opacity-20" />
+      <div className="relative z-[2] h-full w-full">{children}</div>
     </div>
   )
 }
 
 export function BrowserFrame({ src, alt, url, className = '' }: { src: string; alt: string; url?: string; className?: string }) {
   return (
-    <div className={`overflow-hidden rounded-[8px] border border-black/10 bg-white shadow-[0_30px_60px_-25px_rgba(2,12,40,0.55)] ${className}`}>
-      <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-        {url && <span className="ml-2 truncate rounded bg-white px-2 py-0.5 text-[11px] font-medium text-slate-500 ring-1 ring-slate-200">{url}</span>}
+    <div className={`kv-browser-shell ${className}`}>
+      <span aria-hidden className="kv-browser-backplate" />
+      <div className="kv-browser-window">
+        <div className="kv-browser-toolbar flex items-center gap-2 px-3">
+          <span className="h-2 w-2 rounded-full bg-[#ff6b6b]" />
+          <span className="h-2 w-2 rounded-full bg-[#ffc857]" />
+          <span className="h-2 w-2 rounded-full bg-[#38c98a]" />
+          {url && <span className="kv-browser-address ml-2 min-w-0 truncate rounded-md px-2.5 py-1 text-[10px] font-medium text-slate-500 sm:text-[11px]">{url}</span>}
+        </div>
+        <img src={src} alt={alt} loading="lazy" className="block h-auto w-full" />
       </div>
-      <img src={src} alt={alt} loading="lazy" className="block w-full" />
     </div>
   )
 }
 
 export function PhoneFrame({ src, alt, className = '', style }: { src: string; alt: string; className?: string; style?: CSSProperties }) {
+  const hasPositionClass = /(^|\s)(absolute|fixed|relative|static|sticky)(\s|$)/.test(className)
   return (
-    <div className={`overflow-hidden rounded-[1.6rem] border-[5px] border-[#0B1B33] bg-[#0B1B33] shadow-[0_30px_60px_-20px_rgba(2,12,40,0.6)] ${className}`} style={style}>
-      <img src={src} alt={alt} loading="lazy" className="block w-full rounded-[1.25rem]" />
+    <div className={`kv-phone-shell ${hasPositionClass ? '' : 'relative'} ${className}`} style={style}>
+      <div className="kv-phone-screen">
+        <img src={src} alt={alt} loading="lazy" className="block h-auto w-full" />
+      </div>
     </div>
   )
 }
