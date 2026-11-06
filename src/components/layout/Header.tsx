@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight, Store, Building2, Bike, Briefcase } from 'lucide-react'
+import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight, Store, Building2, Bike, Briefcase, Handshake } from 'lucide-react'
 import Logo from './Logo'
 import { SERVICES, PRODUCTS, PARTNER_LINKS, FEATURED_WORK, CONTACT } from '../../data/agency'
 import { caseStudies } from '../../data/caseStudies'
@@ -158,6 +158,13 @@ function JoinUsMenu() {
               </a>
             ))}
             <div className="my-1 border-t border-[var(--kv-line)]" />
+            <Link to="/become-a-partner" role="menuitem" className="group flex items-start gap-3 rounded-[6px] p-2.5 hover:bg-[var(--kv-band)]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-orange-50 text-orange-600"><Handshake className="h-[18px] w-[18px]" /></span>
+              <span className="min-w-0">
+                <span className="block text-[15px] font-semibold text-[var(--kv-ink)] group-hover:text-blue-600">Become a distributor</span>
+                <span className="block text-[13px] text-slate-500">Sell Kada products in your area and earn</span>
+              </span>
+            </Link>
             <Link to="/careers" role="menuitem" className="group flex items-start gap-3 rounded-[6px] p-2.5 hover:bg-[var(--kv-band)]">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-slate-100 text-[var(--kv-ink)]"><Briefcase className="h-[18px] w-[18px]" /></span>
               <span className="min-w-0">
@@ -176,7 +183,7 @@ const MOBILE_GROUPS: { label: string; links: { label: string; to: string }[] }[]
   { label: 'Services', links: [...SERVICES.map((s) => ({ label: s.title, to: `/services/${s.slug}` })), { label: 'All services', to: '/services' }] },
   { label: 'Products', links: PRODUCTS.map((p) => ({ label: p.name, to: p.to })) },
   { label: 'Work', links: [...FEATURED_WORK.filter((s) => caseStudies[s]).map((s) => ({ label: caseStudies[s].name, to: `/work/${s}` })), { label: 'All work', to: '/work' }] },
-  { label: 'Join us', links: [...PARTNER_LINKS.map((p) => ({ label: p.name, to: p.href })), { label: 'Work at KadaVerse', to: '/careers' }] },
+  { label: 'Join us', links: [...PARTNER_LINKS.map((p) => ({ label: p.name, to: p.href })), { label: 'Become a distributor', to: '/become-a-partner' }, { label: 'Work at KadaVerse', to: '/careers' }] },
 ]
 
 export default function Header() {

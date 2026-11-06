@@ -32,6 +32,7 @@ const GiftClaim = lazy(() => import('./pages/GiftClaim'))
 
 // Internal (hidden from public nav)
 const Careers = lazy(() => import('./pages/Careers'))
+const BecomePartner = lazy(() => import('./pages/BecomePartner'))
 
 function PageLoader() {
   return (
@@ -138,6 +139,11 @@ export function AppContent() {
           <Route path="/admin" element={<ExternalRedirect to="https://admin.thekada.in" />} />
           <Route path="/admin/*" element={<ExternalRedirect to="https://admin.thekada.in" />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/become-a-partner" element={<BecomePartner />} />
+          <Route path="/distributor" element={<Navigate to="/become-a-partner" replace />} />
+          <Route path="/distributors" element={<Navigate to="/become-a-partner" replace />} />
+          <Route path="/reseller" element={<Navigate to="/become-a-partner" replace />} />
+          <Route path="/partner-programme" element={<Navigate to="/become-a-partner" replace />} />
           <Route path="/careers/internship" element={<Navigate to="/careers" replace />} />
 
           {/* Redirects from old/alternate routes */}

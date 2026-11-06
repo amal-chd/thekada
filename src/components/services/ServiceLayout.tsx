@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom'
 import { WORK } from '../../data/work'
 import { caseStudies } from '../../data/caseStudies'
 import { ProcessSlider } from '../home/HomeSections'
-import { SHOTS, SERVICE_WORK } from '../../data/agency'
+import { SHOTS, SERVICE_WORK, CONTACT } from '../../data/agency'
+import ProjectForm from '../site/ProjectForm'
 
 type IconType = ComponentType<{ size?: number; color?: string }>
 
@@ -55,6 +56,18 @@ function serviceMedia(slug: string): ReactNode {
     default:
       return <WebShot src={SHOTS.webRestaurant} url="order.thekada.in/restaurant" alt="The Kada restaurant page" />
   }
+}
+
+/** Which "What do you need?" option each service page pre-ticks. */
+const SERVICE_NEED: Record<string, string> = {
+  'web-development': 'Web application',
+  'mobile-development': 'Mobile app (iOS/Android)',
+  'saas-development': 'SaaS platform',
+  'business-automation': 'AI & automation',
+  'enterprise-software': 'Business software / ERP',
+  'api-integrations': 'API & payments integration',
+  'digital-transformation': 'Fix or modernise an existing app',
+  'digital-marketing': 'Digital marketing & growth',
 }
 
 export default function ServiceLayout({ config }: { config: ServiceConfig }) {
@@ -163,7 +176,25 @@ export default function ServiceLayout({ config }: { config: ServiceConfig }) {
         <FaqList items={config.faqs} title={config.faqTitle} />
       </Band>
 
-      <DarkCTA title={config.ctaTitle} subtitle={config.ctaSub} />
+      <Band tone="band">
+        <div id="estimate" className="grid scroll-mt-24 gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:gap-16">
+          <div className="min-w-0">
+            <Eyebrow block>Free estimate</Eyebrow>
+            <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-[-0.03em] text-[var(--kv-ink)] sm:text-4xl">Tell us what you need</h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-slate-600">
+              A sentence is enough. A person on our team reads it and replies within one working day with questions, a call slot or a first estimate. No obligation.
+            </p>
+            <p className="mt-6 text-sm text-slate-600">
+              Prefer to talk? <a href={`https://wa.me/${CONTACT.whatsapp}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:underline">WhatsApp us</a> or email <a href={`mailto:${CONTACT.email}`} className="font-semibold text-[var(--kv-ink)]">{CONTACT.email}</a>.
+            </p>
+          </div>
+          <div className="min-w-0">
+            <ProjectForm page={`service:${config.slug}`} defaultNeeds={SERVICE_NEED[config.slug] ? [SERVICE_NEED[config.slug]] : []} />
+          </div>
+        </div>
+      </Band>
+
+      <DarkCTA title={config.ctaTitle} subtitle={config.ctaSub} primary={{ label: 'Get a free estimate', to: `/start-project?from=service-${config.slug}${SERVICE_NEED[config.slug] ? `&need=${encodeURIComponent(SERVICE_NEED[config.slug])}` : ''}` }} />
     </main>
   )
 }

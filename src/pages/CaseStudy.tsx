@@ -138,7 +138,7 @@ export default function CaseStudy() {
         </Band>
       )}
 
-      <DarkCTA title={<>Want something <span className="text-blue-400">like {study.name}?</span></>} subtitle="Tell us what you’re building. We’ll reply within one working day with questions or a first estimate." />
+      <DarkCTA title={<>Want something <span className="text-blue-400">like {study.name}?</span></>} subtitle="Tell us what you’re building. We’ll reply within one working day with questions or a first estimate." primary={{ label: 'Start a project', to: `/start-project?from=work-${slug}` }} />
     </main>
   )
 }

@@ -1,9 +1,15 @@
+import { useSearchParams } from 'react-router-dom'
 import Seo from '../components/Seo'
 import { PageIntro, Band, Eyebrow, SerifTitle } from '../components/site/kit'
-import ProjectForm from '../components/site/ProjectForm'
+import ProjectForm, { NEEDS } from '../components/site/ProjectForm'
 import { PROCESS, CONTACT } from '../data/agency'
 
 export default function StartProject() {
+  // Links from a service or case-study page say where the visitor came from
+  // (?from=work-task-pilot) and what they were looking at (?need=SaaS platform).
+  const [params] = useSearchParams()
+  const from = (params.get('from') ?? '').replace(/[^a-z0-9:-]/gi, '').slice(0, 50)
+  const need = params.get('need') ?? ''
   return (
     <main className="bg-[var(--kv-canvas)]">
       <Seo
@@ -37,7 +43,7 @@ export default function StartProject() {
             </p>
           </div>
           <div className="min-w-0">
-            <ProjectForm page="start-project" />
+            <ProjectForm page={from ? `start-project:${from}` : 'start-project'} defaultNeeds={NEEDS.includes(need) ? [need] : []} />
           </div>
         </div>
       </Band>

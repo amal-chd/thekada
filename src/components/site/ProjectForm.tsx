@@ -4,15 +4,15 @@ import { submitProjectEnquiry } from '@/lib/publicForms'
 import { CONTACT } from '../../data/agency'
 import { Btn } from './kit'
 
-const NEEDS = [
+export const NEEDS = [
   'Web application', 'Mobile app (iOS/Android)', 'SaaS platform', 'Digital marketing & growth',
   'Business software / ERP', 'CRM / HRM system', 'AI & automation', 'API & payments integration', 'Fix or modernise an existing app',
 ]
 const TIMELINES = ['As soon as possible', '1–2 months', '3–6 months', 'Flexible / not sure']
 
-const INPUT = 'w-full rounded-[6px] border border-[var(--kv-line)] bg-white px-3.5 py-3 text-base sm:text-[15px] text-[var(--kv-ink)] placeholder:text-slate-400 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 min-h-[48px]'
+export const INPUT = 'w-full rounded-[6px] border border-[var(--kv-line)] bg-white px-3.5 py-3 text-base sm:text-[15px] text-[var(--kv-ink)] placeholder:text-slate-400 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/15 min-h-[48px]'
 
-function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; children: ReactNode }) {
+export function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; children: ReactNode }) {
   return (
     <div className="min-w-0">
       <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-semibold text-[var(--kv-ink)]">{label}</label>
@@ -22,11 +22,13 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor?: string; 
 }
 
 /**
- * The one client intake form (Start a project + Contact). Sent to
- * `contact_requests`; Firestore allows public create and staff read for review.
+ * The one client intake form (Start a project, Contact, and the "free
+ * estimate" block on every service and case-study page). Sent to
+ * `contact_requests`; it lands in Kada Verse › Leads, where sales replies,
+ * follows up and turns it into a client.
  */
-export default function ProjectForm({ page }: { page: string }) {
-  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', needs: [] as string[], budget: '', timeline: '', description: '' })
+export default function ProjectForm({ page, defaultNeeds = [] }: { page: string; defaultNeeds?: string[] }) {
+  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', needs: defaultNeeds.filter((n) => NEEDS.includes(n)), budget: '', timeline: '', description: '' })
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
