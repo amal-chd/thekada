@@ -124,8 +124,11 @@ export default function ServiceContactPopup() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       return setError('Please enter a valid email address.')
     }
-    if (form.phone && form.phone.replace(/\D/g, '').length < 7) {
-      return setError('Please enter a valid phone number or leave it blank.')
+    if (!form.phone.trim()) {
+      return setError('Please enter your phone or WhatsApp number.')
+    }
+    if (form.phone.replace(/\D/g, '').length < 7) {
+      return setError('Please enter a valid phone or WhatsApp number (with area/country code).')
     }
 
     setIsSubmitting(true)
@@ -314,11 +317,12 @@ export default function ServiceContactPopup() {
                         htmlFor="popup-phone"
                         className="block text-xs font-semibold text-slate-700 mb-1"
                       >
-                        Phone / WhatsApp <span className="text-slate-400 font-normal">(optional)</span>
+                        Phone / WhatsApp <span className="text-blue-600">*</span>
                       </label>
                       <input
                         id="popup-phone"
                         type="tel"
+                        required
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         placeholder="+91 94964 91654"
