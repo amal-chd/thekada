@@ -3,6 +3,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import { ScrollRestorer, ScrollToTopButton } from './components/shared/ScrollToTop'
+import ServiceContactPopup from './components/services/ServiceContactPopup'
 import { useSmoothScroll } from './components/kada-kit/smooth-scroll'
 
 // Core pages
@@ -168,6 +169,7 @@ export function AppContent() {
       </div>
       {!hideFooter && <Footer />}
       <ScrollToTopButton />
+      <ServiceContactPopup />
     </div>
   )
 }
