@@ -29,5 +29,8 @@ dist-ssr
 .env.*
 !.env.example
 
+# Firebase CLI
+.firebase/
+
 # Cloud Functions build output
 functions/lib

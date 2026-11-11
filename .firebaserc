@@ -9,6 +9,14 @@
           "thekada-web"
         ]
       }
+    },
+    "the-kada": {
+      "hosting": {
+        "thekada-web": [
+          "the-kada"
+        ]
+      }
     }
-  }
+  },
+  "etags": {}
 }
