@@ -343,7 +343,6 @@ function ShowcaseCard({ item }: { item: WorkItem }) {
 export function ProductMarquee() {
   const [filter, setFilter] = useState<'All' | WorkCategory>('All')
   const [showAll, setShowAll] = useState(false)
-  const [desktopView, setDesktopView] = useState<'grid' | 'rail'>('grid')
   const railRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
@@ -376,7 +375,7 @@ export function ProductMarquee() {
       el.removeEventListener('scroll', updateScrollState)
       window.removeEventListener('resize', updateScrollState)
     }
-  }, [displayedItems, desktopView])
+  }, [displayedItems])
 
   const scrollRail = (direction: 'left' | 'right') => {
     if (!railRef.current) return
@@ -482,9 +481,9 @@ export function ProductMarquee() {
             })}
           </div>
 
-          {/* Desktop & Mobile Actions (View toggle & show all toggle) */}
-          <div className="flex items-center gap-2">
-            {filter === 'All' && (
+          {/* Actions (show all toggle) */}
+          {filter === 'All' && (
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => {
@@ -496,33 +495,11 @@ export function ProductMarquee() {
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 <span>{showAll ? `All ${WORK.length} (Show 9 featured)` : `Show all ${WORK.length} items`}</span>
               </button>
-            )}
-
-            {/* Desktop View Switch: Rail vs Grid */}
-            <div className="hidden md:inline-flex items-center rounded-[8px] border border-[var(--kv-line)] bg-white p-1">
-              <button
-                type="button"
-                onClick={() => setDesktopView('grid')}
-                className={`rounded-[5px] px-2.5 py-1 text-xs font-semibold transition-colors ${
-                  desktopView === 'grid' ? 'bg-[var(--kv-ink)] text-white' : 'text-slate-600 hover:text-[var(--kv-ink)]'
-                }`}
-              >
-                Grid
-              </button>
-              <button
-                type="button"
-                onClick={() => setDesktopView('rail')}
-                className={`rounded-[5px] px-2.5 py-1 text-xs font-semibold transition-colors ${
-                  desktopView === 'rail' ? 'bg-[var(--kv-ink)] text-white' : 'text-slate-600 hover:text-[var(--kv-ink)]'
-                }`}
-              >
-                Horizontal Rail
-              </button>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Mobile Swipe Cue & Navigation Bar */}
+        {/* Navigation & Controls Bar */}
         <div className="mt-4 flex items-center justify-between border-t border-[var(--kv-line)] pt-3 text-xs text-slate-500">
           <p>
             Showing <strong className="text-[var(--kv-ink)]">{displayedItems.length}</strong> {filter === 'All' ? 'selected systems' : `in ${filter}`}
@@ -555,57 +532,42 @@ export function ProductMarquee() {
             </div>
           </div>
 
-          {/* Desktop Arrow Controls (Visible when in Rail view on Desktop) */}
-          {desktopView === 'rail' && (
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-xs text-slate-500">Use arrows or scroll</span>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  aria-label="Scroll left"
-                  onClick={() => scrollRail('left')}
-                  disabled={!canScrollLeft}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Scroll right"
-                  onClick={() => scrollRail('right')}
-                  disabled={!canScrollRight}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
-                >
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </button>
-              </div>
+          {/* Desktop Arrow Controls */}
+          <div className="hidden md:flex items-center gap-2">
+            <span className="text-xs text-slate-500">Use arrows or scroll</span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                aria-label="Scroll left"
+                onClick={() => scrollRail('left')}
+                disabled={!canScrollLeft}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                aria-label="Scroll right"
+                onClick={() => scrollRail('right')}
+                disabled={!canScrollRight}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--kv-line)] bg-white text-slate-700 disabled:opacity-30 disabled:pointer-events-none hover:border-slate-400 active:bg-slate-100 transition-colors shadow-xs"
+              >
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
             </div>
-          )}
-
-          {desktopView === 'grid' && (
-            <span className="hidden sm:inline-flex items-center gap-1.5 font-medium text-emerald-700">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              Client software, Kada platform & SaaS products
-            </span>
-          )}
+          </div>
         </div>
 
-        {/* Project Cards: Mobile Horizontal Snap Rail, Desktop Configurable Grid / Rail */}
+        {/* Project Cards: Horizontal Snap Rail */}
         <div
           ref={railRef}
-          className={`mt-6 gap-4 pb-4 pt-1 touch-pan-x-scroll no-scrollbar scroll-smooth ${
-            desktopView === 'grid'
-              ? 'flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0'
-              : 'flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 md:gap-6'
-          }`}
+          className="mt-6 flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 md:gap-6 gap-4 pb-4 pt-1 touch-pan-x-scroll no-scrollbar scroll-smooth"
         >
           {displayedItems.map((item) => (
             <div
               key={item.slug}
               data-showcase-card
-              className={`snap-start shrink-0 w-[84vw] max-w-[340px] sm:w-[360px] ${
-                desktopView === 'grid' ? 'md:w-auto md:shrink' : 'md:w-[380px] md:shrink-0'
-              } h-full flex flex-col`}
+              className="snap-start shrink-0 w-[84vw] max-w-[340px] sm:w-[360px] md:w-[380px] md:shrink-0 h-full flex flex-col"
             >
               <ShowcaseCard item={item} />
             </div>
