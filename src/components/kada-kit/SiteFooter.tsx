@@ -198,7 +198,7 @@ export function SiteFooter({
               >
                 <AppleIcon className="h-5 w-5 shrink-0 text-white" />
                 <div className="text-left leading-tight min-w-0">
-                  <span className="block text-[8px] font-bold uppercase tracking-wider text-slate-400 truncate">App Store</span>
+                  <span className="block text-[9px] font-bold uppercase tracking-wider text-slate-300 truncate">App Store</span>
                   <span className="block text-[11px] font-black text-white truncate">iOS App</span>
                 </div>
               </a>
@@ -211,7 +211,7 @@ export function SiteFooter({
               >
                 <PlayIcon className="h-5 w-5 shrink-0" />
                 <div className="text-left leading-tight min-w-0">
-                  <span className="block text-[8px] font-bold uppercase tracking-wider text-slate-400 truncate">Google Play</span>
+                  <span className="block text-[9px] font-bold uppercase tracking-wider text-slate-300 truncate">Google Play</span>
                   <span className="block text-[11px] font-black text-white truncate">Android</span>
                 </div>
               </a>
@@ -224,7 +224,7 @@ export function SiteFooter({
           {sections.map((sec) => (
             <div key={sec.id}>
               <p className="text-xs font-black uppercase tracking-widest text-white mb-4">{sec.title}</p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-400">
+              <ul className="space-y-2.5 text-[13px] font-medium text-slate-400">
                 {sec.links.map((link) => (
                   <li key={link.label}>
                     <FooterAnchor
@@ -252,7 +252,7 @@ export function SiteFooter({
                   target="_blank"
                   rel="noreferrer"
                   aria-label={s.label}
-                  className={`flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white transition-all hover:scale-110 active:scale-95 shadow-sm border border-slate-800 ${SOCIAL_HOVER[s.label]}`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white transition-all hover:scale-110 active:scale-95 shadow-sm border border-slate-800 ${SOCIAL_HOVER[s.label]}`}
                 >
                   <SocialIcon label={s.label} />
                 </a>
@@ -269,7 +269,7 @@ export function SiteFooter({
               >
                 <AppleIcon className="h-5 w-5 shrink-0 text-white" />
                 <div className="text-left leading-tight">
-                  <span className="block text-[8px] font-bold uppercase tracking-wider text-slate-400">Download on the</span>
+                  <span className="block text-[9px] font-bold uppercase tracking-wider text-slate-300">Download on the</span>
                   <span className="block text-xs font-black text-white">App Store</span>
                 </div>
               </a>
@@ -282,7 +282,7 @@ export function SiteFooter({
               >
                 <PlayIcon className="h-5 w-5 shrink-0" />
                 <div className="text-left leading-tight">
-                  <span className="block text-[8px] font-bold uppercase tracking-wider text-slate-400">GET IT ON</span>
+                  <span className="block text-[9px] font-bold uppercase tracking-wider text-slate-300">GET IT ON</span>
                   <span className="block text-xs font-black text-white">Google Play</span>
                 </div>
               </a>
@@ -312,7 +312,7 @@ export function SiteFooter({
                 if (lenis) lenis.scrollTo(0);
                 else window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
             >
               <span>Back to top</span>
               <ArrowUp className="w-3.5 h-3.5" />
